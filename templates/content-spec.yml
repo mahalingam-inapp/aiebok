@@ -1,0 +1,27 @@
+id: replace-me
+title: Replace me
+content_type: lesson # lesson|concept|pattern|architecture|tool|paper|lab
+knowledge_area: ka-00
+audience: [engineer]
+depth: [concept, engineering]
+stability: enduring # enduring|evolving|vendor-specific|frontier
+review_cycle_months: 24
+learning_objectives:
+  - Explain the problem this concept solves
+prerequisites: []
+unlocks: []
+required_sections:
+  - motivation
+  - core_theory
+  - engineering
+  - tradeoffs
+  - evaluation
+  - evolution
+practice:
+  type: code # code|architecture|experiment|discussion
+  expected_minutes: 30
+sources:
+  primary_required: true
+reviewers:
+  technical: required
+  editorial: required
