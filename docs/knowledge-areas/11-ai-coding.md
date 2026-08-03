@@ -1,11 +1,32 @@
 # KA 11 — AI Coding Ecosystem
 
-## Content plan
+## Purpose
 
-Inline completion, chat, repo-aware assistance, planning agents, autonomous coding, code review, test generation, refactoring, documentation, terminal and browser use, skills/rules/instructions, context files, worktrees, checkpoints, review loops, and human–AI collaboration.
+Collaborate with coding agents effectively.
 
-Tools such as Codex, GitHub Copilot, Claude Code, Cursor, Windsurf, Cline, Roo Code, and OpenCode are examples—not the organizing principle.
+## What you should be able to do
 
-## Practice
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
 
-Give several coding assistants the same bounded specification. Compare correctness, diff size, test quality, security, review effort, and total elapsed time.
+## Core topics
+
+- [skills](../concepts/cards/skills.md)
+- [repo instructions](../concepts/cards/repo-instructions.md)
+- [code review](../concepts/cards/code-review.md)
+
+## Guided path
+
+- Primary book: [09-ai-software-and-product-engineering](../books/09-ai-software-and-product-engineering/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Complete a bounded repo task with review evidence.

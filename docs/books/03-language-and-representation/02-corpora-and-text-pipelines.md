@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated corpora and text pipelines.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why corpora and text pipelines matters using the chapter scenario, not abstract definitions alone.
+- Trace how **Unicode** and **normalization** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to data provenance.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Representation quality cannot recover information destroyed during ingestion.
@@ -41,29 +41,81 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Unicode** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Normalization** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Corpora** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Segmentation** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Data Provenance** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Unicode
+
+Unicode assigns code points to characters across scripts; mishandling causes mojibake, broken tokens, and security bypasses via homoglyphs. See the [Unicode concept card](../../concepts/cards/unicode.md).
+
+**Example:** Normalizing NFC versus NFD changes string equality for accented characters in user names.
+
+**Evidence of understanding:** Run ingestion on ten multilingual samples and verify round-trip display matches source glyphs.
+
+### Normalization
+
+Text normalization lowercases, strips diacritics, standardizes whitespace, and canonicalizes equivalents before indexing or tokenization. Over-normalization destroys discriminative identifiers. See the [Normalization concept card](../../concepts/cards/normalization.md).
+
+**Example:** Collapsing hyphens in SKUs merges distinct product codes; preserving case matters for camelCase APIs.
+
+**Evidence of understanding:** Compare retrieval recall with and without aggressive normalization on identifier-heavy queries.
+
+### Corpora
+
+Corpora are curated text collections whose composition, licensing, and bias shape every downstream model. Provenance and consent determine legal and ethical use. See the [Corpora concept card](../../concepts/cards/corpora.md).
+
+**Example:** Training on public forums without filtering includes toxic threads that surface in generations.
+
+**Evidence of understanding:** Document source, license, date range, and language distribution in a corpus card.
+
+### Segmentation
+
+Segmentation splits text into sentences, paragraphs, or utterances for processing pipelines. Wrong boundaries merge unrelated content or split entities across chunks. See the [Segmentation concept card](../../concepts/cards/segmentation.md).
+
+**Example:** Legal documents need section-aware segmentation so clauses are not cut mid-sentence.
+
+**Evidence of understanding:** Measure boundary error rate on 50 manually segmented pages including tables and lists.
+
+### Data Provenance
+
+Data provenance records origin, transformations, timestamps, and responsible parties for each document. It enables audit, takedown, and debugging retrieval mistakes. See the [Data Provenance concept card](../../concepts/cards/data-provenance.md).
+
+**Example:** Knowing a policy chunk came from v3.2 PDF page 14—not an outdated wiki—fixes wrong answers.
+
+**Evidence of understanding:** Every retrieved chunk should carry source URI, version, and ingest timestamp in metadata.
+
 ## Worked example
 
 **Book scenario:** Employees search for policies using vocabulary different from the source documents.
 
-**Chapter focus:** Learn how collection, encoding, normalization, language detection, segmentation, privacy, and provenance shape every downstream model.
+**Situation:** The policy corpus mixes UTF-8 PDFs, legacy Windows-1252 exports, and chat logs pasted into tickets. Search quality varies wildly by source.
 
-Apply this chapter in four moves:
+**Baseline:** Lowercase and split on whitespace only—breaks on composed characters and mojibake.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where Unicode and normalization enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Build normalization pipeline: NFC Unicode normalization, language detection, sentence segmentation, PII redaction logging, and provenance tags (source system, ingest time, author).
 
-The design question is: **What evidence would show that corpora and text pipelines addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: clean UTF-8 markdown policy. (2) Boundary: Turkish dotted/dotless I casing. (3) Adversarial: zero-width joiners hiding banned terms from indexers.
+
+**Measurement:** Character preservation rate, false language-detection rate, and downstream retrieval MRR before/after pipeline.
+
+**Design question:** Which normalization step is irreversible and therefore requires archived raw copies?
+
+## Chapter hook
+
+Run this short snippet first to anchor **corpora and text pipelines** before the book-level sample:
+
+```python
+CHAPTER = "3.2"
+print("chapter hook:", CHAPTER)
+import unicodedata
+samples = ["café", "caf\u0301", "PT\u200bO policy"]
+for s in samples:
+    nfc = unicodedata.normalize("NFC", s)
+    print({"raw": repr(s), "nfc": repr(nfc), "len": len(s), "nfc_len": len(nfc)})
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **Unicode** or **normalization** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +136,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Build a normalization pipeline and test it on multilingual and adversarial text.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without unicode and record quality, latency, and failure cases.
+2. **Mechanism:** Add normalization while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when corpora and text pipelines earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Language and Representation**, make the following explicit for **corpora and text pipelines**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns unicode versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the corpora boundary expose? |
+| **Evidence** | Which eval slices prove corpora and text pipelines meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the data provenance boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover unicode or normalization | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | corpora and text pipelines is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in data provenance without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream unicode behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Learn how collection, encoding, normalization, language detection, segmentation, privacy, and provenance shape every downstream model. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of corpora and text pipelines without explicit unicode.
+- **Today:** Engineering teams implement corpora and text pipelines as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but data provenance and governance constraints will still require explicit design.
 - **What survives:** Representation quality cannot recover information destroyed during ingestion.
 
 ## Knowledge check
 
-1. What problem would remain if Unicode were removed from the system?
-2. Which observation would distinguish a failure in normalization from a failure in data provenance?
-3. What simpler alternative should be the baseline?
+1. Why cannot downstream embeddings recover information destroyed at ingestion?
+2. How would zero-width characters evade a naive tokenizer?
+3. What baseline pipeline only lowercases text?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Over-aggressive stemming, wrong encoding, or dropped metadata cannot be reconstructed. Q2: Invisible chars split tokens so banned terms never index. Q3: lowercase().split() with no normalization.
 
 ## Mastery questions
 
-1. Explain Unicode without jargon and give a counterexample.
-2. Compare normalization with data provenance using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain Unicode without jargon and give a counterexample.**
+       *Proficient answer:* unicode assigns code points to characters across scripts; mishandling causes mojibake, broken tokens, and security bypasses via homoglyphs. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare normalization with data provenance using quality, cost, latency, and risk.**
+       *Proficient answer:* text normalization lowercases, strips diacritics, standardizes whitespace, and canonicalizes equivalents before indexing or tokenization; data provenance records origin, transformations, timestamps, and responsible parties for each document. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after normalization; authorization before any side effect or retrieval of restricted data; observability at the transition corpora and text pipelines introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Representation quality cannot recover information destroyed during ingestion.
 
 ## Self-assessment rubric
 

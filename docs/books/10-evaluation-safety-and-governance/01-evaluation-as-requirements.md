@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated evaluation as requirements.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why evaluation as requirements matters using the chapter scenario, not abstract definitions alone.
+- Trace how **task definitions** and **gold datasets** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to thresholds.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Evaluation is executable requirements for uncertain behavior.
@@ -41,29 +41,82 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Task Definitions** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Gold Datasets** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Rubrics** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Slices** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Thresholds** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Task Definitions
+
+Task definitions specify input, expected output, constraints, and graders for eval cases. Vague tasks produce noisy, incomparable metrics. See the [Task Definitions concept card](../../concepts/cards/task-definitions.md).
+
+**Example:** 'Summarize ticket' becomes 'Extract product, issue, sentiment JSON matching schema X'.
+
+**Evidence of understanding:** Peer-review ten task definitions for ambiguity before adding to gold set.
+
+### Gold Datasets
+
+Gold datasets hold authoritative labels or reference outputs for evaluation. They require versioning, access control, and refresh cadence. See the [Gold Datasets concept card](../../concepts/cards/gold-datasets.md).
+
+**Example:** 200 lawyer-reviewed contract clauses with gold entity spans versioned quarterly.
+
+**Evidence of understanding:** Hash dataset version in every eval report; reject runs on unversioned snapshots.
+
+### Rubrics
+
+Rubrics score qualitative outputs against anchored criteria with examples at each level. They enable consistent human and LLM judging. See the [Rubrics concept card](../../concepts/cards/rubrics.md).
+
+**Example:** Support reply rubric scores correctness, completeness, tone, citations on 1–4 scale.
+
+**Evidence of understanding:** Calibrate two raters on 20 cases; report Cohen's kappa ≥ target before solo grading.
+
+### Slices
+
+Slices are subpopulations—language, tenant, risk tier—where aggregate metrics may hide failure. See the [Slices concept card](../../concepts/cards/slices.md).
+
+**Example:** 95% overall accuracy can mask 60% on enterprise accounts.
+
+**Evidence of understanding:** Report metrics on three production slices with separate release thresholds.
+
+### Thresholds
+
+Thresholds are minimum acceptable metric values for release or routing decisions. They encode risk appetite numerically. See the [Thresholds concept card](../../concepts/cards/thresholds.md).
+
+**Example:** Faithfulness ≥ 0.92 and P0 safety 100% required for production promotion.
+
+**Evidence of understanding:** Document threshold rationale and review quarterly with incident data.
+
 ## Worked example
 
 **Book scenario:** A high-impact assistant may pass average quality while failing a safety-critical user slice.
 
-**Chapter focus:** Turn desired behavior into tasks, cases, metrics, rubrics, slices, thresholds, and explicit failure tolerances.
+**Situation:** A high-impact assistant may pass average quality while failing a safety-critical user slice—executive dashboards look green.
 
-Apply this chapter in four moves:
+**Baseline:** Ten happy-path demo prompts as "eval."
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where task definitions and gold datasets enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Derive 30 cases from real workflow risks (access grants, PII, abstention), assign rubrics, slices, pass thresholds, explicit tolerances for critical failures (zero tolerance on privilege escalation).
 
-The design question is: **What evidence would show that evaluation as requirements addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: FAQ with citation. (2) Boundary: partial policy coverage. (3) Adversarial: combined injection plus privilege request.
+
+**Measurement:** Pass rate overall and on critical slice, failure taxonomy, threshold gate decision.
+
+**Design question:** Which case would you promote to blocking gate despite small sample size?
+
+## Chapter hook
+
+Run this short snippet first to anchor **evaluation as requirements** before the book-level sample:
+
+```python
+CHAPTER = "10.1"
+print("chapter hook:", CHAPTER)
+cases = [
+    {"id": 1, "input": "reset password", "must": "link to policy"},
+    {"id": 2, "input": "delete tenant", "must": "require approval"},
+]
+for case in cases:
+    print(case["id"], case["must"])
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **task definitions** or **gold datasets** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +137,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Write a 30-case evaluation set from real workflow risks.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without task definitions and record quality, latency, and failure cases.
+2. **Mechanism:** Add gold datasets while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when evaluation as requirements earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Evaluation, Safety, and Governance**, make the following explicit for **evaluation as requirements**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns task definitions versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the rubrics boundary expose? |
+| **Evidence** | Which eval slices prove evaluation as requirements meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the thresholds boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover task definitions or gold datasets | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | evaluation as requirements is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in thresholds without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream task definitions behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Turn desired behavior into tasks, cases, metrics, rubrics, slices, thresholds, and explicit failure tolerances. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of evaluation as requirements without explicit task definitions.
+- **Today:** Engineering teams implement evaluation as requirements as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but thresholds and governance constraints will still require explicit design.
 - **What survives:** Evaluation is executable requirements for uncertain behavior.
 
 ## Knowledge check
 
-1. What problem would remain if task definitions were removed from the system?
-2. Which observation would distinguish a failure in gold datasets from a failure in thresholds?
-3. What simpler alternative should be the baseline?
+1. Why is evaluation executable requirements for uncertain behavior?
+2. How do slices differ from aggregate pass rates?
+3. What eval baseline uses demo prompts only?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Tests encode must-hold behaviors with measurable pass/fail. Q2: Slices isolate populations where harm concentrates. Q3: Handful of cherry-picked successes.
 
 ## Mastery questions
 
-1. Explain task definitions without jargon and give a counterexample.
-2. Compare gold datasets with thresholds using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain task definitions without jargon and give a counterexample.**
+       *Proficient answer:* task definitions specify input, expected output, constraints, and graders for eval cases. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare gold datasets with thresholds using quality, cost, latency, and risk.**
+       *Proficient answer:* gold datasets hold authoritative labels or reference outputs for evaluation; thresholds are minimum acceptable metric values for release or routing decisions. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after gold datasets; authorization before any side effect or retrieval of restricted data; observability at the transition evaluation as requirements introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Evaluation is executable requirements for uncertain behavior.
 
 ## Self-assessment rubric
 

@@ -1,0 +1,25 @@
+# Breadth First Search
+
+**Purpose:** Reference card for **breadth first search** used across AIEBOK books and knowledge areas.
+
+## Core explanation
+
+Breadth-first search expands nodes level by level, guaranteeing shortest path in unweighted graphs. It is the baseline for optimal reachability before adding heuristics.
+
+## Example
+
+In a grid maze, BFS finds the minimum-step route from start to exit by exploring all distance-1 cells before distance-2.
+
+## Evidence of understanding
+
+Run BFS on a fixed maze and verify path length equals the known shortest distance.
+
+## Trade-offs
+
+No mechanism is universal. Compare breadth first search against a simpler baseline on normal, boundary, and adversarial cases before adding operational complexity.
+
+## Related study
+
+- Search guided books for chapters tagged with this concept
+- Run the matching chapter lab under `labs/` when available
+- Cross-check the [question index](../../reference/question-index.md)

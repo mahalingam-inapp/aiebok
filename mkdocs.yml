@@ -203,17 +203,29 @@ nav:
       - 19 AI Product Engineering: knowledge-areas/19-product-engineering.md
   - Concepts:
       - Index: concepts/index.md
+      - All Cards: concepts/cards/index.md
       - Tokens: concepts/tokens.md
       - Embeddings: concepts/embeddings.md
       - RAG: concepts/rag.md
       - Evaluation: concepts/evaluation.md
       - Skills & Harnesses: concepts/skills-harnesses.md
+      - Attention: concepts/attention.md
+      - KV Cache: concepts/kv-cache.md
+      - Prompt Injection: concepts/prompt-injection.md
+      - Agents: concepts/agents.md
+      - Structured Output: concepts/structured-output.md
+      - Chunking: concepts/chunking.md
+      - Reranking: concepts/reranking.md
+      - Tool Calling: concepts/tool-calling.md
+      - Fine-Tuning: concepts/fine-tuning.md
   - Patterns:
       - Index: patterns/index.md
+      - Catalog: patterns/catalog.md
       - Planner–Executor: patterns/planner-executor.md
       - Human Approval: patterns/human-approval.md
   - Architectures:
       - Index: architectures/index.md
+      - Catalog: architectures/catalog.md
       - Enterprise RAG: architectures/enterprise-rag.md
   - Cloud & Tools:
       - Capability Map: cloud/index.md
@@ -222,12 +234,16 @@ nav:
       - Google Cloud: cloud/gcp.md
   - Labs:
       - Lab Guide: labs/index.md
+      - Lab Catalog: labs/catalog.md
       - Semantic Search: labs/semantic-search.md
       - Evaluation Harness: labs/eval-harness.md
       - Runnable Code Samples: code-samples/index.md
   - Research:
       - Reading Program: papers/index.md
+      - Readings Catalog: papers/readings/index.md
       - Paper Template: papers/paper-reading-template.md
+  - Build Guides:
+      - Guide Index: guides/index.md
   - Contribute:
       - Editorial Handbook: editorial/index.md
       - Three-Perspective Review: editorial/three-perspective-review.md

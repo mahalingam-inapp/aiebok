@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated conversation and memory.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why conversation and memory matters using the chapter scenario, not abstract definitions alone.
+- Trace how **working memory** and **session memory** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to memory retrieval.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Memory is selected state reconstructed for the next decision.
@@ -41,29 +41,81 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Working Memory** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Session Memory** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Long-Term Memory** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Summarization** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Memory Retrieval** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Working Memory
+
+Working memory holds transient state for the current turn—scratchpad notes, intermediate calculations—not durable across sessions. It clears when the task completes. See the [Working Memory concept card](../../concepts/cards/working-memory.md).
+
+**Example:** A calculator agent keeps running totals in working memory while parsing a multi-step word problem.
+
+**Evidence of understanding:** Verify working memory resets between unrelated tasks in the same session.
+
+### Session Memory
+
+Session memory persists within a conversation—recent turns, pending clarifications—without long-term storage. TTL and summarization policies prevent unbounded growth. See the [Session Memory concept card](../../concepts/cards/session-memory.md).
+
+**Example:** Remembering the user's chosen account ID this session avoids re-asking on every message.
+
+**Evidence of understanding:** Measure token growth over 20-turn dialogues with and without rolling summarization.
+
+### Long-Term Memory
+
+Long-term memory stores durable facts—preferences, past resolutions—retrieved selectively for future sessions. It requires consent, expiry, and correction paths. See the [Long-Term Memory concept card](../../concepts/cards/long-term-memory.md).
+
+**Example:** Storing preferred language and timezone reduces friction but must be deletable on request.
+
+**Evidence of understanding:** Test memory write, retrieval, update, and deletion with audit logs for GDPR requests.
+
+### Summarization
+
+Summarization compresses dialogue or documents into shorter forms for memory or display. Summaries lose detail; critical constraints may need structured extraction instead. See the [Summarization concept card](../../concepts/cards/summarization.md).
+
+**Example:** Rolling summaries of support chats preserve issue status but may drop exact error codes.
+
+**Evidence of understanding:** Compare task success using full transcript versus summary after 30 turns.
+
+### Memory Retrieval
+
+Memory retrieval selects relevant past facts given the current query—vector search, keyword, or structured lookup. Irrelevant memories pollute context and cause confabulation. See the [Memory Retrieval concept card](../../concepts/cards/memory-retrieval.md).
+
+**Example:** Retrieving only memories tagged with the current project ID avoids cross-project contamination.
+
+**Evidence of understanding:** Measure precision@5 of retrieved memories on labeled session continuations.
+
 ## Worked example
 
 **Book scenario:** A long-running assistant must fit policy, evidence, memory, and user input into a bounded context.
 
-**Chapter focus:** Separate transcript, session state, summaries, semantic memory, episodic memory, user preferences, and source-of-truth data.
+**Situation:** The long-running assistant must remember prior approvals without stuffing full transcripts into every request.
 
-Apply this chapter in four moves:
+**Baseline:** Send entire chat history verbatim—hits token limits and leaks stale facts.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where working memory and session memory enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Separate working transcript, rolling summary, and semantic memory store; score memory candidates by recency, relevance, and source authority; inject top-k into context builder.
 
-The design question is: **What evidence would show that conversation and memory addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: user references decision from yesterday. (2) Boundary: summary contradicts episodic log. (3) Adversarial: user claims false prior approval stored in memory.
+
+**Measurement:** Recall of needed facts vs tokens used; conflict detection rate between summary and log.
+
+**Design question:** When should semantic memory yield to authoritative database lookup?
+
+## Chapter hook
+
+Run this short snippet first to anchor **conversation and memory** before the book-level sample:
+
+```python
+memories = [
+    {"text": "Approved WFH stipend", "score": 0.9, "source": "db"},
+    {"text": "User likes concise answers", "score": 0.4, "source": "summary"},
+]
+query = "WFH stipend approval"
+def relevance(m, q):
+    return m["score"] * (1 if any(w in m["text"].lower() for w in q.lower().split()) else 0.2)
+ranked = sorted(memories, key=lambda m: -relevance(m, query))
+print("selected:", ranked[0])
+```
+
+Predict the printed values, then change one line tied to **working memory** or **session memory** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +136,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Implement a conversation summarizer and memory scoring policy.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without working memory and record quality, latency, and failure cases.
+2. **Mechanism:** Add session memory while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when conversation and memory earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Prompt and Context Engineering**, make the following explicit for **conversation and memory**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns working memory versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the long-term memory boundary expose? |
+| **Evidence** | Which eval slices prove conversation and memory meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the memory retrieval boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover working memory or session memory | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | conversation and memory is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in memory retrieval without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream working memory behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Separate transcript, session state, summaries, semantic memory, episodic memory, user preferences, and source-of-truth data. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of conversation and memory without explicit working memory.
+- **Today:** Engineering teams implement conversation and memory as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but memory retrieval and governance constraints will still require explicit design.
 - **What survives:** Memory is selected state reconstructed for the next decision.
 
 ## Knowledge check
 
-1. What problem would remain if working memory were removed from the system?
-2. Which observation would distinguish a failure in session memory from a failure in memory retrieval?
-3. What simpler alternative should be the baseline?
+1. Why is memory selected state rather than full transcript storage?
+2. How would conflicting summary and episodic log appear at runtime?
+3. What baseline sends full history every turn?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Reconstruction for next decision must be bounded and scored. Q2: Assistant cites summary fact absent from authoritative log. Q3: Unbounded chat append with no summarization.
 
 ## Mastery questions
 
-1. Explain working memory without jargon and give a counterexample.
-2. Compare session memory with memory retrieval using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain working memory without jargon and give a counterexample.**
+       *Proficient answer:* working memory holds transient state for the current turn—scratchpad notes, intermediate calculations—not durable across sessions. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare session memory with memory retrieval using quality, cost, latency, and risk.**
+       *Proficient answer:* session memory persists within a conversation—recent turns, pending clarifications—without long-term storage; memory retrieval selects relevant past facts given the current query—vector search, keyword, or structured lookup. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after session memory; authorization before any side effect or retrieval of restricted data; observability at the transition conversation and memory introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Memory is selected state reconstructed for the next decision.
 
 ## Self-assessment rubric
 

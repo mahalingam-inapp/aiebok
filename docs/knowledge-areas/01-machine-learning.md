@@ -1,17 +1,32 @@
 # KA 01 — Machine Learning
 
-## Content plan
+## Purpose
 
-- Features, labels, datasets, splits, leakage, and baselines
-- Supervised, unsupervised, self-supervised, and reinforcement learning
-- Loss, gradient descent, regularization, bias–variance, and generalization
-- Regression, classification, clustering, neural networks, CNNs, RNNs, and LSTMs
-- Metrics, calibration, error analysis, reproducibility, and responsible data use
+Train, validate, and operate predictive systems.
 
-## Code practice
+## What you should be able to do
 
-Build linear and logistic regression from scratch, then repeat with a mature library. Train a small neural network and diagnose overfitting.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
 
-## Enduring principle
+## Core topics
 
-A model is an estimated relationship learned from data; evaluation must approximate the conditions under which decisions will be made.
+- [baselines](../concepts/cards/baselines.md)
+- [cross-validation](../concepts/cards/cross-validation.md)
+- [drift](../concepts/cards/drift.md)
+
+## Guided path
+
+- Primary book: [02-machine-learning-systems](../books/02-machine-learning-systems/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Ship a prediction service with error analysis.

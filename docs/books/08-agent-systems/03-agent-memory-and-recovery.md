@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated agent memory and recovery.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why agent memory and recovery matters using the chapter scenario, not abstract definitions alone.
+- Trace how **checkpoints** and **episodic memory** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to idempotency.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Continuity requires durable state and recoverable effects, not merely longer context.
@@ -41,29 +41,81 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Checkpoints** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Episodic Memory** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Recovery** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Compensation** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Idempotency** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Checkpoints
+
+Checkpoints persist durable agent state so interrupted runs resume without repeating side effects. See the [Checkpoints concept card](../../concepts/cards/checkpoints.md).
+
+**Example:** After approval gate, checkpoint stores pending payment until human approves, then continues.
+
+**Evidence of understanding:** Kill run mid-loop, restore checkpoint, verify idempotent tools are not duplicated.
+
+### Episodic Memory
+
+Episodic memory stores past run trajectories—what was tried, what failed—for future reference within or across sessions. See the [Episodic Memory concept card](../../concepts/cards/episodic-memory.md).
+
+**Example:** Remembering last week's failed migration path prevents repeating the same broken sequence.
+
+**Evidence of understanding:** Retrieve relevant episodes for similar goals and measure retry avoidance rate.
+
+### Recovery
+
+Recovery restores consistent state after crashes, tool failures, or partial commits. It requires durable checkpoints and compensating actions. See the [Recovery concept card](../../concepts/cards/recovery.md).
+
+**Example:** After payment timeout, recovery verifies ledger state before retry or refund.
+
+**Evidence of understanding:** Inject crash at each step and verify recovery reaches consistent terminal state.
+
+### Compensation
+
+Compensation undo or offsets partial effects when later steps fail—Saga pattern for agents. Without it, retries duplicate charges or records. See the [Compensation concept card](../../concepts/cards/compensation.md).
+
+**Example:** Failed booking after charge triggers automatic refund compensation transaction.
+
+**Evidence of understanding:** Simulate mid-saga failure and verify compensation returns system to pre-transaction state.
+
+### Idempotency
+
+Idempotent tools produce the same effect when called repeatedly with the same idempotency key. Agents retry safely only when tools support this. See the [Idempotency concept card](../../concepts/cards/idempotency.md).
+
+**Example:** create_ticket with idempotency key 'abc' must not spawn duplicate tickets on retry.
+
+**Evidence of understanding:** Call the same tool twice with identical keys and verify single side effect.
+
 ## Worked example
 
 **Book scenario:** A multi-step task may pause for hours and must resume without repeating side effects.
 
-**Chapter focus:** Manage working state, episodic history, durable checkpoints, resumability, compensation, and idempotent tools.
+**Situation:** Onboarding pauses overnight for manager approval; the agent must resume without recreating accounts or double-charging hardware orders.
 
-Apply this chapter in four moves:
+**Baseline:** Store only chat transcript—restart loses progress and repeats writes.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where checkpoints and episodic memory enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Persist checkpoints after each idempotent-safe step, durable episodic log, compensation actions for partial failures, resume from last committed checkpoint.
 
-The design question is: **What evidence would show that agent memory and recovery addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: resume after clean pause. (2) Boundary: crash after non-idempotent step before checkpoint. (3) Adversarial: duplicate resume messages from two workers.
+
+**Measurement:** Duplicate side-effect count, time-to-resume, checkpoint integrity checks.
+
+**Design question:** Which steps require idempotency keys before they can be checkpointed safely?
+
+## Chapter hook
+
+Run this short snippet first to anchor **agent memory and recovery** before the book-level sample:
+
+```python
+checkpoints = []
+state = {"step": "assign_laptop", "order_id": None}
+def save(state):
+    checkpoints.append(dict(state))
+def resume():
+    return checkpoints[-1] if checkpoints else None
+save({"step": "create_account", "done": True})
+state = resume()
+print("resume_at:", state)
+```
+
+Predict the printed values, then change one line tied to **checkpoints** or **episodic memory** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +136,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Persist and resume an interrupted multi-step run.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without checkpoints and record quality, latency, and failure cases.
+2. **Mechanism:** Add episodic memory while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when agent memory and recovery earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Agent Systems**, make the following explicit for **agent memory and recovery**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns checkpoints versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the recovery boundary expose? |
+| **Evidence** | Which eval slices prove agent memory and recovery meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the idempotency boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover checkpoints or episodic memory | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | agent memory and recovery is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in idempotency without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream checkpoints behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Manage working state, episodic history, durable checkpoints, resumability, compensation, and idempotent tools. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of agent memory and recovery without explicit checkpoints.
+- **Today:** Engineering teams implement agent memory and recovery as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but idempotency and governance constraints will still require explicit design.
 - **What survives:** Continuity requires durable state and recoverable effects, not merely longer context.
 
 ## Knowledge check
 
-1. What problem would remain if checkpoints were removed from the system?
-2. Which observation would distinguish a failure in episodic memory from a failure in idempotency?
-3. What simpler alternative should be the baseline?
+1. Why is continuity more than longer context?
+2. How does compensation differ from retry?
+3. What recovery baseline relies on transcript only?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Durable state survives restarts; context windows do not. Q2: Compensation undoes partial effects; retry may duplicate them. Q3: Re-prompt model with chat history only.
 
 ## Mastery questions
 
-1. Explain checkpoints without jargon and give a counterexample.
-2. Compare episodic memory with idempotency using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain checkpoints without jargon and give a counterexample.**
+       *Proficient answer:* checkpoints persist durable agent state so interrupted runs resume without repeating side effects. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare episodic memory with idempotency using quality, cost, latency, and risk.**
+       *Proficient answer:* episodic memory stores past run trajectories—what was tried, what failed—for future reference within or across sessions; idempotent tools produce the same effect when called repeatedly with the same idempotency key. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after episodic memory; authorization before any side effect or retrieval of restricted data; observability at the transition agent memory and recovery introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Continuity requires durable state and recoverable effects, not merely longer context.
 
 ## Self-assessment rubric
 

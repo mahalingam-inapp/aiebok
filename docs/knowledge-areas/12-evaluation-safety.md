@@ -1,13 +1,32 @@
 # KA 12 — Evaluation, Safety & Security
 
-## Content plan
+## Purpose
 
-Task definitions, gold datasets, rubrics, exact and semantic metrics, retrieval metrics, human evaluation, pairwise comparison, LLM judges, calibration, confidence intervals, offline/online evaluation, A/B tests, regressions, prompt injection, jailbreaks, data exfiltration, tool abuse, PII, secrets, sandboxing, red teaming, policy, governance, and assurance cases.
+Measure and constrain behavior.
 
-## Code practice
+## What you should be able to do
 
-Build the dependency-free [evaluation harness](../labs/eval-harness.md), then add adversarial cases and an explicit release threshold.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
 
-## Enduring principle
+## Core topics
 
-An AI system is not “good” in general. It is acceptable only against defined tasks, risks, users, operating conditions, and failure tolerances.
+- [rubrics](../concepts/cards/rubrics.md)
+- [slices](../concepts/cards/slices.md)
+- [prompt injection](../concepts/cards/prompt-injection.md)
+
+## Guided path
+
+- Primary book: [10-evaluation-safety-and-governance](../books/10-evaluation-safety-and-governance/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Build eval and red-team package.

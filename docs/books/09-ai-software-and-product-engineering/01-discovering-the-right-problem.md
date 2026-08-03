@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated discovering the right problem.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why discovering the right problem matters using the chapter scenario, not abstract definitions alone.
+- Trace how **user research** and **jobs-to-be-done** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to success metrics.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Optimize the human outcome, not the amount of AI in the product.
@@ -41,29 +41,83 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **User Research** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Jobs-To-Be-Done** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Baseline Workflow** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Feasibility** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Success Metrics** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### User Research
+
+User research observes real workflows, pain points, and workarounds before proposing AI features. It prevents building impressive demos nobody needs. See the [User Research concept card](../../concepts/cards/user-research.md).
+
+**Example:** Watching support agents copy-paste from three systems reveals integration beats summarization.
+
+**Evidence of understanding:** Document five observed user sessions and map pains to non-AI and AI options.
+
+### Jobs-To-Be-Done
+
+Jobs-to-be-done frames what users hire a product to accomplish, not which technology it uses. AI fits when it improves the job outcome measurably. See the [Jobs-To-Be-Done concept card](../../concepts/cards/jobs-to-be-done.md).
+
+**Example:** Users hire expense tool to 'get reimbursed fast', not to 'chat with AI'.
+
+**Evidence of understanding:** Write job statement and success metric independent of model choice.
+
+### Baseline Workflow
+
+Baseline workflow documents how users solve the task today—time, errors, tools—before AI intervention. Improvement requires beating this baseline. See the [Baseline Workflow concept card](../../concepts/cards/baseline-workflow.md).
+
+**Example:** Manual ticket tagging takes 45s each; AI must beat accuracy and time with correction cost included.
+
+**Evidence of understanding:** Measure baseline task time and error rate on ten representative sessions.
+
+### Feasibility
+
+Feasibility assesses whether data, latency, risk, and model capability can meet requirements—not whether a demo works once. See the [Feasibility concept card](../../concepts/cards/feasibility.md).
+
+**Example:** If no labeled data exists and mistakes cost $10k, feasibility may be low despite flashy prototype.
+
+**Evidence of understanding:** List top three feasibility risks with mitigation or kill criteria.
+
+### Success Metrics
+
+Success metrics tie releases to user-valued outcomes—task success, time saved, revenue—not model perplexity alone. See the [Success Metrics concept card](../../concepts/cards/success-metrics.md).
+
+**Example:** Deflect 20% of L1 tickets without increasing reopen rate defines success for support bot.
+
+**Evidence of understanding:** Pre-register primary and guardrail metrics before launch with target deltas.
+
 ## Worked example
 
 **Book scenario:** A product team must convert a vague AI feature request into testable release evidence.
 
-**Chapter focus:** Identify user jobs, workflow constraints, baseline performance, capability fit, failure cost, and measurable value before building.
+**Situation:** A product team must convert a vague AI feature request into testable release evidence. Sales promised "AI onboarding assistant" without defining success.
 
-Apply this chapter in four moves:
+**Baseline:** Build chat UI immediately—demo impresses but no measurable workflow improvement.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where user research and jobs-to-be-done enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Write problem brief: user job, current baseline workflow, failure costs, non-AI alternative, capability fit, success metrics (time-to-productive, error rate).
 
-The design question is: **What evidence would show that discovering the right problem addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: new hire with complete data. (2) Boundary: hire lacking manager assignment. (3) Adversarial: success metric gameable by skipping compliance steps.
+
+**Measurement:** Baseline workflow timing study n≥20, projected ROI with confidence range, feasibility red flags.
+
+**Design question:** What non-AI alternative would you ship if models were unavailable?
+
+## Chapter hook
+
+Run this short snippet first to anchor **discovering the right problem** before the book-level sample:
+
+```python
+CHAPTER = "9.1"
+print("chapter hook:", CHAPTER)
+brief = {
+    "job": "get employee productive day 1",
+    "baseline_hours": 6.5,
+    "failure_cost": "compliance breach",
+    "non_ai": "checklist app with human verifier",
+}
+print(brief)
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **user research** or **jobs-to-be-done** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +138,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Write a problem brief with a non-AI alternative.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without user research and record quality, latency, and failure cases.
+2. **Mechanism:** Add jobs-to-be-done while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when discovering the right problem earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **AI Software and Product Engineering**, make the following explicit for **discovering the right problem**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns user research versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the baseline workflow boundary expose? |
+| **Evidence** | Which eval slices prove discovering the right problem meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the success metrics boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover user research or jobs-to-be-done | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | discovering the right problem is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in success metrics without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream user research behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Identify user jobs, workflow constraints, baseline performance, capability fit, failure cost, and measurable value before building. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of discovering the right problem without explicit user research.
+- **Today:** Engineering teams implement discovering the right problem as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but success metrics and governance constraints will still require explicit design.
 - **What survives:** Optimize the human outcome, not the amount of AI in the product.
 
 ## Knowledge check
 
-1. What problem would remain if user research were removed from the system?
-2. Which observation would distinguish a failure in jobs-to-be-done from a failure in success metrics?
-3. What simpler alternative should be the baseline?
+1. Why optimize human outcome rather than amount of AI?
+2. How do gameable metrics create false success?
+3. What discovery baseline skips user research?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: AI is a means; value is workflow improvement. Q2: Metric improves while compliance worsens. Q3: Build because LLMs exist.
 
 ## Mastery questions
 
-1. Explain user research without jargon and give a counterexample.
-2. Compare jobs-to-be-done with success metrics using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain user research without jargon and give a counterexample.**
+       *Proficient answer:* user research observes real workflows, pain points, and workarounds before proposing ai features. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare jobs-to-be-done with success metrics using quality, cost, latency, and risk.**
+       *Proficient answer:* jobs-to-be-done frames what users hire a product to accomplish, not which technology it uses; success metrics tie releases to user-valued outcomes—task success, time saved, revenue—not model perplexity alone. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after jobs-to-be-done; authorization before any side effect or retrieval of restricted data; observability at the transition discovering the right problem introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Optimize the human outcome, not the amount of AI in the product.
 
 ## Self-assessment rubric
 

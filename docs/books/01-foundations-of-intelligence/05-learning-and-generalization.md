@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated learning and generalization.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why learning and generalization matters using the chapter scenario, not abstract definitions alone.
+- Trace how **training** and **inference** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to distribution shift.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     A system is useful when it performs under future conditions, not merely on its training examples.
@@ -41,29 +41,80 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Training** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Inference** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Generalization** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Bias And Variance** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Distribution Shift** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Training
+
+Training fits model parameters to data by minimizing a loss over many examples. It defines what behavior the model is rewarded for and must be separated from inference in operations. See the [Training concept card](../../concepts/cards/training.md).
+
+**Example:** Fine-tuning a classifier on support tickets teaches phrasing patterns that inference-time prompts alone may not stabilize.
+
+**Evidence of understanding:** Log training loss, validation loss, and one task metric per epoch and stop when validation degrades.
+
+### Inference
+
+Inference applies a trained model to new inputs to produce predictions or generations. Serving latency, cost, and correctness are measured here—not during training. See the [Inference concept card](../../concepts/cards/inference.md).
+
+**Example:** A production chatbot runs inference on every user message; batching ten requests changes throughput but not the trained weights.
+
+**Evidence of understanding:** Measure p50 and p95 latency for single and batched requests at fixed concurrency.
+
+### Generalization
+
+Generalization is performance on unseen data drawn from the deployment distribution, not memorization of training examples. The central engineering question is whether the system will work next month on real users. See the [Generalization concept card](../../concepts/cards/generalization.md).
+
+**Example:** A memorizing model hits 100% on training tickets but fails on new product names never seen during training.
+
+**Evidence of understanding:** Compare train and held-out slice metrics and require held-out performance above a release threshold.
+
+### Bias And Variance
+
+Bias is systematic underfitting from overly simple models; variance is sensitivity to training noise from overly complex ones. Tuning trades these errors against compute and data volume. See the [Bias And Variance concept card](../../concepts/cards/bias-and-variance.md).
+
+**Example:** A linear model underfits nonlinear fraud patterns (high bias); a huge tree overfits small samples (high variance).
+
+**Evidence of understanding:** Plot error versus model capacity and identify the knee where validation error stops improving.
+
+### Distribution Shift
+
+Distribution shift occurs when deployment data differs from training data in language, demographics, seasonality, or product mix. Models degrade silently when shift is unmonitored. See the [Distribution Shift concept card](../../concepts/cards/distribution-shift.md).
+
+**Example:** A model trained pre-acquisition fails on the acquired company's ticket vocabulary until retrained or augmented.
+
+**Evidence of understanding:** Monitor slice metrics weekly and alert when any slice drops more than five points from its baseline.
+
 ## Worked example
 
 **Book scenario:** A support team must route incidents without mistaking fluent descriptions for reliable decisions.
 
-**Chapter focus:** Distinguish memorization from generalization and training from inference. Understand data-generating processes, inductive bias, overfitting, underfitting, and distribution shift.
+**Situation:** A pilot ML classifier labels incident severity from historical tickets, but performance collapses after a product rename changes customer vocabulary.
 
-Apply this chapter in four moves:
+**Baseline:** Memorize exact training phrases with a hash map—perfect on train, useless on deploy.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where training and inference enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Train/validation split by time, fit models of increasing capacity (linear → bigram → small neural), plot train vs validation error, and document distribution shift when product codenames change.
 
-The design question is: **What evidence would show that learning and generalization addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: phrasing seen in training month. (2) Boundary: new product name with same failure semantics. (3) Adversarial: label noise—mis-tagged P3 tickets marked P1.
+
+**Measurement:** Pre/post-rename F1, learning curves, and slice error on renamed-product tickets.
+
+**Design question:** What evidence distinguishes overfitting from distribution shift on the rename slice?
+
+## Chapter hook
+
+Run this short snippet first to anchor **learning and generalization** before the book-level sample:
+
+```python
+data = [(1, 0), (2, 0), (3, 1), (4, 1), (5, 2)]
+labels = [0, 0, 1, 1, 0]
+def mse_line(m, b, pts):
+    return sum((m*x + b - y)**2 for x, y in pts) / len(pts)
+best = min(((m, b, mse_line(m, b, data)) for m in [0, 0.5, 1.0] for b in [0, 0.5]), key=lambda t: t[2])
+holdout = [(6, 1), (7, 1)]
+test_err = mse_line(best[0], best[1], holdout)
+print({"fit": best[:2], "train_mse": round(best[2], 3), "holdout_mse": round(test_err, 3)})
+```
+
+Predict the printed values, then change one line tied to **training** or **inference** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +135,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Fit increasingly flexible models to a small noisy dataset and plot errors.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without training and record quality, latency, and failure cases.
+2. **Mechanism:** Add inference while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when learning and generalization earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Foundations of Intelligence**, make the following explicit for **learning and generalization**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns training versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the generalization boundary expose? |
+| **Evidence** | Which eval slices prove learning and generalization meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the distribution shift boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover training or inference | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | learning and generalization is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in distribution shift without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream training behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Distinguish memorization from generalization and training from inference. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of learning and generalization without explicit training.
+- **Today:** Engineering teams implement learning and generalization as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but distribution shift and governance constraints will still require explicit design.
 - **What survives:** A system is useful when it performs under future conditions, not merely on its training examples.
 
 ## Knowledge check
 
-1. What problem would remain if training were removed from the system?
-2. Which observation would distinguish a failure in inference from a failure in distribution shift?
-3. What simpler alternative should be the baseline?
+1. What observable pattern indicates memorization rather than generalization on tickets?
+2. How does a time-based split change your interpretation of validation error?
+3. What is the minimal model family for a severity baseline?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Zero training error with high validation error on paraphrased tickets. Q2: Random split hides temporal shift; time split surfaces rename failures. Q3: Linear or logistic model on bag-of-words.
 
 ## Mastery questions
 
-1. Explain training without jargon and give a counterexample.
-2. Compare inference with distribution shift using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain training without jargon and give a counterexample.**
+       *Proficient answer:* training fits model parameters to data by minimizing a loss over many examples. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare inference with distribution shift using quality, cost, latency, and risk.**
+       *Proficient answer:* inference applies a trained model to new inputs to produce predictions or generations; distribution shift occurs when deployment data differs from training data in language, demographics, seasonality, or product mix. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after inference; authorization before any side effect or retrieval of restricted data; observability at the transition learning and generalization introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* A system is useful when it performs under future conditions, not merely on its training examples.
 
 ## Self-assessment rubric
 

@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated neural networks.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why neural networks matters using the chapter scenario, not abstract definitions alone.
+- Trace how **neurons and layers** and **activations** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to optimizers.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Neural networks learn compositions of transformations; training adjusts those transformations to reduce loss.
@@ -41,29 +41,80 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Neurons And Layers** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Activations** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Backpropagation** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Normalization** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Optimizers** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Neurons And Layers
+
+Neurons apply activations to weighted sums; layers stack these transforms into composable functions. Depth lets networks build hierarchical abstractions. See the [Neurons And Layers concept card](../../concepts/cards/neurons-and-layers.md).
+
+**Example:** First layers in vision nets detect edges; deeper layers combine them into parts and objects.
+
+**Evidence of understanding:** Inspect activation histograms per layer during training to catch dying ReLU or saturation.
+
+### Activations
+
+Activation functions introduce nonlinearity—ReLU, GELU, sigmoid—without which deep networks collapse to linear maps. Choice affects gradient flow and training stability. See the [Activations concept card](../../concepts/cards/activations.md).
+
+**Example:** GELU in transformers smooths gradients compared to ReLU for language modeling at scale.
+
+**Evidence of understanding:** Compare training convergence with ReLU versus GELU on the same architecture and seed.
+
+### Backpropagation
+
+Backpropagation applies the chain rule to compute gradients through layered computations efficiently. It enables training deep networks but requires careful initialization and normalization. See the [Backpropagation concept card](../../concepts/cards/backpropagation.md).
+
+**Example:** One backward pass from loss to weights updates every layer in a classifier simultaneously.
+
+**Evidence of understanding:** Verify gradients with finite differences on a tiny network for one batch.
+
+### Normalization
+
+Text normalization lowercases, strips diacritics, standardizes whitespace, and canonicalizes equivalents before indexing or tokenization. Over-normalization destroys discriminative identifiers. See the [Normalization concept card](../../concepts/cards/normalization.md).
+
+**Example:** Collapsing hyphens in SKUs merges distinct product codes; preserving case matters for camelCase APIs.
+
+**Evidence of understanding:** Compare retrieval recall with and without aggressive normalization on identifier-heavy queries.
+
+### Optimizers
+
+Optimizers like Adam, AdamW, and SGD with momentum adapt update rules beyond vanilla gradient descent. They affect convergence speed, final loss, and generalization. See the [Optimizers concept card](../../concepts/cards/optimizers.md).
+
+**Example:** AdamW decouples weight decay from adaptive steps—common default for transformer fine-tuning.
+
+**Evidence of understanding:** Compare final validation metric and training time for Adam versus SGD on the same task.
+
 ## Worked example
 
 **Book scenario:** A lender needs a prediction service whose errors can be explained across customer groups.
 
-**Chapter focus:** Build the mental model of layers, activations, losses, backpropagation, initialization, normalization, and optimization.
+**Situation:** A neural scorer must capture nonlinear interactions among debt, income, and employment length for the lender's API.
 
-Apply this chapter in four moves:
+**Baseline:** Single-layer logistic regression plateau on validation AUC.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where neurons and layers and activations enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Train a two-hidden-layer MLP with ReLU, track train/val loss, inspect gradient norms for vanishing/exploding signals, apply batch normalization ablation.
 
-The design question is: **What evidence would show that neural networks addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: batch size 64, stable learning rate. (2) Boundary: very small batch with noisy gradients. (3) Adversarial: all-zero input column after pipeline bug.
+
+**Measurement:** Val AUC vs epoch, gradient norm percentiles, and latency per inference at batch 1.
+
+**Design question:** At what point does adding layers stop improving the deny-recall slice?
+
+## Chapter hook
+
+Run this short snippet first to anchor **neural networks** before the book-level sample:
+
+```python
+def relu(x):
+    return max(0.0, x)
+x, w1, b1, w2, b2 = 1.5, 0.8, -0.2, 1.2, 0.1
+hidden = relu(x * w1 + b1)
+y = hidden * w2 + b2
+loss = (y - 1.0) ** 2
+grad_w2 = 2 * (y - 1.0) * hidden
+print({"hidden": round(hidden, 3), "y": round(y, 3), "grad_w2": round(grad_w2, 3)})
+```
+
+Predict the printed values, then change one line tied to **neurons and layers** or **activations** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +135,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Train a small network and inspect gradients and learning curves.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without neurons and layers and record quality, latency, and failure cases.
+2. **Mechanism:** Add activations while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when neural networks earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Machine Learning Systems**, make the following explicit for **neural networks**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns neurons and layers versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the backpropagation boundary expose? |
+| **Evidence** | Which eval slices prove neural networks meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the optimizers boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover neurons and layers or activations | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | neural networks is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in optimizers without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream neurons and layers behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Build the mental model of layers, activations, losses, backpropagation, initialization, normalization, and optimization. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of neural networks without explicit neurons and layers.
+- **Today:** Engineering teams implement neural networks as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but optimizers and governance constraints will still require explicit design.
 - **What survives:** Neural networks learn compositions of transformations; training adjusts those transformations to reduce loss.
 
 ## Knowledge check
 
-1. What problem would remain if neurons and layers were removed from the system?
-2. Which observation would distinguish a failure in activations from a failure in optimizers?
-3. What simpler alternative should be the baseline?
+1. What does a flat validation curve alongside falling training loss suggest?
+2. How would a zero-input-column bug manifest in gradients?
+3. What non-neural baseline must the MLP beat?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Overfitting—capacity exceeds data signal. Q2: Weights on dead feature stay near init. Q3: Same-data logistic regression.
 
 ## Mastery questions
 
-1. Explain neurons and layers without jargon and give a counterexample.
-2. Compare activations with optimizers using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain neurons and layers without jargon and give a counterexample.**
+       *Proficient answer:* neurons apply activations to weighted sums; layers stack these transforms into composable functions. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare activations with optimizers using quality, cost, latency, and risk.**
+       *Proficient answer:* activation functions introduce nonlinearity—relu, gelu, sigmoid—without which deep networks collapse to linear maps; optimizers like adam, adamw, and sgd with momentum adapt update rules beyond vanilla gradient descent. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after activations; authorization before any side effect or retrieval of restricted data; observability at the transition neural networks introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Neural networks learn compositions of transformations; training adjusts those transformations to reduce loss.
 
 ## Self-assessment rubric
 

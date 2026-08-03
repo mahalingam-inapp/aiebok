@@ -1,13 +1,32 @@
 # KA 07 — Reasoning Systems
 
-## Content plan
+## Purpose
 
-Reasoning versus recall; decomposition; planning; search; verification; critique; backtracking; self-consistency; best-of-N; tree search; program synthesis; tool-assisted reasoning; test-time compute; external memory; uncertainty; termination.
+Apply search, planning, and verification at inference.
 
-## Code practice
+## What you should be able to do
 
-Implement a deterministic planner, candidate generator, verifier, and retry policy. Compare accuracy, latency, and cost with a single-pass baseline.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
 
-## Safety note
+## Core topics
 
-Do not equate plausible explanations with faithful internal reasoning. Evaluate observable task outcomes and evidence.
+- [planning](../concepts/cards/planning.md)
+- [verifiers](../concepts/cards/verifiers.md)
+- [MCP](../concepts/cards/mcp.md)
+
+## Guided path
+
+- Primary book: [07-reasoning-and-tool-use](../books/07-reasoning-and-tool-use/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Build planner–tool–verifier workflow.

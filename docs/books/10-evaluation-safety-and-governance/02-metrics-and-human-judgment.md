@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated metrics and human judgment.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why metrics and human judgment matters using the chapter scenario, not abstract definitions alone.
+- Trace how **deterministic metrics** and **human evaluation** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to inter-rater agreement.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Every metric encodes a theory of quality; validate that theory against real decisions.
@@ -41,29 +41,80 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Deterministic Metrics** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Human Evaluation** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Llm Judges** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Confidence Intervals** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Inter-Rater Agreement** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Deterministic Metrics
+
+Deterministic metrics—exact match, F1 on spans, JSON validity—give reproducible scores without sampling variance. See the [Deterministic Metrics concept card](../../concepts/cards/deterministic-metrics.md).
+
+**Example:** Schema validation pass rate is deterministic; helpfulness often is not.
+
+**Evidence of understanding:** Prefer deterministic metrics for CI gates; use statistical metrics with confidence intervals for quality tracking.
+
+### Human Evaluation
+
+Human evaluation labels outputs quality when automation cannot capture nuance or safety. Design for rater training, agreement, and throughput. See the [Human Evaluation concept card](../../concepts/cards/human-evaluation.md).
+
+**Example:** Lawyers label contract summaries for legal accuracy on 50 cases monthly.
+
+**Evidence of understanding:** Track inter-rater agreement and adjudicate disagreements with gold committee.
+
+### Llm Judges
+
+LLM judges automate scoring using rubrics but must be calibrated against humans to avoid systematic bias. See the [Llm Judges concept card](../../concepts/cards/llm-judges.md).
+
+**Example:** GPT-4 judge scores faithfulness correlated 0.85 with human labels after calibration.
+
+**Evidence of understanding:** Sample 10% human audit of LLM judge scores each sprint; recalibrate if drift >5 points.
+
+### Confidence Intervals
+
+Confidence intervals quantify uncertainty in metric estimates from finite eval sets. Comparing models requires overlapping intervals or formal tests. See the [Confidence Intervals concept card](../../concepts/cards/confidence-intervals.md).
+
+**Example:** Model A at 82% ± 3% versus Model B at 85% ± 4% may not be significantly different.
+
+**Evidence of understanding:** Report 95% CI for primary metrics; require non-overlap for major release claims.
+
+### Inter-Rater Agreement
+
+Inter-rater agreement measures how consistently multiple human graders apply rubrics—Cohen's kappa, Krippendorff's alpha. See the [Inter-Rater Agreement concept card](../../concepts/cards/inter-rater-agreement.md).
+
+**Example:** Low agreement on tone dimension means rubric needs refinement before scaling labeling.
+
+**Evidence of understanding:** Compute kappa per rubric dimension; block scaling if below 0.6.
+
 ## Worked example
 
 **Book scenario:** A high-impact assistant may pass average quality while failing a safety-critical user slice.
 
-**Chapter focus:** Combine exact metrics, semantic similarity, pairwise comparison, human review, LLM judges, calibration, and uncertainty.
+**Situation:** Automated metrics disagree with compliance reviewers on whether answers are "good enough."
 
-Apply this chapter in four moves:
+**Baseline:** BLEU score on reference answers—misaligned with policy fidelity.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where deterministic metrics and human evaluation enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Calibrate LLM judge against two human reviewers on 50 cases, measure inter-rater agreement, use pairwise comparisons for tie-breaks, report confidence intervals on pass rates.
 
-The design question is: **What evidence would show that metrics and human judgment addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: all raters agree pass. (2) Boundary: judge-human disagreement. (3) Adversarial: judge favors fluent hallucination.
+
+**Measurement:** Cohen's kappa judge-human, calibration drift over time, cost per human review hour.
+
+**Design question:** When must human review override an automated judge pass?
+
+## Chapter hook
+
+Run this short snippet first to anchor **metrics and human judgment** before the book-level sample:
+
+```python
+CHAPTER = "10.2"
+print("chapter hook:", CHAPTER)
+human = [1, 0, 1, 1]
+judge = [1, 1, 1, 0]
+agree = sum(h == j for h, j in zip(human, judge)) / len(human)
+print({"agreement": round(agree, 2)})
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **deterministic metrics** or **human evaluation** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +135,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Calibrate an automated judge against two human reviewers.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without deterministic metrics and record quality, latency, and failure cases.
+2. **Mechanism:** Add human evaluation while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when metrics and human judgment earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Evaluation, Safety, and Governance**, make the following explicit for **metrics and human judgment**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns deterministic metrics versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the llm judges boundary expose? |
+| **Evidence** | Which eval slices prove metrics and human judgment meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the inter-rater agreement boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover deterministic metrics or human evaluation | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | metrics and human judgment is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in inter-rater agreement without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream deterministic metrics behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Combine exact metrics, semantic similarity, pairwise comparison, human review, LLM judges, calibration, and uncertainty. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of metrics and human judgment without explicit deterministic metrics.
+- **Today:** Engineering teams implement metrics and human judgment as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but inter-rater agreement and governance constraints will still require explicit design.
 - **What survives:** Every metric encodes a theory of quality; validate that theory against real decisions.
 
 ## Knowledge check
 
-1. What problem would remain if deterministic metrics were removed from the system?
-2. Which observation would distinguish a failure in human evaluation from a failure in inter-rater agreement?
-3. What simpler alternative should be the baseline?
+1. Why does every metric encode a theory of quality?
+2. How do confidence intervals change release decisions?
+3. What metric baseline uses exact match on paraphrases?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: BLEU rewards n-grams not fidelity or safety. Q2: Wide CI on small slice means pass rate uncertain—gate may fail. Q3: Exact string match on reference answers.
 
 ## Mastery questions
 
-1. Explain deterministic metrics without jargon and give a counterexample.
-2. Compare human evaluation with inter-rater agreement using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain deterministic metrics without jargon and give a counterexample.**
+       *Proficient answer:* deterministic metrics—exact match, f1 on spans, json validity—give reproducible scores without sampling variance. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare human evaluation with inter-rater agreement using quality, cost, latency, and risk.**
+       *Proficient answer:* human evaluation labels outputs quality when automation cannot capture nuance or safety; inter-rater agreement measures how consistently multiple human graders apply rubrics—cohen's kappa, krippendorff's alpha. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after human evaluation; authorization before any side effect or retrieval of restricted data; observability at the transition metrics and human judgment introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Every metric encodes a theory of quality; validate that theory against real decisions.
 
 ## Self-assessment rubric
 

@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated evaluation by system stage.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why evaluation by system stage matters using the chapter scenario, not abstract definitions alone.
+- Trace how **component evals** and **retrieval metrics** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to end-to-end evals.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Stage-specific evaluation makes failures diagnosable and improvements attributable.
@@ -41,29 +41,81 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Component Evals** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Retrieval Metrics** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Faithfulness** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Tool Success** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **End-To-End Evals** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Component Evals
+
+Component evals test retrieval, generation, tools, and UX stages independently before end-to-end runs. They localize failures. See the [Component Evals concept card](../../concepts/cards/component-evals.md).
+
+**Example:** Retrieval recall@10 evaluated separately from answer faithfulness on same queries.
+
+**Evidence of understanding:** Build failure attribution matrix mapping end-to-end misses to component scores.
+
+### Retrieval Metrics
+
+Retrieval metrics—recall@k, MRR, nDCG—measure candidate set quality before generation sees it. See the [Retrieval Metrics concept card](../../concepts/cards/retrieval-metrics.md).
+
+**Example:** High recall@20 with poor faithfulness suggests generation issue, not retrieval.
+
+**Evidence of understanding:** Report recall@5, @10, @20 on fixed query set each index version.
+
+### Faithfulness
+
+Faithfulness checks that generated statements are entailed by retrieved evidence, not hallucinated additions. It is separate from fluency or user satisfaction. See the [Faithfulness concept card](../../concepts/cards/faithfulness.md).
+
+**Example:** Correct tone but wrong deductible amount is unfaithful despite readable prose.
+
+**Evidence of understanding:** Use NLI or human rubric on 100 answers; require faithfulness ≥ threshold for release.
+
+### Tool Success
+
+Tool success rate tracks correct schema, auth, execution, and useful results from tool calls. It isolates integration failures from model reasoning. See the [Tool Success concept card](../../concepts/cards/tool-success.md).
+
+**Example:** 60% tool success with high answer quality still blocks reliable agents.
+
+**Evidence of understanding:** Log tool error taxonomy—validation, timeout, 403—and set minimum success rate gate.
+
+### End-To-End Evals
+
+End-to-end evals measure full pipeline outcomes on realistic inputs including latency and cost. See the [End-To-End Evals concept card](../../concepts/cards/end-to-end-evals.md).
+
+**Example:** User question to cited answer passes only if retrieval, generation, and citation all succeed.
+
+**Evidence of understanding:** Run weekly end-to-end suite with production config hash in report.
+
 ## Worked example
 
 **Book scenario:** A high-impact assistant may pass average quality while failing a safety-critical user slice.
 
-**Chapter focus:** Evaluate ingestion, retrieval, generation, tools, agents, UX, latency, cost, and business outcomes separately and together.
+**Situation:** RAG assistant fails in production; team argues whether retrieval, generation, or tools caused it.
 
-Apply this chapter in four moves:
+**Baseline:** End-to-end thumbs-up/down only.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where component evals and retrieval metrics enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Build failure attribution matrix: ingestion, retrieval recall, rerank, generation faithfulness, tool success, UX; run component evals with frozen downstream gold inputs.
 
-The design question is: **What evidence would show that evaluation by system stage addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: retrieval fails, generation good. (2) Boundary: all components pass component tests but E2E fails interaction. (3) Adversarial: metric gaming by overfitting reranker to eval queries.
+
+**Measurement:** Component pass rates, attributed failure percentage, fix validation on targeted slice.
+
+**Design question:** Which component eval would you run first given wrong citations but right topic?
+
+## Chapter hook
+
+Run this short snippet first to anchor **evaluation by system stage** before the book-level sample:
+
+```python
+CHAPTER = "10.3"
+print("chapter hook:", CHAPTER)
+matrix = {"retrieval": 0.6, "rerank": 0.8, "generation": 0.9}
+symptom = "wrong doc cited"
+if symptom == "wrong doc cited":
+    first = min(matrix, key=matrix.get)
+print("investigate first:", first)
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **component evals** or **retrieval metrics** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +136,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Build a failure attribution matrix for a RAG system.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without component evals and record quality, latency, and failure cases.
+2. **Mechanism:** Add retrieval metrics while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when evaluation by system stage earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Evaluation, Safety, and Governance**, make the following explicit for **evaluation by system stage**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns component evals versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the faithfulness boundary expose? |
+| **Evidence** | Which eval slices prove evaluation by system stage meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the end-to-end evals boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover component evals or retrieval metrics | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | evaluation by system stage is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in end-to-end evals without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream component evals behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Evaluate ingestion, retrieval, generation, tools, agents, UX, latency, cost, and business outcomes separately and together. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of evaluation by system stage without explicit component evals.
+- **Today:** Engineering teams implement evaluation by system stage as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but end-to-end evals and governance constraints will still require explicit design.
 - **What survives:** Stage-specific evaluation makes failures diagnosable and improvements attributable.
 
 ## Knowledge check
 
-1. What problem would remain if component evals were removed from the system?
-2. Which observation would distinguish a failure in retrieval metrics from a failure in end-to-end evals?
-3. What simpler alternative should be the baseline?
+1. Why evaluate stages separately and together?
+2. How does failure attribution guide fixes?
+3. What baseline evaluates end-to-end only?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Isolates fixable boundaries vs interaction bugs. Q2: Low retrieval recall → fix index before tuning prompts. Q3: Single user satisfaction score.
 
 ## Mastery questions
 
-1. Explain component evals without jargon and give a counterexample.
-2. Compare retrieval metrics with end-to-end evals using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain component evals without jargon and give a counterexample.**
+       *Proficient answer:* component evals test retrieval, generation, tools, and ux stages independently before end-to-end runs. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare retrieval metrics with end-to-end evals using quality, cost, latency, and risk.**
+       *Proficient answer:* retrieval metrics—recall@k, mrr, ndcg—measure candidate set quality before generation sees it; end-to-end evals measure full pipeline outcomes on realistic inputs including latency and cost. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after retrieval metrics; authorization before any side effect or retrieval of restricted data; observability at the transition evaluation by system stage introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Stage-specific evaluation makes failures diagnosable and improvements attributable.
 
 ## Self-assessment rubric
 

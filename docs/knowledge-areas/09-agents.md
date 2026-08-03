@@ -1,13 +1,32 @@
 # KA 09 — Agents
 
-## Content plan
+## Purpose
 
-Agent versus workflow; goals; state; plan–act–observe loops; memory; tools; recovery; termination; approval; delegation; planner–executor; supervisor–worker; reviewer; multi-agent communication; long-running execution; computer use; durable orchestration.
+Design bounded autonomous loops.
 
-## Code practice
+## What you should be able to do
 
-Start with the five-state loop in `labs/04-agent-loop`. Add tool errors, bounded retries, checkpointing, human approval, and a reviewer.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
 
-## Architecture rule
+## Core topics
 
-Prefer explicit workflows where the path is known. Use agentic choice only where uncertainty or open-ended search creates real value.
+- [plan-act-observe](../concepts/cards/plan-act-observe.md)
+- [checkpoints](../concepts/cards/checkpoints.md)
+- [approval gates](../concepts/cards/approval-gates.md)
+
+## Guided path
+
+- Primary book: [08-agent-systems](../books/08-agent-systems/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Ship a checkpointed agent with evals.

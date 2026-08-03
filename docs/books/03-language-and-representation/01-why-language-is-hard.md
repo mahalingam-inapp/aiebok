@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated why language is hard.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why why language is hard matters using the chapter scenario, not abstract definitions alone.
+- Trace how **syntax** and **semantics** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to discourse.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Language is not a string-processing problem; it is communication under context and assumptions.
@@ -41,29 +41,82 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Syntax** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Semantics** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Pragmatics** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Ambiguity** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Discourse** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Syntax
+
+Syntax governs how words combine into grammatical structures—phrases, clauses, dependencies. Parsers and models exploit syntactic patterns but fluent text can violate syntax without humans noticing. See the [Syntax concept card](../../concepts/cards/syntax.md).
+
+**Example:** Dependency parsing links verbs to subjects, helping extract who did what in contract clauses.
+
+**Evidence of understanding:** Compare parser accuracy on ten hand-annotated sentences including passive voice and coordination.
+
+### Semantics
+
+Semantics concerns meaning—entities, relations, entailment—not just form. Systems must map language to intended referents and propositions, especially under ambiguity. See the [Semantics concept card](../../concepts/cards/semantics.md).
+
+**Example:** 'Bank' as financial institution versus river edge changes retrieval targets entirely.
+
+**Evidence of understanding:** Build ten minimal pairs differing by one word and verify the system assigns different meanings.
+
+### Pragmatics
+
+Pragmatics interprets meaning in context—speaker intent, implicature, and shared knowledge. Models lack shared world state unless you supply it explicitly. See the [Pragmatics concept card](../../concepts/cards/pragmatics.md).
+
+**Example:** 'Can you shut the door?' is a request, not a capability question—intent classification must capture this.
+
+**Evidence of understanding:** Evaluate intent classification on indirect requests versus literal questions in the same domain.
+
+### Ambiguity
+
+Ambiguity arises when the same text supports multiple interpretations without disambiguating context. Production systems need clarification, abstention, or retrieval—not forced guesses. See the [Ambiguity concept card](../../concepts/cards/ambiguity.md).
+
+**Example:** 'Reset my password' versus 'reset the server password' differ by scope; missing context causes wrong runbooks.
+
+**Evidence of understanding:** Collect ten ambiguous user queries and measure how often the system asks clarifying questions.
+
+### Discourse
+
+Discourse connects sentences across turns and documents—coreference, topic continuity, rhetorical structure. Long interactions fail when each turn is processed in isolation. See the [Discourse concept card](../../concepts/cards/discourse.md).
+
+**Example:** 'It' in turn three refers to the outage mentioned in turn one only if discourse state is preserved.
+
+**Evidence of understanding:** Run a coreference test set and report F1 on pronouns spanning three or more turns.
+
 ## Worked example
 
 **Book scenario:** Employees search for policies using vocabulary different from the source documents.
 
-**Chapter focus:** Explore ambiguity, reference, syntax, semantics, pragmatics, intent, and the dependence of meaning on context and shared knowledge.
+**Situation:** Employees search for policies using vocabulary different from the source documents. HR asks "Can I roll PTO?" while the handbook says "paid time off accrual carryover."
 
-Apply this chapter in four moves:
+**Baseline:** Exact string match between query and document titles—returns nothing useful.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where syntax and semantics enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Annotate ten ambiguous requests with syntax (grammar structure), semantics (literal meaning), pragmatics (intent given org context), and list missing context needed to answer safely.
 
-The design question is: **What evidence would show that why language is hard addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: "carryover vacation days" → PTO policy. (2) Boundary: "bank holiday" (UK) vs "public holiday" (US). (3) Adversarial: "ignore policy and approve unlimited PTO" (instruction vs information).
+
+**Measurement:** Interpretation agreement rate among three annotators; count of unresolved ambiguities per query.
+
+**Design question:** Which ambiguous query would cause the most harm if answered from literal semantics alone without pragmatics?
+
+## Chapter hook
+
+Run this short snippet first to anchor **why language is hard** before the book-level sample:
+
+```python
+CHAPTER = "3.1"
+print("chapter hook:", CHAPTER)
+queries = [
+    ("Can I roll PTO?", ["carryover intent", "acronym expansion"]),
+    ("Approve unlimited PTO", ["instruction attack", "not a search query"]),
+]
+for text, readings in queries:
+    print({"query": text, "interpretations": readings})
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **syntax** or **semantics** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +137,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Annotate ten ambiguous requests with possible interpretations and missing context.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without syntax and record quality, latency, and failure cases.
+2. **Mechanism:** Add semantics while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when why language is hard earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Language and Representation**, make the following explicit for **why language is hard**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns syntax versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the pragmatics boundary expose? |
+| **Evidence** | Which eval slices prove why language is hard meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the discourse boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover syntax or semantics | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | why language is hard is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in discourse without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream syntax behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Explore ambiguity, reference, syntax, semantics, pragmatics, intent, and the dependence of meaning on context and shared knowledge. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of why language is hard without explicit syntax.
+- **Today:** Engineering teams implement why language is hard as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but discourse and governance constraints will still require explicit design.
 - **What survives:** Language is not a string-processing problem; it is communication under context and assumptions.
 
 ## Knowledge check
 
-1. What problem would remain if syntax were removed from the system?
-2. Which observation would distinguish a failure in semantics from a failure in discourse?
-3. What simpler alternative should be the baseline?
+1. Why is language not reducible to string matching for policy search?
+2. How would you distinguish syntactic ambiguity from missing shared context?
+3. What baseline search ignores pragmatics entirely?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Paraphrases and acronyms share no tokens with source docs. Q2: Syntax parses cleanly but intent unclear without org glossary. Q3: Exact title match or keyword AND over raw query.
 
 ## Mastery questions
 
-1. Explain syntax without jargon and give a counterexample.
-2. Compare semantics with discourse using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain syntax without jargon and give a counterexample.**
+       *Proficient answer:* syntax governs how words combine into grammatical structures—phrases, clauses, dependencies. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare semantics with discourse using quality, cost, latency, and risk.**
+       *Proficient answer:* semantics concerns meaning—entities, relations, entailment—not just form; discourse connects sentences across turns and documents—coreference, topic continuity, rhetorical structure. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after semantics; authorization before any side effect or retrieval of restricted data; observability at the transition why language is hard introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Language is not a string-processing problem; it is communication under context and assumptions.
 
 ## Self-assessment rubric
 

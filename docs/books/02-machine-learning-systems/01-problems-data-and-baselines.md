@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated problems, data, and baselines.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why problems, data, and baselines matters using the chapter scenario, not abstract definitions alone.
+- Trace how **problem framing** and **features and labels** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to baselines.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Most model failures begin as problem or data-definition failures.
@@ -41,29 +41,81 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Problem Framing** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Features And Labels** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Sampling** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Data Leakage** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Baselines** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Problem Framing
+
+Problem framing defines the unit of prediction, target label, decision, population, and time boundary before choosing algorithms. Most ML failures are mis-specified problems, not wrong models. See the [Problem Framing concept card](../../concepts/cards/problem-framing.md).
+
+**Example:** Predicting 'will this ticket reopen within 7 days' differs from 'summarize this ticket'—only the first is a measurable ML task.
+
+**Evidence of understanding:** Write the prediction unit, label definition, and decision rule; verify each is observable in production logs.
+
+### Features And Labels
+
+Features are inputs; labels are supervised targets—both must be available at the decision time you actually deploy. Leaking future information creates impressive offline metrics and production disasters. See the [Features And Labels concept card](../../concepts/cards/features-and-labels.md).
+
+**Example:** Using 'time to resolution' as a feature to predict escalation leaks the outcome into the input.
+
+**Evidence of understanding:** For each feature, document availability timestamp relative to prediction time and reject any post-outcome fields.
+
+### Sampling
+
+Sampling draws next tokens from the predicted distribution rather than always taking the argmax. It enables diverse outputs but introduces nondeterminism unless seeded. See the [Sampling concept card](../../concepts/cards/sampling.md).
+
+**Example:** Creative writing uses sampling; factual extraction often uses greedy or low-temperature decoding.
+
+**Evidence of understanding:** Generate 20 completions at temperature 0 versus 1 and measure factual consistency.
+
+### Data Leakage
+
+Data leakage lets information from the target or future timesteps into features or labels during training. It inflates offline metrics while production performance collapses. See the [Data Leakage concept card](../../concepts/cards/data-leakage.md).
+
+**Example:** Including the support agent's resolution note written after closure as a feature perfectly predicts reopen—uselessly.
+
+**Evidence of understanding:** Run a feature audit: remove each suspicious column and watch for unrealistic AUC drops that signal leakage.
+
+### Baselines
+
+Baselines are simple reference methods—majority class, linear model, keyword rules—that quantify what complexity must beat. Without them, teams cannot justify neural networks or LLMs. See the [Baselines concept card](../../concepts/cards/baselines.md).
+
+**Example:** A TF–IDF logistic regression baseline on ticket routing sets the bar before trying embeddings.
+
+**Evidence of understanding:** Report baseline and candidate metrics on identical splits; require statistically meaningful uplift for release.
+
 ## Worked example
 
 **Book scenario:** A lender needs a prediction service whose errors can be explained across customer groups.
 
-**Chapter focus:** Frame an ML task before choosing an algorithm. Define the unit of prediction, target, decision, population, time boundary, data availability, and a simple baseline.
+**Situation:** A lender needs a prediction service whose errors can be explained across customer groups. Product asks for "approve/deny" but data only has past committee decisions.
 
-Apply this chapter in four moves:
+**Baseline:** Predict majority class (approve) for every application—high accuracy, useless for risk.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where problem framing and features and labels enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Frame unit of prediction (application at submission time), label (committee decision within 30 days), forbid future payment behavior as features, split by application date and customer entity, and ship a frequency baseline before any complex model.
 
-The design question is: **What evidence would show that problems, data, and baselines addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: complete application with stable income fields. (2) Boundary: application submitted at midnight UTC boundary. (3) Adversarial: duplicate applications with synchronized IDs leaking target via entity overlap in train and test.
+
+**Measurement:** AUC vs baseline, slice metrics by region, and leakage audit checklist pass/fail.
+
+**Design question:** Which feature would you ban first after a leakage review, and how would slice metrics expose it?
+
+## Chapter hook
+
+Run this short snippet first to anchor **problems, data, and baselines** before the book-level sample:
+
+```python
+apps = [
+    {"id": 1, "income": 80000, "decision": 1},
+    {"id": 2, "income": 40000, "decision": 0},
+    {"id": 3, "income": 120000, "decision": 1},
+]
+baseline_rate = sum(a["decision"] for a in apps) / len(apps)
+pred = 1 if baseline_rate >= 0.5 else 0
+acc = sum(pred == a["decision"] for a in apps) / len(apps)
+print({"majority_pred": pred, "accuracy": round(acc, 3)})
+```
+
+Predict the printed values, then change one line tied to **problem framing** or **features and labels** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +136,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Create a dataset split that respects time and entity boundaries.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without problem framing and record quality, latency, and failure cases.
+2. **Mechanism:** Add features and labels while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when problems, data, and baselines earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Machine Learning Systems**, make the following explicit for **problems, data, and baselines**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns problem framing versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the sampling boundary expose? |
+| **Evidence** | Which eval slices prove problems, data, and baselines meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the baselines boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover problem framing or features and labels | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | problems, data, and baselines is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in baselines without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream problem framing behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Frame an ML task before choosing an algorithm. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of problems, data, and baselines without explicit problem framing.
+- **Today:** Engineering teams implement problems, data, and baselines as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but baselines and governance constraints will still require explicit design.
 - **What survives:** Most model failures begin as problem or data-definition failures.
 
 ## Knowledge check
 
-1. What problem would remain if problem framing were removed from the system?
-2. Which observation would distinguish a failure in features and labels from a failure in baselines?
-3. What simpler alternative should be the baseline?
+1. What problem remains if you optimize accuracy without defining the prediction unit?
+2. How would entity leakage differ from temporal leakage in metrics?
+3. What baseline must every lending model beat before release?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Wrong granularity makes metrics non-actionable and hides cohort drift. Q2: Entity leakage inflates all slices; temporal leakage shows val superiority on future-dated features. Q3: Majority-class baseline with same split protocol.
 
 ## Mastery questions
 
-1. Explain problem framing without jargon and give a counterexample.
-2. Compare features and labels with baselines using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain problem framing without jargon and give a counterexample.**
+       *Proficient answer:* problem framing defines the unit of prediction, target label, decision, population, and time boundary before choosing algorithms. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare features and labels with baselines using quality, cost, latency, and risk.**
+       *Proficient answer:* features are inputs; labels are supervised targets—both must be available at the decision time you actually deploy; baselines are simple reference methods—majority class, linear model, keyword rules—that quantify what complexity must beat. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after features and labels; authorization before any side effect or retrieval of restricted data; observability at the transition problems, data, and baselines introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Most model failures begin as problem or data-definition failures.
 
 ## Self-assessment rubric
 

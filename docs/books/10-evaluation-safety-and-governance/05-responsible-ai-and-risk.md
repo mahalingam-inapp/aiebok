@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated responsible ai and risk.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why responsible ai and risk matters using the chapter scenario, not abstract definitions alone.
+- Trace how **fairness** and **privacy** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to impact assessment.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Responsible AI is a lifecycle of decisions and evidence, not a one-time checklist.
@@ -41,29 +41,83 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Fairness** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Privacy** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Transparency** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Human Oversight** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Impact Assessment** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Fairness
+
+Fairness examines disparate performance or harm across demographic or regional groups. Legal and ethical requirements vary by jurisdiction and use case. See the [Fairness concept card](../../concepts/cards/fairness.md).
+
+**Example:** Loan model approval rate disparity across groups triggers review even if aggregate AUC is high.
+
+**Evidence of understanding:** Evaluate primary metric and error rates per protected slice; document mitigation plan.
+
+### Privacy
+
+Privacy limits collection, retention, and exposure of personal data in training, logs, and outputs. GDPR and similar laws define user rights. See the [Privacy concept card](../../concepts/cards/privacy.md).
+
+**Example:** Support logs must redact credit card numbers; retention capped at 90 days.
+
+**Evidence of understanding:** Run PII scanner on logs and outputs; zero high-severity findings before release.
+
+### Transparency
+
+Transparency discloses when users interact with AI, what data is used, and system limitations. It supports informed consent and trust. See the [Transparency concept card](../../concepts/cards/transparency.md).
+
+**Example:** Chat banner states AI-generated; citations show source documents.
+
+**Evidence of understanding:** Audit UX copy and logs for required disclosures per policy checklist.
+
+### Human Oversight
+
+Human oversight defines when and how people supervise agents—monitoring dashboards, escalation queues, kill switches. It scales only with clear triggers. See the [Human Oversight concept card](../../concepts/cards/human-oversight.md).
+
+**Example:** Escalate to human when confidence < 0.7 or spend > $1 on a single task.
+
+**Evidence of understanding:** Track escalation rate, human resolution time, and override frequency weekly.
+
+### Impact Assessment
+
+Impact assessment evaluates consequences of deploying AI on people, rights, and society before high-risk launch. See the [Impact Assessment concept card](../../concepts/cards/impact-assessment.md).
+
+**Example:** Automated hiring tool requires assessment of bias, appeal process, and human override.
+
+**Evidence of understanding:** Complete assessment template with sign-offs from legal, security, and product.
+
 ## Worked example
 
 **Book scenario:** A high-impact assistant may pass average quality while failing a safety-critical user slice.
 
-**Chapter focus:** Assess bias, privacy, transparency, human impact, misuse, accessibility, high-impact decisions, and safe failure.
+**Situation:** Assistant used for performance review summaries; HR worries about bias and privacy.
 
-Apply this chapter in four moves:
+**Baseline:** Ship feature with generic "be fair" prompt line.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where fairness and privacy enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Conduct impact assessment: affected populations, data minimization, transparency, human oversight for consequential outputs, accessibility, misuse scenarios, monitoring plan.
 
-The design question is: **What evidence would show that responsible ai and risk addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: voluntary feedback summary. (2) Boundary: manager-only sensitive note. (3) Adversarial: inferring protected attributes from writing style.
+
+**Measurement:** Bias slice metrics, privacy incident count, oversight compliance rate.
+
+**Design question:** Which use case moves this feature into human-in-the-loop mandatory review?
+
+## Chapter hook
+
+Run this short snippet first to anchor **responsible ai and risk** before the book-level sample:
+
+```python
+CHAPTER = "10.5"
+print("chapter hook:", CHAPTER)
+use_cases = [
+    {"name": "grammar fix", "impact": "low"},
+    {"name": "promotion recommendation", "impact": "high"},
+]
+for uc in use_cases:
+    hitl = uc["impact"] == "high"
+    print(uc["name"], "human_review:", hitl)
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **fairness** or **privacy** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +138,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Write an impact assessment for a consequential use case.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without fairness and record quality, latency, and failure cases.
+2. **Mechanism:** Add privacy while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when responsible ai and risk earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Evaluation, Safety, and Governance**, make the following explicit for **responsible ai and risk**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns fairness versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the transparency boundary expose? |
+| **Evidence** | Which eval slices prove responsible ai and risk meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the impact assessment boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover fairness or privacy | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | responsible ai and risk is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in impact assessment without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream fairness behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Assess bias, privacy, transparency, human impact, misuse, accessibility, high-impact decisions, and safe failure. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of responsible ai and risk without explicit fairness.
+- **Today:** Engineering teams implement responsible ai and risk as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but impact assessment and governance constraints will still require explicit design.
 - **What survives:** Responsible AI is a lifecycle of decisions and evidence, not a one-time checklist.
 
 ## Knowledge check
 
-1. What problem would remain if fairness were removed from the system?
-2. Which observation would distinguish a failure in privacy from a failure in impact assessment?
-3. What simpler alternative should be the baseline?
+1. Why is responsible AI a lifecycle not a checklist?
+2. How does transparency differ from marketing trust badges?
+3. What RAI baseline is a one-time legal sign-off?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Risks evolve with data, users, and integrations. Q2: Transparency shows limits and data use; badges claim virtue without evidence. Q3: Checkbox at launch with no monitoring.
 
 ## Mastery questions
 
-1. Explain fairness without jargon and give a counterexample.
-2. Compare privacy with impact assessment using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain fairness without jargon and give a counterexample.**
+       *Proficient answer:* fairness examines disparate performance or harm across demographic or regional groups. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare privacy with impact assessment using quality, cost, latency, and risk.**
+       *Proficient answer:* privacy limits collection, retention, and exposure of personal data in training, logs, and outputs; impact assessment evaluates consequences of deploying ai on people, rights, and society before high-risk launch. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after privacy; authorization before any side effect or retrieval of restricted data; observability at the transition responsible ai and risk introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Responsible AI is a lifecycle of decisions and evidence, not a one-time checklist.
 
 ## Self-assessment rubric
 

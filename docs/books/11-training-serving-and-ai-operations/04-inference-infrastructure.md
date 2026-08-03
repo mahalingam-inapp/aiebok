@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated inference infrastructure.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why inference infrastructure matters using the chapter scenario, not abstract definitions alone.
+- Trace how **GPUs** and **quantization** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to kv cache.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Inference performance is a queueing and memory problem as much as a model problem.
@@ -41,29 +41,80 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Gpus** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Quantization** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Vllm** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Batching** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Kv Cache** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### GPUs
+
+GPUs accelerate matrix operations for training and inference; memory capacity limits model size and batch. See the [GPUs concept card](../../concepts/cards/gpus.md).
+
+**Example:** 80GB GPU runs 70B quantized; 24GB fits 7B fine-tune with QLoRA.
+
+**Evidence of understanding:** Profile GPU utilization and memory headroom during peak inference load.
+
+### Quantization
+
+Quantization reduces weight precision—INT8, INT4—to cut memory and increase throughput with small quality trade-offs. See the [Quantization concept card](../../concepts/cards/quantization.md).
+
+**Example:** AWQ 4-bit model runs 2× faster with <1 point eval drop on some tasks.
+
+**Evidence of understanding:** Benchmark task metric and tokens/sec for FP16 versus INT4 on production hardware.
+
+### vLLM
+
+vLLM is a high-throughput inference server using PagedAttention for efficient KV cache memory management. See the [vLLM concept card](../../concepts/cards/vllm.md).
+
+**Example:** vLLM serves Llama-8B at higher concurrent requests than naive HuggingFace pipeline.
+
+**Evidence of understanding:** Load-test vLLM versus baseline server at equal hardware; report throughput and p95 latency.
+
+### Batching
+
+Batching groups requests to amortize GPU kernel overhead, improving throughput at possible latency cost. Continuous batching in servers interleaves sequences of different lengths. See the [Batching concept card](../../concepts/cards/batching.md).
+
+**Example:** Batch size 32 may double throughput versus batch 1 but increase p95 latency for short prompts.
+
+**Evidence of understanding:** Load-test at concurrency 1, 8, and 32; report throughput and p95 latency.
+
+### Kv Cache
+
+The KV cache stores key and value tensors for prior tokens during autoregressive decoding, avoiding recomputation of the prefix. Memory grows linearly with context length. See the [Kv Cache concept card](../../concepts/cards/kv-cache.md).
+
+**Example:** Streaming chat reuses cached states for system prompt and prior turns, cutting latency after the first token.
+
+**Evidence of understanding:** Compare tokens-per-second with and without KV cache on a 2k-token prefix.
+
 ## Worked example
 
 **Book scenario:** A service must route requests across models while controlling cost and retaining rollback.
 
-**Chapter focus:** Connect accelerators, memory, quantization, model formats, servers, batching, streaming, caches, and speculative decoding.
+**Situation:** Self-hosted inference must serve onboarding assistant peaks; latency spikes when concurrency jumps.
 
-Apply this chapter in four moves:
+**Baseline:** Single-process model server batch size 1.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where GPUs and quantization enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Load-test at concurrency 1/4/8/16, measure tokens/sec and p95 latency, explore quantization trade-offs, estimate KV cache memory from context length distribution.
 
-The design question is: **What evidence would show that inference infrastructure addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: steady 4 concurrent. (2) Boundary: context exactly at cache limit. (3) Adversarial: all requests unique prefixes—cache useless.
+
+**Measurement:** Throughput curve, p95 latency, GPU memory headroom, $/1M tokens.
+
+**Design question:** At what concurrency does queueing dominate over compute?
+
+## Chapter hook
+
+Run this short snippet first to anchor **inference infrastructure** before the book-level sample:
+
+```python
+CHAPTER = "11.4"
+print("chapter hook:", CHAPTER)
+batch_sizes = [1, 4, 8]
+for b in batch_sizes:
+    throughput = b / (1 + 0.1 * (b - 1))
+    print(f"batch={b} relative_throughput={throughput:.2f}")
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **GPUs** or **quantization** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +135,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Load-test a local model at several concurrency levels.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without gpus and record quality, latency, and failure cases.
+2. **Mechanism:** Add quantization while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when inference infrastructure earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Training, Serving, and AI Operations**, make the following explicit for **inference infrastructure**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns gpus versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the vllm boundary expose? |
+| **Evidence** | Which eval slices prove inference infrastructure meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the kv cache boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover gpus or quantization | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | inference infrastructure is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in kv cache without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream gpus behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Connect accelerators, memory, quantization, model formats, servers, batching, streaming, caches, and speculative decoding. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of inference infrastructure without explicit gpus.
+- **Today:** Engineering teams implement inference infrastructure as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but kv cache and governance constraints will still require explicit design.
 - **What survives:** Inference performance is a queueing and memory problem as much as a model problem.
 
 ## Knowledge check
 
-1. What problem would remain if GPUs were removed from the system?
-2. Which observation would distinguish a failure in quantization from a failure in KV cache?
-3. What simpler alternative should be the baseline?
+1. Why is inference a queueing and memory problem?
+2. When does KV cache stop helping?
+3. What infra baseline ignores batching?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Requests wait in queues; memory bounds batch and context. Q2: Unique prefixes every request—no reuse. Q3: Serial single-request server at scale.
 
 ## Mastery questions
 
-1. Explain GPUs without jargon and give a counterexample.
-2. Compare quantization with KV cache using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain GPUs without jargon and give a counterexample.**
+       *Proficient answer:* gpus accelerate matrix operations for training and inference; memory capacity limits model size and batch. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare quantization with KV cache using quality, cost, latency, and risk.**
+       *Proficient answer:* quantization reduces weight precision—int8, int4—to cut memory and increase throughput with small quality trade-offs; the kv cache stores key and value tensors for prior tokens during autoregressive decoding, avoiding recomputation of the prefix. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after quantization; authorization before any side effect or retrieval of restricted data; observability at the transition inference infrastructure introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Inference performance is a queueing and memory problem as much as a model problem.
 
 ## Self-assessment rubric
 

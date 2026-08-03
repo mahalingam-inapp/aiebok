@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated structured generation.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why structured generation matters using the chapter scenario, not abstract definitions alone.
+- Trace how **JSON Schema** and **structured output** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to retries.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Free-form model output must become validated data before software trusts it.
@@ -41,29 +41,81 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Json Schema** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Structured Output** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Validation** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Repair** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Retries** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Json Schema
+
+JSON Schema declares required fields, types, and constraints that validators enforce after model generation. It turns free-form text into typed data boundaries. See the [Json Schema concept card](../../concepts/cards/json-schema.md).
+
+**Example:** Rejecting payloads where 'total' is a string prevents silent accounting errors from plausible JSON.
+
+**Evidence of understanding:** Validate three intentionally invalid payloads and confirm distinct error reasons.
+
+### Structured Output
+
+Structured output forces models to emit machine-parseable formats—JSON, XML, tool calls—via prompting or constrained decoding. Parsers must still validate because models can violate schema. See the [Structured Output concept card](../../concepts/cards/structured-output.md).
+
+**Example:** An invoice extractor returns JSON fields consumed directly by ERP ingestion.
+
+**Evidence of understanding:** Measure schema pass rate on 200 adversarial and normal inputs post-generation.
+
+### Validation
+
+Validation checks model outputs against schemas, business rules, and safety policies before downstream use. It belongs in application code, not trust in model compliance. See the [Validation concept card](../../concepts/cards/validation.md).
+
+**Example:** A date field must parse as ISO-8601 and fall within contract term bounds.
+
+**Evidence of understanding:** Define ten validation rules and report pass rate on production sample weekly.
+
+### Repair
+
+Repair loops attempt to fix invalid model outputs—re-prompting with errors, partial parsing, or constrained retries. They improve yield but add latency and cost. See the [Repair concept card](../../concepts/cards/repair.md).
+
+**Example:** When JSON is malformed, a repair prompt includes the parse error and asks for correction.
+
+**Evidence of understanding:** Track repair success rate and average extra tokens per successful repair.
+
+### Retries
+
+Retries re-invoke models or tools after transient failures or validation misses, with backoff and limits. Unbounded retries cause runaway cost and duplicate side effects. See the [Retries concept card](../../concepts/cards/retries.md).
+
+**Example:** Three retries with exponential backoff on 429 rate limits recover most requests without overload.
+
+**Evidence of understanding:** Cap retries at N and measure success rate versus total token spend.
+
 ## Worked example
 
 **Book scenario:** A long-running assistant must fit policy, evidence, memory, and user input into a bounded context.
 
-**Chapter focus:** Use schemas, constrained decoding, validation, repair, retries, and typed application boundaries.
+**Situation:** Finance wants invoice fields extracted from email text into ERP JSON; free-form model output breaks downstream automation.
 
-Apply this chapter in four moves:
+**Baseline:** Ask model to "return JSON" without schema—malformed keys and string amounts.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where JSON Schema and structured output enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Define JSON Schema, use constrained decoding or parse-repair loop, validate types, retry with error feedback, wrap in typed application boundary raising on invalid payloads.
 
-The design question is: **What evidence would show that structured generation addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: well-formed invoice email. (2) Boundary: missing optional field. (3) Adversarial: extra fields attempting SQL injection in string values.
+
+**Measurement:** Schema validation pass rate, repair attempts per doc, ERP import error rate.
+
+**Design question:** Where should validation live—inside the model prompt or in application code after generation?
+
+## Chapter hook
+
+Run this short snippet first to anchor **structured generation** before the book-level sample:
+
+```python
+schema = {"type": "object", "required": ["total"], "properties": {"total": {"type": "number"}}}
+payloads = [{"total": 12.5}, {"total": "12.50"}, {"total": 12.5, "note": "'; DROP TABLE--"}]
+def validate(p):
+    if not isinstance(p.get("total"), (int, float)):
+        return False, "total must be numeric"
+    return True, "ok"
+for p in payloads:
+    ok, msg = validate(p)
+    print({"payload": p, "valid": ok, "msg": msg})
+```
+
+Predict the printed values, then change one line tied to **JSON Schema** or **structured output** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +136,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Build an invoice extractor with schema validation and adversarial inputs.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without json schema and record quality, latency, and failure cases.
+2. **Mechanism:** Add structured output while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when structured generation earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Prompt and Context Engineering**, make the following explicit for **structured generation**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns json schema versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the validation boundary expose? |
+| **Evidence** | Which eval slices prove structured generation meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the retries boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover json schema or structured output | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | structured generation is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in retries without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream json schema behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Use schemas, constrained decoding, validation, repair, retries, and typed application boundaries. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of structured generation without explicit json schema.
+- **Today:** Engineering teams implement structured generation as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but retries and governance constraints will still require explicit design.
 - **What survives:** Free-form model output must become validated data before software trusts it.
 
 ## Knowledge check
 
-1. What problem would remain if JSON Schema were removed from the system?
-2. Which observation would distinguish a failure in structured output from a failure in retries?
-3. What simpler alternative should be the baseline?
+1. Why must free-form output become validated data before software trusts it?
+2. How do repair loops differ from hoping the model self-corrects silently?
+3. What baseline skips schema validation entirely?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Models emit syntactic and type errors; downstream systems need contracts. Q2: Repairs log failures and feed errors back explicitly. Q3: Regex extract with no type checks.
 
 ## Mastery questions
 
-1. Explain JSON Schema without jargon and give a counterexample.
-2. Compare structured output with retries using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain JSON Schema without jargon and give a counterexample.**
+       *Proficient answer:* json schema declares required fields, types, and constraints that validators enforce after model generation. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare structured output with retries using quality, cost, latency, and risk.**
+       *Proficient answer:* structured output forces models to emit machine-parseable formats—json, xml, tool calls—via prompting or constrained decoding; retries re-invoke models or tools after transient failures or validation misses, with backoff and limits. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after structured output; authorization before any side effect or retrieval of restricted data; observability at the transition structured generation introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Free-form model output must become validated data before software trusts it.
 
 ## Self-assessment rubric
 

@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated ai-native development workflow.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why ai-native development workflow matters using the chapter scenario, not abstract definitions alone.
+- Trace how **repo instructions** and **skills** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to code review.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     AI accelerates change production, making specification and verification more important.
@@ -41,29 +41,80 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Repo Instructions** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Skills** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Context Files** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Ai Coding Agents** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Code Review** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Repo Instructions
+
+Repo instructions—AGENTS.md, CONTRIBUTING—orient coding agents to build, test, and review conventions. They reduce wrong-file edits and skipped tests. See the [Repo Instructions concept card](../../concepts/cards/repo-instructions.md).
+
+**Example:** Instructions specify pytest command, lint rules, and forbidden directories.
+
+**Evidence of understanding:** Run agent on sample task and measure review comments tied to instruction violations.
+
+### Skills
+
+Skills package reusable agent capabilities—prompts, scripts, checklists—for specific tasks in Cursor and similar tools. They encode institutional workflow knowledge. See the [Skills concept card](../../concepts/cards/skills.md).
+
+**Example:** A 'create PR' skill runs tests, drafts description template, and calls gh CLI.
+
+**Evidence of understanding:** Compare task success rate with skill versus generic agent on three repo tasks.
+
+### Context Files
+
+Context files—.cursorrules, architecture docs—supply persistent project knowledge to coding agents. Stale context misleads worse than no context. See the [Context Files concept card](../../concepts/cards/context-files.md).
+
+**Example:** Architecture.md describes service boundaries so agent edits correct package.
+
+**Evidence of understanding:** Update context file when ADR changes and note version in agent traces.
+
+### Ai Coding Agents
+
+AI coding agents autonomously edit repositories given goals, tools, and constraints. They amplify throughput but require specs, tests, and human review. See the [Ai Coding Agents concept card](../../concepts/cards/ai-coding-agents.md).
+
+**Example:** Agent implements feature branch with tests; human reviews diff before merge.
+
+**Evidence of understanding:** Track defect density and review time per agent-generated PR versus human-only.
+
+### Code Review
+
+Code review evaluates correctness, security, and maintainability of changes—including agent-written code. It remains accountability gate before merge. See the [Code Review concept card](../../concepts/cards/code-review.md).
+
+**Example:** Reviewer checks agent did not skip auth on new endpoint despite passing happy-path tests.
+
+**Evidence of understanding:** Measure post-merge incident rate for agent-authored versus human-authored merges.
+
 ## Worked example
 
 **Book scenario:** A product team must convert a vague AI feature request into testable release evidence.
 
-**Chapter focus:** Organize repositories, instructions, skills, context files, branches, reviews, tests, and coding-agent collaboration.
+**Situation:** Team uses AI coding agents to implement onboarding; velocity rises but review burden spikes.
 
-Apply this chapter in four moves:
+**Baseline:** Ad-hoc prompting in IDE with no repo instructions or test gates.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where repo instructions and skills enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Add AGENTS.md, skills for domain tasks, context files for architecture, require PR templates with eval evidence, compare review time across two assistant workflows.
 
-The design question is: **What evidence would show that ai-native development workflow addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: bounded bugfix with tests. (2) Boundary: cross-module refactor. (3) Adversarial: agent adds silent dependency on deprecated API.
+
+**Measurement:** PR review minutes, defect escape rate, test coverage delta.
+
+**Design question:** Which repo instruction prevents agents from inventing nonexistent internal APIs?
+
+## Chapter hook
+
+Run this short snippet first to anchor **ai-native development workflow** before the book-level sample:
+
+```python
+CHAPTER = "9.3"
+print("chapter hook:", CHAPTER)
+REPO_RULES = ["run tests before commit", "use internal SDK docs", "no new deps without ADR"]
+task = "add checkpoint resume"
+checklist = [rule for rule in REPO_RULES]
+print({"task": task, "agent_checklist": checklist})
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **repo instructions** or **skills** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +135,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Run a bounded repository task with two assistants and compare review burden.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without repo instructions and record quality, latency, and failure cases.
+2. **Mechanism:** Add skills while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when ai-native development workflow earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **AI Software and Product Engineering**, make the following explicit for **ai-native development workflow**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns repo instructions versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the context files boundary expose? |
+| **Evidence** | Which eval slices prove ai-native development workflow meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the code review boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover repo instructions or skills | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | ai-native development workflow is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in code review without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream repo instructions behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Organize repositories, instructions, skills, context files, branches, reviews, tests, and coding-agent collaboration. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of ai-native development workflow without explicit repo instructions.
+- **Today:** Engineering teams implement ai-native development workflow as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but code review and governance constraints will still require explicit design.
 - **What survives:** AI accelerates change production, making specification and verification more important.
 
 ## Knowledge check
 
-1. What problem would remain if repo instructions were removed from the system?
-2. Which observation would distinguish a failure in skills from a failure in code review?
-3. What simpler alternative should be the baseline?
+1. Why does AI acceleration increase need for verification?
+2. How do skills differ from generic repo rules?
+3. What workflow baseline lacks repo instructions?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: More code volume without spec/tests increases escape defects. Q2: Skills encode repeatable multi-step domain procedures. Q3: Blank repo with default Copilot only.
 
 ## Mastery questions
 
-1. Explain repo instructions without jargon and give a counterexample.
-2. Compare skills with code review using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain repo instructions without jargon and give a counterexample.**
+       *Proficient answer:* repo instructions—agents. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare skills with code review using quality, cost, latency, and risk.**
+       *Proficient answer:* skills package reusable agent capabilities—prompts, scripts, checklists—for specific tasks in cursor and similar tools; code review evaluates correctness, security, and maintainability of changes—including agent-written code. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after skills; authorization before any side effect or retrieval of restricted data; observability at the transition ai-native development workflow introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* AI accelerates change production, making specification and verification more important.
 
 ## Self-assessment rubric
 

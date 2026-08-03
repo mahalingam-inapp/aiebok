@@ -1,13 +1,32 @@
 # KA 14 — Infrastructure & Deployment
 
-## Content plan
+## Purpose
 
-CPU/GPU/TPU fundamentals, memory and bandwidth, quantization, formats, inference servers, batching, streaming, KV/prefix caching, speculative decoding, containers, Kubernetes, serverless, autoscaling, queues, capacity planning, local/edge deployment, managed model platforms, network/security boundaries, and cost modeling.
+Serve models efficiently.
 
-## Platforms to compare
+## What you should be able to do
 
-[AWS](../cloud/aws.md), [Azure](../cloud/azure.md), and [Google Cloud](../cloud/gcp.md), plus open tooling such as vLLM, SGLang, Ollama, ONNX Runtime, and TensorRT-LLM.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
 
-## Practice
+## Core topics
 
-Serve one small model locally, load-test it, change concurrency and quantization, and graph time-to-first-token, throughput, memory, and cost.
+- [quantization](../concepts/cards/quantization.md)
+- [batching](../concepts/cards/batching.md)
+- [KV cache](../concepts/cards/kv-cache.md)
+
+## Guided path
+
+- Primary book: [11-training-serving-and-ai-operations](../books/11-training-serving-and-ai-operations/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Load-test inference configurations.

@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated sequence models before transformers.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why sequence models before transformers matters using the chapter scenario, not abstract definitions alone.
+- Trace how **n-grams** and **RNNs** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to bottlenecks.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Architectures evolve in response to information-flow and optimization bottlenecks.
@@ -41,29 +41,83 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **N-Grams** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Rnns** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Lstms** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Seq2Seq** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Bottlenecks** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### N-Grams
+
+N-gram models predict tokens from local history of n−1 prior tokens—simple, fast, and limited to short context. They remain baselines for compression and sanity checks. See the [N-Grams concept card](../../concepts/cards/n-grams.md).
+
+**Example:** A trigram model captures 'New York' but not dependencies spanning whole paragraphs.
+
+**Evidence of understanding:** Compare perplexity of n-gram versus small neural LM on the same held-out corpus.
+
+### RNNs
+
+Recurrent neural networks process sequences step by step, maintaining hidden state across time. Serial computation limits parallel training and long-range credit assignment. See the [RNNs concept card](../../concepts/cards/rnns.md).
+
+**Example:** Character-level RNN language models learn spelling but struggle with paragraph-level coherence.
+
+**Evidence of understanding:** Measure training steps/sec versus transformer on the same sequence length.
+
+### LSTMs
+
+LSTMs add gating to RNNs to mitigate vanishing gradients and capture longer dependencies than plain RNNs. They dominated seq2seq before transformers but remain in some streaming pipelines. See the [LSTMs concept card](../../concepts/cards/lstms.md).
+
+**Example:** LSTM encoders for time-series logs capture hourly patterns over days of context.
+
+**Evidence of understanding:** Compare validation loss at step 10k for LSTM versus transformer on identical data.
+
+### Seq2Seq
+
+Sequence-to-sequence models map input sequences to output sequences via encoder–decoder architectures. They underpin translation, summarization, and tool-output generation patterns. See the [Seq2Seq concept card](../../concepts/cards/seq2seq.md).
+
+**Example:** An encoder compresses ticket text; a decoder generates structured JSON fields.
+
+**Evidence of understanding:** Evaluate BLEU or field-level F1 on a held-out seq2seq task with beam search.
+
+### Bottlenecks
+
+Information bottlenecks force compressive representations—fixed-size context vectors or limited bandwidth channels. They create trade-offs between memory and expressiveness. See the [Bottlenecks concept card](../../concepts/cards/bottlenecks.md).
+
+**Example:** Early seq2seq used a single context vector for entire sentences, losing detail on long inputs.
+
+**Evidence of understanding:** Compare output quality on 50-token versus 500-token inputs through a fixed bottleneck.
+
 ## Worked example
 
 **Book scenario:** A team must explain why decoding settings change model output and latency.
 
-**Chapter focus:** Understand n-grams, recurrent networks, LSTMs, encoder–decoder models, bottlenecks, and why long-range dependencies and serial computation were difficult.
+**Situation:** A team must explain why decoding settings change model output and latency. They prototype next-token prediction with n-grams before adopting transformers.
 
-Apply this chapter in four moves:
+**Baseline:** Trigram model over support macros—fails when incident description exceeds three-token context.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where n-grams and RNNs enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Train n-gram on ticket corpus, identify failure at long-range dependency ("region" ... "failover"), contrast with RNN-style hidden state carry (simulated) showing bottleneck.
 
-The design question is: **What evidence would show that sequence models before transformers addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: complete trigram match in template. (2) Boundary: context exactly at n-gram window edge. (3) Adversarial: repeated padding tokens dilute probability mass.
+
+**Measurement:** Perplexity vs context length; latency per token for serial RNN simulation vs parallel n-gram lookup.
+
+**Design question:** At what context length does the n-gram baseline break on the book scenario, and why?
+
+## Chapter hook
+
+Run this short snippet first to anchor **sequence models before transformers** before the book-level sample:
+
+```python
+CHAPTER = "4.1"
+print("chapter hook:", CHAPTER)
+from collections import Counter
+text = "region east failover region west failover"
+n = 3
+grams = Counter(tuple(text.split()[i:i+n]) for i in range(len(text.split())-n+1))
+context = ("region", "east")
+candidates = [g[-1] for g in grams if g[:2] == context]
+print({"context": context, "next_token_candidates": candidates})
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **n-grams** or **RNNs** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +138,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Train an n-gram model and inspect where local context fails.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without n-grams and record quality, latency, and failure cases.
+2. **Mechanism:** Add rnns while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when sequence models before transformers earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Transformers and Foundation Models**, make the following explicit for **sequence models before transformers**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns n-grams versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the lstms boundary expose? |
+| **Evidence** | Which eval slices prove sequence models before transformers meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the bottlenecks boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover n-grams or rnns | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | sequence models before transformers is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in bottlenecks without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream n-grams behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Understand n-grams, recurrent networks, LSTMs, encoder–decoder models, bottlenecks, and why long-range dependencies and serial computation were difficult. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of sequence models before transformers without explicit n-grams.
+- **Today:** Engineering teams implement sequence models before transformers as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but bottlenecks and governance constraints will still require explicit design.
 - **What survives:** Architectures evolve in response to information-flow and optimization bottlenecks.
 
 ## Knowledge check
 
-1. What problem would remain if n-grams were removed from the system?
-2. Which observation would distinguish a failure in RNNs from a failure in bottlenecks?
-3. What simpler alternative should be the baseline?
+1. Why did long-range dependencies motivate architectures beyond n-grams?
+2. What symptom shows an RNN bottleneck without mentioning transformers?
+3. What n-gram order baseline should precede neural sequence models?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: n-grams cannot relate distant tokens; probability tables explode. Q2: Hidden state saturates—early tokens forgotten in long tickets. Q3: Fixed-order n-gram with same corpus and perplexity eval.
 
 ## Mastery questions
 
-1. Explain n-grams without jargon and give a counterexample.
-2. Compare RNNs with bottlenecks using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain n-grams without jargon and give a counterexample.**
+       *Proficient answer:* n-gram models predict tokens from local history of n−1 prior tokens—simple, fast, and limited to short context. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare RNNs with bottlenecks using quality, cost, latency, and risk.**
+       *Proficient answer:* recurrent neural networks process sequences step by step, maintaining hidden state across time; information bottlenecks force compressive representations—fixed-size context vectors or limited bandwidth channels. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after rnns; authorization before any side effect or retrieval of restricted data; observability at the transition sequence models before transformers introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Architectures evolve in response to information-flow and optimization bottlenecks.
 
 ## Self-assessment rubric
 

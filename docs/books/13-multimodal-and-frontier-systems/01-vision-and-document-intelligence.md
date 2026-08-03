@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated vision and document intelligence.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why vision and document intelligence matters using the chapter scenario, not abstract definitions alone.
+- Trace how **vision encoders** and **OCR** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to visual grounding.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Preserve spatial structure and provenance when converting visual documents into model context.
@@ -41,29 +41,83 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Vision Encoders** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Ocr** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Layout Models** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Document Ai** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Visual Grounding** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Vision Encoders
+
+Vision encoders map images to embeddings or tokens for multimodal models—ViT, CLIP-style architectures. See the [Vision Encoders concept card](../../concepts/cards/vision-encoders.md).
+
+**Example:** Chart screenshot encoded to tokens fused with text question about Q3 revenue trend.
+
+**Evidence of understanding:** Compare OCR-plus-text baseline versus vision encoder on chart QA accuracy.
+
+### OCR
+
+OCR extracts text from scanned images and photos, introducing recognition errors that propagate to chunks and answers. Confidence scores help gate low-quality extractions. See the [OCR concept card](../../concepts/cards/ocr.md).
+
+**Example:** Scanned contracts with skewed pages need deskew preprocessing before OCR.
+
+**Evidence of understanding:** Report word-error rate on ten scanned pages and abstain when mean confidence < threshold.
+
+### Layout Models
+
+Layout models detect reading order, tables, figures, and headings in documents beyond raw OCR boxes. See the [Layout Models concept card](../../concepts/cards/layout-models.md).
+
+**Example:** Invoice layout model separates line items table from footer terms for field extraction.
+
+**Evidence of understanding:** Evaluate field F1 with layout-aware parsing versus OCR-only on 50 document layouts.
+
+### Document Ai
+
+Document AI pipelines combine OCR, layout, extraction, and validation for structured data from unstructured files. See the [Document Ai concept card](../../concepts/cards/document-ai.md).
+
+**Example:** Extract vendor, line items, tax from PDF invoices into ERP JSON with confidence scores.
+
+**Evidence of understanding:** Report field-level accuracy and human review rate on production document sample.
+
+### Visual Grounding
+
+Visual grounding links language to regions or objects in images—pointing, bounding boxes, UI elements. See the [Visual Grounding concept card](../../concepts/cards/visual-grounding.md).
+
+**Example:** Model clicks 'Submit' button coordinates in screenshot for computer-use agent.
+
+**Evidence of understanding:** Measure grounding accuracy IoU on labeled UI element dataset.
+
 ## Worked example
 
 **Book scenario:** A document system must combine tables, charts, and text without losing source provenance.
 
-**Chapter focus:** Understand image representations, vision-language models, OCR, layout, tables, charts, spatial relationships, and provenance.
+**Situation:** A document system must combine tables, charts, and text without losing source provenance for compliance audits.
 
-Apply this chapter in four moves:
+**Baseline:** OCR plain text dump—table cells merge, chart values lost.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where vision encoders and OCR enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Pipeline with layout detection, OCR confidence per block, table structure recovery, vision-language model for chart reading, store bounding boxes and page IDs with extracted fields.
 
-The design question is: **What evidence would show that vision and document intelligence addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: digital PDF table. (2) Boundary: skewed scan 80% OCR confidence. (3) Adversarial: chart image with misleading axis scale.
+
+**Measurement:** Field-level F1, page-level citation accuracy, provenance completeness.
+
+**Design question:** When must human review gate fields below OCR confidence threshold?
+
+## Chapter hook
+
+Run this short snippet first to anchor **vision and document intelligence** before the book-level sample:
+
+```python
+CHAPTER = "13.1"
+print("chapter hook:", CHAPTER)
+blocks = [
+    {"type": "table", "text": "PTO cap 240", "page": 3, "confidence": 0.96},
+    {"type": "chart", "text": "headcount trend", "page": 4, "confidence": 0.71},
+]
+THRESH = 0.85
+for b in blocks:
+    print(b["type"], "auto_extract:", b["confidence"] >= THRESH)
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **vision encoders** or **OCR** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +138,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Extract fields from documents and evaluate field and page-level accuracy.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without vision encoders and record quality, latency, and failure cases.
+2. **Mechanism:** Add ocr while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when vision and document intelligence earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Multimodal and Frontier Systems**, make the following explicit for **vision and document intelligence**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns vision encoders versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the layout models boundary expose? |
+| **Evidence** | Which eval slices prove vision and document intelligence meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the visual grounding boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover vision encoders or ocr | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | vision and document intelligence is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in visual grounding without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream vision encoders behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Understand image representations, vision-language models, OCR, layout, tables, charts, spatial relationships, and provenance. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of vision and document intelligence without explicit vision encoders.
+- **Today:** Engineering teams implement vision and document intelligence as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but visual grounding and governance constraints will still require explicit design.
 - **What survives:** Preserve spatial structure and provenance when converting visual documents into model context.
 
 ## Knowledge check
 
-1. What problem would remain if vision encoders were removed from the system?
-2. Which observation would distinguish a failure in OCR from a failure in visual grounding?
-3. What simpler alternative should be the baseline?
+1. Why preserve spatial structure in document AI?
+2. How do layout models change RAG chunk quality?
+3. What document baseline is plain OCR text only?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Citations need page/bbox; tables need cell structure. Q2: Chunks align to semantic blocks not arbitrary splits. Q3: strip-all-layout text file.
 
 ## Mastery questions
 
-1. Explain vision encoders without jargon and give a counterexample.
-2. Compare OCR with visual grounding using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain vision encoders without jargon and give a counterexample.**
+       *Proficient answer:* vision encoders map images to embeddings or tokens for multimodal models—vit, clip-style architectures. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare OCR with visual grounding using quality, cost, latency, and risk.**
+       *Proficient answer:* ocr extracts text from scanned images and photos, introducing recognition errors that propagate to chunks and answers; visual grounding links language to regions or objects in images—pointing, bounding boxes, ui elements. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after ocr; authorization before any side effect or retrieval of restricted data; observability at the transition vision and document intelligence introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Preserve spatial structure and provenance when converting visual documents into model context.
 
 ## Self-assessment rubric
 

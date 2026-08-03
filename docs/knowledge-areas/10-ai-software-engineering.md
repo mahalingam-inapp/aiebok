@@ -1,19 +1,32 @@
 # KA 10 — AI Software Engineering
 
-## Content plan
+## Purpose
 
-- AI discovery, feasibility, prototyping, productionization, and retirement
-- Requirements, success metrics, non-functional constraints, and risk classification
-- **Specification-driven development:** functional, prompt, tool, agent, data, test, and evaluation specifications
-- Acceptance criteria, executable examples, contract tests, ADRs, and threat models
-- Git, branches, reviews, CI, prompt/data/version repositories, skills, rules, memory/context files, and harnesses
-- Unit, integration, scenario, regression, adversarial, and end-to-end evaluation
-- Documentation, runbooks, incident playbooks, provenance, and change control
+Apply SDLC rigor to AI features.
 
-## Code practice
+## What you should be able to do
 
-Write a specification for a grounded assistant, derive tests before implementation, implement the smallest slice, and use eval results as release evidence.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
 
-## Deliverables
+## Core topics
 
-Problem brief → system spec → risk register → ADRs → evaluation plan → implementation → release report.
+- [functional specifications](../concepts/cards/functional-specifications.md)
+- [contract tests](../concepts/cards/contract-tests.md)
+- [evaluation specs](../concepts/cards/evaluation-specs.md)
+
+## Guided path
+
+- Primary book: [09-ai-software-and-product-engineering](../books/09-ai-software-and-product-engineering/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Spec-to-test AI feature delivery.

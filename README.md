@@ -27,6 +27,10 @@ To publish, push to a GitHub repository, open **Settings → Pages**, and choose
 ## Validate and build
 
 ```bash
+python scripts/build_concept_entries.py
+python scripts/generate_expansion.py
+python scripts/generate_books.py
+python scripts/generate_maturity_content.py
 python scripts/validate_content.py
 python scripts/audit_book_coverage.py
 mkdocs build --strict

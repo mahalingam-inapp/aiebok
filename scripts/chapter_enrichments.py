@@ -1,5 +1,11 @@
-"""Chapter-specific enrichments: failures, architecture, hooks, mastery exemplars."""
+"""Chapter-specific enrichments using chapter_catalog and topic_knowledge."""
 from __future__ import annotations
+
+from chapter_catalog import (
+    get_chapter_hook,
+    get_knowledge_check,
+    get_worked_example,
+)
 
 
 def learning_objectives(title: str, topics: list[str], summary: str) -> str:
@@ -13,6 +19,20 @@ def learning_objectives(title: str, topics: list[str], summary: str) -> str:
             f"- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.",
         ]
     )
+
+
+def render_worked_example(
+    book_no: int,
+    chapter_no: int,
+    title: str,
+    summary: str,
+    topics: list[str],
+    scenario: str,
+) -> str:
+    body = get_worked_example(book_no, chapter_no, title, summary, topics, scenario)
+    return f"""**Book scenario:** {scenario}
+
+{body}"""
 
 
 def engineering_practice(practice: str, topics: list[str], title: str) -> str:
@@ -64,27 +84,19 @@ def evolution_lens(title: str, topics: list[str], principle: str) -> str:
 
 
 def _plain(topic: str) -> str:
-    plain = {
-        "goal-directed behavior": "selects actions toward an explicit objective rather than producing unconstrained text",
-        "bm25": "matches exact terms and identifiers when queries contain discriminative keywords",
-        "dense retrieval": "finds paraphrases and semantic neighbors when lexical overlap is weak",
-        "plan-act-observe": "separates choosing an action, executing it, and updating state from observations",
-        "prompt injection": "treats untrusted content as data while preserving trusted instruction hierarchy",
-        "attention": "routes information based on content similarity between positions",
-        "kv cache": "avoids recomputing prefix states during autoregressive decoding",
-        "hybrid search": "combines lexical and dense signals when neither alone covers the query distribution",
-        "reciprocal rank fusion": "boosts documents that rank well in multiple retrievers without score calibration",
-    }
-    return plain.get(topic.lower(), "changes system behavior in ways that must be measured, not assumed")
+    from topic_knowledge import get_topic_entry
+
+    explanation, _, _ = get_topic_entry(topic)
+    return explanation.split(".")[0].lower()
 
 
 def mastery_exemplars(title: str, topics: list[str], principle: str) -> str:
     t0, t1, t_last = topics[0], topics[1], topics[-1]
     lines = [
         f"1. **Explain {t0} without jargon and give a counterexample.**",
-        f"   *Proficient answer:* {t0.title()} is the mechanism that {_plain(t0)}. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.",
+        f"   *Proficient answer:* {_plain(t0)}. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.",
         f"2. **Compare {t1} with {t_last} using quality, cost, latency, and risk.**",
-        f"   *Proficient answer:* {t1.title()} improves quality when {_plain(t1)}, at higher latency/cost; {t_last} mainly affects risk or operations when misconfigured—for example silent wrong decisions or runaway spend.",
+        f"   *Proficient answer:* {_plain(t1)}; {_plain(t_last)}. Trade quality gains against operational and security cost on the chapter scenario.",
         "3. **Design a minimal experiment that tests the chapter's central claim.**",
         "   *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.",
         "4. **Identify which component should own validation, authorization, and observability.**",
@@ -95,72 +107,18 @@ def mastery_exemplars(title: str, topics: list[str], principle: str) -> str:
     return "\n".join(f"    {line}" for line in lines)
 
 
-def chapter_hook(title: str, topics: list[str], book_no: int, chapter_no: int) -> str:
-    hooks: dict[tuple[int, int], str] = {
-        (1, 1): '''GOAL = "route P1 incidents to on-call"
-actions = ["classify", "route", "notify"]
-state = {"tickets_seen": 0}
-for action in actions:
-    state["tickets_seen"] += 1
-    print({"goal": GOAL, "action": action, "state": state})''',
-        (1, 3): '''GRID = ["S##", "# #", "##G"]
-start = GRID[0].index("S")
-print("start", start, "goal", GRID[-1].index("G"))''',
-        (3, 3): '''text = "unbelievable"
-pairs = [(text[i:i+2], 1) for i in range(len(text)-1)]
-print(sorted(pairs, key=lambda x: -x[1])[:3])''',
-        (4, 2): '''import math
-q, k = [1.0, 0.0], [0.9, 0.1]
-score = sum(a*b for a,b in zip(q,k)) / (math.sqrt(sum(a*a for a in q)) * math.sqrt(sum(b*b for b in k)))
-print("attention weight", round(score, 3))''',
-        (5, 2): '''schema = {"type": "object", "required": ["total"], "properties": {"total": {"type": "number"}}}
-payload = {"total": "12.50"}
-valid = isinstance(payload.get("total"), (int, float))
-print("valid" if valid else "reject: total must be numeric")''',
-        (6, 3): '''docs = {"a": "PTO accrual cap is 240 hours", "b": "Leave policy overview"}
-query = set("pto cap".split())
-scores = {k: len(query & set(v.lower().split())) for k, v in docs.items()}
-print("ranking", sorted(scores.items(), key=lambda x: -x[1]))''',
-        (6, 4): '''rank_a = ["doc-leave", "doc-expense", "doc-security"]
-rank_b = ["doc-expense", "doc-leave", "doc-onboarding"]
-def rrf(lists, k=60):
-    scores = {}
-    for ranking in lists:
-        for rank, doc in enumerate(ranking, 1):
-            scores[doc] = scores.get(doc, 0) + 1/(k+rank)
-    return sorted(scores.items(), key=lambda x: -x[1])
-print(rrf([rank_a, rank_b])[:2])''',
-        (7, 4): '''def search_tool(query: str) -> dict:
-    if not query.strip():
-        raise ValueError("query required")
-    return {"results": [f"hit for {query!r}"]}
-print(search_tool("budget policy"))''',
-        (8, 2): '''state = {"step": 0, "observations": [], "done": False}
-while not state["done"] and state["step"] < 3:
-    state["step"] += 1
-    state["observations"].append(f"obs-{state['step']}")
-    state["done"] = state["step"] == 3
-print(state)''',
-        (10, 1): '''cases = [
-    {"id": 1, "input": "reset password", "must": "link to policy"},
-    {"id": 2, "input": "delete tenant", "must": "require approval"},
-]
-for case in cases:
-    print(case["id"], case["must"])''',
-        (11, 4): '''batch_sizes = [1, 4, 8]
-for b in batch_sizes:
-    throughput = b / (1 + 0.1 * (b - 1))
-    print(f"batch={b} relative_throughput={throughput:.2f}")''',
-    }
-    default = f'''# Chapter hook: {title}
-focus = "{topics[0]}"
-related = "{topics[1] if len(topics) > 1 else topics[0]}"
-print({{"chapter": "{book_no}.{chapter_no}", "focus": focus, "pairs_with": related}})'''
-    return hooks.get((book_no, chapter_no), default)
+def render_knowledge_check(book_no: int, chapter_no: int, topics: list[str]) -> str:
+    q1, q2, q3, guidance = get_knowledge_check(book_no, chapter_no, topics)
+    return f"""1. {q1}
+2. {q2}
+3. {q3}
+
+??? question "Answer guidance"
+    {guidance}"""
 
 
 def render_chapter_hook(title: str, topics: list[str], book_no: int, chapter_no: int) -> str:
-    code = chapter_hook(title, topics, book_no, chapter_no)
+    code = get_chapter_hook(book_no, chapter_no, title, topics)
     return f"""## Chapter hook
 
 Run this short snippet first to anchor **{title.lower()}** before the book-level sample:

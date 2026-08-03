@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated similarity and vector search.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why similarity and vector search matters using the chapter scenario, not abstract definitions alone.
+- Trace how **dot product** and **cosine similarity** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to metadata filtering.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Retrieval quality depends on representation, metric, index, filters, and query—not the database brand.
@@ -41,29 +41,81 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Dot Product** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Cosine Similarity** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Nearest Neighbors** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Ann Indexes** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Metadata Filtering** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Dot Product
+
+Dot product measures alignment between vectors—used in attention scores and similarity when magnitudes carry signal. Scale affects ranking unless normalized. See the [Dot Product concept card](../../concepts/cards/dot-product.md).
+
+**Example:** Unnormalized dot products favor longer document embeddings; cosine similarity removes length bias.
+
+**Evidence of understanding:** Compare ranking order for ten queries using dot product versus cosine on the same vectors.
+
+### Cosine Similarity
+
+Cosine similarity measures the angle between vectors, ignoring magnitude—standard for normalized embeddings in retrieval. See the [Cosine Similarity concept card](../../concepts/cards/cosine-similarity.md).
+
+**Example:** Two policy summaries of different lengths can match semantically when cosine is high despite different norms.
+
+**Evidence of understanding:** Verify identical rankings after L2-normalizing embeddings versus raw cosine computation.
+
+### Nearest Neighbors
+
+Nearest-neighbor search returns the closest vectors to a query by a chosen metric. Exact search is fine for small indexes; production scales require approximate methods. See the [Nearest Neighbors concept card](../../concepts/cards/nearest-neighbors.md).
+
+**Example:** Brute-force cosine over 10k chunks is fast; at 10M you need ANN indexes with recall trade-offs.
+
+**Evidence of understanding:** Measure recall@10 of ANN versus exact search on a held-out query set.
+
+### Ann Indexes
+
+Approximate nearest neighbor indexes—HNSW, IVF, LSH—trade recall for speed at million-plus scale. Index parameters must be tuned on representative queries. See the [Ann Indexes concept card](../../concepts/cards/ann-indexes.md).
+
+**Example:** HNSW with efSearch=100 may hit 98% recall@10 at 5ms versus 50ms exact on 1M vectors.
+
+**Evidence of understanding:** Plot latency versus recall@k for three index configurations on production query sample.
+
+### Metadata Filtering
+
+Metadata filtering restricts vector or lexical search by tenant, date, permission, or document type before or after similarity scoring. It enforces policy and improves precision. See the [Metadata Filtering concept card](../../concepts/cards/metadata-filtering.md).
+
+**Example:** Searching only documents where tenant_id matches and effective_date ≤ today prevents cross-customer leakage.
+
+**Evidence of understanding:** Run ten queries with filters and confirm zero results violate authorization metadata.
+
 ## Worked example
 
 **Book scenario:** Employees search for policies using vocabulary different from the source documents.
 
-**Chapter focus:** Connect distance metrics, normalization, nearest neighbors, approximate indexes, clustering, filtering, and ranking.
+**Situation:** Hybrid search must return the right policy when some queries are keyword-heavy ("form 1040") and others are conceptual ("can managers deny leave?").
 
-Apply this chapter in four moves:
+**Baseline:** Single dense retriever only—misses exact form numbers.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where dot product and cosine similarity enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Run cosine similarity lab, add metadata filters (department, effective date), implement reciprocal rank fusion between BM25 and dense rankings, measure recall@10.
 
-The design question is: **What evidence would show that similarity and vector search addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: paraphrase query. (2) Boundary: filter excludes superseded policy version. (3) Adversarial: query embedding dominated by generic HR words.
+
+**Measurement:** Recall@k per query class (lexical vs semantic), p95 latency with ANN index vs brute force.
+
+**Design question:** Which failure mode justifies adding metadata filters before upgrading the embedding model?
+
+## Chapter hook
+
+Run this short snippet first to anchor **similarity and vector search** before the book-level sample:
+
+```python
+def cosine(a, b):
+    dot = sum(x*y for x, y in zip(a, b))
+    na = sum(x*x for x in a) ** 0.5
+    nb = sum(y*y for y in b) ** 0.5
+    return dot / (na * nb + 1e-9)
+q = [0.2, 0.9, 0.1]
+docs = {"leave": [0.3, 0.8, 0.0], "expense": [0.9, 0.1, 0.2]}
+ranked = sorted(((k, cosine(q, v)) for k, v in docs.items()), key=lambda x: -x[1])
+print("dense ranking:", ranked)
+```
+
+Predict the printed values, then change one line tied to **dot product** or **cosine similarity** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +136,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Run the cosine and semantic-search labs, then add hybrid scoring.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without dot product and record quality, latency, and failure cases.
+2. **Mechanism:** Add cosine similarity while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when similarity and vector search earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Language and Representation**, make the following explicit for **similarity and vector search**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns dot product versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the nearest neighbors boundary expose? |
+| **Evidence** | Which eval slices prove similarity and vector search meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the metadata filtering boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover dot product or cosine similarity | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | similarity and vector search is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in metadata filtering without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream dot product behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Connect distance metrics, normalization, nearest neighbors, approximate indexes, clustering, filtering, and ranking. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of similarity and vector search without explicit dot product.
+- **Today:** Engineering teams implement similarity and vector search as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but metadata filtering and governance constraints will still require explicit design.
 - **What survives:** Retrieval quality depends on representation, metric, index, filters, and query—not the database brand.
 
 ## Knowledge check
 
-1. What problem would remain if dot product were removed from the system?
-2. Which observation would distinguish a failure in cosine similarity from a failure in metadata filtering?
-3. What simpler alternative should be the baseline?
+1. Why does retrieval depend on metric and index—not just embedding model brand?
+2. How would metadata filtering fix a semantic false positive?
+3. What single-signal baseline should hybrid search beat?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Wrong metric or unnormalized vectors invert rankings; bad index misses neighbors. Q2: Exclude wrong department or expired docs before similarity. Q3: BM25-only or dense-only on full eval set.
 
 ## Mastery questions
 
-1. Explain dot product without jargon and give a counterexample.
-2. Compare cosine similarity with metadata filtering using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain dot product without jargon and give a counterexample.**
+       *Proficient answer:* dot product measures alignment between vectors—used in attention scores and similarity when magnitudes carry signal. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare cosine similarity with metadata filtering using quality, cost, latency, and risk.**
+       *Proficient answer:* cosine similarity measures the angle between vectors, ignoring magnitude—standard for normalized embeddings in retrieval; metadata filtering restricts vector or lexical search by tenant, date, permission, or document type before or after similarity scoring. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after cosine similarity; authorization before any side effect or retrieval of restricted data; observability at the transition similarity and vector search introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Retrieval quality depends on representation, metric, index, filters, and query—not the database brand.
 
 ## Self-assessment rubric
 

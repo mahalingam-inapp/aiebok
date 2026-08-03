@@ -1,13 +1,32 @@
 # KA 06 — Knowledge Systems
 
-## Content plan
+## Purpose
 
-Document ingestion, parsing, OCR, chunking, metadata, embeddings, lexical/vector/hybrid retrieval, approximate nearest neighbors, filtering, reranking, query rewriting, parent-child retrieval, graph retrieval, adaptive and agentic RAG, citations, freshness, access control, semantic caching, and retrieval evaluation.
+Ground answers with retrievable evidence.
 
-## Code practice
+## What you should be able to do
 
-Build lexical search, vector search, basic RAG, hybrid retrieval, and reranking in stages. Measure retrieval separately from answer generation.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
+
+## Core topics
+
+- [RAG](../concepts/cards/rag.md)
+- [hybrid search](../concepts/cards/hybrid-search.md)
+- [rerankers](../concepts/cards/rerankers.md)
+
+## Guided path
+
+- Primary book: [06-knowledge-and-retrieval-systems](../books/06-knowledge-and-retrieval-systems/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
 
 ## Architecture studio
 
-Work through the [enterprise RAG architecture](../architectures/enterprise-rag.md), including tenancy, authorization, failure modes, and cost.
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Deliver hybrid RAG with citations.

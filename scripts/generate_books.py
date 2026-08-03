@@ -14,6 +14,8 @@ from chapter_enrichments import (
     learning_objectives,
     mastery_exemplars,
     render_chapter_hook,
+    render_knowledge_check,
+    render_worked_example,
 )
 from concept_library import render_core_concepts
 
@@ -294,15 +296,17 @@ def render_chapter(book_no: int, chapter_no: int, book: dict, chapter: tuple) ->
     failures = failure_clinic(title, topics, summary)
     architecture = architecture_lens(title, topics, book["title"])
     evolution = evolution_lens(title, topics, principle)
+    scenario = WORKED_SCENARIOS[book_no - 1]
     hook = render_chapter_hook(title, topics, book_no, chapter_no)
     mastery = mastery_exemplars(title, topics, principle)
+    worked = render_worked_example(book_no, chapter_no, title, summary, topics, scenario)
+    knowledge = render_knowledge_check(book_no, chapter_no, topics)
     stages = VISUAL_STAGES[book_no - 1]
     diagram = "\n".join(
         f"  N{i}[\"{stage}\"] --> N{i+1}[\"{stages[i+1]}\"]"
         for i, stage in enumerate(stages[:-1])
     )
     sample_file = SAMPLE_FILES[book_no - 1]
-    scenario = WORKED_SCENARIOS[book_no - 1]
     prerequisite_lines = "\n".join(f"- {item}" for item in PREREQUISITES[book_no - 1])
     reading_lines = "\n".join(f"- {item}" for item in READINGS[book_no - 1])
     expected = EXPECTED_OBSERVATIONS[book_no - 1]
@@ -344,18 +348,7 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Worked example
 
-**Book scenario:** {scenario}
-
-**Chapter focus:** {summary}
-
-Apply this chapter in four moves:
-
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where {topics[0]} and {topics[1]} enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
-
-The design question is: **What evidence would show that {title.lower()} addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+{worked}
 
 {hook}
 
@@ -392,12 +385,7 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 ## Knowledge check
 
-1. What problem would remain if {topics[0]} were removed from the system?
-2. Which observation would distinguish a failure in {topics[1]} from a failure in {topics[-1]}?
-3. What simpler alternative should be the baseline?
-
-??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+{knowledge}
 
 ## Mastery questions
 

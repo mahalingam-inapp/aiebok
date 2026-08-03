@@ -24,12 +24,25 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
+      - run: python scripts/build_concept_entries.py
+      - run: python scripts/generate_expansion.py
+      - run: python scripts/generate_books.py
+      - run: python scripts/generate_maturity_content.py
       - run: python scripts/validate_content.py
       - run: python scripts/audit_book_coverage.py
       - name: Run educational code samples
         run: for sample in examples/*/main.py; do python "$sample"; done
-      - name: Run starter labs
-        run: for lab in labs/*/main.py; do python "$lab"; done
+      - name: Run labs
+        run: |
+          for lab in labs/*/main.py; do
+            echo "Running $lab"
+            python "$lab" || exit 1
+          done
+      - name: Run lab tests
+        run: |
+          for test in labs/*/test_lab.py; do
+            python -m pytest "$test" -q || exit 1
+          done
       - run: mkdocs build --strict
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

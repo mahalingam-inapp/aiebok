@@ -1,13 +1,32 @@
 # KA 08 — Tools & Integration
 
-## Content plan
+## Purpose
 
-Functions, JSON Schema, REST, GraphQL, gRPC, files, databases, search, code execution, queues, events, workflows, connectors, MCP, agent-to-agent protocols, discovery, authentication, OAuth, secrets, permissions, idempotency, retries, webhooks, and audit trails.
+Connect models to software safely.
 
-## Code practice
+## What you should be able to do
 
-Wrap a safe API as a typed tool, validate arguments, add timeouts and idempotency, and expose it through a small MCP server. Test malformed calls and revoked permissions.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
 
-## Enduring principle
+## Core topics
 
-Probabilistic intent must cross a typed, authorized, observable boundary before causing real-world effects.
+- [function calling](../concepts/cards/function-calling.md)
+- [tool schemas](../concepts/cards/tool-schemas.md)
+- [MCP](../concepts/cards/mcp.md)
+
+## Guided path
+
+- Primary book: [07-reasoning-and-tool-use](../books/07-reasoning-and-tool-use/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Wrap APIs as typed tools.

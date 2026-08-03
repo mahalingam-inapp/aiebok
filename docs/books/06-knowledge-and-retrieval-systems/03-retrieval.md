@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated retrieval.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why retrieval matters using the chapter scenario, not abstract definitions alone.
+- Trace how **BM25** and **dense retrieval** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to parent-child retrieval.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Retrieval is candidate selection under relevance and policy constraints.
@@ -41,29 +41,80 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Bm25** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Dense Retrieval** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Hybrid Search** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Query Rewriting** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Parent-Child Retrieval** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### BM25
+
+BM25 ranks documents by weighted term frequency with length normalization and term-frequency saturation. Extra keyword repetition helps less over time compared to raw TF. See the [BM25 concept card](../../concepts/cards/bm25.md).
+
+**Example:** A policy ID in the query should rank the exact section above generic overview pages.
+
+**Evidence of understanding:** Report recall@k on identifier-heavy queries versus a dense-only retriever.
+
+### Dense Retrieval
+
+Dense retrieval embeds queries and documents into the same vector space and returns nearest neighbors by similarity. See the [Dense Retrieval concept card](../../concepts/cards/dense-retrieval.md).
+
+**Example:** A query about 'application unavailable' retrieves 'service is down' without lexical overlap.
+
+**Evidence of understanding:** Build a 30-query eval with paraphrases and hard negatives; report recall@5 and MRR.
+
+### Hybrid Search
+
+Hybrid search combines lexical and dense signals—often via reciprocal rank fusion—when neither alone covers identifiers and paraphrases. See the [Hybrid Search concept card](../../concepts/cards/hybrid-search.md).
+
+**Example:** Fusion surfaces policy IDs lexically while keeping semantic matches for informal phrasing.
+
+**Evidence of understanding:** Show a query where lexical-only and dense-only each miss but fusion succeeds.
+
+### Query Rewriting
+
+Query rewriting transforms requests via expansion, decomposition, or HyDE before retrieval to close vocabulary gaps. See the [Query Rewriting concept card](../../concepts/cards/query-rewriting.md).
+
+**Example:** Expanding 'PTO' to 'paid time off' helps lexical retrievers match handbook language.
+
+**Evidence of understanding:** Compare recall@k with and without rewrite on acronym-heavy queries.
+
+### Parent-Child Retrieval
+
+Parent–child retrieval indexes small child chunks for precision but returns parent sections for generation context. See the [Parent-Child Retrieval concept card](../../concepts/cards/parent-child-retrieval.md).
+
+**Example:** A child bullet may lack the section title needed for a correct answer unless parent is joined.
+
+**Evidence of understanding:** Demonstrate failure with child-only context and fix by returning parent at generation time.
+
 ## Worked example
 
 **Book scenario:** An enterprise assistant must answer from authorized policies and cite the exact passages used.
 
-**Chapter focus:** Compare lexical, dense, sparse, hybrid, filtered, multi-query, parent-child, and late-interaction retrieval.
+**Situation:** The enterprise assistant must retrieve authorized policy passages for hybrid employee queries mixing IDs and natural language.
 
-Apply this chapter in four moves:
+**Baseline:** BM25 only—misses paraphrases; dense only—misses policy numbers.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where BM25 and dense retrieval enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Implement lexical and vector baselines, compute recall@k on labeled set, add query rewriting and parent-child chunk retrieval for long policies.
 
-The design question is: **What evidence would show that retrieval addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: "PTO accrual cap 240." (2) Boundary: parent doc updated but child chunks stale. (3) Adversarial: retrieved doc user lacks ACL to read.
+
+**Measurement:** Recall@5 and MRR per query type; ACL-filtered recall (should exclude forbidden docs entirely).
+
+**Design question:** When does parent-child retrieval beat flat chunking on update frequency?
+
+## Chapter hook
+
+Run this short snippet first to anchor **retrieval** before the book-level sample:
+
+```python
+CHAPTER = "6.3"
+print("chapter hook:", CHAPTER)
+docs = {"a": "PTO accrual cap is 240 hours", "b": "Leave policy overview"}
+query = set("pto cap".split())
+scores = {k: len(query & set(v.lower().split())) for k, v in docs.items()}
+print("bm25_proxy:", sorted(scores.items(), key=lambda x: -x[1]))
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **BM25** or **dense retrieval** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +135,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Implement lexical and vector baselines and calculate recall@k.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without bm25 and record quality, latency, and failure cases.
+2. **Mechanism:** Add dense retrieval while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when retrieval earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Knowledge and Retrieval Systems**, make the following explicit for **retrieval**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns bm25 versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the hybrid search boundary expose? |
+| **Evidence** | Which eval slices prove retrieval meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the parent-child retrieval boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover bm25 or dense retrieval | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | retrieval is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in parent-child retrieval without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream bm25 behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Compare lexical, dense, sparse, hybrid, filtered, multi-query, parent-child, and late-interaction retrieval. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of retrieval without explicit bm25.
+- **Today:** Engineering teams implement retrieval as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but parent-child retrieval and governance constraints will still require explicit design.
 - **What survives:** Retrieval is candidate selection under relevance and policy constraints.
 
 ## Knowledge check
 
-1. What problem would remain if BM25 were removed from the system?
-2. Which observation would distinguish a failure in dense retrieval from a failure in parent-child retrieval?
-3. What simpler alternative should be the baseline?
+1. Why is retrieval candidate selection under policy constraints?
+2. How does hybrid search help policy number plus paraphrase queries?
+3. What single-channel baseline should hybrid beat?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Must enforce relevance and authorization before generation. Q2: Lexical hits IDs, dense hits paraphrase—fusion covers both. Q3: BM25-only or dense-only on labeled 30-query set.
 
 ## Mastery questions
 
-1. Explain BM25 without jargon and give a counterexample.
-2. Compare dense retrieval with parent-child retrieval using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain BM25 without jargon and give a counterexample.**
+       *Proficient answer:* bm25 ranks documents by weighted term frequency with length normalization and term-frequency saturation. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare dense retrieval with parent-child retrieval using quality, cost, latency, and risk.**
+       *Proficient answer:* dense retrieval embeds queries and documents into the same vector space and returns nearest neighbors by similarity; parent–child retrieval indexes small child chunks for precision but returns parent sections for generation context. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after dense retrieval; authorization before any side effect or retrieval of restricted data; observability at the transition retrieval introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Retrieval is candidate selection under relevance and policy constraints.
 
 ## Self-assessment rubric
 

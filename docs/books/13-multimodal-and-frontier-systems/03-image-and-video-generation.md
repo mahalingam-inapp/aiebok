@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated image and video generation.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why image and video generation matters using the chapter scenario, not abstract definitions alone.
+- Trace how **diffusion** and **conditioning** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to provenance.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Generative quality includes controllability, consistency, provenance, safety, and workflow fit.
@@ -41,29 +41,80 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Diffusion** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Conditioning** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Latent Space** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Video Generation** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Provenance** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Diffusion
+
+Diffusion models generate images by iterative denoising from noise, conditioning on text or layout. See the [Diffusion concept card](../../concepts/cards/diffusion.md).
+
+**Example:** Marketing generates product hero images from prompt plus brand color conditioning.
+
+**Evidence of understanding:** FID or human preference eval versus baseline; scan outputs for policy violations.
+
+### Conditioning
+
+Conditioning steers generation with extra inputs—text, masks, ControlNet edges, brand assets. See the [Conditioning concept card](../../concepts/cards/conditioning.md).
+
+**Example:** Logo placement conditioned via layout mask keeps brand mark in safe zone.
+
+**Evidence of understanding:** Ablation: compare output compliance with versus without layout conditioning.
+
+### Latent Space
+
+Latent space in generative models compresses images to lower-dimensional representations for efficient editing and generation. See the [Latent Space concept card](../../concepts/cards/latent-space.md).
+
+**Example:** Latent diffusion edits background without re-encoding full resolution each step.
+
+**Evidence of understanding:** Measure edit consistency and artifact rate across ten latent manipulations.
+
+### Video Generation
+
+Video generation extends image models temporally—short clips from text with consistency and motion challenges. See the [Video Generation concept card](../../concepts/cards/video-generation.md).
+
+**Example:** Generate 5s product demo clip from storyboard prompts for social ads.
+
+**Evidence of understanding:** Evaluate temporal flicker, object consistency, and brand safety on rubric.
+
+### Provenance
+
+Provenance for generated media records model, prompt, timestamp, and user for copyright and authenticity disputes. See the [Provenance concept card](../../concepts/cards/provenance.md).
+
+**Example:** C2PA metadata embeds creation tool and prompt hash in exported campaign image.
+
+**Evidence of understanding:** Verify provenance survives export format and is readable by audit tool.
+
 ## Worked example
 
 **Book scenario:** A document system must combine tables, charts, and text without losing source provenance.
 
-**Chapter focus:** Study diffusion, conditioning, latent representations, control, evaluation, provenance, copyright, and content safety.
+**Situation:** Marketing wants AI-generated onboarding welcome videos; brand and legal need controllable, traceable assets.
 
-Apply this chapter in four moves:
+**Baseline:** Generate clips from prompt only—inconsistent characters and no provenance.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where diffusion and conditioning enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Design diffusion workflow with conditioning (logo palette, script), latent-space edit controls, rubric evaluating consistency/safety/provenance, watermark/metadata policy.
 
-The design question is: **What evidence would show that image and video generation addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: short clip matching storyboard. (2) Boundary: minor character drift frame-to-frame. (3) Adversarial: prompt attempting copyrighted character likeness.
+
+**Measurement:** Rubric pass rate, frame consistency score, provenance metadata presence.
+
+**Design question:** Which rubric dimension gates release before aesthetic quality?
+
+## Chapter hook
+
+Run this short snippet first to anchor **image and video generation** before the book-level sample:
+
+```python
+CHAPTER = "13.3"
+print("chapter hook:", CHAPTER)
+rubric = {"brand_match": 0.9, "safety": 1.0, "provenance": 1.0, "aesthetic": 0.85}
+gates = {"safety": 1.0, "provenance": 1.0}
+release = all(rubric[k] >= gates[k] for k in gates)
+print({"release": release, "scores": rubric})
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **diffusion** or **conditioning** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +135,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Design an evaluation rubric for generated campaign assets.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without diffusion and record quality, latency, and failure cases.
+2. **Mechanism:** Add conditioning while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when image and video generation earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Multimodal and Frontier Systems**, make the following explicit for **image and video generation**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns diffusion versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the latent space boundary expose? |
+| **Evidence** | Which eval slices prove image and video generation meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the provenance boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover diffusion or conditioning | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | image and video generation is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in provenance without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream diffusion behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Study diffusion, conditioning, latent representations, control, evaluation, provenance, copyright, and content safety. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of image and video generation without explicit diffusion.
+- **Today:** Engineering teams implement image and video generation as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but provenance and governance constraints will still require explicit design.
 - **What survives:** Generative quality includes controllability, consistency, provenance, safety, and workflow fit.
 
 ## Knowledge check
 
-1. What problem would remain if diffusion were removed from the system?
-2. Which observation would distinguish a failure in conditioning from a failure in provenance?
-3. What simpler alternative should be the baseline?
+1. Why does generative quality include provenance and safety?
+2. How does conditioning differ from post-hoc editing?
+3. What generation baseline evaluates prettiness only?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Legal and trust require traceability and misuse controls. Q2: Conditioning constrains generation upfront. Q3: Human likes clip with no metadata policy.
 
 ## Mastery questions
 
-1. Explain diffusion without jargon and give a counterexample.
-2. Compare conditioning with provenance using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain diffusion without jargon and give a counterexample.**
+       *Proficient answer:* diffusion models generate images by iterative denoising from noise, conditioning on text or layout. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare conditioning with provenance using quality, cost, latency, and risk.**
+       *Proficient answer:* conditioning steers generation with extra inputs—text, masks, controlnet edges, brand assets; provenance for generated media records model, prompt, timestamp, and user for copyright and authenticity disputes. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after conditioning; authorization before any side effect or retrieval of restricted data; observability at the transition image and video generation introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Generative quality includes controllability, consistency, provenance, safety, and workflow fit.
 
 ## Self-assessment rubric
 

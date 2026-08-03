@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated how to track the frontier.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why how to track the frontier matters using the chapter scenario, not abstract definitions alone.
+- Trace how **primary sources** and **benchmarks** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to technology forecasting.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     The durable skill is evaluating claims and mapping new mechanisms to established principles.
@@ -41,29 +41,80 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Primary Sources** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Benchmarks** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Ablations** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Reproduction** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Technology Forecasting** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Primary Sources
+
+Primary sources are original papers, specs, and official docs—not summaries or hype threads—for technical claims. See the [Primary Sources concept card](../../concepts/cards/primary-sources.md).
+
+**Example:** Read Attention Is All You Need for architecture claims, not a blog recap.
+
+**Evidence of understanding:** Every frontier assessment cites primary source DOI or spec version.
+
+### Benchmarks
+
+Benchmarks standardize task comparisons—MMLU, HumanEval, BEIR—but may not reflect your production distribution. See the [Benchmarks concept card](../../concepts/cards/benchmarks.md).
+
+**Example:** High MMLU does not guarantee payroll policy QA performance.
+
+**Evidence of understanding:** Reproduce one benchmark subset plus in-domain eval before vendor selection.
+
+### Ablations
+
+Ablations remove components to measure contribution—essential for judging which mechanism drives reported gains. See the [Ablations concept card](../../concepts/cards/ablations.md).
+
+**Example:** Paper claims graph RAG helps; ablation removing graph should show drop if claim holds.
+
+**Evidence of understanding:** Require ablation table or run own component removal on reproduction attempt.
+
+### Reproduction
+
+Reproduction reruns experiments with disclosed details to verify claims before betting architecture on results. See the [Reproduction concept card](../../concepts/cards/reproduction.md).
+
+**Example:** Reproduce reported recall gain within 2 points using authors' config or document differences.
+
+**Evidence of understanding:** Publish internal reproduction note with confidence level and blocking gaps.
+
+### Technology Forecasting
+
+Technology forecasting estimates when emerging capabilities become production-ready using evidence tiers and uncertainty bounds. See the [Technology Forecasting concept card](../../concepts/cards/technology-forecasting.md).
+
+**Example:** Estimate computer-use reliability for your UI stack as low/med/high with dated reassessment.
+
+**Evidence of understanding:** Quarterly frontier review updates confidence levels with new reproductions, not headlines.
+
 ## Worked example
 
 **Book scenario:** A document system must combine tables, charts, and text without losing source provenance.
 
-**Chapter focus:** Develop research literacy, evidence hierarchies, reproduction habits, forecasting, and a review cadence for a fast-moving field.
+**Situation:** Leadership overwhelmed by weekly AI announcements; needs durable process to assess claims affecting onboarding roadmap.
 
-Apply this chapter in four moves:
+**Baseline:** Adopt every trending technique immediately.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where primary sources and benchmarks enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Write one-page frontier assessment: primary source, benchmark limits, ablations, reproduction plan, confidence level, mapping to book principles, review cadence.
 
-The design question is: **What evidence would show that how to track the frontier addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: peer-reviewed reproducible result. (2) Boundary: strong benchmark, weak real-world slice. (3) Adversarial: vendor-funded eval with hidden prompt tuning.
+
+**Measurement:** Time to produce assessment, prediction accuracy of adopted vs deferred choices at 6 months.
+
+**Design question:** What confidence level triggers a paid pilot versus continued monitoring?
+
+## Chapter hook
+
+Run this short snippet first to anchor **how to track the frontier** before the book-level sample:
+
+```python
+assessment = {
+    "claim": "new agent framework 2x faster",
+    "evidence": "vendor blog",
+    "reproduced": False,
+    "confidence": "low",
+}
+action = "monitor" if assessment["confidence"] == "low" else "pilot"
+print({"action": action, **assessment})
+```
+
+Predict the printed values, then change one line tied to **primary sources** or **benchmarks** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +135,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Write a one-page frontier assessment with confidence levels.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without primary sources and record quality, latency, and failure cases.
+2. **Mechanism:** Add benchmarks while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when how to track the frontier earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Multimodal and Frontier Systems**, make the following explicit for **how to track the frontier**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns primary sources versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the ablations boundary expose? |
+| **Evidence** | Which eval slices prove how to track the frontier meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the technology forecasting boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover primary sources or benchmarks | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | how to track the frontier is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in technology forecasting without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream primary sources behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Develop research literacy, evidence hierarchies, reproduction habits, forecasting, and a review cadence for a fast-moving field. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of how to track the frontier without explicit primary sources.
+- **Today:** Engineering teams implement how to track the frontier as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but technology forecasting and governance constraints will still require explicit design.
 - **What survives:** The durable skill is evaluating claims and mapping new mechanisms to established principles.
 
 ## Knowledge check
 
-1. What problem would remain if primary sources were removed from the system?
-2. Which observation would distinguish a failure in benchmarks from a failure in technology forecasting?
-3. What simpler alternative should be the baseline?
+1. What durable skill survives rapid AI change?
+2. How do ablations strengthen evidence?
+3. What tracking baseline follows hype cycles?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Evaluating claims and mapping to principles. Q2: Show which component drives gains—not just headline number. Q3: Rewrite stack every launch week.
 
 ## Mastery questions
 
-1. Explain primary sources without jargon and give a counterexample.
-2. Compare benchmarks with technology forecasting using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain primary sources without jargon and give a counterexample.**
+       *Proficient answer:* primary sources are original papers, specs, and official docs—not summaries or hype threads—for technical claims. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare benchmarks with technology forecasting using quality, cost, latency, and risk.**
+       *Proficient answer:* benchmarks standardize task comparisons—mmlu, humaneval, beir—but may not reflect your production distribution; technology forecasting estimates when emerging capabilities become production-ready using evidence tiers and uncertainty bounds. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after benchmarks; authorization before any side effect or retrieval of restricted data; observability at the transition how to track the frontier introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* The durable skill is evaluating claims and mapping new mechanisms to established principles.
 
 ## Self-assessment rubric
 

@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated reasoning-system economics.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why reasoning-system economics matters using the chapter scenario, not abstract definitions alone.
+- Trace how **test-time compute** and **latency** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to budgets.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Spend additional computation only where expected outcome improvement justifies it.
@@ -41,29 +41,84 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Test-Time Compute** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Latency** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Cost-Quality Curves** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Routing** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Budgets** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Test-Time Compute
+
+Test-time compute spends extra inference—search, sampling, verification—at query time to improve accuracy. It trades latency and cost for quality on hard inputs. See the [Test-Time Compute concept card](../../concepts/cards/test-time-compute.md).
+
+**Example:** Spending 5× tokens on best-of-N may be worth it for $10k loan decisions only.
+
+**Evidence of understanding:** Plot quality versus total tokens and mark Pareto-optimal operating points.
+
+### Latency
+
+Latency is time from request to usable response—dominated by model, retrieval, tools, and serialization. User workflows break when p95 exceeds interaction tolerance. See the [Latency concept card](../../concepts/cards/latency.md).
+
+**Example:** Adding reranking adds 200ms; measure whether task success gain justifies it.
+
+**Evidence of understanding:** Track p50 and p95 end-to-end latency with breakdown by stage in traces.
+
+### Cost-Quality Curves
+
+Cost-quality curves plot spend—tokens, GPU seconds, API dollars—against task metrics. They guide routing and when to stop adding compute. See the [Cost-Quality Curves concept card](../../concepts/cards/cost-quality-curves.md).
+
+**Example:** Best-of-N may lift accuracy 2 points for 4× cost—acceptable only above a revenue threshold.
+
+**Evidence of understanding:** Generate curve points for three strategies and document chosen operating point rationale.
+
+### Routing
+
+Routing directs requests to models, tools, or strategies by task type, risk, or budget. Routers encode product policy about cheap versus capable paths. See the [Routing concept card](../../concepts/cards/routing.md).
+
+**Example:** Simple FAQs route to small model; compliance questions route to audited large model.
+
+**Evidence of understanding:** Log routing decisions and compare quality and cost versus always-large baseline.
+
+### Budgets
+
+Budgets cap tokens, tool calls, wall time, or dollars per task or session. Hard budgets prevent runaway agents and make economics predictable. See the [Budgets concept card](../../concepts/cards/budgets.md).
+
+**Example:** A research agent stops after $0.50 API spend or ten tool calls, whichever comes first.
+
+**Evidence of understanding:** Verify 100% of runs respect budget caps in stress tests with tempting infinite loops.
+
 ## Worked example
 
 **Book scenario:** A research workflow must plan, call tools, and reject unsupported conclusions.
 
-**Chapter focus:** Balance accuracy, latency, token use, parallel candidates, tool calls, caches, failure rates, and task value.
+**Situation:** Leadership wants higher answer quality but budget caps tokens and tool calls per research task.
 
-Apply this chapter in four moves:
+**Baseline:** Always run best-of-5 with full verifier loop—quality up, costs unsustainable.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where test-time compute and latency enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Plot cost-quality curves for single-pass, best-of-N, verifier loops; route easy queries cheaply, spend test-time compute only on high-value uncertain cases.
 
-The design question is: **What evidence would show that reasoning-system economics addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: low-uncertainty FAQ. (2) Boundary: uncertainty score near routing threshold. (3) Adversarial: attacker triggers expensive loops via ambiguous queries.
+
+**Measurement:** Quality by route tier, average $/task, loop explosion incidents.
+
+**Design question:** What signal routes a query to expensive reasoning without sending everything there?
+
+## Chapter hook
+
+Run this short snippet first to anchor **reasoning-system economics** before the book-level sample:
+
+```python
+routes = [
+    {"name": "single", "cost": 1, "quality": 0.78},
+    {"name": "best3", "cost": 3, "quality": 0.86},
+    {"name": "verify", "cost": 5, "quality": 0.91},
+]
+def pick(uncertainty, budget):
+    opts = [r for r in routes if r["cost"] <= budget]
+    if uncertainty < 0.3:
+        return opts[0]
+    return max(opts, key=lambda r: r["quality"])
+print(pick(0.25, 4))
+print(pick(0.8, 4))
+```
+
+Predict the printed values, then change one line tied to **test-time compute** or **latency** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +139,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Plot quality and cost for single-pass, best-of-N, and verifier loops.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without test-time compute and record quality, latency, and failure cases.
+2. **Mechanism:** Add latency while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when reasoning-system economics earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Reasoning and Tool Use**, make the following explicit for **reasoning-system economics**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns test-time compute versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the cost-quality curves boundary expose? |
+| **Evidence** | Which eval slices prove reasoning-system economics meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the budgets boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover test-time compute or latency | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | reasoning-system economics is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in budgets without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream test-time compute behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Balance accuracy, latency, token use, parallel candidates, tool calls, caches, failure rates, and task value. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of reasoning-system economics without explicit test-time compute.
+- **Today:** Engineering teams implement reasoning-system economics as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but budgets and governance constraints will still require explicit design.
 - **What survives:** Spend additional computation only where expected outcome improvement justifies it.
 
 ## Knowledge check
 
-1. What problem would remain if test-time compute were removed from the system?
-2. Which observation would distinguish a failure in latency from a failure in budgets?
-3. What simpler alternative should be the baseline?
+1. When is extra test-time compute worth the cost?
+2. How do attackers exploit unbounded reasoning loops?
+3. What baseline always maximizes quality?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: When expected value of correctness gain exceeds marginal cost on slice. Q2: Ambiguity triggers repeated tool/model cycles. Q3: Best-of-N plus verifier on every query.
 
 ## Mastery questions
 
-1. Explain test-time compute without jargon and give a counterexample.
-2. Compare latency with budgets using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain test-time compute without jargon and give a counterexample.**
+       *Proficient answer:* test-time compute spends extra inference—search, sampling, verification—at query time to improve accuracy. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare latency with budgets using quality, cost, latency, and risk.**
+       *Proficient answer:* latency is time from request to usable response—dominated by model, retrieval, tools, and serialization; budgets cap tokens, tool calls, wall time, or dollars per task or session. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after latency; authorization before any side effect or retrieval of restricted data; observability at the transition reasoning-system economics introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Spend additional computation only where expected outcome improvement justifies it.
 
 ## Self-assessment rubric
 

@@ -1,8 +1,8 @@
 # Lab Guide
 
-The repository includes five small Python labs that run without third-party packages. They build intuition; later expansions can add notebooks and managed-cloud variants.
+**78 chapter labs** plus five foundational starter labs. See [catalog.md](catalog.md) for the full list.
 
-| Lab | Concept | Run command |
+| Starter | Concept | Run |
 |---:|---|---|
 | 01 | Cosine similarity | `python labs/01-cosine-similarity/main.py` |
 | 02 | Semantic search | `python labs/02-semantic-search/main.py` |
@@ -10,9 +10,8 @@ The repository includes five small Python labs that run without third-party pack
 | 04 | Bounded agent loop | `python labs/04-agent-loop/main.py` |
 | 05 | Evaluation harness | `python labs/05-eval-harness/main.py` |
 
+Chapter labs follow `labs/BBCC-topic/main.py` where `BB` is book number and `CC` is chapter number.
+
 ## Lab standard
 
-Every mature lab should have an objective, prerequisites, time estimate, setup, baseline, tasks, tests, expected observations, reflection questions, extensions, cleanup, and a reference solution.
-
-!!! note
-    Educational implementations simplify real systems. Production work requires security, privacy, dependency, reliability, and cost reviews.
+Every lab includes a runnable `main.py`, README, and docs page with practice alignment to the matching book chapter.

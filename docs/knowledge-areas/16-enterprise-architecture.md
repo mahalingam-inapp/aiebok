@@ -1,9 +1,32 @@
-# KA 16 — Enterprise AI Architecture
+# KA 16 — Enterprise Architecture
 
-## Content plan
+## Purpose
 
-Reference architectures, AI gateways, model routing, shared retrieval, platform teams, tenancy, identity, access control, data residency, hybrid/multi-cloud, event-driven integration, resilience, disaster recovery, compliance, auditability, governance, supply chain, cost allocation, build-versus-buy, and operating models.
+Design governed AI platforms.
 
-## Architecture studios
+## What you should be able to do
 
-Design an enterprise assistant, document automation service, coding-agent platform, customer-support copilot, and regulated knowledge system. For each, document data flow, trust boundaries, SLOs, failure handling, evaluation, and cost.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
+
+## Core topics
+
+- [identity](../concepts/cards/identity.md)
+- [multi-tenancy](../concepts/cards/multi-tenancy.md)
+- [AI gateways](../concepts/cards/ai-gateways.md)
+
+## Guided path
+
+- Primary book: [12-cloud-and-enterprise-ai-architecture](../books/12-cloud-and-enterprise-ai-architecture/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Produce reference architecture and ADRs.

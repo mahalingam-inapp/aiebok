@@ -22,7 +22,10 @@ def normalize(topic: str) -> str:
 def concept_link(topic: str) -> str | None:
     """Return a relative concept-card link when one exists."""
     key = normalize(topic)
-    cards = {
+    cards_dir = Path(__file__).resolve().parents[1] / "docs" / "concepts" / "cards"
+    if (cards_dir / f"{key}.md").exists():
+        return f"../../concepts/cards/{key}.md"
+    curated = {
         "embeddings": "../../concepts/embeddings.md",
         "word-embeddings": "../../concepts/embeddings.md",
         "sentence-embeddings": "../../concepts/embeddings.md",
@@ -62,7 +65,7 @@ def concept_link(topic: str) -> str | None:
         "sft": "../../concepts/fine-tuning.md",
         "fine-tuning": "../../concepts/fine-tuning.md",
     }
-    return cards.get(key)
+    return curated.get(key)
 
 
 @lru_cache(maxsize=1)

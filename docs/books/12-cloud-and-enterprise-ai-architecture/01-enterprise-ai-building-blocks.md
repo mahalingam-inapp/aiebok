@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated enterprise ai building blocks.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why enterprise ai building blocks matters using the chapter scenario, not abstract definitions alone.
+- Trace how **AI gateways** and **model catalog** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to platform engineering.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Stable capability boundaries make vendor choices replaceable and governance consistent.
@@ -41,29 +41,80 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Ai Gateways** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Model Catalog** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Shared Retrieval** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Tool Registry** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Platform Engineering** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Ai Gateways
+
+AI gateways centralize model access with auth, rate limits, logging, routing, and policy enforcement for enterprise teams. See the [Ai Gateways concept card](../../concepts/cards/ai-gateways.md).
+
+**Example:** All Bedrock and OpenAI calls flow through gateway applying PII scrub and budget caps.
+
+**Evidence of understanding:** Block direct model endpoint access; verify 100% traffic appears in gateway logs.
+
+### Model Catalog
+
+Model catalog lists approved models with risk tier, eval status, and allowed use cases for developers. See the [Model Catalog concept card](../../concepts/cards/model-catalog.md).
+
+**Example:** Catalog shows gpt-4o approved tier-2; llama-local approved tier-1 air-gapped only.
+
+**Evidence of understanding:** Reject deployment requests for models not in catalog with approved version.
+
+### Shared Retrieval
+
+Shared retrieval services provide governed indexes, embedding pipelines, and search APIs reused across products. See the [Shared Retrieval concept card](../../concepts/cards/shared-retrieval.md).
+
+**Example:** Enterprise policy index serves HR bot and IT bot with tenant filters from one platform team.
+
+**Evidence of understanding:** Measure index freshness SLA and per-tenant isolation in platform tests.
+
+### Tool Registry
+
+Tool registry catalogs approved agent tools with schemas, owners, and security review status. See the [Tool Registry concept card](../../concepts/cards/tool-registry.md).
+
+**Example:** Registry entry for create_jira_ticket includes schema v2 and pentest date.
+
+**Evidence of understanding:** Agents may only bind tools present in registry with current approval.
+
+### Platform Engineering
+
+Platform engineering builds self-service AI infrastructure—gateways, eval harnesses, templates—so product teams ship faster safely. See the [Platform Engineering concept card](../../concepts/cards/platform-engineering.md).
+
+**Example:** Platform provides RAG starter kit with auth, ingest, eval wired to corporate SSO.
+
+**Evidence of understanding:** Track internal customer time-to-first-production-feature as platform KPI.
+
 ## Worked example
 
 **Book scenario:** An architect must implement the same governed AI capability on different cloud providers.
 
-**Chapter focus:** Decompose platforms into gateways, model access, retrieval, tool integration, identity, policy, observability, evaluation, and developer experience.
+**Situation:** An architect must implement the same governed AI capability on different cloud providers without rewriting product logic each migration.
 
-Apply this chapter in four moves:
+**Baseline:** Vendor-specific SDK calls scattered through application code.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where AI gateways and model catalog enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Draw logical platform: gateway, model catalog, shared retrieval, tool registry, identity, policy, observability, eval service—name products only after capabilities mapped.
 
-The design question is: **What evidence would show that enterprise ai building blocks addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: swap model provider behind gateway. (2) Boundary: shared retrieval ACL model portable. (3) Adversarial: leaky abstraction hiding provider limits (context size).
+
+**Measurement:** Portability score (# provider-locked calls), time to map architecture on second cloud.
+
+**Design question:** Which capability boundary must stay stable across vendors?
+
+## Chapter hook
+
+Run this short snippet first to anchor **enterprise ai building blocks** before the book-level sample:
+
+```python
+CHAPTER = "12.1"
+print("chapter hook:", CHAPTER)
+capabilities = ["gateway", "retrieval", "tool registry", "identity", "observability"]
+products = {"aws": "bedrock", "azure": "foundry", "gcp": "vertex"}
+for cap in capabilities:
+    print(cap, "maps to provider-specific service behind interface")
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **AI gateways** or **model catalog** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +135,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Draw a logical platform architecture before naming products.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without ai gateways and record quality, latency, and failure cases.
+2. **Mechanism:** Add model catalog while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when enterprise ai building blocks earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Cloud and Enterprise AI Architecture**, make the following explicit for **enterprise ai building blocks**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns ai gateways versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the shared retrieval boundary expose? |
+| **Evidence** | Which eval slices prove enterprise ai building blocks meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the platform engineering boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover ai gateways or model catalog | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | enterprise ai building blocks is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in platform engineering without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream ai gateways behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Decompose platforms into gateways, model access, retrieval, tool integration, identity, policy, observability, evaluation, and developer experience. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of enterprise ai building blocks without explicit ai gateways.
+- **Today:** Engineering teams implement enterprise ai building blocks as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but platform engineering and governance constraints will still require explicit design.
 - **What survives:** Stable capability boundaries make vendor choices replaceable and governance consistent.
 
 ## Knowledge check
 
-1. What problem would remain if AI gateways were removed from the system?
-2. Which observation would distinguish a failure in model catalog from a failure in platform engineering?
-3. What simpler alternative should be the baseline?
+1. Why define logical capabilities before products?
+2. What makes vendor choices replaceable?
+3. What architecture baseline embeds SDKs in app code?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Capabilities survive vendor renames and mergers. Q2: Stable interfaces and owned data. Q3: Direct Bedrock/OpenAI calls everywhere.
 
 ## Mastery questions
 
-1. Explain AI gateways without jargon and give a counterexample.
-2. Compare model catalog with platform engineering using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain AI gateways without jargon and give a counterexample.**
+       *Proficient answer:* ai gateways centralize model access with auth, rate limits, logging, routing, and policy enforcement for enterprise teams. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare model catalog with platform engineering using quality, cost, latency, and risk.**
+       *Proficient answer:* model catalog lists approved models with risk tier, eval status, and allowed use cases for developers; platform engineering builds self-service ai infrastructure—gateways, eval harnesses, templates—so product teams ship faster safely. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after model catalog; authorization before any side effect or retrieval of restricted data; observability at the transition enterprise ai building blocks introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Stable capability boundaries make vendor choices replaceable and governance consistent.
 
 ## Self-assessment rubric
 

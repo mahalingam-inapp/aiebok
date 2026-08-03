@@ -1,9 +1,13 @@
 # Concept Cards
 
-Concept cards are reusable reference pages. Each should state its purpose, prerequisites, intuition, mechanics, engineering practice, evaluation, trade-offs, misconceptions, evolution, and related concepts.
+Curated deep-dive cards plus **361 generated reference cards** in [cards/index.md](cards/index.md).
 
-Current starters: [tokens](tokens.md), [embeddings](embeddings.md), [RAG](rag.md), [evaluation](evaluation.md), and [skills & harnesses](skills-harnesses.md).
+## Featured cards
 
-## Expansion queue
+- [Tokens](tokens.md), [Embeddings](embeddings.md), [RAG](rag.md), [Evaluation](evaluation.md)
+- [Attention](attention.md), [KV Cache](kv-cache.md), [Agents](agents.md)
+- [Prompt Injection](prompt-injection.md), [Structured Output](structured-output.md)
+- [Tool Calling](tool-calling.md), [Fine-Tuning](fine-tuning.md), [Chunking](chunking.md), [Reranking](reranking.md)
+- [Skills & Harnesses](skills-harnesses.md)
 
-Attention, weights, parameters, logits, sampling, context windows, KV cache, structured output, memory, chunking, vector indexes, reranking, tool calling, MCP, planning, agents, fine-tuning, LoRA, quantization, tracing, prompt injection, and model routing.
+See the [full card index](cards/index.md) for every catalog topic.

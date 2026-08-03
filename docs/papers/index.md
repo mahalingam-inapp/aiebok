@@ -2,9 +2,13 @@
 
 Read primary sources to understand how ideas evolve, not to memorize every formula.
 
+## Catalog
+
+**35 reading summaries** in [readings/index.md](readings/index.md).
+
 ## Suggested sequence
 
-Word2Vec → sequence-to-sequence learning → attention → Transformer → BERT/GPT → retrieval-augmented generation → instruction tuning/RLHF → LoRA → ReAct → preference optimization → tool/context protocols → current reasoning and multimodal work.
+Word2Vec → seq2seq → attention → Transformer → BERT/GPT → RAG/DPR → instruction tuning/RLHF → LoRA → ReAct → DPO → tool protocols → agent benchmarks.
 
 ## Seminar rhythm
 
@@ -15,4 +19,4 @@ Word2Vec → sequence-to-sequence learning → attention → Transformer → BER
 5. List limitations and invalid generalizations.
 6. Trace follow-up work and the principle that survived.
 
-Use the [paper reading template](paper-reading-template.md) for every entry. Link to primary sources and record publication/review dates.
+Use the [paper reading template](paper-reading-template.md) for every entry.

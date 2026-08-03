@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated mcp and integration protocols.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why mcp and integration protocols matters using the chapter scenario, not abstract definitions alone.
+- Trace how **MCP** and **resources** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to authentication.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Protocols standardize capability exchange; they do not remove authorization or trust decisions.
@@ -41,29 +41,81 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Mcp** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Resources** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Tool Discovery** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Transports** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Authentication** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### MCP
+
+Model Context Protocol standardizes how clients discover tools, resources, and prompts from servers. It reduces bespoke integration code but not trust decisions. See the [MCP concept card](../../concepts/cards/mcp.md).
+
+**Example:** An MCP server exposes filesystem read tools; the client still enforces path allowlists.
+
+**Evidence of understanding:** Connect a hostile client and verify server rejects out-of-scope resource requests.
+
+### Resources
+
+MCP resources expose readable data—files, records, configs—to clients with URI identifiers. Resource access must respect same authorization as APIs. See the [Resources concept card](../../concepts/cards/resources.md).
+
+**Example:** resource://policy/2024 exposes the PDF bytes; listing must not leak unauthorized URIs.
+
+**Evidence of understanding:** Enumerate resources as unprivileged user and confirm restricted URIs are absent.
+
+### Tool Discovery
+
+Tool discovery lets clients list available tools and schemas at runtime instead of hardcoding integrations. Discovery responses must be filtered by permission. See the [Tool Discovery concept card](../../concepts/cards/tool-discovery.md).
+
+**Example:** A client sees only search_docs, not admin_delete, when connected with read-only scope.
+
+**Evidence of understanding:** Compare discovered tool list across role configurations in automated tests.
+
+### Transports
+
+MCP transports—stdio, SSE, HTTP—carry protocol messages between clients and servers. Choice affects latency, deployment, and security boundaries. See the [Transports concept card](../../concepts/cards/transports.md).
+
+**Example:** Stdio suits local IDE agents; SSE suits remote servers behind auth proxies.
+
+**Evidence of understanding:** Measure round-trip latency for tool call over each transport in your deployment.
+
+### Authentication
+
+Authentication verifies identity of users, clients, and services before access to models, tools, or data. It applies equally to MCP sessions, enterprise assistants, and REST APIs. See the [Authentication concept card](../../concepts/cards/authentication.md).
+
+**Example:** OAuth tokens gate MCP server access; SSO identifies employees before internal doc retrieval.
+
+**Evidence of understanding:** Reject unauthenticated requests and verify token expiry across MCP and HTTP entry points.
+
 ## Worked example
 
 **Book scenario:** A research workflow must plan, call tools, and reject unsupported conclusions.
 
-**Chapter focus:** Understand clients, servers, tools, resources, prompts, discovery, transport, authentication, and protocol security.
+**Situation:** Internal tools expose HR policies via MCP; a hostile client attempts discovery of admin-only resources.
 
-Apply this chapter in four moves:
+**Baseline:** Trust any connected client equally.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where MCP and resources enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Implement local MCP server exposing read tools, authenticate clients, validate hostile list-resources requests, log transport errors, deny escalation paths.
 
-The design question is: **What evidence would show that mcp and integration protocols addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: authorized client lists tools. (2) Boundary: expired token. (3) Adversarial: client requests resource outside declared scope.
+
+**Measurement:** Unauthorized access attempts blocked, discovery latency, audit log completeness.
+
+**Design question:** What does MCP standardize—and what must your org still decide?
+
+## Chapter hook
+
+Run this short snippet first to anchor **mcp and integration protocols** before the book-level sample:
+
+```python
+CHAPTER = "7.5"
+print("chapter hook:", CHAPTER)
+CLIENT_SCOPES = {"analyst": ["search_policy"]}
+REQUEST = {"client": "analyst", "tool": "admin_delete"}
+def authorize(client, tool):
+    return tool in CLIENT_SCOPES.get(client, [])
+print({"allowed": authorize(REQUEST["client"], REQUEST["tool"])})
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **MCP** or **resources** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +136,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Implement a small local MCP server and test a hostile client request.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without mcp and record quality, latency, and failure cases.
+2. **Mechanism:** Add resources while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when mcp and integration protocols earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Reasoning and Tool Use**, make the following explicit for **mcp and integration protocols**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns mcp versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the tool discovery boundary expose? |
+| **Evidence** | Which eval slices prove mcp and integration protocols meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the authentication boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover mcp or resources | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | mcp and integration protocols is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in authentication without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream mcp behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Understand clients, servers, tools, resources, prompts, discovery, transport, authentication, and protocol security. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of mcp and integration protocols without explicit mcp.
+- **Today:** Engineering teams implement mcp and integration protocols as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but authentication and governance constraints will still require explicit design.
 - **What survives:** Protocols standardize capability exchange; they do not remove authorization or trust decisions.
 
 ## Knowledge check
 
-1. What problem would remain if MCP were removed from the system?
-2. Which observation would distinguish a failure in resources from a failure in authentication?
-3. What simpler alternative should be the baseline?
+1. What does MCP standardize versus leave to implementers?
+2. How is tool discovery different from authorization?
+3. What integration baseline has no auth on local tools?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Capability advertisement and transport—not trust decisions. Q2: Discovery lists possibilities; auth gates each call. Q3: Open localhost port executing any JSON command.
 
 ## Mastery questions
 
-1. Explain MCP without jargon and give a counterexample.
-2. Compare resources with authentication using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain MCP without jargon and give a counterexample.**
+       *Proficient answer:* model context protocol standardizes how clients discover tools, resources, and prompts from servers. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare resources with authentication using quality, cost, latency, and risk.**
+       *Proficient answer:* mcp resources expose readable data—files, records, configs—to clients with uri identifiers; authentication verifies identity of users, clients, and services before access to models, tools, or data. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after resources; authorization before any side effect or retrieval of restricted data; observability at the transition mcp and integration protocols introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Protocols standardize capability exchange; they do not remove authorization or trust decisions.
 
 ## Self-assessment rubric
 

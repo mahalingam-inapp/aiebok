@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated inference and sampling.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why inference and sampling matters using the chapter scenario, not abstract definitions alone.
+- Trace how **logits** and **sampling** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to batching.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Generation is repeated conditional prediction shaped by decoding and system context.
@@ -41,29 +41,90 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Logits** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Sampling** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Temperature** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Kv Cache** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Batching** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Logits
+
+Logits are raw pre-softmax scores over the vocabulary for the next token. Decoding policies—temperature, top-k—operate on logits before sampling. See the [Logits concept card](../../concepts/cards/logits.md).
+
+**Example:** Inspecting logits reveals whether the model hesitates between two equally likely tokens.
+
+**Evidence of understanding:** Log top-5 logits for ten prompts and verify sampling changes when temperature increases.
+
+### Sampling
+
+Sampling draws next tokens from the predicted distribution rather than always taking the argmax. It enables diverse outputs but introduces nondeterminism unless seeded. See the [Sampling concept card](../../concepts/cards/sampling.md).
+
+**Example:** Creative writing uses sampling; factual extraction often uses greedy or low-temperature decoding.
+
+**Evidence of understanding:** Generate 20 completions at temperature 0 versus 1 and measure factual consistency.
+
+### Temperature
+
+Temperature scales logits before softmax—lower sharpens the distribution (more deterministic), higher flattens it (more random). It is a primary creativity-versus-consistency knob. See the [Temperature concept card](../../concepts/cards/temperature.md).
+
+**Example:** Temperature 0.2 keeps support answers stable; 1.2 increases phrasing variety for marketing copy.
+
+**Evidence of understanding:** Plot entropy of next-token distribution versus temperature on a fixed prompt set.
+
+### Kv Cache
+
+The KV cache stores key and value tensors for prior tokens during autoregressive decoding, avoiding recomputation of the prefix. Memory grows linearly with context length. See the [Kv Cache concept card](../../concepts/cards/kv-cache.md).
+
+**Example:** Streaming chat reuses cached states for system prompt and prior turns, cutting latency after the first token.
+
+**Evidence of understanding:** Compare tokens-per-second with and without KV cache on a 2k-token prefix.
+
+### Batching
+
+Batching groups requests to amortize GPU kernel overhead, improving throughput at possible latency cost. Continuous batching in servers interleaves sequences of different lengths. See the [Batching concept card](../../concepts/cards/batching.md).
+
+**Example:** Batch size 32 may double throughput versus batch 1 but increase p95 latency for short prompts.
+
+**Evidence of understanding:** Load-test at concurrency 1, 8, and 32; report throughput and p95 latency.
+
 ## Worked example
 
 **Book scenario:** A team must explain why decoding settings change model output and latency.
 
-**Chapter focus:** Trace logits, softmax, temperature, top-k, top-p, streaming, batching, KV cache, prefix cache, and speculative decoding.
+**Situation:** A team must explain why decoding settings change model output and latency when serving incident summaries from a local model.
 
-Apply this chapter in four moves:
+**Baseline:** Greedy decoding (argmax) only—deterministic but often repetitive.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where logits and sampling enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Build sampling playground: logits → temperature-scaled softmax → top-k and top-p filters; simulate KV cache hit on repeated prefix tokens; compare tokens/sec with and without cache.
 
-The design question is: **What evidence would show that inference and sampling addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: temperature=0.7, top_p=0.9. (2) Boundary: temperature→0 approaches greedy. (3) Adversarial: top_k=1 still stochastic if temperature high.
+
+**Measurement:** Output diversity (distinct n-grams), latency per token, cache memory vs prefix length.
+
+**Design question:** When does KV caching stop helping because the prefix changes every request?
+
+## Chapter hook
+
+Run this short snippet first to anchor **inference and sampling** before the book-level sample:
+
+```python
+import random
+logits = [2.0, 1.0, 0.5, 0.1]
+def sample_temp(logits, temp=1.0):
+    scaled = [l/temp for l in logits]
+    m = max(scaled)
+    ex = [math.exp(l-m) for l in scaled]
+    s = sum(ex)
+    probs = [e/s for e in ex]
+    r = random.random()
+    c = 0
+    for i, p in enumerate(probs):
+        c += p
+        if r <= c:
+            return i, probs
+    return len(probs)-1, probs
+import math
+idx, probs = sample_temp(logits, temp=0.8)
+print({"sampled_index": idx, "probs": [round(p, 3) for p in probs]})
+```
+
+Predict the printed values, then change one line tied to **logits** or **sampling** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +145,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Build a sampling playground and compare decoding strategies.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without logits and record quality, latency, and failure cases.
+2. **Mechanism:** Add sampling while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when inference and sampling earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Transformers and Foundation Models**, make the following explicit for **inference and sampling**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns logits versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the temperature boundary expose? |
+| **Evidence** | Which eval slices prove inference and sampling meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the batching boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover logits or sampling | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | inference and sampling is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in batching without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream logits behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Trace logits, softmax, temperature, top-k, top-p, streaming, batching, KV cache, prefix cache, and speculative decoding. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of inference and sampling without explicit logits.
+- **Today:** Engineering teams implement inference and sampling as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but batching and governance constraints will still require explicit design.
 - **What survives:** Generation is repeated conditional prediction shaped by decoding and system context.
 
 ## Knowledge check
 
-1. What problem would remain if logits were removed from the system?
-2. Which observation would distinguish a failure in sampling from a failure in batching?
-3. What simpler alternative should be the baseline?
+1. How does temperature change the sampling distribution?
+2. Why does KV cache reduce latency in autoregressive decoding?
+3. What decoding baseline removes all randomness?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Lower temp sharpens distribution toward argmax; higher flattens it. Q2: Prefix keys/values reused instead of recomputed each step. Q3: Greedy argmax at temperature 0.
 
 ## Mastery questions
 
-1. Explain logits without jargon and give a counterexample.
-2. Compare sampling with batching using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain logits without jargon and give a counterexample.**
+       *Proficient answer:* logits are raw pre-softmax scores over the vocabulary for the next token. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare sampling with batching using quality, cost, latency, and risk.**
+       *Proficient answer:* sampling draws next tokens from the predicted distribution rather than always taking the argmax; batching groups requests to amortize gpu kernel overhead, improving throughput at possible latency cost. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after sampling; authorization before any side effect or retrieval of restricted data; observability at the transition inference and sampling introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Generation is repeated conditional prediction shaped by decoding and system context.
 
 ## Self-assessment rubric
 

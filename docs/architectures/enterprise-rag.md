@@ -2,42 +2,27 @@
 
 ## Goal
 
-Answer employee questions using authorized enterprise sources with citations, freshness controls, and operational evidence.
+Authorized hybrid retrieval with citations and stage evals.
 
-```mermaid
-flowchart TB
-  S[Sources] --> P[Parse, classify, chunk]
-  P --> X[(Lexical/vector indexes)]
-  U[User] --> I[Identity & policy]
-  I --> Q[Query service]
-  Q --> X
-  X --> K[Filter & rerank]
-  K --> C[Context builder]
-  C --> L[LLM gateway]
-  L --> V[Validate & cite]
-  V --> U
-  Q -. traces .-> O[Evaluation & observability]
-  L -. traces .-> O
-```
+## Logical components
+
+| Component | Responsibility |
+|---|---|
+| Ingress | AuthN/Z, rate limits, request routing |
+| Context | Prompt assembly, memory, retrieval |
+| Model access | Inference routing, caching, fallbacks |
+| Tools | Typed integrations with audit |
+| Validation | Schema, policy, citation checks |
+| Observability | Traces, metrics, eval sampling |
 
 ## Critical decisions
 
-| Decision | Options | Key trade-off |
-|---|---|---|
-| Authorization | Filter at retrieval; separate indexes; both | Simplicity versus isolation |
-| Retrieval | Lexical; vector; hybrid | Exactness versus semantic recall |
-| Model | Hosted; self-hosted; routed | Control versus operational burden |
-| Freshness | Events; schedules; on-demand | Cost versus staleness |
-| Citation | Chunk; page; passage | Precision versus implementation effort |
+Document ADRs for tenancy, retrieval strategy, model hosting, human oversight, and eval gates.
 
 ## Failure scenarios
 
-Unauthorized retrieval, stale index, parse loss, missing source, adversarial document, irrelevant top-k, context overflow, unsupported synthesis, provider timeout, and misleading citation.
+Unauthorized access, stale knowledge, tool abuse, invalid structured output, provider outage, eval blind spots.
 
 ## Evaluation
 
-Maintain separate ingestion, authorization, retrieval, grounded-answer, citation, safety, latency, and cost test suites. Add realistic user journeys and high-risk departmental slices.
-
-## Studio exercise
-
-Adapt the design for a hospital, replacing generic assumptions with data classification, clinical review, regional residency, audit retention, and safe failure behavior.
+Define component-level and journey-level metrics before choosing vendors or frameworks.

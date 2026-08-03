@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated human-centered ai ux.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why human-centered ai ux matters using the chapter scenario, not abstract definitions alone.
+- Trace how **uncertainty UX** and **citations** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to accessibility.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Trust grows from control, evidence, and recoverability—not from confident prose.
@@ -41,29 +41,80 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Uncertainty Ux** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Citations** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Correction** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Undo** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Accessibility** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Uncertainty Ux
+
+Uncertainty UX communicates confidence, limits, and alternatives so users calibrate trust. Hiding uncertainty causes overreliance on wrong answers. See the [Uncertainty Ux concept card](../../concepts/cards/uncertainty-ux.md).
+
+**Example:** Show 'I'm not sure—here are sources' instead of definitive tone on weak retrieval.
+
+**Evidence of understanding:** User study: measure appropriate reliance rate with versus without confidence cues.
+
+### Citations
+
+Citations link UI claims to source passages users can verify. They must be accurate, clickable, and adjacent to the supported statement. See the [Citations concept card](../../concepts/cards/citations.md).
+
+**Example:** Refund policy answer includes link jumping to handbook section 4.2.
+
+**Evidence of understanding:** Audit 50 UI citations for precision and broken links monthly.
+
+### Correction
+
+Correction flows let users fix wrong AI outputs and feed improvements—labels, prompts, or models. Without correction, errors repeat silently. See the [Correction concept card](../../concepts/cards/correction.md).
+
+**Example:** Thumbs-down on answer captures expected response for eval set addition.
+
+**Evidence of understanding:** Track correction rate and time-to-incorporate into eval or training.
+
+### Undo
+
+Undo reverses AI-initiated or AI-assisted actions within a safe window. It is essential when actions affect user data or send communications. See the [Undo concept card](../../concepts/cards/undo.md).
+
+**Example:** Auto-drafted email can be undone for 30 seconds before SMTP send.
+
+**Evidence of understanding:** Verify undo restores prior state exactly on ten action types.
+
+### Accessibility
+
+Accessibility ensures AI features work with screen readers, keyboard navigation, and assistive tech—not only visual chat UIs. See the [Accessibility concept card](../../concepts/cards/accessibility.md).
+
+**Example:** Streaming tokens must announce sensibly; citation links need accessible labels.
+
+**Evidence of understanding:** Run WCAG-oriented audit on primary AI flows and fix P1 issues before launch.
+
 ## Worked example
 
 **Book scenario:** A product team must convert a vague AI feature request into testable release evidence.
 
-**Chapter focus:** Design uncertainty, citations, previews, correction, undo, approval, feedback, accessibility, and graceful failure.
+**Situation:** New hires trust the assistant's confident tone; a wrong access grant is hard to undo.
 
-Apply this chapter in four moves:
+**Baseline:** Chat bubble streams answer with no preview or undo.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where uncertainty UX and citations enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Prototype high-risk flow: show policy evidence preview, require explicit approval, offer undo window, surface uncertainty, log corrections for feedback.
 
-The design question is: **What evidence would show that human-centered ai ux addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: low-risk FAQ with citation. (2) Boundary: medium-risk suggestion needing confirm. (3) Adversarial: user rapidly confirms without reading preview.
+
+**Measurement:** Mistake rate, time-on-preview, undo usage, accessibility audit score.
+
+**Design question:** What UX pattern reduces irreversible confirmations without blocking flow entirely?
+
+## Chapter hook
+
+Run this short snippet first to anchor **human-centered ai ux** before the book-level sample:
+
+```python
+CHAPTER = "9.5"
+print("chapter hook:", CHAPTER)
+risk = "high"
+ux = {"preview": True, "approval": risk == "high", "undo_sec": 30 if risk == "high" else 0}
+print(ux)
+print("inspect step", 1)
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **uncertainty UX** or **citations** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +135,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Prototype a high-risk action flow with preview and approval.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without uncertainty ux and record quality, latency, and failure cases.
+2. **Mechanism:** Add citations while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when human-centered ai ux earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **AI Software and Product Engineering**, make the following explicit for **human-centered ai ux**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns uncertainty ux versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the correction boundary expose? |
+| **Evidence** | Which eval slices prove human-centered ai ux meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the accessibility boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover uncertainty ux or citations | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | human-centered ai ux is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in accessibility without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream uncertainty ux behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Design uncertainty, citations, previews, correction, undo, approval, feedback, accessibility, and graceful failure. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of human-centered ai ux without explicit uncertainty ux.
+- **Today:** Engineering teams implement human-centered ai ux as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but accessibility and governance constraints will still require explicit design.
 - **What survives:** Trust grows from control, evidence, and recoverability—not from confident prose.
 
 ## Knowledge check
 
-1. What problem would remain if uncertainty UX were removed from the system?
-2. Which observation would distinguish a failure in citations from a failure in accessibility?
-3. What simpler alternative should be the baseline?
+1. Why does trust come from control and recoverability?
+2. How should citations appear in high-risk flows?
+3. What UX baseline maximizes fluent prose only?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Users trust systems they can verify and reverse. Q2: Inline evidence beside action buttons, not footnotes after confirm. Q3: Streaming confident text with one-click accept.
 
 ## Mastery questions
 
-1. Explain uncertainty UX without jargon and give a counterexample.
-2. Compare citations with accessibility using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain uncertainty UX without jargon and give a counterexample.**
+       *Proficient answer:* uncertainty ux communicates confidence, limits, and alternatives so users calibrate trust. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare citations with accessibility using quality, cost, latency, and risk.**
+       *Proficient answer:* citations link ui claims to source passages users can verify; accessibility ensures ai features work with screen readers, keyboard navigation, and assistive tech—not only visual chat uis. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after citations; authorization before any side effect or retrieval of restricted data; observability at the transition human-centered ai ux introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Trust grows from control, evidence, and recoverability—not from confident prose.
 
 ## Self-assessment rubric
 

@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated engineering with uncertainty.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why engineering with uncertainty matters using the chapter scenario, not abstract definitions alone.
+- Trace how **calibration** and **decision thresholds** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to human review.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Prediction and decision are separate layers; consequences belong in the decision layer.
@@ -41,29 +41,82 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Calibration** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Decision Thresholds** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Expected Cost** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Abstention** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Human Review** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Calibration
+
+Calibration means predicted probabilities align with observed frequencies—70% confidence should be right about 70% of the time. Uncalibrated scores mislead threshold and cost decisions. See the [Calibration concept card](../../concepts/cards/calibration.md).
+
+**Example:** A medical triage model with miscalibrated probabilities causes undertriage when 0.9 confidence actually means 0.6 accuracy.
+
+**Evidence of understanding:** Plot a reliability diagram and report expected calibration error before setting production thresholds.
+
+### Decision Thresholds
+
+Decision thresholds turn continuous scores into actions—approve, escalate, or abstain. They encode business costs and should be tuned on validation data, not defaults. See the [Decision Thresholds concept card](../../concepts/cards/decision-thresholds.md).
+
+**Example:** Raising a fraud threshold reduces false positives but increases missed fraud; the optimum depends on chargeback cost.
+
+**Evidence of understanding:** Sweep thresholds on a validation set and plot precision-recall against expected dollar cost.
+
+### Expected Cost
+
+Expected cost combines probabilities of outcomes with their business costs to rank decisions. It makes asymmetric errors explicit instead of hiding them in accuracy. See the [Expected Cost concept card](../../concepts/cards/expected-cost.md).
+
+**Example:** Approving a loan when P(default)=0.08 is cheap only if the expected loss is below the interest margin.
+
+**Evidence of understanding:** Compute expected cost for three threshold settings and pick the minimum on a labeled validation set.
+
+### Abstention
+
+Abstention lets a system refuse or defer when confidence is insufficient, routing cases to humans or safer paths. It prevents forced wrong answers on ambiguous inputs. See the [Abstention concept card](../../concepts/cards/abstention.md).
+
+**Example:** A benefits bot abstains on incomplete forms instead of guessing eligibility that triggers appeals.
+
+**Evidence of understanding:** Measure coverage (non-abstain rate) versus accuracy on handled cases and set abstention to hit a risk target.
+
+### Human Review
+
+Human review inserts expert judgment for high-impact or low-confidence decisions. Designing the queue—what gets reviewed, SLA, feedback loop—determines ROI. See the [Human Review concept card](../../concepts/cards/human-review.md).
+
+**Example:** Loan officers review only applications where the model score falls in the 0.4–0.6 band, covering 12% of volume at 3× higher fraud catch.
+
+**Evidence of understanding:** Track review queue depth, override rate, and post-review error rate weekly.
+
 ## Worked example
 
 **Book scenario:** A support team must route incidents without mistaking fluent descriptions for reliable decisions.
 
-**Chapter focus:** Translate uncertain predictions into decisions with thresholds, costs, calibration, fallback behavior, and human oversight.
+**Situation:** The classifier outputs P1 probability 0.72; policy must decide whether to page on-call given asymmetric costs of false alarms vs missed outages.
 
-Apply this chapter in four moves:
+**Baseline:** Always page when probability > 0.5 regardless of cost or calibration.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where calibration and decision thresholds enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Plot reliability diagram, pick threshold minimizing expected cost (false page $200 vs missed outage $50k), add abstention band sending borderline tickets to human triage.
 
-The design question is: **What evidence would show that engineering with uncertainty addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: calibrated 0.9 on confirmed outage. (2) Boundary: 0.55 after Platt scaling on small val set. (3) Adversarial: model overconfident on marketing "urgency" language.
+
+**Measurement:** Expected cost curve vs threshold, ECE calibration error, and page rate at chosen policy.
+
+**Design question:** Why should threshold selection happen in a decision layer separate from the scoring model?
+
+## Chapter hook
+
+Run this short snippet first to anchor **engineering with uncertainty** before the book-level sample:
+
+```python
+scores = [0.92, 0.61, 0.48, 0.33]
+COST = {"fp": 200, "fn": 50000}
+def expected_cost(threshold):
+    decisions = [s >= threshold for s in scores]
+    truth = [True, True, False, False]
+    fp = sum(d and not t for d, t in zip(decisions, truth))
+    fn = sum(not d and t for d, t in zip(decisions, truth))
+    return fp * COST["fp"] + fn * COST["fn"]
+for t in [0.5, 0.6, 0.7, 0.8]:
+    print(f"threshold={t} expected_cost={expected_cost(t)}")
+```
+
+Predict the printed values, then change one line tied to **calibration** or **decision thresholds** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +137,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Design a decision policy for a high-cost false-positive scenario.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without calibration and record quality, latency, and failure cases.
+2. **Mechanism:** Add decision thresholds while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when engineering with uncertainty earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Foundations of Intelligence**, make the following explicit for **engineering with uncertainty**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns calibration versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the expected cost boundary expose? |
+| **Evidence** | Which eval slices prove engineering with uncertainty meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the human review boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover calibration or decision thresholds | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | engineering with uncertainty is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in human review without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream calibration behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Translate uncertain predictions into decisions with thresholds, costs, calibration, fallback behavior, and human oversight. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of engineering with uncertainty without explicit calibration.
+- **Today:** Engineering teams implement engineering with uncertainty as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but human review and governance constraints will still require explicit design.
 - **What survives:** Prediction and decision are separate layers; consequences belong in the decision layer.
 
 ## Knowledge check
 
-1. What problem would remain if calibration were removed from the system?
-2. Which observation would distinguish a failure in decision thresholds from a failure in human review?
-3. What simpler alternative should be the baseline?
+1. What goes wrong if you tune decision thresholds on the training set?
+2. How would miscalibration appear in an incident paging policy?
+3. What baseline policy ignores model scores entirely?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Threshold overfits noise, inflates false pages on holdout months. Q2: High scores on non-outages in reliability diagram. Q3: Always-page or keyword-only paging with fixed rules.
 
 ## Mastery questions
 
-1. Explain calibration without jargon and give a counterexample.
-2. Compare decision thresholds with human review using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain calibration without jargon and give a counterexample.**
+       *Proficient answer:* calibration means predicted probabilities align with observed frequencies—70% confidence should be right about 70% of the time. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare decision thresholds with human review using quality, cost, latency, and risk.**
+       *Proficient answer:* decision thresholds turn continuous scores into actions—approve, escalate, or abstain; human review inserts expert judgment for high-impact or low-confidence decisions. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after decision thresholds; authorization before any side effect or retrieval of restricted data; observability at the transition engineering with uncertainty introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Prediction and decision are separate layers; consequences belong in the decision layer.
 
 ## Self-assessment rubric
 

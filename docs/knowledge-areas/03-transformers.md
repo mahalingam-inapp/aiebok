@@ -1,13 +1,32 @@
 # KA 03 — Transformers
 
-## Content plan
+## Purpose
 
-RNN limits; attention; queries, keys, and values; self- and cross-attention; multi-head attention; positional information; residual connections; normalization; feed-forward networks; encoder, decoder, and encoder–decoder systems; training objectives; autoregressive inference; KV caching; scaling laws; mixture of experts; long-context strategies.
+Understand attention, blocks, training, and inference.
 
-## Code practice
+## What you should be able to do
 
-Visualize an attention matrix, implement scaled dot-product attention, assemble a transformer block, and train a tiny character-level language model.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
 
-## Mastery outcome
+## Core topics
 
-Trace how tokens become representations, how attention mixes information, and how repeated next-token prediction creates a generated sequence.
+- [multi-head attention](../concepts/cards/multi-head-attention.md)
+- [KV cache](../concepts/cards/kv-cache.md)
+- [logits](../concepts/cards/logits.md)
+
+## Guided path
+
+- Primary book: [04-transformers-and-foundation-models](../books/04-transformers-and-foundation-models/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Implement attention and compare decoders.

@@ -1,13 +1,32 @@
 # KA 19 — AI Product Engineering
 
-## Content plan
+## Purpose
 
-Problem discovery, jobs-to-be-done, capability fit, prototyping, human-in-the-loop UX, uncertainty communication, citations, correction and undo, feedback loops, trust, accessibility, adoption, experiment design, quality metrics, ROI, pricing, build-versus-buy, organizational change, and product retirement.
+Deliver useful human-centered products.
 
-## Practice
+## What you should be able to do
 
-Prototype one workflow with a non-AI baseline and an AI-assisted variant. Measure task success, time, correction burden, user trust, cost, and failure severity.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
 
-## Product principle
+## Core topics
 
-Optimize the human outcome, not the amount of AI in the solution.
+- [user research](../concepts/cards/user-research.md)
+- [uncertainty UX](../concepts/cards/uncertainty-ux.md)
+- [ROI](../concepts/cards/roi.md)
+
+## Guided path
+
+- Primary book: [09-ai-software-and-product-engineering](../books/09-ai-software-and-product-engineering/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Prototype and experiment with guardrails.

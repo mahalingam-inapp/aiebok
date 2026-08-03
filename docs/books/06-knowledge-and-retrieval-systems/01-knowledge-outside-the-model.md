@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated knowledge outside the model.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why knowledge outside the model matters using the chapter scenario, not abstract definitions alone.
+- Trace how **knowledge freshness** and **grounding** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to fine-tuning.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Put knowledge in the component best suited to update, govern, query, and verify it.
@@ -41,29 +41,83 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Knowledge Freshness** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Grounding** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Structured Data** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Retrieval** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Fine-Tuning** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Knowledge Freshness
+
+Knowledge freshness measures how current stored facts are relative to the real world. Stale indexes cause confident wrong answers until re-ingestion catches up. See the [Knowledge Freshness concept card](../../concepts/cards/knowledge-freshness.md).
+
+**Example:** A travel policy updated yesterday is invisible if the index last synced last month.
+
+**Evidence of understanding:** Track max document age in retrieved sets and alert when any source exceeds SLA staleness.
+
+### Grounding
+
+Grounding ties model statements to verifiable evidence—retrieved passages, database rows, tool outputs. Ungrounded generation is speculation presented as fact. See the [Grounding concept card](../../concepts/cards/grounding.md).
+
+**Example:** Support answers should quote the ticket macro article that authorizes the refund step.
+
+**Evidence of understanding:** Measure percent of claims with valid citations on a labeled answer set.
+
+### Structured Data
+
+Structured data lives in tables, APIs, and graphs with typed fields—better for precise queries than prose retrieval. Hybrid systems route quantitative questions to SQL, not RAG alone. See the [Structured Data concept card](../../concepts/cards/structured-data.md).
+
+**Example:** 'How many open P1 incidents?' needs a database query, not semantic search over runbooks.
+
+**Evidence of understanding:** Route ten numeric questions to structured tools and verify answers match ground truth.
+
+### Retrieval
+
+Retrieval selects candidate evidence from a corpus given a query before ranking and generation. It is candidate generation under relevance and policy constraints—not the final answer. See the [Retrieval concept card](../../concepts/cards/retrieval.md).
+
+**Example:** Hybrid retrieval returns 20 chunks for reranking; generation never sees the full million-document index.
+
+**Evidence of understanding:** Report recall@20 on a labeled query set before tuning downstream prompts.
+
+### Fine-Tuning
+
+Fine-tuning adapts pretrained weights with supervised or preference data when prompts and RAG cannot stabilize behavior. It trades generality and ops simplicity for targeted changes. See the [Fine-Tuning concept card](../../concepts/cards/fine-tuning.md).
+
+**Example:** Support tone and escalation policy may need SFT when prompts drift across thousands of ticket types.
+
+**Evidence of understanding:** Compare fine-tuned and prompt-only models on held-out behavioral eval with rollback plan.
+
 ## Worked example
 
 **Book scenario:** An enterprise assistant must answer from authorized policies and cite the exact passages used.
 
-**Chapter focus:** Decide among direct context, search, databases, knowledge graphs, RAG, fine-tuning, and deterministic rules.
+**Situation:** An enterprise assistant must answer from authorized policies and cite exact passages—product debates RAG vs fine-tuning vs bigger context.
 
-Apply this chapter in four moves:
+**Baseline:** Stuff entire policy PDF into prompt—expensive and still stale.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where knowledge freshness and grounding enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Classify ten requirements (freshness, authorization, structured lookup, style, math) to correct mechanism: retrieval, SQL, tools, fine-tune, or rules; document governance for each.
 
-The design question is: **What evidence would show that knowledge outside the model addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: weekly-updated FAQ. (2) Boundary: numeric entitlement needing database query. (3) Adversarial: requirement for legally provable citation from signed PDF page.
+
+**Measurement:** Correct mechanism assignment vs expert review; projected cost and freshness SLA per choice.
+
+**Design question:** Which requirement forces retrieval even if fine-tuning improves tone?
+
+## Chapter hook
+
+Run this short snippet first to anchor **knowledge outside the model** before the book-level sample:
+
+```python
+CHAPTER = "6.1"
+print("chapter hook:", CHAPTER)
+requirements = [
+    ("cite exact page", "RAG"),
+    ("friendly tone", "prompt/finetune"),
+    ("live headcount", "SQL tool"),
+]
+for req, mechanism in requirements:
+    print({"requirement": req, "mechanism": mechanism})
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **knowledge freshness** or **grounding** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +138,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Classify ten requirements by the correct knowledge mechanism.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without knowledge freshness and record quality, latency, and failure cases.
+2. **Mechanism:** Add grounding while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when knowledge outside the model earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Knowledge and Retrieval Systems**, make the following explicit for **knowledge outside the model**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns knowledge freshness versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the structured data boundary expose? |
+| **Evidence** | Which eval slices prove knowledge outside the model meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the fine-tuning boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover knowledge freshness or grounding | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | knowledge outside the model is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in fine-tuning without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream knowledge freshness behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Decide among direct context, search, databases, knowledge graphs, RAG, fine-tuning, and deterministic rules. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of knowledge outside the model without explicit knowledge freshness.
+- **Today:** Engineering teams implement knowledge outside the model as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but fine-tuning and governance constraints will still require explicit design.
 - **What survives:** Put knowledge in the component best suited to update, govern, query, and verify it.
 
 ## Knowledge check
 
-1. What problem would remain if knowledge freshness were removed from the system?
-2. Which observation would distinguish a failure in grounding from a failure in fine-tuning?
-3. What simpler alternative should be the baseline?
+1. Why put knowledge in the component best suited to update and verify it?
+2. When does fine-tuning fail freshness requirements?
+3. What baseline uses only larger context windows?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Misplaced knowledge breaks governance and update paths. Q2: Weights lag policy changes; cannot cite reliably. Q3: Whole-corpus prompt stuffing without retrieval.
 
 ## Mastery questions
 
-1. Explain knowledge freshness without jargon and give a counterexample.
-2. Compare grounding with fine-tuning using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain knowledge freshness without jargon and give a counterexample.**
+       *Proficient answer:* knowledge freshness measures how current stored facts are relative to the real world. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare grounding with fine-tuning using quality, cost, latency, and risk.**
+       *Proficient answer:* grounding ties model statements to verifiable evidence—retrieved passages, database rows, tool outputs; fine-tuning adapts pretrained weights with supervised or preference data when prompts and rag cannot stabilize behavior. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after grounding; authorization before any side effect or retrieval of restricted data; observability at the transition knowledge outside the model introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Put knowledge in the component best suited to update, govern, query, and verify it.
 
 ## Self-assessment rubric
 

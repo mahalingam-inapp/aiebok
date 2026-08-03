@@ -1,18 +1,32 @@
 # KA 02 — Language & Representation
 
-## Content plan
+## Purpose
 
-- Syntax, semantics, pragmatics, ambiguity, reference, and intent
-- Corpora, vocabulary, Unicode, normalization, and tokenization
-- One-hot, sparse, dense, word, sentence, and multimodal representations
-- BPE, WordPiece, SentencePiece, positional representation, and context
-- Dot product, cosine similarity, distance, clustering, and nearest neighbors
-- Embedding model selection, multilingual behavior, drift, and evaluation
+Make language computable for search and models.
 
-## Code practice
+## What you should be able to do
 
-Write a toy tokenizer, calculate cosine similarity without libraries, and build semantic search. Start with [the embeddings card](../concepts/embeddings.md).
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
+
+## Core topics
+
+- [vocabulary](../concepts/cards/vocabulary.md)
+- [word embeddings](../concepts/cards/word-embeddings.md)
+- [BM25](../concepts/cards/bm25.md)
+
+## Guided path
+
+- Primary book: [03-language-and-representation](../books/03-language-and-representation/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
 
 ## Architecture studio
 
-Design a multilingual semantic search service and identify where normalization, model choice, privacy, and re-indexing matter.
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Build lexical and semantic search baselines.

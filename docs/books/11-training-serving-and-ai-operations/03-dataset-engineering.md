@@ -18,11 +18,11 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated dataset engineering.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+- Explain why dataset engineering matters using the chapter scenario, not abstract definitions alone.
+- Trace how **data curation** and **synthetic data** interact in the book-level visual.
+- Implement or design the bounded practice while holding evaluation cases fixed.
+- Diagnose at least two failure modes specific to data cards.
+- Decide where this chapter's mechanism belongs in a production architecture and what evidence justifies it.
 
 !!! note "Enduring principle"
     Data design is model behavior design.
@@ -41,29 +41,80 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+The concepts form a system, not a vocabulary list. Read each section below before attempting the practice exercise.
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-| **Data Curation** | establishes the first representation or decision boundary | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Synthetic Data** | adds the main transformation or comparison | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Deduplication** | connects the mechanism to the surrounding system | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Contamination** | controls quality, efficiency, or behavior | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
-| **Data Cards** | exposes an important operating constraint or failure mode | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |
+### Data Curation
+
+Data curation selects, cleans, and balances training examples for quality over quantity. Garbage data teaches garbage behavior. See the [Data Curation concept card](../../concepts/cards/data-curation.md).
+
+**Example:** Removing toxic and duplicate examples improves fine-tune safety more than doubling raw size.
+
+**Evidence of understanding:** Document inclusion rules and manual audit sample of 100 rows pre-training.
+
+### Synthetic Data
+
+Synthetic data generates training examples via models or rules—useful when real data is scarce but risks model collapse if overused. See the [Synthetic Data concept card](../../concepts/cards/synthetic-data.md).
+
+**Example:** GPT generates varied phrasings of intent labels to augment small classifier set.
+
+**Evidence of understanding:** Compare fine-tune with synthetic augmentation versus real-only on held-out real eval.
+
+### Deduplication
+
+Deduplication removes near-duplicate training examples that inflate metrics and memorization. See the [Deduplication concept card](../../concepts/cards/deduplication.md).
+
+**Example:** Duplicate FAQ pairs in SFT data cause verbatim regurgitation in deployment.
+
+**Evidence of understanding:** Report duplicate rate before/after MinHash dedup on training corpus.
+
+### Contamination
+
+Contamination occurs when eval examples leak into training data, inflating benchmark scores. See the [Contamination concept card](../../concepts/cards/contamination.md).
+
+**Example:** Near-duplicate test questions in fine-tune set invalidate held-out claims.
+
+**Evidence of understanding:** Run n-gram or embedding overlap check between train and eval; zero high overlap pairs.
+
+### Data Cards
+
+Data cards document dataset sources, collection, demographics, limitations, and recommended uses—parallel to model cards. See the [Data Cards concept card](../../concepts/cards/data-cards.md).
+
+**Example:** Fine-tune data card lists languages, date range, PII handling, and opt-out process.
+
+**Evidence of understanding:** Publish data card with every dataset version in registry.
+
 ## Worked example
 
 **Book scenario:** A service must route requests across models while controlling cost and retaining rollback.
 
-**Chapter focus:** Curate, label, deduplicate, filter, balance, version, document, and protect training and evaluation data.
+**Situation:** Fine-tune dataset assembled from historical chats; legal discovers eval tickets leaked into training.
 
-Apply this chapter in four moves:
+**Baseline:** Dump all logs into JSONL without dedup or contamination checks.
 
-1. Write the observable task and the simplest baseline before selecting a model or framework.
-2. Locate where data curation and synthetic data enter the book-level visual above.
-3. Create one normal case, one boundary case, and one adversarial or failure case.
-4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
+**Application:** Curate splits, deduplicate near-duplicates, filter PII, version dataset, write data card, run contamination scan against eval sets, document synthetic augmentation choices.
 
-The design question is: **What evidence would show that dataset engineering addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+**Test cases:** (1) Normal: clean curated set. (2) Boundary: synthetic examples labeled as such. (3) Adversarial: near-duplicate paraphrases of eval cases in train.
+
+**Measurement:** Contamination hits (target zero), dedup ratio, label error rate on audit sample.
+
+**Design question:** Which check catches eval leakage that random splitting misses?
+
+## Chapter hook
+
+Run this short snippet first to anchor **dataset engineering** before the book-level sample:
+
+```python
+CHAPTER = "11.3"
+print("chapter hook:", CHAPTER)
+train = {"case-101", "case-102", "case-103"}
+eval = {"case-103", "case-200"}
+leak = train & eval
+print({"leaked_ids": sorted(leak)})
+print("---")
+print("change one input above, predict output, re-run")
+```
+
+Predict the printed values, then change one line tied to **data curation** or **synthetic data** and observe how the chapter mechanism moves.
 
 ## Runnable code sample
 
@@ -84,54 +135,69 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 **Build:** Create a data card and contamination check for a small dataset.
 
-Work in three passes:
+Work in three passes tailored to this chapter:
 
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
+1. **Baseline:** Implement the task without data curation and record quality, latency, and failure cases.
+2. **Mechanism:** Add synthetic data while keeping inputs and evaluation fixed; note what changed in intermediate state.
+3. **Judgment:** Compare outcomes on normal, boundary, and adversarial cases; document when dataset engineering earns its operational cost.
 
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
 ## Architecture lens
 
-For a production design, make the following explicit:
+For a production design in **Training, Serving, and AI Operations**, make the following explicit for **dataset engineering**:
 
 | Concern | Question to answer |
 |---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+| **Ownership** | Which service owns data curation versus downstream consumers of its output? |
+| **Contract** | What typed inputs, outputs, errors, and version does the deduplication boundary expose? |
+| **Evidence** | Which eval slices prove dataset engineering meets requirements before and after each release? |
+| **Security** | What untrusted data crosses the data cards boundary and how is it sanitized or authorized? |
+| **Operations** | What is logged at this chapter's transition, what triggers retry or rollback, and what is cached? |
+| **Economics** | Which resource—tokens, retrieval calls, GPU seconds, human review—dominates cost for this mechanism? |
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+Reproduce failures at the chapter boundary—do not debug only final output.
+
+| Failure | Symptom | Likely cause | First response |
+|---|---|---|---|
+| **Baseline illusion** | The system looks fine on demo prompts but fails on the book scenario | Evaluation cases do not cover data curation or synthetic data | Add the chapter's normal, boundary, and adversarial cases before tuning |
+| **Mechanism mismatch** | Adding complexity does not improve the measured outcome | dataset engineering is applied at the wrong layer or without fixing inputs | Trace the book visual and verify the transition this chapter owns |
+| **Silent degradation** | Outputs remain fluent while decisions become wrong | Failure in data cards without observability at that boundary | Log intermediate state, version config, and compare against the baseline |
+| **Operational drift** | Quality changes after deploy though prompts are unchanged | Data, permissions, or upstream data curation behavior shifted | Pin versions, inspect ingestion and policy filters, re-run slice evals |
+
+Curate, label, deduplicate, filter, balance, version, document, and protect training and evaluation data. When triaging, preserve full inputs, retrieved evidence, tool traces, and model or index versions.
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
+- **Yesterday:** Manual playbooks, brittle rules, or single-pass models handled parts of dataset engineering without explicit data curation.
+- **Today:** Engineering teams implement dataset engineering as testable components with baselines, typed boundaries, and stage-specific evaluation.
+- **Tomorrow:** Better automation may reduce toil, but data cards and governance constraints will still require explicit design.
 - **What survives:** Data design is model behavior design.
 
 ## Knowledge check
 
-1. What problem would remain if data curation were removed from the system?
-2. Which observation would distinguish a failure in synthetic data from a failure in data cards?
-3. What simpler alternative should be the baseline?
+1. Why is data design model behavior design?
+2. How does deduplication affect generalization estimates?
+3. What dataset baseline uses random split only?
 
 ??? question "Answer guidance"
-    A strong answer names an observable failure, traces it to a specific boundary in the chapter visual, and proposes a test that could disconfirm the explanation. The baseline should remove the chapter mechanism while holding the task and evaluation cases fixed.
+    Q1: Labels, balance, and contamination define what model learns. Q2: Duplicates inflate train metrics vs honest generalization. Q3: Train/test split without near-dup or ID checks.
 
 ## Mastery questions
 
-1. Explain data curation without jargon and give a counterexample.
-2. Compare synthetic data with data cards using quality, cost, latency, and risk.
-3. Design a minimal experiment that tests the chapter's central claim.
-4. Identify which component should own validation, authorization, and observability.
-5. State what would remain true if today's leading libraries and vendors disappeared.
+??? tip "Model answers (proficient level)"
+        1. **Explain data curation without jargon and give a counterexample.**
+       *Proficient answer:* data curation selects, cleans, and balances training examples for quality over quantity. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
+    2. **Compare synthetic data with data cards using quality, cost, latency, and risk.**
+       *Proficient answer:* synthetic data generates training examples via models or rules—useful when real data is scarce but risks model collapse if overused; data cards document dataset sources, collection, demographics, limitations, and recommended uses—parallel to model cards. Trade quality gains against operational and security cost on the chapter scenario.
+    3. **Design a minimal experiment that tests the chapter's central claim.**
+       *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
+    4. **Identify which component should own validation, authorization, and observability.**
+       *Proficient answer:* Validation belongs at the typed boundary after synthetic data; authorization before any side effect or retrieval of restricted data; observability at the transition dataset engineering introduces in the book visual.
+    5. **State what would remain true if today's leading libraries and vendors disappeared.**
+       *Proficient answer:* Data design is model behavior design.
 
 ## Self-assessment rubric
 

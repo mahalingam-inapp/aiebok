@@ -1,13 +1,32 @@
-# KA 05 — Prompt & Context Engineering
+# KA 05 — Prompt & Context
 
-## Content plan
+## Purpose
 
-Instructions, roles, examples, delimiters, structured output, schemas, tool descriptions, instruction hierarchy, prompt injection boundaries, context windows, token budgets, compression, pruning, ranking, conversation state, working/session/long-term memory, prompt compilation, caching, and context observability.
+Engineer reliable inputs, state, and outputs.
 
-## Code practice
+## What you should be able to do
 
-Build a prompt assembler with explicit sections and token budgets. Add conversation summarization, retrieval memory, validation, retries, and tests for instruction conflicts.
+- Explain the central mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each core mechanism
+- Evaluate quality, latency, cost, safety, and operational consequences
+- Defend architecture choices with measured evidence
 
-## Enduring principle
+## Core topics
 
-Model behavior is shaped by the information and constraints available at inference time; “memory” is usually a system that selects and reconstructs context.
+- [context windows](../concepts/cards/context-windows.md)
+- [JSON Schema](../concepts/cards/json-schema.md)
+- [prompt injection](../concepts/cards/prompt-injection.md)
+
+## Guided path
+
+- Primary book: [05-prompt-and-context-engineering](../books/05-prompt-and-context-engineering/index.md)
+- Concept cards: [cards index](../concepts/cards/index.md)
+- Matching labs: search `labs/` for this knowledge area number
+
+## Architecture studio
+
+Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+
+## Practice project
+
+Build a context engine with tests.
