@@ -37,6 +37,7 @@ python scripts/generate_reference_views.py
 python scripts/generate_featured_concepts.py
 python scripts/generate_lab_notebooks.py
 python scripts/generate_pdf.py
+python scripts/generate_progress_manifest.py
 python scripts/validate_content.py
 python scripts/audit_book_coverage.py
 mkdocs build --strict
@@ -51,7 +52,7 @@ The published site is **static HTML only** (MkDocs → GitHub Actions → Pages)
 | Read docs, search, concept cards | Hosted site |
 | Print full sections | **Reference → Print & Offline** (print-site plugin) |
 | Offline summary PDF | [aiebok-companion.pdf](docs/assets/aiebok-companion.pdf) (built in CI) |
-| Starter lab notebooks | [`labs/*/lab.ipynb`](https://github.com/mahalingam-inapp/aiebok/tree/main/labs) in the repo (also **Labs → Starter Notebooks** on the site) |
+| Starter lab notebooks | <a href="https://github.com/mahalingam-inapp/aiebok/tree/main/labs" target="_blank" rel="noopener"><code>labs/*/lab.ipynb</code></a> in the repo — start at **Labs → Hands-on Start** on the site |
 | Python labs | Local machine, Codespaces, or Dev Container (`.devcontainer/`) |
 
 ## Dev Container / Codespaces

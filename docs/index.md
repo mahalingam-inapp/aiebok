@@ -4,8 +4,9 @@
 
 AIEBOK teaches principles before products and makes implementation, architecture, research literacy, trade-offs, and evolution explicit in every knowledge area.
 
-!!! tip "Begin here"
-    Follow the [first 30 minutes](getting-started/first-30-minutes.md), choose a [learning path](getting-started/learning-paths.md), or enter the [thirteen-book collection](books/index.md).
+!!! tip "New here?"
+    Start with the **[newcomer guide](getting-started/newcomer-guide.md)** (site map + first-week plan), then **[hands-on start](labs/start-here.md)** for Labs 1–5.  
+    For local setup, see [first 30 minutes](getting-started/first-30-minutes.md) or a [learning path](getting-started/learning-paths.md).
 
 ## Publication at a glance
 

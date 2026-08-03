@@ -20,6 +20,10 @@ python main.py
 python -m pytest test_lab.py -q
 ```
 
+## Notebook
+
+Open [`lab.ipynb`](lab.ipynb) for a guided, step-by-step version (sync your final code into `main.py`).
+
 ## Tasks
 
 1. Diagram the state transitions for the default goal.

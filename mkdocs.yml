@@ -69,10 +69,16 @@ markdown_extensions:
 
 extra_css:
   - assets/stylesheets/extra.css
+  - assets/stylesheets/progress-tracker.css
+
+extra_javascript:
+  - assets/javascripts/external-links.js
+  - assets/javascripts/progress-tracker.js
 
 nav:
   - Home: index.md
   - Start Here:
+      - Newcomer Guide: getting-started/newcomer-guide.md
       - Overview: getting-started/index.md
       - First 30 Minutes: getting-started/first-30-minutes.md
       - Learning Paths: getting-started/learning-paths.md
@@ -240,6 +246,7 @@ nav:
       - Azure: cloud/azure.md
       - Google Cloud: cloud/gcp.md
   - Labs:
+      - Hands-on Start: labs/start-here.md
       - Lab Guide: labs/index.md
       - Starter Notebooks: labs/notebooks/index.md
       - Lab Catalog: labs/catalog.md
@@ -264,4 +271,5 @@ nav:
       - Prerequisites: reference/prerequisites.md
       - Unlocks: reference/unlocks.md
       - Print & Offline: reference/print-and-offline.md
+      - Reading Progress: reference/progress-tracker.md
       - Deployment Checklist: reference/deployment-checklist.md

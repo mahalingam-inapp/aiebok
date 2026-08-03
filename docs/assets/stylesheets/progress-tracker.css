@@ -1,0 +1,130 @@
+/* Reading progress bar — static-site friendly, below Material header */
+.aiebok-progress {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--md-default-bg-color);
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+  font-size: 0.72rem;
+}
+
+.aiebok-progress__inner {
+  max-width: 61rem;
+  margin: 0 auto;
+  padding: 0.35rem 0.8rem 0.45rem;
+}
+
+.aiebok-progress__track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--md-default-fg-color--lightest);
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+
+.aiebok-progress__fill {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+  transition: width 0.35s ease;
+}
+
+.aiebok-progress__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.aiebok-progress__stat {
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+  flex: 1 1 auto;
+  min-width: 8rem;
+}
+
+.aiebok-progress__continue {
+  color: var(--md-primary-fg-color);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: min(28rem, 55vw);
+}
+
+.aiebok-progress__continue:hover {
+  text-decoration: underline;
+}
+
+.aiebok-progress__details-btn,
+.aiebok-progress__reset {
+  border: 1px solid var(--md-default-fg-color--lighter);
+  background: transparent;
+  color: var(--md-default-fg-color);
+  border-radius: 0.35rem;
+  padding: 0.15rem 0.55rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.aiebok-progress__details-btn:hover,
+.aiebok-progress__reset:hover {
+  border-color: var(--md-primary-fg-color);
+  color: var(--md-primary-fg-color);
+}
+
+.aiebok-progress__panel {
+  margin-top: 0.55rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.45rem;
+  background: var(--md-code-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.aiebok-progress__hint {
+  margin: 0 0 0.5rem;
+  opacity: 0.85;
+}
+
+.aiebok-progress__trackline {
+  margin: 0.25rem 0;
+}
+
+.aiebok-progress__mark {
+  display: block;
+  margin: 0.35rem 0;
+  cursor: pointer;
+}
+
+.aiebok-progress__manual {
+  margin-top: 0.5rem;
+  font-size: 0.85em;
+}
+
+.aiebok-progress__reset {
+  margin-top: 0.65rem;
+  color: var(--md-typeset-a-color);
+}
+
+.aiebok-page-actions {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .aiebok-progress__continue {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+}
+
+/* Offset anchor scroll below sticky progress bar */
+.md-content {
+  scroll-margin-top: 5.5rem;
+}

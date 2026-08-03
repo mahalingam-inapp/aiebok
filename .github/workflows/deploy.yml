@@ -34,6 +34,7 @@ jobs:
       - run: python scripts/generate_featured_concepts.py
       - run: python scripts/generate_lab_notebooks.py
       - run: python scripts/generate_pdf.py
+      - run: python scripts/generate_progress_manifest.py
       - run: python scripts/validate_content.py
       - run: python scripts/audit_book_coverage.py
       - name: Run educational code samples

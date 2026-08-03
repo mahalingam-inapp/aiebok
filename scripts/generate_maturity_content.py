@@ -582,6 +582,10 @@ python main.py
 python -m pytest test_lab.py -q
 ```
 
+## Notebook
+
+Open [`lab.ipynb`](lab.ipynb) for a guided, step-by-step version (sync your final code into `main.py`).
+
 ## Tasks
 
 {task_lines}
@@ -624,28 +628,6 @@ def upgrade_starter_labs() -> int:
         (lab_dir / "README.md").write_text(
             render_starter_readme(slug, title, objective, book, tasks), encoding="utf-8"
         )
-        if slug == "05-eval-harness":
-            (lab_dir / "test_lab.py").write_text(
-                '''"""Tests for starter lab 05-eval-harness."""
-import subprocess
-import sys
-from pathlib import Path
-
-
-def test_main_prints_release_gate():
-    result = subprocess.run(
-        [sys.executable, str(Path(__file__).parent / "main.py")],
-        capture_output=True,
-        text=True,
-    )
-    assert "score=" in result.stdout
-    assert "release=" in result.stdout
-    assert result.stdout.strip()
-''',
-                encoding="utf-8",
-            )
-        else:
-            (lab_dir / "test_lab.py").write_text(render_starter_test(slug), encoding="utf-8")
     return len(STARTER_LABS)
 
 

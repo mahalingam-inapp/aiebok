@@ -1,7 +1,7 @@
 """Generate Jupyter notebooks for starter labs.
 
 Outputs:
-- labs/<slug>/lab.ipynb — runnable notebook (clone repo, Codespaces, or local Jupyter)
+- labs/<slug>/lab.ipynb — guided notebook (clone repo, Codespaces, or local Jupyter)
 - docs/labs/notebooks/index.md — links to notebook files in the repository
 """
 from __future__ import annotations
@@ -9,53 +9,23 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from lab_notebook_templates import BUILDERS
+from generate_maturity_content import STARTER_LABS
+
 ROOT = Path(__file__).resolve().parents[1]
 LABS = ROOT / "labs"
 NOTEBOOKS = ROOT / "docs" / "labs" / "notebooks"
 
-# GitHub blob links for notebooks (outside docs/ are not served by MkDocs Pages).
 REPO_BLOB = "https://github.com/mahalingam-inapp/aiebok/blob/main"
-
-STARTER_LABS = [
-    ("01-cosine-similarity", "Cosine Similarity"),
-    ("02-semantic-search", "Semantic Search"),
-    ("03-basic-rag", "Basic RAG Stages"),
-    ("04-agent-loop", "Bounded Agent Loop"),
-    ("05-eval-harness", "Evaluation Harness"),
-]
+REPO_ROOT = "https://github.com/mahalingam-inapp/aiebok"
 
 
-def notebook_cells(slug: str, title: str, readme: str, main_py: str) -> list[dict]:
-    return [
-        {
-            "cell_type": "markdown",
-            "metadata": {},
-            "source": [f"# Lab — {title}\n\n{readme.strip()}\n"],
-        },
-        {
-            "cell_type": "code",
-            "metadata": {},
-            "source": main_py.strip().splitlines(keepends=True),
-            "outputs": [],
-            "execution_count": None,
-        },
-        {
-            "cell_type": "markdown",
-            "metadata": {},
-            "source": [
-                "## Next steps\n\n"
-                "- Run `python -m pytest test_lab.py -q` from the lab directory.\n"
-                "- Compare your predictions to actual output.\n"
-                "- See the lab guide on the AIEBOK site for the full catalog.\n",
-            ],
-        },
-    ]
+def repo_link(label: str, url: str) -> str:
+    """Markdown link that opens the repository in a new tab (attr_list + site JS)."""
+    return f'[{label}]({url}){{target="_blank" rel="noopener"}}'
 
 
 def write_ipynb(slug: str, title: str) -> Path:
-    lab_dir = LABS / slug
-    readme = (lab_dir / "README.md").read_text(encoding="utf-8") if (lab_dir / "README.md").is_file() else ""
-    main_py = (lab_dir / "main.py").read_text(encoding="utf-8")
     nb = {
         "nbformat": 4,
         "nbformat_minor": 5,
@@ -67,9 +37,9 @@ def write_ipynb(slug: str, title: str) -> Path:
             },
             "language_info": {"name": "python", "pygments_lexer": "ipython3"},
         },
-        "cells": notebook_cells(slug, title, readme, main_py),
+        "cells": BUILDERS[slug](),
     }
-    path = lab_dir / "lab.ipynb"
+    path = LABS / slug / "lab.ipynb"
     path.write_text(json.dumps(nb, indent=2) + "\n", encoding="utf-8")
     return path
 
@@ -83,14 +53,21 @@ def update_notebooks_index() -> None:
     lines = [
         "# Starter Lab Notebooks",
         "",
-        "Notebooks live in the repository under `labs/` (not in the static GitHub Pages site). "
-        "Clone the repo, open a Codespace, or use the Dev Container, then open the notebook path below.",
+        "Guided notebooks live in the repository under `labs/` (not on the static GitHub Pages site). "
+        "Clone the "
+        + repo_link("repository", REPO_ROOT)
+        + ", open a Codespace, or use the Dev Container, "
+        "then open the notebook path below.",
+        "",
+        "!!! tip \"New here?\"",
+        "    Follow the [hands-on start](../start-here.md) page for the recommended lab order.",
         "",
         "| Lab | Notebook in repo |",
         "|---|---|",
     ]
-    for slug, title in STARTER_LABS:
-        lines.append(f"| {title} | [`labs/{slug}/lab.ipynb`]({notebook_href(slug)}) |")
+    for slug, title, *_ in STARTER_LABS:
+        path = f"labs/{slug}/lab.ipynb"
+        lines.append(f"| {title} | {repo_link(f'`{path}`', notebook_href(slug))} |")
     (NOTEBOOKS / "index.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -98,6 +75,8 @@ def update_labs_index() -> None:
     index = ROOT / "docs" / "labs" / "index.md"
     lines = [
         "# Lab Guide",
+        "",
+        "**New?** Start with **[Hands-on start](start-here.md)** — five starter labs in order with book chapters and notebook links.",
         "",
         "**78 chapter labs** plus five foundational starter labs with notebooks. "
         "See [catalog.md](catalog.md) for the full list.",
@@ -107,11 +86,12 @@ def update_labs_index() -> None:
         "| Starter | Concept | Run | Notebook |",
         "|---:|---|---|---|",
     ]
-    for slug, title in STARTER_LABS:
+    for slug, title, *_ in STARTER_LABS:
+        path = f"labs/{slug}/lab.ipynb"
         lines.append(
             f"| {slug.split('-')[0]} | {title} | "
             f"`python labs/{slug}/main.py` | "
-            f"[`labs/{slug}/lab.ipynb`]({notebook_href(slug)}) |"
+            f"{repo_link(f'`{path}`', notebook_href(slug))} |"
         )
     text = "\n".join(lines) + "\n"
     text += """
@@ -120,15 +100,15 @@ Chapter labs follow `labs/BBCC-topic/main.py` where `BB` is book number and `CC`
 ## Lab standard
 
 Every chapter lab includes `main.py`, `test_lab.py`, README, and a docs page aligned to the matching book chapter.
-Starter labs also include `lab.ipynb` in the repository for Jupyter or Codespaces.
+Starter labs add a guided `lab.ipynb` in the repository for Jupyter or Codespaces.
 """
     index.write_text(text, encoding="utf-8")
 
 
 def main() -> None:
     count = 0
-    for slug, title in STARTER_LABS:
-        if not (LABS / slug / "main.py").is_file():
+    for slug, title, *_ in STARTER_LABS:
+        if slug not in BUILDERS or not (LABS / slug / "main.py").is_file():
             continue
         write_ipynb(slug, title)
         count += 1

@@ -28,7 +28,7 @@ def execute(action: str) -> str:
     return outcomes[action]
 
 
-def run(goal: str) -> State:
+def run(goal: str, *, verbose: bool = True) -> State:
     state = State(goal=goal)
     while not state.done and state.step < state.max_steps:
         action = plan(state)
@@ -36,7 +36,8 @@ def run(goal: str) -> State:
         state.observations.append(observation)
         state.step += 1
         state.done = observation == "result verified"
-        print({"step": state.step, "action": action, "observation": observation})
+        if verbose:
+            print({"step": state.step, "action": action, "observation": observation})
     return state
 
 
