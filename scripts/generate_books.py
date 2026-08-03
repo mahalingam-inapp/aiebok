@@ -6,6 +6,17 @@ depends on this script. Edit the catalog, rerun, review the diff, then build.
 from pathlib import Path
 import re
 
+from chapter_enrichments import (
+    architecture_lens,
+    engineering_practice,
+    evolution_lens,
+    failure_clinic,
+    learning_objectives,
+    mastery_exemplars,
+    render_chapter_hook,
+)
+from concept_library import render_core_concepts
+
 ROOT = Path(__file__).resolve().parents[1]
 BOOKS_DIR = ROOT / "docs" / "books"
 
@@ -277,26 +288,14 @@ EXPECTED_OBSERVATIONS = [
 
 def render_chapter(book_no: int, chapter_no: int, book: dict, chapter: tuple) -> str:
     title, summary, topics, practice, principle = chapter
-    roles = [
-        "establishes the first representation or decision boundary",
-        "adds the main transformation or comparison",
-        "connects the mechanism to the surrounding system",
-        "controls quality, efficiency, or behavior",
-        "exposes an important operating constraint or failure mode",
-    ]
-    topic_lines = "\n".join(
-        f"| **{topic.title()}** | {roles[i]} | Define inputs and outputs; construct a minimal example; identify one invalid assumption. |"
-        for i, topic in enumerate(topics)
-    )
-    mastery = "\n".join(
-        [
-            f"1. Explain {topics[0]} without jargon and give a counterexample.",
-            f"2. Compare {topics[1]} with {topics[-1]} using quality, cost, latency, and risk.",
-            f"3. Design a minimal experiment that tests the chapter's central claim.",
-            "4. Identify which component should own validation, authorization, and observability.",
-            "5. State what would remain true if today's leading libraries and vendors disappeared.",
-        ]
-    )
+    core = render_core_concepts(topics, summary)
+    objectives = learning_objectives(title, topics, summary)
+    practice_block = engineering_practice(practice, topics, title)
+    failures = failure_clinic(title, topics, summary)
+    architecture = architecture_lens(title, topics, book["title"])
+    evolution = evolution_lens(title, topics, principle)
+    hook = render_chapter_hook(title, topics, book_no, chapter_no)
+    mastery = mastery_exemplars(title, topics, principle)
     stages = VISUAL_STAGES[book_no - 1]
     diagram = "\n".join(
         f"  N{i}[\"{stage}\"] --> N{i+1}[\"{stages[i+1]}\"]"
@@ -325,11 +324,7 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 
 ## Learning objectives
 
-- Explain the problem that motivated {title.lower()}.
-- Connect the chapter's concepts into one causal mental model.
-- Implement or design the bounded practice exercise.
-- Evaluate quality, latency, cost, safety, and operational consequences.
-- Distinguish enduring principles from current products and APIs.
+{objectives}
 
 !!! note "Enduring principle"
     {principle}
@@ -345,11 +340,8 @@ Read the visual from left to right, then trace failures from right to left. The 
 
 ## Core concepts
 
-The concepts form a system, not a vocabulary list. Read across the table before studying any row in isolation.
+{core}
 
-| Concept | Role in this chapter | Evidence of understanding |
-|---|---|---|
-{topic_lines}
 ## Worked example
 
 **Book scenario:** {scenario}
@@ -364,6 +356,8 @@ Apply this chapter in four moves:
 4. Compare the result using a task-quality measure plus latency, cost, and risk notes.
 
 The design question is: **What evidence would show that {title.lower()} addresses this chapter's problem better than the baseline?** Answer with measured observations rather than intuition alone.
+
+{hook}
 
 ## Runnable code sample
 
@@ -382,39 +376,19 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 ## Engineering practice
 
-**Build:** {practice}
-
-Work in three passes:
-
-1. Establish the simplest deterministic or naive baseline.
-2. Add the chapter mechanism while keeping inputs and evaluation fixed.
-3. Compare outcomes, inspect failures, and document when the extra complexity is justified.
-
-Capture the code or diagram, assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
+{practice_block}
 
 ## Architecture lens
 
-For a production design, make the following explicit:
-
-| Concern | Question to answer |
-|---|---|
-| Boundary | Which component owns this capability? |
-| Contract | What are its inputs, outputs, errors, and version? |
-| Evidence | How will quality be measured before and after release? |
-| Security | What data, identity, permission, or misuse risk crosses the boundary? |
-| Operations | What is traced, monitored, cached, retried, and rolled back? |
-| Economics | Which resource drives latency and cost, and what is the budget? |
+{architecture}
 
 ## Failure clinic
 
-Do not debug only the final output. Reproduce the failure, preserve the full input and versioned configuration, inspect intermediate state, compare a baseline, and classify the cause. Typical categories are missing or biased data, representation loss, incorrect assumptions, weak retrieval or planning, ambiguous contracts, invalid output, excessive autonomy, authorization gaps, and evaluation mismatch.
+{failures}
 
 ## Evolution lens
 
-- **Yesterday:** identify the earlier manual, symbolic, statistical, or single-model approach.
-- **Today:** describe the current engineering pattern without tying the principle to one vendor.
-- **Tomorrow:** look for better representations, automatic optimization, stronger verification, lower cost, and clearer control.
-- **What survives:** {principle}
+{evolution}
 
 ## Knowledge check
 
@@ -427,7 +401,8 @@ Do not debug only the final output. Reproduce the failure, preserve the full inp
 
 ## Mastery questions
 
-{mastery}
+??? tip "Model answers (proficient level)"
+    {mastery}
 
 ## Self-assessment rubric
 
