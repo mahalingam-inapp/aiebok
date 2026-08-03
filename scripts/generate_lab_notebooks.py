@@ -1,19 +1,20 @@
-"""Generate Jupyter notebooks and static HTML exports for starter labs.
+"""Generate Jupyter notebooks for starter labs.
 
 Outputs:
-- labs/<slug>/lab.ipynb — runnable notebook (GitHub / Codespaces / local)
-- docs/labs/notebooks/<slug>.html — static HTML for GitHub Pages (no Jupyter server)
+- labs/<slug>/lab.ipynb — runnable notebook (clone repo, Codespaces, or local Jupyter)
+- docs/labs/notebooks/index.md — links to notebook files in the repository
 """
 from __future__ import annotations
 
 import json
-import subprocess
-import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 LABS = ROOT / "labs"
 NOTEBOOKS = ROOT / "docs" / "labs" / "notebooks"
+
+# GitHub blob links for notebooks (outside docs/ are not served by MkDocs Pages).
+REPO_BLOB = "https://github.com/mahalingam-inapp/aiebok/blob/main"
 
 STARTER_LABS = [
     ("01-cosine-similarity", "Cosine Similarity"),
@@ -45,7 +46,7 @@ def notebook_cells(slug: str, title: str, readme: str, main_py: str) -> list[dic
                 "## Next steps\n\n"
                 "- Run `python -m pytest test_lab.py -q` from the lab directory.\n"
                 "- Compare your predictions to actual output.\n"
-                "- See the [lab guide](../index.md) for the full catalog.\n",
+                "- See the lab guide on the AIEBOK site for the full catalog.\n",
             ],
         },
     ]
@@ -73,25 +74,8 @@ def write_ipynb(slug: str, title: str) -> Path:
     return path
 
 
-def export_html(ipynb: Path, slug: str) -> None:
-    NOTEBOOKS.mkdir(parents=True, exist_ok=True)
-    out = NOTEBOOKS / f"{slug}.html"
-    subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "jupyter",
-            "nbconvert",
-            "--to",
-            "html",
-            "--output",
-            str(out.with_suffix("")),
-            str(ipynb),
-        ],
-        check=True,
-        capture_output=True,
-        text=True,
-    )
+def notebook_href(slug: str) -> str:
+    return f"{REPO_BLOB}/labs/{slug}/lab.ipynb"
 
 
 def update_notebooks_index() -> None:
@@ -99,12 +83,14 @@ def update_notebooks_index() -> None:
     lines = [
         "# Starter Lab Notebooks",
         "",
-        "Static HTML exports for GitHub Pages (no Jupyter server required). "
-        "Download `.ipynb` from each lab directory under `labs/` for interactive use.",
+        "Notebooks live in the repository under `labs/` (not in the static GitHub Pages site). "
+        "Clone the repo, open a Codespace, or use the Dev Container, then open the notebook path below.",
         "",
+        "| Lab | Notebook in repo |",
+        "|---|---|",
     ]
     for slug, title in STARTER_LABS:
-        lines.append(f"- [{title}]({slug}.html) — also `labs/{slug}/lab.ipynb`")
+        lines.append(f"| {title} | [`labs/{slug}/lab.ipynb`]({notebook_href(slug)}) |")
     (NOTEBOOKS / "index.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -125,10 +111,8 @@ def update_labs_index() -> None:
         lines.append(
             f"| {slug.split('-')[0]} | {title} | "
             f"`python labs/{slug}/main.py` | "
-            f"[HTML](notebooks/{slug}.html) · "
-            f"`labs/{slug}/lab.ipynb` |"
+            f"[`labs/{slug}/lab.ipynb`]({notebook_href(slug)}) |"
         )
-    # Fix github link - use relative path to repo instead
     text = "\n".join(lines) + "\n"
     text += """
 Chapter labs follow `labs/BBCC-topic/main.py` where `BB` is book number and `CC` is chapter number.
@@ -136,7 +120,7 @@ Chapter labs follow `labs/BBCC-topic/main.py` where `BB` is book number and `CC`
 ## Lab standard
 
 Every chapter lab includes `main.py`, `test_lab.py`, README, and a docs page aligned to the matching book chapter.
-Starter labs add `lab.ipynb` plus a static HTML export for browser viewing on GitHub Pages.
+Starter labs also include `lab.ipynb` in the repository for Jupyter or Codespaces.
 """
     index.write_text(text, encoding="utf-8")
 
@@ -146,12 +130,11 @@ def main() -> None:
     for slug, title in STARTER_LABS:
         if not (LABS / slug / "main.py").is_file():
             continue
-        ipynb = write_ipynb(slug, title)
-        export_html(ipynb, slug)
+        write_ipynb(slug, title)
         count += 1
     update_notebooks_index()
     update_labs_index()
-    print(f"Generated {count} starter lab notebooks and HTML exports.")
+    print(f"Generated {count} starter lab notebooks.")
 
 
 if __name__ == "__main__":

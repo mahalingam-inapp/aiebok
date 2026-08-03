@@ -51,8 +51,7 @@ The published site is **static HTML only** (MkDocs → GitHub Actions → Pages)
 | Read docs, search, concept cards | Hosted site |
 | Print full sections | **Reference → Print & Offline** (print-site plugin) |
 | Offline summary PDF | [aiebok-companion.pdf](docs/assets/aiebok-companion.pdf) (built in CI) |
-| Starter lab notebooks (view) | Static HTML under **Labs → Starter Notebooks** |
-| Starter lab notebooks (run) | Clone repo; open `labs/*/lab.ipynb` in Jupyter |
+| Starter lab notebooks | [`labs/*/lab.ipynb`](https://github.com/mahalingam-inapp/aiebok/tree/main/labs) in the repo (also **Labs → Starter Notebooks** on the site) |
 | Python labs | Local machine, Codespaces, or Dev Container (`.devcontainer/`) |
 
 ## Dev Container / Codespaces

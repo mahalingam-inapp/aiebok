@@ -86,8 +86,7 @@ def main() -> None:
         pdf,
         "Host: deploy MkDocs to GitHub Pages (static HTML). "
         "Labs: run Python locally or in GitHub Codespaces / Dev Container. "
-        "Starter lab notebooks: view static HTML under Labs > Notebooks on the site, "
-        "or open lab.ipynb in Jupyter. "
+        "Starter lab notebooks: open lab.ipynb from the labs/ directory in the repository. "
         "Print full site: use the Print Site plugin page in the Reference section.",
     )
 

@@ -16,15 +16,15 @@ The companion is rebuilt in CI on each deploy. It is not a full mirror of the we
 
 ## Starter lab notebooks
 
-| Lab | Static HTML (Pages) | Notebook source |
-|---|---|---|
-| Cosine similarity | [HTML](../labs/notebooks/01-cosine-similarity.html) | `labs/01-cosine-similarity/lab.ipynb` |
-| Semantic search | [HTML](../labs/notebooks/02-semantic-search.html) | `labs/02-semantic-search/lab.ipynb` |
-| Basic RAG | [HTML](../labs/notebooks/03-basic-rag.html) | `labs/03-basic-rag/lab.ipynb` |
-| Agent loop | [HTML](../labs/notebooks/04-agent-loop.html) | `labs/04-agent-loop/lab.ipynb` |
-| Eval harness | [HTML](../labs/notebooks/05-eval-harness.html) | `labs/05-eval-harness/lab.ipynb` |
+| Lab | Notebook in repo |
+|---|---|
+| Cosine similarity | [`labs/01-cosine-similarity/lab.ipynb`](https://github.com/mahalingam-inapp/aiebok/blob/main/labs/01-cosine-similarity/lab.ipynb) |
+| Semantic search | [`labs/02-semantic-search/lab.ipynb`](https://github.com/mahalingam-inapp/aiebok/blob/main/labs/02-semantic-search/lab.ipynb) |
+| Basic RAG | [`labs/03-basic-rag/lab.ipynb`](https://github.com/mahalingam-inapp/aiebok/blob/main/labs/03-basic-rag/lab.ipynb) |
+| Agent loop | [`labs/04-agent-loop/lab.ipynb`](https://github.com/mahalingam-inapp/aiebok/blob/main/labs/04-agent-loop/lab.ipynb) |
+| Eval harness | [`labs/05-eval-harness/lab.ipynb`](https://github.com/mahalingam-inapp/aiebok/blob/main/labs/05-eval-harness/lab.ipynb) |
 
-Static HTML needs no Jupyter server on GitHub Pages. Run notebooks locally, in Codespaces, or via the Dev Container (`.devcontainer/devcontainer.json` in the repository root).
+Notebooks are source files in the repository, not hosted on GitHub Pages. Clone the repo or use Codespaces / the Dev Container (`.devcontainer/devcontainer.json` in the repository root), then open the path above in Jupyter.
 
 ## GitHub Codespaces / Dev Container
 
