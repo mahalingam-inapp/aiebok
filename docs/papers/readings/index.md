@@ -1,6 +1,6 @@
 # Research Readings Catalog
 
-35 primary-source summaries.
+50 primary-source summaries.
 
 - [Efficient Estimation of Word Representations in Vector Space](word2vec.md)
 - [Sequence to Sequence Learning with Neural Networks](seq2seq.md)
@@ -37,3 +37,18 @@
 - [OLMo: Accelerating the Science of Language Models](olmo.md)
 - [WebArena: A Realistic Web Environment for Agents](agent-benchmark-webarena.md)
 - [Model Context Protocol Specification](mcp-spec.md)
+- [Deep contextualized word representations (ELMo)](elmo.md)
+- [Language Models are Unsupervised Multitask Learners](gpt2.md)
+- [PaLM: Scaling Language Modeling with Pathways](palm.md)
+- [Orca: Progressive Learning from Complex Explanation Traces](orca.md)
+- [Mistral 7B](mistral.md)
+- [Mixtral of Experts](mixtral.md)
+- [Nemotron family technical report](nemotron.md)
+- [Training a Helpful and Harmless Assistant](helpful-harmless.md)
+- [GQA: Training Generalized Multi-Query Transformer Models](gqa.md)
+- [RoFormer: Enhanced Transformer with Rotary Position Embedding](rope.md)
+- [QLoRA: Efficient Finetuning of Quantized LLMs](qlora.md)
+- [Towards Monosemanticity (Sparse Autoencoders)](sparse-autoencoder.md)
+- [OWASP Top 10 for LLM Applications](jailbreak-taxonomy.md)
+- [SWE-bench: Can Language Models Resolve Real-World GitHub Issues?](swebench.md)
+- [Distilling the Knowledge in a Neural Network](knowledge-distillation.md)

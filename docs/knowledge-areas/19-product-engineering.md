@@ -6,10 +6,28 @@ Deliver useful human-centered products.
 
 ## What you should be able to do
 
-- Explain the central mechanisms without vendor-specific jargon
-- Build or inspect a minimal implementation for each core mechanism
-- Evaluate quality, latency, cost, safety, and operational consequences
-- Defend architecture choices with measured evidence
+- Explain core mechanisms without vendor-specific jargon
+- Build or inspect a minimal implementation for each mechanism in the lesson path
+- Evaluate quality, latency, cost, safety, and operational trade-offs with evidence
+- Defend architecture and product choices using measured results
+
+## Lesson sequence (6 lessons)
+
+1. **Discovering the Right Problem** — read [chapter](../books/09-ai-software-and-product-engineering/01-discovering-the-right-problem.md), run [lab](../labs/0901-discovering-the-right-problem.md), lesson page [L-19-product-engineering-01](../lessons/19-product-engineering-01.md)
+2. **Human-Centered AI UX** — read [chapter](../books/09-ai-software-and-product-engineering/05-human-centered-ai-ux.md), run [lab](../labs/0905-human-centered-ai-ux.md), lesson page [L-19-product-engineering-02](../lessons/19-product-engineering-02.md)
+3. **Experiments, Adoption, and Value** — read [chapter](../books/09-ai-software-and-product-engineering/06-experiments-adoption-and-value.md), run [lab](../labs/0906-experiments-adoption-and-value.md), lesson page [L-19-product-engineering-03](../lessons/19-product-engineering-03.md)
+4. **Specification-Driven Development** — read [chapter](../books/09-ai-software-and-product-engineering/02-specification-driven-development.md), run [lab](../labs/0902-specification-driven-development.md), lesson page [L-19-product-engineering-04](../lessons/19-product-engineering-04.md)
+5. **AI-Native Development Workflow** — read [chapter](../books/09-ai-software-and-product-engineering/03-ai-native-development-workflow.md), run [lab](../labs/0903-ai-native-development-workflow.md), lesson page [L-19-product-engineering-05](../lessons/19-product-engineering-05.md)
+6. **Testing AI Systems** — read [chapter](../books/09-ai-software-and-product-engineering/04-testing-ai-systems.md), run [lab](../labs/0904-testing-ai-systems.md), lesson page [L-19-product-engineering-06](../lessons/19-product-engineering-06.md)
+
+## Core mechanisms
+
+| Mechanism | Engineering role | Common failure |
+|---|---|---|
+| Discovering the Right Problem | Optimize the human outcome, not the amount of AI in the product. | Apply without baseline or slice eval |
+| Human-Centered AI UX | Trust grows from control, evidence, and recoverability—not from confident prose. | Apply without baseline or slice eval |
+| Experiments, Adoption, and Value | A technically impressive feature is not successful until it improves a valued workflow. | Apply without baseline or slice eval |
+| Specification-Driven Development | Specifications align humans and agents around observable outcomes and constraints. | Apply without baseline or slice eval |
 
 ## Core topics
 
@@ -17,16 +35,21 @@ Deliver useful human-centered products.
 - [uncertainty UX](../concepts/cards/uncertainty-ux.md)
 - [ROI](../concepts/cards/roi.md)
 
-## Guided path
+## Guided resources
 
-- Primary book: [09-ai-software-and-product-engineering](../books/09-ai-software-and-product-engineering/index.md)
-- Concept cards: [cards index](../concepts/cards/index.md)
-- Matching labs: search `labs/` for this knowledge area number
+- Primary book: [AI Software and Product Engineering](../books/09-ai-software-and-product-engineering/index.md)
+- Concept cards: [index](../concepts/cards/index.md)
+- Build guides: [index](../guides/index.md)
+- Cloud capabilities: [index](../cloud/capabilities/index.md)
 
 ## Architecture studio
 
-Apply the enterprise and reference architectures in [architectures/](../architectures/index.md) to a realistic scenario. Threat-model authorization, failure, and cost.
+Apply reference architectures in [architectures/](../architectures/index.md). Threat-model authorization, failure modes, cost, and rollback.
 
 ## Practice project
 
-Prototype and experiment with guardrails.
+Prototype and experiment with adoption guardrails.
+
+## Mastery checkpoint
+
+You can teach the lesson path to a peer using one diagram, one baseline comparison, and one failure story from your own implementation.

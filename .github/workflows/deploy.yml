@@ -28,6 +28,12 @@ jobs:
       - run: python scripts/generate_expansion.py
       - run: python scripts/generate_books.py
       - run: python scripts/generate_maturity_content.py
+      - run: python scripts/generate_cloud_guides.py
+      - run: python scripts/generate_lessons.py
+      - run: python scripts/generate_reference_views.py
+      - run: python scripts/generate_featured_concepts.py
+      - run: python scripts/generate_lab_notebooks.py
+      - run: python scripts/generate_pdf.py
       - run: python scripts/validate_content.py
       - run: python scripts/audit_book_coverage.py
       - name: Run educational code samples

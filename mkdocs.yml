@@ -38,6 +38,10 @@ theme:
 
 plugins:
   - search
+  - print-site:
+      add_to_navigation: true
+      print_page_title: Print site
+      add_table_of_contents: true
 
 markdown_extensions:
   - admonition
@@ -201,6 +205,8 @@ nav:
       - 17 Multimodal AI: knowledge-areas/17-multimodal.md
       - 18 Frontier AI: knowledge-areas/18-frontier.md
       - 19 AI Product Engineering: knowledge-areas/19-product-engineering.md
+  - Guided Lessons:
+      - Lesson Catalog: lessons/index.md
   - Concepts:
       - Index: concepts/index.md
       - All Cards: concepts/cards/index.md
@@ -229,11 +235,13 @@ nav:
       - Enterprise RAG: architectures/enterprise-rag.md
   - Cloud & Tools:
       - Capability Map: cloud/index.md
+      - Capability Guides: cloud/capabilities/index.md
       - AWS: cloud/aws.md
       - Azure: cloud/azure.md
       - Google Cloud: cloud/gcp.md
   - Labs:
       - Lab Guide: labs/index.md
+      - Starter Notebooks: labs/notebooks/index.md
       - Lab Catalog: labs/catalog.md
       - Semantic Search: labs/semantic-search.md
       - Evaluation Harness: labs/eval-harness.md
@@ -253,4 +261,7 @@ nav:
   - Reference:
       - Question Index: reference/question-index.md
       - Glossary: reference/glossary.md
+      - Prerequisites: reference/prerequisites.md
+      - Unlocks: reference/unlocks.md
+      - Print & Offline: reference/print-and-offline.md
       - Deployment Checklist: reference/deployment-checklist.md

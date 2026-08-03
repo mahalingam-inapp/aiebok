@@ -4,7 +4,7 @@ Read primary sources to understand how ideas evolve, not to memorize every formu
 
 ## Catalog
 
-**35 reading summaries** in [readings/index.md](readings/index.md).
+**50 reading summaries** in [readings/index.md](readings/index.md).
 
 ## Suggested sequence
 

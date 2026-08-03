@@ -1,0 +1,62 @@
+# Planning
+
+**Purpose:** Planning sequences actions to reach a goal given a model of state transitions, costs, and constraints.
+
+**Prerequisites:** See related concepts and book chapters linked from the [concept card](cards/planning.md).
+
+## Why this exists
+
+Planning sequences actions to reach a goal given a model of state transitions, costs, and constraints. It separates deliberation from execution so plans can be validated before side effects occur.
+
+## Core intuition
+
+A deployment planner orders database migration before code rollout because the transition model forbids incompatible schema states.
+
+## Mechanics
+
+1. Define the decision or system stage where planning applies.
+2. Implement the smallest version that beats an obvious baseline.
+3. Measure on normal, boundary, and adversarial slices—not a single demo.
+4. Document version, config, and rollback before production use.
+
+## Engineering checklist
+
+- State the decision this mechanism supports before implementation.
+- Compare against a simpler baseline on normal, boundary, and adversarial cases.
+- Define metrics, slices, and rollback before production rollout.
+
+## Evidence of understanding
+
+Produce a plan, simulate it against the transition model, and flag any action that violates preconditions.
+
+## Code practice
+
+Run `python labs/0103-search-planning-and-decisions/main.py` from the repository root.
+
+## When to use
+
+Use when the mechanism directly addresses a measured gap versus simpler baselines on your workload.
+
+## When not to use
+
+Skip when complexity, latency, or ops burden exceeds demonstrated benefit.
+
+## Common failure modes
+
+- Applying the technique without a baseline comparison
+- Ignoring boundary and adversarial inputs
+- Optimizing demo cases instead of production slices
+
+## Common misconceptions
+
+- Fluent language implies reliable behavior.
+- One benchmark score generalizes to your product.
+- Adding a model call is the same as adding a feature.
+
+## Trade-offs
+
+Planning improves some outcomes but adds complexity, latency, or operational burden. Compare against simpler alternatives on *your* workload before adopting by default.
+
+## Evolution lens
+
+Yesterday: research prototypes. Today: measured production systems with eval gates. Tomorrow: tighter integration with enterprise governance. The durable principle is engineering under uncertainty with evidence.

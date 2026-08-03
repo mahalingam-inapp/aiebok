@@ -16,3 +16,7 @@ Teach the capability first; treat product names as dated implementation examples
 ## Comparison exercise
 
 Select one architecture, map each logical capability across providers, then compare lock-in, data residency, network controls, model choice, evaluation support, operations, and total cost.
+
+## Capability guides
+
+See the [capability guide catalog](capabilities/index.md) for 26 provider-neutral pages.

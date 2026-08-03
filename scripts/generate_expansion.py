@@ -5,6 +5,7 @@ import re
 import textwrap
 from pathlib import Path
 
+from concept_card_enrichments import card_enrichment
 from generate_books import BOOKS, slug
 from topic_knowledge import TOPIC_FACTS, get_topic_entry, normalize
 
@@ -32,6 +33,24 @@ def render_concept_card(topic: str) -> str:
     key = normalize(topic)
     explanation, example, evidence = get_topic_entry(topic)
     title = title_from_slug(key)
+    extra = card_enrichment(key)
+    when_use = extra["when_to_use"]
+    when_not = extra["when_not"]
+    failures = "\n".join(f"- {f}" for f in extra["failure_modes"])
+    checklist = "\n".join(f"- {c}" for c in extra["checklist"])
+    chapters = extra["chapters"]
+    chapter_block = ""
+    if chapters:
+        chapter_block = "\n## Related chapters\n\n" + "\n".join(
+            f"- [{Path(c).name.replace('.md', '').replace('-', ' ').title()}]({c.replace('../books/', '../../books/')})"
+            for c in chapters
+        ) + "\n"
+    related = extra["related"]
+    related_block = ""
+    if related:
+        related_block = "\n## Related concepts\n\n" + "\n".join(
+            f"- [{title_from_slug(r)}](../../concepts/cards/{r}.md)" for r in related if r in TOPIC_FACTS
+        ) + "\n"
     return f"""# {title}
 
 **Purpose:** Reference card for **{title.lower()}** used across AIEBOK books and knowledge areas.
@@ -44,19 +63,35 @@ def render_concept_card(topic: str) -> str:
 
 {example}
 
+## When to use
+
+{when_use}
+
+## When not to use
+
+{when_not}
+
+## Engineering checklist
+
+{checklist}
+
 ## Evidence of understanding
 
 {evidence}
 
+## Common failure modes
+
+{failures}
+
 ## Trade-offs
 
 No mechanism is universal. Compare {title.lower()} against a simpler baseline on normal, boundary, and adversarial cases before adding operational complexity.
-
+{related_block}{chapter_block}
 ## Related study
 
-- Search guided books for chapters tagged with this concept
+- [Question index](../../reference/question-index.md)
+- [Guided lessons](../../lessons/index.md)
 - Run the matching chapter lab under `labs/` when available
-- Cross-check the [question index](../../reference/question-index.md)
 """
 
 
@@ -171,35 +206,12 @@ Apply the enterprise and reference architectures in [architectures/](../architec
 
 
 def generate_knowledge_areas() -> int:
-    ka_map = [
-        ("00-foundations", "KA 00 — Foundations", "Build first-principles vocabulary for intelligence and learning.", "01-foundations-of-intelligence", ["goal-directed behavior", "A*", "feedback"], "Compare rule, search, and learned solvers."),
-        ("01-machine-learning", "KA 01 — Machine Learning", "Train, validate, and operate predictive systems.", "02-machine-learning-systems", ["baselines", "cross-validation", "drift"], "Ship a prediction service with error analysis."),
-        ("02-language-representation", "KA 02 — Language & Representation", "Make language computable for search and models.", "03-language-and-representation", ["vocabulary", "word embeddings", "BM25"], "Build lexical and semantic search baselines."),
-        ("03-transformers", "KA 03 — Transformers", "Understand attention, blocks, training, and inference.", "04-transformers-and-foundation-models", ["multi-head attention", "KV cache", "logits"], "Implement attention and compare decoders."),
-        ("04-models", "KA 04 — Models", "Select and benchmark model families.", "04-transformers-and-foundation-models", ["model routing", "instruction tuning", "open weights"], "Write a model selection report."),
-        ("05-prompt-context", "KA 05 — Prompt & Context", "Engineer reliable inputs, state, and outputs.", "05-prompt-and-context-engineering", ["context windows", "JSON Schema", "prompt injection"], "Build a context engine with tests."),
-        ("06-knowledge-systems", "KA 06 — Knowledge Systems", "Ground answers with retrievable evidence.", "06-knowledge-and-retrieval-systems", ["RAG", "hybrid search", "rerankers"], "Deliver hybrid RAG with citations."),
-        ("07-reasoning", "KA 07 — Reasoning Systems", "Apply search, planning, and verification at inference.", "07-reasoning-and-tool-use", ["planning", "verifiers", "MCP"], "Build planner–tool–verifier workflow."),
-        ("08-tools-integration", "KA 08 — Tools & Integration", "Connect models to software safely.", "07-reasoning-and-tool-use", ["function calling", "tool schemas", "MCP"], "Wrap APIs as typed tools."),
-        ("09-agents", "KA 09 — Agents", "Design bounded autonomous loops.", "08-agent-systems", ["plan-act-observe", "checkpoints", "approval gates"], "Ship a checkpointed agent with evals."),
-        ("10-ai-software-engineering", "KA 10 — AI Software Engineering", "Apply SDLC rigor to AI features.", "09-ai-software-and-product-engineering", ["functional specifications", "contract tests", "evaluation specs"], "Spec-to-test AI feature delivery."),
-        ("11-ai-coding", "KA 11 — AI Coding Ecosystem", "Collaborate with coding agents effectively.", "09-ai-software-and-product-engineering", ["skills", "repo instructions", "code review"], "Complete a bounded repo task with review evidence."),
-        ("12-evaluation-safety", "KA 12 — Evaluation, Safety & Security", "Measure and constrain behavior.", "10-evaluation-safety-and-governance", ["rubrics", "slices", "prompt injection"], "Build eval and red-team package."),
-        ("13-model-training", "KA 13 — Model Training", "Adapt models with curated data.", "11-training-serving-and-ai-operations", ["LoRA", "SFT", "data curation"], "Fine-tune and evaluate a small model."),
-        ("14-infrastructure", "KA 14 — Infrastructure & Deployment", "Serve models efficiently.", "11-training-serving-and-ai-operations", ["quantization", "batching", "KV cache"], "Load-test inference configurations."),
-        ("15-aiops", "KA 15 — AI Operations", "Observe, release, and recover AI systems.", "11-training-serving-and-ai-operations", ["tracing", "canaries", "FinOps"], "Instrument requests and inject failures."),
-        ("16-enterprise-architecture", "KA 16 — Enterprise Architecture", "Design governed AI platforms.", "12-cloud-and-enterprise-ai-architecture", ["identity", "multi-tenancy", "AI gateways"], "Produce reference architecture and ADRs."),
-        ("17-multimodal", "KA 17 — Multimodal AI", "Compose text, vision, audio, and documents.", "13-multimodal-and-frontier-systems", ["OCR", "vision encoders", "provenance"], "Build document intelligence pipeline."),
-        ("18-frontier", "KA 18 — Frontier AI", "Evaluate emerging capabilities with evidence.", "13-multimodal-and-frontier-systems", ["reproduction", "benchmarks", "ablations"], "Reproduce one claim vs strong baselines."),
-        ("19-product-engineering", "KA 19 — AI Product Engineering", "Deliver useful human-centered products.", "09-ai-software-and-product-engineering", ["user research", "uncertainty UX", "ROI"], "Prototype and experiment with guardrails."),
-    ]
-    for ka_file, title, purpose, book, topics, project in ka_map:
-        if ka_file in KA_CONTENT:
-            text = KA_CONTENT[ka_file]
-        else:
-            text = ka_template(ka_file, title, purpose, book, topics, project)
+    from ka_deep_content import all_ka_pages
+
+    pages = all_ka_pages()
+    for ka_file, text in pages.items():
         (KA / f"{ka_file}.md").write_text(text, encoding="utf-8")
-    return len(ka_map)
+    return len(pages)
 
 
 def lab_slug(book_no: int, chapter_no: int, title: str) -> str:
@@ -289,10 +301,62 @@ PATTERN_SPECS = [
     ("llm-judge-calibration", "LLM Judge Calibration", "Calibrate automated judges against human ratings.", "Sample cases for dual review; fit calibration curve.", "Scalable eval.", "Judge bias.", "Human review is cheap enough."),
 ]
 
+EXTRA_PATTERN_SPECS = [
+    ("request-idempotency", "Request Idempotency", "Duplicate agent or API calls must not double-charge or double-write.", "Idempotency keys on side-effect tools.", "Safer retries.", "Key storage overhead.", "Read-only idempotent reads only."),
+    ("prompt-cache-key", "Prompt Cache Key", "Reuse prefix KV cache across similar requests.", "Hash stable system prefix; cache by tenant.", "Lower latency/cost.", "Stale policy if prefix changes silently.", "Unique prompts every request."),
+    ("tenant-rate-limit", "Tenant Rate Limit", "Fair usage across customers on shared models.", "Token bucket per tenant with burst.", "Protects platform.", "Throttling complaints.", "Single-tenant deployment."),
+    ("output-schema-repair", "Output Schema Repair", "One repair attempt before failing structured output.", "Validate JSON; re-prompt with errors.", "Higher success rate.", "Extra latency.", "Free-form chat."),
+    ("retrieval-cache", "Retrieval Cache", "Cache retrieval results for hot queries.", "TTL cache keyed by query+filters.", "Latency savings.", "Stale answers.", "Highly dynamic corpora."),
+    ("embedding-drift-monitor", "Embedding Drift Monitor", "Detect when query/doc embedding distribution shifts.", "Track centroid distance and recall proxies.", "Early reindex signal.", "Alert noise.", "Static corpus."),
+    ("dual-write-index", "Dual-Write Index", "Write new and old indexes during embedding migration.", "Query both; compare; cutover with flag.", "Safe migrations.", "Double write cost.", "No index migrations."),
+    ("shadow-model", "Shadow Model", "Run candidate model without serving responses.", "Log shadow outputs; compare offline.", "Safe evaluation.", "Compute cost.", "Pre-prod only testing sufficient."),
+    ("tool-result-truncation", "Tool Result Truncation", "Bound tool output size entering context.", "Summarize or clip with pointer to full payload.", "Prevents context blow-up.", "Lost detail.", "Tiny tool payloads."),
+    ("conversation-summary-memory", "Conversation Summary Memory", "Compress older turns into rolling summary.", "Summarize after N turns; keep recent verbatim.", "Longer effective sessions.", "Summary errors compound.", "Short chats only."),
+    ("policy-as-code", "Policy as Code", "Encode AI policies in testable rules.", "OPA/Rego or CI policy checks on configs.", "Auditable governance.", "Maintenance burden.", "Informal policy docs enough."),
+    ("secrets-scopes", "Secrets Scopes", "Scope API keys per tool and environment.", "Separate keys; rotate; deny cross-env.", "Limits blast radius.", "Key sprawl.", "Single shared key internal only."),
+    ("grounded-refusal", "Grounded Refusal", "Refuse when retrieval confidence is low.", "Threshold on retrieval score; templated refusal.", "Reduces hallucination.", "Lower answer rate.", "Creative writing tasks."),
+    ("answer-ensemble", "Answer Ensemble", "Combine multiple retrieval or model paths.", "Vote or merge with verifier.", "Robustness.", "Cost.", "Single path calibrated."),
+    ("doc-version-pin", "Document Version Pin", "Pin answers to explicit corpus version.", "Expose version in UI and logs.", "Auditability.", "UX complexity.", "Static FAQ."),
+    ("latency-budget-router", "Latency Budget Router", "Pick model path by remaining SLA budget.", "Fast path when budget low.", "Meets SLO.", "Quality variance.", "Batch offline."),
+    ("feedback-to-eval", "Feedback to Eval", "Promote production failures into eval sets.", "Weekly triage of bad traces into cases.", "Living eval set.", "Labeling cost.", "Stable workload."),
+    ("pii-redaction", "PII Redaction", "Redact sensitive spans before logging or training.", "Detect/redact; store mapping securely.", "Compliance.", "Redaction errors.", "No PII workloads."),
+    ("tool-timeout-cascade", "Tool Timeout Cascade", "Short timeouts with fallback tools.", "Primary tool timeout → secondary → human.", "Resilience.", "Complex flows.", "Single reliable tool."),
+    ("chunk-overlap-tune", "Chunk Overlap Tuning", "Tune overlap for recall vs redundancy.", "Grid search overlap on eval queries.", "Better recall.", "Token waste.", "Small corpus brute force OK."),
+    ("query-rewrite-cache", "Query Rewrite Cache", "Cache rewritten queries for repeat intents.", "Store rewrite+results for session.", "Latency.", "Wrong rewrite stuck.", "Highly diverse queries."),
+    ("model-warm-pool", "Model Warm Pool", "Keep minimum replicas warm.", "HPA with min replicas > 0.", "Stable tail latency.", "Idle cost.", "Sporadic batch jobs."),
+    ("gradual-rollout", "Gradual Rollout", "Increase traffic to new version slowly.", "5→25→50→100 with gates.", "Limits incident blast.", "Slower releases.", "Low traffic features."),
+    ("trace-sampling", "Trace Sampling", "Sample traces for cost while keeping errors.", "100% errors; sample successes.", "Affordable observability.", "Miss rare bugs.", "Full trace budget available."),
+    ("index-compaction", "Index Compaction", "Periodic compaction of vector segments.", "Scheduled merge jobs.", "Stable query perf.", "Ops work.", "Tiny indexes."),
+    ("role-based-prompts", "Role-Based Prompts", "Different system prompts by user role.", "RBAC selects prompt template.", "Least privilege answers.", "Template sprawl.", "Uniform users."),
+    ("structured-logging", "Structured Logging", "Log JSON fields for retrieval and generation.", "Standard schema across services.", "Queryable ops.", "Volume.", "Prototype only."),
+    ("batch-embed-pipeline", "Batch Embed Pipeline", "Embed documents in offline batches.", "Queue docs; batch embed; atomic index swap.", "Cost efficient.", "Ingest lag.", "Real-time ingest required."),
+    ("answer-diff-review", "Answer Diff Review", "Show diff when model changes answer on rerun.", "Highlight changed spans to user.", "Trust.", "UI noise.", "Deterministic systems."),
+    ("confidence-calibration", "Confidence Calibration", "Map scores to calibrated probabilities.", "Isotonic regression on held-out set.", "Better thresholds.", "Data needs.", "Ordinal scores enough."),
+    ("tool-allowlist", "Tool Allowlist", "Explicit allowlist per agent profile.", "Config declares permitted tools.", "Security.", "Rigid.", "Fully trusted env."),
+    ("session-affinity", "Session Affinity", "Route returning users to warm context.", "Sticky routing to cached prefix.", "Latency.", "Imbalanced load.", "Stateless OK."),
+    ("negative-feedback-loop", "Negative Feedback Loop", "Use thumbs-down to block similar failures.", "Embed complaint; nearest-neighbor block or finetune.", "Quality improvement.", "Feedback bias.", "No user feedback channel."),
+    ("schema-first-tools", "Schema-First Tools", "Design tools from OpenAPI/JSON Schema first.", "Generate tool defs from schema.", "Consistency.", "Upfront design.", "Ad-hoc scripts."),
+    ("retrieval-explain", "Retrieval Explain", "Show why passages were retrieved.", "Log scores and matched terms.", "Debuggability.", "UI clutter.", "Internal tools only."),
+    ("multi-index-query", "Multi-Index Query", "Query product, policy, and ticket indexes.", "Parallel retrieval with merge.", "Coverage.", "Complexity.", "Single index sufficient."),
+    ("token-budget-forecast", "Token Budget Forecast", "Estimate tokens before calling model.", "Pre-count sections; drop lowest priority.", "Fewer overflows.", "Estimation error.", "Tiny prompts."),
+    ("human-in-loop-train", "Human-in-Loop Training", "Collect edits for SFT/DPO datasets.", "Capture accepted edits with consent.", "Improving models.", "Privacy/process.", "No retraining planned."),
+    ("eval-data-versioning", "Eval Data Versioning", "Version eval sets like code.", "Git LFS or DVC for eval JSONL.", "Reproducible gates.", "Storage.", "Ad-hoc spreadsheets."),
+    ("service-level-objectives", "SLO-Driven AI Ops", "Define SLOs for quality, latency, cost.", "Error budgets for releases.", "Operational clarity.", "Overhead.", "Research prototypes."),
+    ("cross-encoder-gate", "Cross-Encoder Gate", "Cheap bi-encoder then expensive rerank.", "Two-stage with cutoff.", "Cost/quality balance.", "Tuning.", "Small corpora."),
+    ("prompt-lint", "Prompt Lint", "Static checks on prompt templates.", "CI rules for banned phrases and PII.", "Safer prompts.", "False positives.", "Single static prompt."),
+    ("agent-heartbeat", "Agent Heartbeat", "Detect stuck agents via heartbeat.", "Timeout if no progress events.", "Ops visibility.", "False timeouts.", "Sub-second tasks."),
+    ("data-residency-route", "Data Residency Route", "Route requests to region-specific stacks.", "Geo DNS + regional indexes.", "Compliance.", "Duplicated infra.", "Single region OK."),
+    ("model-terms-filter", "Model Terms Filter", "Block requests violating model AUP.", "Pre-filter inputs/outputs.", "Policy compliance.", "Over-blocking.", "Internal unrestricted use."),
+    ("workflow-deterministic-core", "Deterministic Workflow Core", "Keep billing/auth deterministic; LLM at edges.", "Orchestrator code owns critical path.", "Safety.", "Less 'agent magic'.", "Fully exploratory chat."),
+    ("incremental-index-update", "Incremental Index Update", "Update index incrementally on doc changes.", "CDC stream to chunk pipeline.", "Freshness.", "Complexity.", "Batch nightly enough."),
+    ("quality-tier-routing", "Quality Tier Routing", "Premium vs standard model tiers.", "Route by subscription or risk.", "Cost control.", "Perceived unfairness.", "Flat tier product."),
+]
+
 
 def generate_patterns() -> int:
+    all_patterns = PATTERN_SPECS + EXTRA_PATTERN_SPECS
     lines = ["# Pattern Catalog", "", "Reusable architecture patterns for AI systems.", ""]
-    for ps, name, ctx, sol, pos, neg, avoid in PATTERN_SPECS:
+    for ps, name, ctx, sol, pos, neg, avoid in all_patterns:
         text = f"""# {name}
 
 ## Context
@@ -314,7 +378,7 @@ def generate_patterns() -> int:
         (PATTERNS / f"{ps}.md").write_text(text, encoding="utf-8")
         lines.append(f"- [{name}]({ps}.md)")
     (PATTERNS / "catalog.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    return len(PATTERN_SPECS)
+    return len(all_patterns)
 
 
 ARCH_SPECS = [

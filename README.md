@@ -31,9 +31,37 @@ python scripts/build_concept_entries.py
 python scripts/generate_expansion.py
 python scripts/generate_books.py
 python scripts/generate_maturity_content.py
+python scripts/generate_cloud_guides.py
+python scripts/generate_lessons.py
+python scripts/generate_reference_views.py
+python scripts/generate_featured_concepts.py
+python scripts/generate_lab_notebooks.py
+python scripts/generate_pdf.py
 python scripts/validate_content.py
 python scripts/audit_book_coverage.py
 mkdocs build --strict
+```
+
+## GitHub Pages hosting
+
+The published site is **static HTML only** (MkDocs → GitHub Actions → Pages). Nothing executes on the server at request time.
+
+| Need | Where |
+|---|---|
+| Read docs, search, concept cards | Hosted site |
+| Print full sections | **Reference → Print & Offline** (print-site plugin) |
+| Offline summary PDF | [aiebok-companion.pdf](docs/assets/aiebok-companion.pdf) (built in CI) |
+| Starter lab notebooks (view) | Static HTML under **Labs → Starter Notebooks** |
+| Starter lab notebooks (run) | Clone repo; open `labs/*/lab.ipynb` in Jupyter |
+| Python labs | Local machine, Codespaces, or Dev Container (`.devcontainer/`) |
+
+## Dev Container / Codespaces
+
+Open the repo in GitHub Codespaces or VS Code Dev Containers for Python 3.12, Jupyter, and MkDocs preinstalled:
+
+```bash
+mkdocs serve
+jupyter lab labs/01-cosine-similarity/lab.ipynb
 ```
 
 ## License

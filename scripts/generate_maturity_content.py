@@ -7,6 +7,9 @@ from pathlib import Path
 from chapter_catalog import CHAPTER_HOOKS
 from generate_books import BOOKS, slug
 from generate_expansion import lab_slug
+from guide_deep_content import GUIDE_DETAILS
+from paper_deep_content import PAPER_DETAILS as BASE_PAPER_DETAILS
+from paper_deep_content_extra import EXTRA_PAPER_DETAILS, EXTRA_PAPER_SPECS
 from topic_knowledge import TOPIC_FACTS, get_topic_entry, normalize
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -60,9 +63,79 @@ PAPER_SPECS: list[tuple[str, str, str, str, str, str]] = [
     ("mcp-spec", "Model Context Protocol Specification", "Anthropic", "2024", "https://modelcontextprotocol.io/", "Standard for tools, resources, and prompts between clients and servers."),
 ]
 
+PAPER_DETAILS = {**BASE_PAPER_DETAILS, **EXTRA_PAPER_DETAILS}
+ALL_PAPER_SPECS = PAPER_SPECS + EXTRA_PAPER_SPECS
+
+
+def paper_chapter_href(path: str) -> str | None:
+    """Normalize chapter path from paper reading pages and drop missing targets."""
+    href = path.replace("../books/", "../../books/")
+    rel = href.replace("../../", "", 1) if href.startswith("../../") else href.lstrip("./")
+    if not (DOCS / rel).is_file():
+        return None
+    return href
+
+
+def paper_concept_href(slug: str) -> str | None:
+    """Link to concept card or featured concept if it exists."""
+    key = normalize(slug)
+    card = DOCS / "concepts" / "cards" / f"{key}.md"
+    featured = DOCS / "concepts" / f"{key}.md"
+    if card.is_file():
+        return f"../../concepts/cards/{key}.md"
+    if featured.is_file():
+        return f"../../concepts/{key}.md"
+    return None
+
+
+def guide_pattern_href(slug: str) -> str | None:
+    if (DOCS / "patterns" / f"{slug}.md").is_file():
+        return f"../patterns/{slug}.md"
+    return None
+
+
+def guide_lab_href(slug: str) -> str | None:
+    doc = DOCS / "labs" / f"{slug}.md"
+    if doc.is_file():
+        return f"../labs/{slug}.md"
+    return None
+
 
 def render_paper(ps: tuple[str, str, str, str, str, str]) -> str:
     key, title, authors, year, link, contribution = ps
+    detail = PAPER_DETAILS.get(key)
+    if not detail:
+        detail = {
+            "problem": "See the original paper for the motivating problem.",
+            "prior_art": "Review contemporaneous baselines cited in the paper.",
+            "core_idea": contribution,
+            "evidence": ["Review datasets, baselines, and ablations in the original paper."],
+            "limitations": ["Check assumptions and missing comparisons in the paper."],
+            "impact": "Trace follow-up systems and papers that adopted or rejected the idea.",
+            "reproduction": "Define the smallest experiment that would falsify the central claim.",
+            "related_chapters": [],
+            "related_concepts": [],
+        }
+    evidence = "\n".join(f"- {item}" for item in detail["evidence"])
+    limitations = "\n".join(f"- {item}" for item in detail["limitations"])
+    related = ""
+    if detail["related_chapters"]:
+        chapter_links = []
+        for ch in detail["related_chapters"]:
+            href = paper_chapter_href(ch)
+            if href:
+                label = Path(href).name.replace(".md", "").replace("-", " ").title()
+                chapter_links.append(f"- [{label}]({href})")
+        if chapter_links:
+            related += "\n## Related chapters\n\n" + "\n".join(chapter_links) + "\n"
+    if detail["related_concepts"]:
+        concept_links = []
+        for c in detail["related_concepts"]:
+            href = paper_concept_href(c)
+            if href:
+                concept_links.append(f"- [{title_from_slug(c)}]({href})")
+        if concept_links:
+            related += "\n## Related concepts\n\n" + "\n".join(concept_links) + "\n"
     return f"""# {title}
 
 ## Citation
@@ -73,41 +146,45 @@ def render_paper(ps: tuple[str, str, str, str, str, str]) -> str:
 
 {contribution}
 
-## Problem and prior art
+## Problem
 
-Prior approaches in this area struggled with the limitations described in the original paper—typically scaling, grounding, alignment, or efficiency constraints relative to the task.
+{detail["problem"]}
+
+## Prior art
+
+{detail["prior_art"]}
 
 ## Core idea
 
-Reconstruct the mechanism in your own words with one diagram. Identify the smallest change from the strongest baseline that the authors claim matters.
+{detail["core_idea"]}
 
 ## Evidence
 
-Review datasets, baselines, metrics, ablations, and compute reported in the paper. Note which claims are directly supported versus extrapolated.
+{evidence}
 
 ## Limitations
 
-List assumptions, missing comparisons, evaluation gaps, safety considerations, and reproduction barriers.
+{limitations}
 
 ## Lasting impact
 
-Which production systems, open models, or follow-up papers adopted or rejected this idea? What principle survives even if the exact architecture does not?
+{detail["impact"]}
 
 ## Reproduction exercise
 
-Define the smallest experiment that would falsify the central claim using today's tools and a bounded budget.
-"""
+{detail["reproduction"]}
+{related}"""
 
 
 def generate_readings() -> int:
     PAPERS.mkdir(parents=True, exist_ok=True)
-    lines = ["# Research Readings Catalog", "", f"{len(PAPER_SPECS)} primary-source summaries.", ""]
-    for spec in PAPER_SPECS:
+    lines = ["# Research Readings Catalog", "", f"{len(ALL_PAPER_SPECS)} primary-source summaries.", ""]
+    for spec in ALL_PAPER_SPECS:
         key = spec[0]
         (PAPERS / f"{key}.md").write_text(render_paper(spec), encoding="utf-8")
         lines.append(f"- [{spec[1]}]({key}.md)")
     (PAPERS / "index.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    return len(PAPER_SPECS)
+    return len(ALL_PAPER_SPECS)
 
 
 BUILD_GUIDES: list[tuple[str, str, str, list[str], str]] = [
@@ -128,8 +205,12 @@ BUILD_GUIDES: list[tuple[str, str, str, list[str], str]] = [
 
 
 def render_build_guide(key: str, title: str, goal: str, phases: list[str], book: str) -> str:
-    phase_lines = "\n".join(f"{i+1}. **{p}** — deliverable and acceptance check" for i, p in enumerate(phases))
-    return f"""# {title}
+    detail = GUIDE_DETAILS.get(key)
+    if not detail:
+        phase_lines = "\n".join(
+            f"{i+1}. **{p}** — deliverable and acceptance check" for i, p in enumerate(phases)
+        )
+        return f"""# {title}
 
 ## Goal
 
@@ -142,6 +223,79 @@ Complete the matching [guided book](../books/{book}/index.md) and related labs.
 ## Build phases
 
 {phase_lines}
+
+## Evidence package
+
+- Short specification with acceptance criteria
+- Runnable artifact or architecture diagram
+- Evaluation report with slices and failure analysis
+- At least one ADR for a major design choice
+- Rollback or fallback plan
+
+## Exit criteria
+
+You can demo the system on normal, boundary, and adversarial cases; explain measured trade-offs; and defend why simpler alternatives were insufficient.
+"""
+
+    phase_blocks: list[str] = []
+    for i, phase in enumerate(detail.phases, 1):
+        steps = "\n".join(f"   - {s}" for s in phase.steps)
+        acceptance = "\n".join(f"   - {a}" for a in phase.acceptance)
+        commands = ""
+        if phase.commands:
+            commands = "\n\n   **Commands:**\n\n   ```bash\n   " + "\n   ".join(phase.commands) + "\n   ```"
+        phase_blocks.append(
+            f"### {i}. {phase.name}\n\n**Goal:** {phase.goal}\n\n**Steps:**\n{steps}\n\n**Acceptance:**\n{acceptance}{commands}"
+        )
+
+    pattern_lines = []
+    for p in detail.related_patterns:
+        href = guide_pattern_href(p)
+        if href:
+            pattern_lines.append(f"- [{title_from_slug(p)}]({href})")
+    patterns = "\n".join(pattern_lines) if pattern_lines else "- See the [pattern catalog](../patterns/index.md)."
+
+    lab_lines = []
+    for lab in detail.related_labs:
+        href = guide_lab_href(lab)
+        if href:
+            lab_lines.append(f"- [{title_from_slug(lab)}]({href})")
+    labs = "\n".join(lab_lines) if lab_lines else "- See the [lab catalog](../../labs/index.md)."
+    troubleshooting = "\n".join(f"- {t}" for t in detail.troubleshooting)
+
+    return f"""# {title}
+
+## Goal
+
+{goal}
+
+## Overview
+
+{detail.overview}
+
+## Architecture
+
+{detail.architecture_notes}
+
+## Prerequisites
+
+Complete the matching [guided book](../books/{book}/index.md) and related labs.
+
+## Build phases
+
+{chr(10).join(phase_blocks)}
+
+## Troubleshooting
+
+{troubleshooting}
+
+## Related patterns
+
+{patterns}
+
+## Related labs
+
+{labs}
 
 ## Evidence package
 
@@ -340,6 +494,161 @@ python -m pytest labs/{ls}/test_lab.py -q
     return main_py, test_py, readme, doc
 
 
+STARTER_LABS: list[tuple[str, str, str, str, list[str]]] = [
+    (
+        "01-cosine-similarity",
+        "Cosine Similarity",
+        "Compute cosine similarity from first principles and rank paraphrase candidates.",
+        "03-language-and-representation",
+        [
+            "Predict ranked output before running `main.py`.",
+            "Add orthogonal and zero-vector cases to `test_lab.py`.",
+            "Compare cosine vs dot product on unnormalized vectors.",
+            "Document when magnitude should matter for your retrieval task.",
+        ],
+    ),
+    (
+        "02-semantic-search",
+        "Semantic Search",
+        "Build a hashing-vector search pipeline over a tiny document set.",
+        "03-language-and-representation",
+        [
+            "Inspect token buckets and explain why paraphrases score higher than unrelated docs.",
+            "Add a hard-negative document that shares tokens but wrong intent.",
+            "Measure recall@1 on five hand-written queries.",
+            "List what breaks if you change embedding dimensions.",
+        ],
+    ),
+    (
+        "03-basic-rag",
+        "Basic RAG",
+        "Wire retrieve → context → answer stages without an external LLM API.",
+        "06-knowledge-and-retrieval-systems",
+        [
+            "Trace retrieval scores for a query with no lexical overlap.",
+            "Add an abstention path when no evidence passes threshold.",
+            "Verify citations appear only when evidence is used.",
+            "Compare answer quality with k=1 vs k=2 retrieval.",
+        ],
+    ),
+    (
+        "04-agent-loop",
+        "Agent Loop",
+        "Run a bounded state machine with explicit plan/act/observe steps.",
+        "08-agent-systems",
+        [
+            "Diagram the state transitions for the default goal.",
+            "Add a step limit failure and verify graceful stop.",
+            "Insert one invalid action and define recovery behavior.",
+            "Log observations to a list you can inspect after the run.",
+        ],
+    ),
+    (
+        "05-eval-harness",
+        "Eval Harness",
+        "Score candidate outputs with slices and a release gate.",
+        "10-evaluation-safety-and-governance",
+        [
+            "Add a failing general case and observe release block.",
+            "Add a failing safety case and confirm it blocks release even if average score is high.",
+            "Define one new slice with two cases in `main.py`.",
+            "Document which metric you would track in production.",
+        ],
+    ),
+]
+
+
+def render_starter_readme(slug: str, title: str, objective: str, book: str, tasks: list[str]) -> str:
+    task_lines = "\n".join(f"{i+1}. {t}" for i, t in enumerate(tasks))
+    return f"""# Lab — {title}
+
+## Objective
+
+{objective}
+
+## Prerequisites
+
+- Relevant [guided book](../../docs/books/{book}/index.md) chapters
+- Python 3.10+
+
+## Time estimate
+
+30–45 minutes
+
+## Run
+
+```bash
+python main.py
+python -m pytest test_lab.py -q
+```
+
+## Tasks
+
+{task_lines}
+
+## Reflection
+
+- What broke first when you changed inputs?
+- Which simpler baseline would you compare against in a design review?
+
+## Extensions
+
+- Add another test to `test_lab.py`
+- Link your observations to a [concept card](../../docs/concepts/index.md)
+"""
+
+
+def render_starter_test(slug: str) -> str:
+    return f'''"""Tests for starter lab {slug}."""
+import subprocess
+import sys
+from pathlib import Path
+
+
+def test_main_exits_zero():
+    result = subprocess.run(
+        [sys.executable, str(Path(__file__).parent / "main.py")],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip()
+'''
+
+
+def upgrade_starter_labs() -> int:
+    for slug, title, objective, book, tasks in STARTER_LABS:
+        lab_dir = LABS / slug
+        if not lab_dir.is_dir():
+            continue
+        (lab_dir / "README.md").write_text(
+            render_starter_readme(slug, title, objective, book, tasks), encoding="utf-8"
+        )
+        if slug == "05-eval-harness":
+            (lab_dir / "test_lab.py").write_text(
+                '''"""Tests for starter lab 05-eval-harness."""
+import subprocess
+import sys
+from pathlib import Path
+
+
+def test_main_prints_release_gate():
+    result = subprocess.run(
+        [sys.executable, str(Path(__file__).parent / "main.py")],
+        capture_output=True,
+        text=True,
+    )
+    assert "score=" in result.stdout
+    assert "release=" in result.stdout
+    assert result.stdout.strip()
+''',
+                encoding="utf-8",
+            )
+        else:
+            (lab_dir / "test_lab.py").write_text(render_starter_test(slug), encoding="utf-8")
+    return len(STARTER_LABS)
+
+
 def upgrade_labs() -> int:
     count = 0
     for book_no, book in enumerate(BOOKS, 1):
@@ -393,9 +702,13 @@ def main() -> None:
     guides = generate_build_guides()
     generate_question_index()
     glossary = generate_glossary()
-    labs = upgrade_labs()
+    chapter_labs = upgrade_labs()
+    starter_labs = upgrade_starter_labs()
     update_papers_index(readings)
-    print(f"Generated {readings} readings, {guides} build guides, glossary {glossary} terms, upgraded {labs} labs.")
+    print(
+        f"Generated {readings} readings, {guides} build guides, glossary {glossary} terms, "
+        f"upgraded {chapter_labs} chapter labs and {starter_labs} starter labs."
+    )
 
 
 if __name__ == "__main__":

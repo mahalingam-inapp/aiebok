@@ -1,13 +1,47 @@
-# Concept Cards
+# Featured Concepts
 
-Curated deep-dive cards plus **361 generated reference cards** in [cards/index.md](cards/index.md).
+Deep-dive pages for high-leverage ideas. Every catalog topic also has a [concept card](cards/index.md).
 
-## Featured cards
-
-- [Tokens](tokens.md), [Embeddings](embeddings.md), [RAG](rag.md), [Evaluation](evaluation.md)
-- [Attention](attention.md), [KV Cache](kv-cache.md), [Agents](agents.md)
-- [Prompt Injection](prompt-injection.md), [Structured Output](structured-output.md)
-- [Tool Calling](tool-calling.md), [Fine-Tuning](fine-tuning.md), [Chunking](chunking.md), [Reranking](reranking.md)
-- [Skills & Harnesses](skills-harnesses.md)
-
-See the [full card index](cards/index.md) for every catalog topic.
+- [Abstention](abstention.md)
+- [Agents](agents.md)
+- [Attention](attention.md)
+- [Backpropagation](backpropagation.md)
+- [Bm25](bm25.md)
+- [Calibration](calibration.md)
+- [Canaries](canaries.md)
+- [Chunking](chunking.md)
+- [Context Windows](context-windows.md)
+- [Dense Retrieval](dense-retrieval.md)
+- [Distillation](distillation.md)
+- [Dpo](dpo.md)
+- [Embeddings](embeddings.md)
+- [Evaluation](evaluation.md)
+- [Faithfulness](faithfulness.md)
+- [Fine Tuning](fine-tuning.md)
+- [Function Calling](function-calling.md)
+- [Gradient Descent](gradient-descent.md)
+- [Human Evaluation](human-evaluation.md)
+- [Hybrid Search](hybrid-search.md)
+- [Json Schema](json-schema.md)
+- [Kv Cache](kv-cache.md)
+- [Lora](lora.md)
+- [Mcp](mcp.md)
+- [Model Routing](model-routing.md)
+- [Multi Head Attention](multi-head-attention.md)
+- [Planning](planning.md)
+- [Prompt Injection](prompt-injection.md)
+- [Prompting](prompting.md)
+- [Quantization](quantization.md)
+- [Rag](rag.md)
+- [Reranking](reranking.md)
+- [Retrieval](retrieval.md)
+- [Scaling Laws](scaling-laws.md)
+- [Sft](sft.md)
+- [Skills Harnesses](skills-harnesses.md)
+- [Slices](slices.md)
+- [Structured Output](structured-output.md)
+- [Supervisor Worker](supervisor-worker.md)
+- [Test Time Compute](test-time-compute.md)
+- [Tokens](tokens.md)
+- [Tool Calling](tool-calling.md)
+- [Tracing](tracing.md)

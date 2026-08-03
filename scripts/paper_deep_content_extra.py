@@ -1,0 +1,280 @@
+"""Additional paper reading summaries (extends paper_deep_content.PAPER_DETAILS)."""
+from __future__ import annotations
+
+from paper_deep_content import PaperDetail
+
+EXTRA_PAPER_DETAILS: dict[str, PaperDetail] = {
+    "elmo": {
+        "problem": "Context-independent word vectors could not handle polysemy or sentence-level meaning.",
+        "prior_art": "word2vec and GloVe assigned one vector per word type regardless of surrounding context.",
+        "core_idea": "ELMo runs deep bi-directional LSTM language models and concatenates layer representations to produce contextual embeddings for each token occurrence.",
+        "evidence": [
+            "Large improvements on SNLI, SQuAD, and NER versus static embeddings.",
+            "Lower layers capture syntax; upper layers capture semantics in probing analyses.",
+        ],
+        "limitations": ["Slow inference vs. transformers", "Heavy compared to fine-tuning BERT once"],
+        "impact": "Popularized contextual representations and set the stage for BERT-style pretraining.",
+        "reproduction": "Fine-tune a small ELMo-style model on SST-2 via HuggingFace ELMo checkpoints if available, or compare static vs contextual embeddings on NER.",
+        "related_chapters": [
+            "../books/03-language-and-representation/04-from-sparse-features-to-embeddings.md",
+            "../books/04-transformers-and-foundation-models/01-sequence-models-before-transformers.md",
+        ],
+        "related_concepts": ["word-embeddings", "representation-learning", "LSTMs"],
+    },
+    "gpt2": {
+        "problem": "Demonstrating that a single left-to-right language model could perform diverse NLP tasks without task-specific architectures.",
+        "prior_art": "BERT-style masked modeling excelled at understanding tasks but generation required separate decoders.",
+        "core_idea": "Train a large decoder-only transformer to predict the next token on WebText; use prompts to steer behavior at inference time.",
+        "evidence": [
+            "Strong zero-shot performance on QA, summarization, and translation versus prior supervised systems on some benchmarks.",
+            "Scaling model size improved zero-shot capabilities predictably.",
+        ],
+        "limitations": ["No bidirectional context", "Hallucination on factual QA without retrieval"],
+        "impact": "Established the GPT line and in-context learning as a product paradigm.",
+        "reproduction": "Run gpt2-small on a few prompt templates and compare outputs with temperature 0 vs 0.8 on the same seed.",
+        "related_chapters": [
+            "../books/04-transformers-and-foundation-models/05-inference-and-sampling.md",
+            "../books/05-prompt-and-context-engineering/01-instructions-that-work.md",
+        ],
+        "related_concepts": ["sampling", "few-shot-examples", "logits"],
+    },
+    "palm": {
+        "problem": "Scaling language models while keeping inference efficient for serving.",
+        "prior_art": "Dense transformers scaled quality but multiplied FLOPs per token linearly with width.",
+        "core_idea": "PaLM uses a sparse mixture-of-experts transformer trained at scale with careful data and routing, improving quality per FLOP.",
+        "evidence": [
+            "Reported strong results on reasoning and code benchmarks at 540B scale.",
+            "MoE routing activates a subset of experts per token.",
+        ],
+        "limitations": ["Serving MoE at scale is operationally complex", "Reproduction cost is prohibitive for most teams"],
+        "impact": "Influenced large-scale training recipes and MoE serving research.",
+        "reproduction": "Study a public MoE model card and estimate active parameters vs total; run tiny MoE tutorial model if available.",
+        "related_chapters": [
+            "../books/04-transformers-and-foundation-models/04-training-foundation-models.md",
+            "../books/11-training-serving-and-ai-operations/04-inference-infrastructure.md",
+        ],
+        "related_concepts": ["mixture-of-experts", "scaling-laws", "batching"],
+    },
+    "orca": {
+        "problem": "Instruction-tuned models lagged proprietary assistants in reasoning and explanation quality.",
+        "prior_art": "SFT on human-written instructions alone was limited by dataset scale and diversity.",
+        "core_idea": "Orca distills reasoning traces from a stronger teacher model into a smaller open model using explanation-rich training signals.",
+        "evidence": [
+            "Reported gains on reasoning benchmarks versus standard instruction tuning on similar compute.",
+            "Showed synthetic explanation data can improve smaller models.",
+        ],
+        "limitations": ["Teacher dependency", "Risk of inheriting teacher errors and style"],
+        "impact": "Accelerated distillation and synthetic instruction dataset practices.",
+        "reproduction": "Compare base vs instruction-tuned 7B model on 20 math word problems; optionally add chain-of-thought exemplars.",
+        "related_chapters": [
+            "../books/11-training-serving-and-ai-operations/02-post-training-methods.md",
+            "../books/07-reasoning-and-tool-use/01-reasoning-as-search.md",
+        ],
+        "related_concepts": ["sft", "instruction-tuning", "distillation"],
+    },
+    "mistral": {
+        "problem": "Open models needed strong quality at smaller sizes for efficient deployment.",
+        "prior_art": "Many open models prioritized scale over inference efficiency.",
+        "core_idea": "Mistral 7B combines grouped-query attention, sliding window attention, and careful training data to punch above its weight class.",
+        "evidence": [
+            "Competitive benchmark scores versus larger models at release.",
+            "Widely adopted as an efficient open-weights baseline.",
+        ],
+        "limitations": ["Still requires safety tuning for product use", "Windowed attention affects very long contexts"],
+        "impact": "Popularized efficient open models for production prototyping.",
+        "reproduction": "Benchmark Mistral-class 7B vs a 13B baseline on your task slice with equal latency budget.",
+        "related_chapters": [
+            "../books/04-transformers-and-foundation-models/06-model-families-and-selection.md",
+            "../books/11-training-serving-and-ai-operations/05-deployment-and-routing.md",
+        ],
+        "related_concepts": ["open-weights", "model-routing", "KV-cache"],
+    },
+    "mixtral": {
+        "problem": "Users wanted open models with higher quality without paying full dense-model inference costs.",
+        "prior_art": "Dense 70B-class models were expensive to serve; small dense models lacked quality.",
+        "core_idea": "Mixtral combines sparse MoE layers in an open model, activating few experts per token for better quality/FLOP.",
+        "evidence": [
+            "Strong benchmark performance versus larger dense open models at release.",
+            "Public weights enabled local and hosted deployment patterns.",
+        ],
+        "limitations": ["MoE serving complexity", "Expert load imbalance can hurt latency"],
+        "impact": "Made MoE practical in open-weights product discussions.",
+        "reproduction": "Profile tokens/sec for MoE vs dense model with same API on 100 prompts.",
+        "related_chapters": [
+            "../books/04-transformers-and-foundation-models/04-training-foundation-models.md",
+            "../books/11-training-serving-and-ai-operations/04-inference-infrastructure.md",
+        ],
+        "related_concepts": ["mixture-of-experts", "model-routing", "batching"],
+    },
+    "nemotron": {
+        "problem": "Enterprise teams need reproducible recipes for training and aligning large models.",
+        "prior_art": "Many releases omitted data mixtures, filtering, and alignment details.",
+        "core_idea": "Nemotron reports end-to-end dataset construction, synthetic data generation, and alignment stages for a family of models.",
+        "evidence": [
+            "Documents multi-stage curation and alignment pipelines.",
+            "Provides open weights and training narratives for researchers.",
+        ],
+        "limitations": ["Full reproduction still costly", "Synthetic data risks bias amplification"],
+        "impact": "Contributed to open documentation of modern LM training stacks.",
+        "reproduction": "Map Nemotron pipeline stages to your org's data card and alignment checklist; identify one missing gate.",
+        "related_chapters": [
+            "../books/11-training-serving-and-ai-operations/03-dataset-engineering.md",
+            "../books/11-training-serving-and-ai-operations/02-post-training-methods.md",
+        ],
+        "related_concepts": ["data-curation", "synthetic-data", "sft"],
+    },
+    "helpful-harmless": {
+        "problem": "Assistant models optimized for helpfulness alone can produce harmful or unsafe outputs.",
+        "prior_art": "RLHF work focused primarily on task quality without explicit harm constraints.",
+        "core_idea": "Train preference models that trade off helpfulness and harmlessness, using human comparisons to steer responses away from unsafe compliance.",
+        "evidence": [
+            "Demonstrated reduction in harmful outputs on red-team prompts versus helpfulness-only models.",
+            "Showed multi-objective preference modeling is feasible at scale.",
+        ],
+        "limitations": ["Over-refusal on benign tasks", "Preference data encodes annotator values"],
+        "impact": "Established harmlessness as a first-class alignment objective alongside helpfulness.",
+        "reproduction": "Evaluate a base instruct model on 20 harmless vs sensitive prompts; tag over-refusal vs under-refusal.",
+        "related_chapters": [
+            "../books/10-evaluation-safety-and-governance/05-responsible-ai-and-risk.md",
+            "../books/11-training-serving-and-ai-operations/02-post-training-methods.md",
+        ],
+        "related_concepts": ["RLHF", "human-evaluation", "values"],
+    },
+    "gqa": {
+        "problem": "Multi-head attention KV cache memory grows with heads, limiting long-context batch size.",
+        "prior_art": "Standard MHA stores separate K/V per head for each token.",
+        "core_idea": "Grouped-query attention shares K/V heads among query head groups, shrinking KV cache with modest quality impact.",
+        "evidence": [
+            "Used in several efficient open models; reported near-MHA quality with lower memory bandwidth.",
+            "Enables larger batch or longer context on same GPU memory.",
+        ],
+        "limitations": ["Not identical to MHA quality on all tasks", "Requires kernel support for best speedups"],
+        "impact": "Common optimization in modern inference stacks alongside GQA/MLA variants.",
+        "reproduction": "Compare peak memory during decode for MHA vs GQA config in a small transformer implementation or framework flags.",
+        "related_chapters": [
+            "../books/04-transformers-and-foundation-models/05-inference-and-sampling.md",
+            "../books/11-training-serving-and-ai-operations/04-inference-infrastructure.md",
+        ],
+        "related_concepts": ["KV-cache", "multi-head-attention", "batching"],
+    },
+    "rope": {
+        "problem": "Transformers need position information but fixed absolute embeddings generalize poorly to longer sequences.",
+        "prior_art": "Sinusoidal and learned absolute positional embeddings dominated early transformers.",
+        "core_idea": "Rotary Position Embedding (RoPE) encodes relative position by rotating query and key vectors in complex space as a function of token index.",
+        "evidence": [
+            "Widely adopted in LLaMA, GPT-NeoX, and many open models.",
+            "Improved length extrapolation versus absolute embeddings in several studies.",
+        ],
+        "limitations": ["Extrapolation beyond train length still degrades", "Implementation details affect stability"],
+        "impact": "De facto standard positional scheme for decoder-only LLMs.",
+        "reproduction": "Plot attention distance bias with and without RoPE on a toy transformer; compare perplexity on longer sequences.",
+        "related_chapters": [
+            "../books/04-transformers-and-foundation-models/03-the-transformer-block.md",
+            "../books/04-transformers-and-foundation-models/02-attention.md",
+        ],
+        "related_concepts": ["position", "multi-head-attention", "long-context"],
+    },
+    "qlora": {
+        "problem": "Full fine-tuning of large models is inaccessible on consumer GPUs.",
+        "prior_art": "LoRA reduced trainable parameters but activations still dominated memory.",
+        "core_idea": "QLoRA quantizes the frozen base model to 4-bit NormalFloat while training LoRA adapters, enabling fine-tuning large models on one GPU.",
+        "evidence": [
+            "Reported near full fine-tune quality on several benchmarks with 4-bit base + LoRA.",
+            "Enabled widespread community fine-tuning experiments.",
+        ],
+        "limitations": ["Quantization can hurt sensitive tasks", "Still requires careful eval before production"],
+        "impact": "Standard technique for accessible adaptation of open models.",
+        "reproduction": "Fine-tune a 7B model with QLoRA on 500 examples; compare to prompt-only baseline on held-out slice.",
+        "related_chapters": [
+            "../books/11-training-serving-and-ai-operations/02-post-training-methods.md",
+            "../books/11-training-serving-and-ai-operations/01-choosing-adaptation.md",
+        ],
+        "related_concepts": ["lora", "quantization", "sft"],
+    },
+    "sparse-autoencoder": {
+        "problem": "Interpretability researchers sought human-understandable features inside dense activations.",
+        "prior_art": "Probing classifiers on neurons yielded mixed, unstable features.",
+        "core_idea": "Train sparse autoencoders on model activations to discover sparse, often monosemantic features that approximate internal representations.",
+        "evidence": [
+            "Anthropic and follow-up work showed interpretable features for concepts and safety-relevant behaviors.",
+            "Features can be used to monitor or steer model behavior experimentally.",
+        ],
+        "limitations": ["Incomplete coverage of model computation", "Steering can have side effects"],
+        "impact": "Revived feature-based interpretability for large models.",
+        "reproduction": "Run a public sparse autoencoder demo on a small model layer; inspect top activating tokens for one feature.",
+        "related_chapters": [
+            "../books/04-transformers-and-foundation-models/03-the-transformer-block.md",
+            "../books/10-evaluation-safety-and-governance/05-responsible-ai-and-risk.md",
+        ],
+        "related_concepts": ["neurons-and-layers", "interpretability", "activation"],
+    },
+    "jailbreak-taxonomy": {
+        "problem": "Teams lacked a shared vocabulary for prompt injection and jailbreak attacks.",
+        "prior_art": "Ad hoc lists of attacks in blog posts without systematic coverage.",
+        "core_idea": "Taxonomies classify attacks by mechanism—direct injection, indirect via retrieval, tool abuse, multimodal payloads—and map mitigations.",
+        "evidence": [
+            "OWASP LLM Top 10 and industry red-team catalogs consolidate common patterns.",
+            "Enterprises adopt taxonomies for test case libraries.",
+        ],
+        "limitations": ["Taxonomies lag novel attacks", "Mitigations are rarely complete"],
+        "impact": "Standardized red-team planning and CI attack suites.",
+        "reproduction": "Map 10 known attacks to OWASP categories; add any missing coverage to your eval suite.",
+        "related_chapters": [
+            "../books/10-evaluation-safety-and-governance/04-security-of-ai-systems.md",
+            "../books/05-prompt-and-context-engineering/05-context-failure-and-security.md",
+        ],
+        "related_concepts": ["prompt-injection", "adversarial-tests", "threat-modeling"],
+    },
+    "swebench": {
+        "problem": "Coding agents needed realistic benchmarks beyond toy function synthesis.",
+        "prior_art": "HumanEval measured short function completion but not repository-level engineering.",
+        "core_idea": "SWE-bench tasks require agents to fix real GitHub issues in full repositories with tests as verification.",
+        "evidence": [
+            "Showed large gap between human engineers and early agents.",
+            "Drove research in coding agents, planning, and tool use.",
+        ],
+        "limitations": ["Contamination and memorization risks", "Compute cost to evaluate"],
+        "impact": "Primary benchmark narrative for AI coding agents.",
+        "reproduction": "Run one SWE-bench-lite instance in a sandbox; record steps, cost, and test outcome.",
+        "related_chapters": [
+            "../books/09-ai-software-and-product-engineering/03-ai-native-development-workflow.md",
+            "../books/08-agent-systems/04-agent-patterns.md",
+        ],
+        "related_concepts": ["ai-coding-agents", "benchmarks", "verification"],
+    },
+    "knowledge-distillation": {
+        "problem": "Large teacher models are costly at inference; teams need smaller deployable students.",
+        "prior_art": "Manual compression and pruning lost quality unpredictably.",
+        "core_idea": "Distillation trains a smaller student to match teacher logits or intermediate signals on a dataset, preserving behavior with fewer parameters.",
+        "evidence": [
+            "Classic Hinton distillation improved small models on classification.",
+            "Modern LLM distillation uses synthetic data from teachers for instruction following.",
+        ],
+        "limitations": ["Student caps at teacher quality", "Distribution shift if teacher data mismatches production"],
+        "impact": "Core technique for edge deployment and cost reduction.",
+        "reproduction": "Distill a tiny classifier from a larger sklearn/neural teacher on MNIST or text classification subset.",
+        "related_chapters": [
+            "../books/11-training-serving-and-ai-operations/02-post-training-methods.md",
+            "../books/02-machine-learning-systems/04-neural-networks.md",
+        ],
+        "related_concepts": ["distillation", "sft", "model-routing"],
+    },
+}
+
+EXTRA_PAPER_SPECS: list[tuple[str, str, str, str, str, str]] = [
+    ("elmo", "Deep contextualized word representations (ELMo)", "Peters et al.", "2018", "https://arxiv.org/abs/1802.05365", "Contextual embeddings from biLM layers improve downstream NLP."),
+    ("gpt2", "Language Models are Unsupervised Multitask Learners", "Radford et al.", "2019", "https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf", "Decoder-only LM scales to strong zero-shot behavior."),
+    ("palm", "PaLM: Scaling Language Modeling with Pathways", "Chowdhery et al.", "2022", "https://arxiv.org/abs/2204.02311", "Large-scale training with pathways and sparse MoE elements."),
+    ("orca", "Orca: Progressive Learning from Complex Explanation Traces", "Mukherjee et al.", "2023", "https://arxiv.org/abs/2306.02707", "Distill reasoning traces from stronger teachers."),
+    ("mistral", "Mistral 7B", "Jiang et al.", "2023", "https://arxiv.org/abs/2310.06825", "Efficient open model with sliding-window attention."),
+    ("mixtral", "Mixtral of Experts", "Jiang et al.", "2024", "https://arxiv.org/abs/2401.04088", "Sparse MoE open model with strong quality/FLOP."),
+    ("nemotron", "Nemotron family technical report", "NVIDIA", "2024", "https://research.nvidia.com/labs/nemotron/", "Documented training and alignment pipeline for Nemotron models."),
+    ("helpful-harmless", "Training a Helpful and Harmless Assistant", "Bai et al.", "2022", "https://arxiv.org/abs/2212.08073", "Preference modeling balances helpfulness and harmlessness."),
+    ("gqa", "GQA: Training Generalized Multi-Query Transformer Models", "Ainslie et al.", "2023", "https://arxiv.org/abs/2305.13245", "Grouped-query attention reduces KV cache footprint."),
+    ("rope", "RoFormer: Enhanced Transformer with Rotary Position Embedding", "Su et al.", "2021", "https://arxiv.org/abs/2104.09864", "Rotary embeddings encode relative position in attention."),
+    ("qlora", "QLoRA: Efficient Finetuning of Quantized LLMs", "Dettmers et al.", "2023", "https://arxiv.org/abs/2305.14314", "4-bit base model plus LoRA enables accessible fine-tuning."),
+    ("sparse-autoencoder", "Towards Monosemanticity (Sparse Autoencoders)", "Anthropic", "2023", "https://transformer-circuits.pub/2023/monosemantic-features/index.html", "Sparse autoencoders extract interpretable features."),
+    ("jailbreak-taxonomy", "OWASP Top 10 for LLM Applications", "OWASP", "2024", "https://owasp.org/www-project-top-10-for-large-language-model-applications/", "Taxonomy of LLM application risks including injection."),
+    ("swebench", "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?", "Jimenez et al.", "2024", "https://arxiv.org/abs/2310.06770", "Repository-level coding agent benchmark with tests."),
+    ("knowledge-distillation", "Distilling the Knowledge in a Neural Network", "Hinton et al.", "2015", "https://arxiv.org/abs/1503.02531", "Train smaller students to mimic teacher soft targets."),
+]
