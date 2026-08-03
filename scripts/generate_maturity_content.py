@@ -19,6 +19,7 @@ from generate_expansion import lab_slug
 from guide_deep_content import GUIDE_DETAILS
 from paper_deep_content import PAPER_DETAILS as BASE_PAPER_DETAILS
 from paper_deep_content_extra import EXTRA_PAPER_DETAILS, EXTRA_PAPER_SPECS
+from site_stats import collect_site_stats
 from topic_knowledge import TOPIC_FACTS, get_topic_entry, normalize
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -182,6 +183,7 @@ def render_paper(ps: tuple[str, str, str, str, str, str]) -> str:
 
 
 def generate_readings() -> int:
+    stats = collect_site_stats()
     PAPERS.mkdir(parents=True, exist_ok=True)
     groups: dict[str, list[list[str]]] = {}
     for spec in ALL_PAPER_SPECS:
@@ -189,7 +191,7 @@ def generate_readings() -> int:
         (PAPERS / f"{key}.md").write_text(render_paper(spec), encoding="utf-8")
         group = classify_paper(key)
         groups.setdefault(group, []).append(
-            [f"[{title}]({key}.md)", authors, year, _cell(blurb, 100)]
+            [f"[{title}]({key}.md)", authors, year, _cell(blurb, None)]
         )
     for group in groups:
         groups[group] = sorted(groups[group], key=lambda row: (row[2], row[0]))
@@ -197,7 +199,7 @@ def generate_readings() -> int:
     index = render_grouped_table_catalog(
         "Research Readings Catalog",
         [
-            f"{len(ALL_PAPER_SPECS)} primary-source summaries.",
+            f"{stats.paper_readings} primary-source summaries.",
             "",
             "Expand a theme or use search (`/`) for a specific paper.",
         ],
@@ -333,21 +335,27 @@ You can demo the system on normal, boundary, and adversarial cases; explain meas
 
 
 def generate_build_guides() -> int:
+    stats = collect_site_stats()
     GUIDES.mkdir(parents=True, exist_ok=True)
     groups: dict[str, list[list[str]]] = {}
     for key, title, goal, phases, book in BUILD_GUIDES:
         (GUIDES / f"{key}.md").write_text(render_build_guide(key, title, goal, phases, book), encoding="utf-8")
-        groups.setdefault(classify_guide(key), []).append([f"[{title}]({key}.md)", _cell(goal, 120)])
+        phase_text = " → ".join(phases)
+        groups.setdefault(classify_guide(key), []).append(
+            [f"[{title}]({key}.md)", _cell(goal, None), _cell(phase_text, None), f"`{book}`"]
+        )
 
     index = render_grouped_table_catalog(
         "Build Guides",
         [
-            "End-to-end projects from spec to evidence.",
+            f"**{stats.build_guides} end-to-end projects** from spec to evidence.",
+            "",
+            "Each row lists the goal, phased deliverables, and primary book track.",
             "",
             "Expand a theme or use search (`/`) for a specific guide.",
         ],
         groups,
-        ["Guide", "Goal"],
+        ["Guide", "Goal", "Phases", "Book track"],
     )
     (GUIDES / "index.md").write_text(index, encoding="utf-8")
     return len(BUILD_GUIDES)
@@ -421,6 +429,7 @@ def generate_question_index() -> None:
 
 
 def generate_glossary() -> int:
+    stats = collect_site_stats()
     entries: list[tuple[str, str]] = []
     for key in sorted(TOPIC_FACTS):
         explanation, _, _ = get_topic_entry(title_from_slug(key))
@@ -435,7 +444,7 @@ def generate_glossary() -> int:
     text = render_letter_bullet_index(
         "Glossary",
         [
-            "Alphabetical definitions for AIEBOK catalog terms. "
+            f"Alphabetical definitions for **{stats.glossary_terms}** AIEBOK catalog terms. "
             "See [concept cards](../concepts/cards/index.md) for expanded entries.",
             "",
             "Expand a letter group or use search (`/`).",
@@ -697,6 +706,7 @@ def upgrade_labs() -> int:
 
 
 def update_papers_index(readings: int) -> None:
+    stats = collect_site_stats()
     (DOCS / "papers" / "index.md").write_text(
         f"""# Research Reading Program
 
@@ -704,7 +714,7 @@ Read primary sources to understand how ideas evolve, not to memorize every formu
 
 ## Catalog
 
-**{readings} reading summaries** in the [readings catalog](readings/index.md) (collapsed by theme).
+**{stats.paper_readings} reading summaries** in the [readings catalog](readings/index.md) (collapsed by theme).
 
 ## Suggested sequence
 

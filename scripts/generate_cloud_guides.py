@@ -4,6 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from catalog_helpers import _cell, classify_cloud_capability, render_grouped_table_catalog
+from site_stats import collect_site_stats, replace_marked_block
 
 ROOT = Path(__file__).resolve().parents[1]
 CLOUD = ROOT / "docs" / "cloud"
@@ -315,33 +316,47 @@ def render_capability(spec: tuple[str, str, str, str, str, str, str, str]) -> st
 
 
 def generate() -> int:
+    stats = collect_site_stats()
     CAPABILITIES.mkdir(parents=True, exist_ok=True)
     groups: dict[str, list[list[str]]] = {}
     for spec in CAPABILITY_SPECS:
         slug = spec[0]
         (CAPABILITIES / f"{slug}.md").write_text(render_capability(spec), encoding="utf-8")
         groups.setdefault(classify_cloud_capability(slug), []).append(
-            [f"[{spec[1]}]({slug}.md)", _cell(spec[2], 120)]
+            [
+                f"[{spec[1]}]({slug}.md)",
+                _cell(spec[2], None),
+                _cell(spec[6], None),
+                _cell(f"AWS: {spec[3]} · Azure: {spec[4]} · GCP: {spec[5]}", None),
+            ]
         )
 
     index = render_grouped_table_catalog(
         "Cloud Capability Guides",
         [
-            "Provider-neutral capability pages with dated AWS, Azure, and Google Cloud mappings.",
+            f"**{stats.cloud_capabilities} provider-neutral capability pages** with dated AWS, Azure, and Google Cloud mappings.",
             "",
             "Verify product names, regions, limits, and pricing in official documentation before production use.",
+            "",
+            "Each row summarizes the capability, when to use it, and typical provider services.",
             "",
             "Expand a category or use search (`/`).",
         ],
         groups,
-        ["Capability", "Summary"],
+        ["Capability", "Summary", "When to use", "Provider mapping"],
     )
     (CAPABILITIES / "index.md").write_text(index, encoding="utf-8")
 
     # Update cloud index with link to capabilities catalog
     index = (CLOUD / "index.md").read_text(encoding="utf-8")
-    if "capabilities/index.md" not in index:
-        index = index.rstrip() + "\n\n## Capability guides\n\nSee the [capability guide catalog](capabilities/index.md) for 26 provider-neutral pages.\n"
+    cap_line = (
+        f"See the [capability guide catalog](capabilities/index.md) "
+        f"for **{stats.cloud_capabilities}** provider-neutral pages."
+    )
+    if "site-stats:cloud-capabilities" in index:
+        replace_marked_block(CLOUD / "index.md", "cloud-capabilities", cap_line)
+    elif "capabilities/index.md" not in index:
+        index = index.rstrip() + f"\n\n## Capability guides\n\n{cap_line}\n"
         (CLOUD / "index.md").write_text(index, encoding="utf-8")
 
     return len(CAPABILITY_SPECS)

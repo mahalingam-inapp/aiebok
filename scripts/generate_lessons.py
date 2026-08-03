@@ -1,11 +1,12 @@
-"""Generate standalone guided lessons (120) and index."""
+"""Generate standalone guided lessons and index."""
 from __future__ import annotations
 
 from pathlib import Path
 
-from catalog_helpers import _accordion_section, _markdown_table
+from catalog_helpers import _accordion_section, _cell, _markdown_table
 from generate_books import BOOKS, slug
 from ka_deep_content import KA_SPECS, chapter_href, lab_slug
+from site_stats import collect_site_stats
 from topic_knowledge import normalize
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -126,29 +127,59 @@ def title_from_slug(s: str) -> str:
 
 
 def render_lessons_index(
-    ka_groups: list[tuple[str, str, list[tuple[str, str]]]],
-    supplemental: list[tuple[str, str]],
+    ka_groups: list[tuple[str, str, list[tuple[str, str, str, str, str | None]]]],
+    supplemental: list[tuple[str, str, str, str]],
 ) -> str:
+    stats = collect_site_stats()
     lines = [
         "# Guided Lessons",
         "",
-        "120 standalone lessons across knowledge areas and cross-cutting topics.",
+        f"**{stats.total_lessons} guided lessons** — {stats.ka_lessons} aligned to knowledge areas "
+        f"plus {stats.supplemental_lessons} supplemental cross-cutting lessons.",
         "",
-        "**Expand a knowledge area** or use search (`/`) to jump to a lesson.",
+        "Each row links the lesson, chapter reading, matching lab, and objective. "
+        "Expand a knowledge area or use search (`/`).",
         "",
     ]
-    for _ka_file, ka_title, items in ka_groups:
-        rows = [[f"[{title}]({lesson_id}.md)"] for lesson_id, title in items]
-        lines.append(_accordion_section(f"{ka_title} ({len(items)})", _markdown_table(["Lesson"], rows)))
+    for ka_file, ka_title, items in ka_groups:
+        rows = [
+            [
+                f"`{lesson_id}`",
+                f"[{title}]({lesson_id}.md)",
+                _cell(objective, None),
+                f"[chapter]({read_link})",
+                f"[lab]({lab_link})" if lab_link else "—",
+            ]
+            for lesson_id, title, objective, read_link, lab_link in items
+        ]
+        lines.append(
+            _accordion_section(
+                f"{ka_title} · `{ka_file}` ({len(items)})",
+                _markdown_table(["ID", "Lesson", "Objective", "Read", "Lab"], rows),
+            )
+        )
     if supplemental:
-        rows = [[f"[{title}]({lesson_id}.md)"] for lesson_id, title in supplemental]
-        lines.append(_accordion_section(f"Supplemental ({len(supplemental)})", _markdown_table(["Lesson"], rows)))
+        rows = [
+            [
+                f"`{lesson_id}`",
+                f"[{title}]({lesson_id}.md)",
+                _cell(objective, None),
+                f"[reading]({read_link})",
+            ]
+            for lesson_id, title, objective, read_link in supplemental
+        ]
+        lines.append(
+            _accordion_section(
+                f"Supplemental cross-cutting ({len(supplemental)})",
+                _markdown_table(["ID", "Lesson", "Objective", "Read"], rows),
+            )
+        )
     return "\n".join(lines) + "\n"
 
 
 def generate() -> int:
     LESSONS.mkdir(parents=True, exist_ok=True)
-    ka_groups: list[tuple[str, str, list[tuple[str, str]]]] = []
+    ka_groups: list[tuple[str, str, list[tuple[str, str, str, str, str | None]]]] = []
     ka_index: dict[str, int] = {}
     count = 0
 
@@ -174,15 +205,15 @@ def generate() -> int:
                 f"../labs/{ls}.md",
             )
             (LESSONS / f"{lesson_id}.md").write_text(text, encoding="utf-8")
-            group_items.append((lesson_id, ch_title))
+            group_items.append((lesson_id, ch_title, ch[3], href, f"../labs/{ls}.md"))
             count += 1
 
-    supplemental: list[tuple[str, str]] = []
+    supplemental: list[tuple[str, str, str, str]] = []
     for slug_id, title, objective, read_link, concepts, exercise in SUPPLEMENTAL:
         lesson_id = f"sup-{slug_id}"
         text = render_lesson(lesson_id, title, objective, read_link, concepts, exercise)
         (LESSONS / f"{lesson_id}.md").write_text(text, encoding="utf-8")
-        supplemental.append((lesson_id, title))
+        supplemental.append((lesson_id, title, objective, read_link))
         count += 1
 
     (LESSONS / "index.md").write_text(render_lessons_index(ka_groups, supplemental), encoding="utf-8")

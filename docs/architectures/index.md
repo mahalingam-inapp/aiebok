@@ -1,6 +1,6 @@
 # Architecture Studios
 
-**Reference architectures** for design studios and ADRs. Expand a group or use search.
+**25 reference architectures** for design studios and ADRs. Expand the group or use search.
 
 Featured: [Enterprise RAG](enterprise-rag.md)
 

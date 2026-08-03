@@ -10,11 +10,19 @@ AIEBOK teaches principles before products and makes implementation, architecture
 
 ## Publication at a glance
 
+<!-- site-stats:publication:start -->
 - 13 guided books
 - 78 full study chapters
 - 20 knowledge-area maps
-- Concept, pattern, architecture, cloud, lab, and research libraries
-- Approximately 70,000 words of deployable learning content
+- 163 guided lessons (120 knowledge-area + 43 supplemental)
+- 361 concept cards (43 featured deep-dives)
+- 100 patterns (98 catalog + 2 starter deep-dives)
+- 25 architecture studios
+- 50 research reading summaries
+- 13 build guides · 26 cloud capability guides
+- 83 labs (78 chapter + 5 starter) · 13 code samples
+- approximately 358,000 words of deployable learning content in `docs/`
+<!-- site-stats:publication:end -->
 
 ## The whole field, one map
 

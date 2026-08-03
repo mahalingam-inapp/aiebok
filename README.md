@@ -17,12 +17,15 @@ To publish, push to a GitHub repository, open **Settings → Pages**, and choose
 
 ## What is included
 
-- A complete 19-knowledge-area curriculum plan
-- Starter concept, pattern, architecture, cloud, paper, and lab pages
-- Five runnable, dependency-light Python labs
-- Content templates and an editorial quality system
+<!-- site-stats:readme:start -->
+- A complete 20-knowledge-area curriculum (13 books, 78 chapters)
+- 361 concept cards, 100 patterns, 25 architecture studios
+- 50 paper summaries · 13 build guides · 26 cloud guides
+- 5 runnable starter labs (+ 78 chapter labs in the repo)
+- Content templates and editorial quality system
 - Link/configuration validation and GitHub Pages deployment
 - A roadmap for growing the body of knowledge without turning it into an LMS
+<!-- site-stats:readme:end -->
 
 ## Validate and build
 
@@ -38,6 +41,7 @@ python scripts/generate_featured_concepts.py
 python scripts/generate_lab_notebooks.py
 python scripts/generate_pdf.py
 python scripts/generate_progress_manifest.py
+python scripts/generate_site_stats.py
 python scripts/validate_content.py
 python scripts/audit_book_coverage.py
 mkdocs build --strict

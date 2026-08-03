@@ -1,6 +1,8 @@
 # Concept Cards
 
-Curated deep-dive pages plus **361 reference cards** in [All Cards](cards/index.md) (collapsed A–Z groups).
+<!-- site-stats:intro:start -->
+Curated deep-dive pages plus **361 reference cards** in [All Cards](cards/index.md) (collapsed A–Z groups). **43 featured** deep-dives are listed below.
+<!-- site-stats:intro:end -->
 
 ## Featured cards
 

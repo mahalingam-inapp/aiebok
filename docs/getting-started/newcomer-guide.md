@@ -51,7 +51,9 @@ A **progress bar** at the top of every page tracks reading progress through onbo
 | **Start Here** | Orientation and pacing | You are here |
 | **Guided Books** | Sequential learning (13 books, 78 chapters) | [Book catalog](../books/index.md) |
 | **Knowledge Areas** | Curriculum map by domain | [KA index](../knowledge-areas/index.md) |
-| **Guided Lessons** | Short lesson sequences | [Lesson catalog](../lessons/index.md) |
+| **Guided Lessons** | <!-- site-stats:lessons-nav:start -->
+Short lesson sequences (163 total: 120 KA + 43 supplemental)
+<!-- site-stats:lessons-nav:end --> | [Lesson catalog](../lessons/index.md) |
 | **Concepts** | Fast lookup and vocabulary | [Featured concepts](../concepts/index.md) |
 | **Patterns / Architectures** | Production design patterns | [Pattern library](../patterns/index.md) (collapsed groups) |
 | **Labs** | Runnable Python and notebooks | [Hands-on start](../labs/start-here.md) |

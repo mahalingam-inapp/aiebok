@@ -1,6 +1,6 @@
 # Glossary
 
-Alphabetical definitions for AIEBOK catalog terms. See [concept cards](../concepts/cards/index.md) for expanded entries.
+Alphabetical definitions for **361** AIEBOK catalog terms. See [concept cards](../concepts/cards/index.md) for expanded entries.
 
 Expand a letter group or use search (`/`).
 

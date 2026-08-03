@@ -8,12 +8,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from generate_books import BOOKS, slug
+from site_stats import collect_site_stats
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "docs" / "assets" / "progress-manifest.json"
 
 
 def main() -> None:
+    stats = collect_site_stats()
     items: list[dict] = []
 
     for path, title in [
@@ -51,14 +53,14 @@ def main() -> None:
         "version": 1,
         "label": "AIEBOK reading progress",
         "tracks": {
-            "onboarding": "Start here (3 steps)",
-            "books": "Guided books (78 chapters)",
+            "onboarding": f"Start here ({stats.progress_onboarding} steps)",
+            "books": f"Guided books ({stats.chapters} chapters)",
         },
         "items": items,
     }
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    print(f"Wrote {OUTPUT} ({len(items)} trackable items).")
+    print(f"Wrote {OUTPUT} ({stats.progress_total} trackable items).")
 
 
 if __name__ == "__main__":

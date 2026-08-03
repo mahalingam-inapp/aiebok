@@ -19,4 +19,6 @@ Select one architecture, map each logical capability across providers, then comp
 
 ## Capability guides
 
-See the [capability guide catalog](capabilities/index.md) for 26 provider-neutral pages.
+<!-- site-stats:cloud-capabilities:start -->
+See the [capability guide catalog](capabilities/index.md) for **26** provider-neutral pages.
+<!-- site-stats:cloud-capabilities:end -->

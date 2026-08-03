@@ -6,9 +6,9 @@ def title_from_slug(s: str) -> str:
     return " ".join(w if w.isupper() and len(w) <= 4 else w.capitalize() for w in s.split("-"))
 
 
-def _cell(text: str, limit: int = 120) -> str:
+def _cell(text: str, limit: int | None = 120) -> str:
     clean = text.replace("|", "\\|").replace("\n", " ").strip()
-    if len(clean) > limit:
+    if limit is not None and len(clean) > limit:
         return clean[: limit - 1] + "…"
     return clean
 
@@ -47,7 +47,7 @@ def render_letter_link_index(
     intro_lines: list[str],
     keys: list[str],
     link_fn,
-    column_header: str = "Topic",
+    headers: list[str] | None = None,
 ) -> str:
     by_letter: dict[str, list[str]] = {}
     for key in keys:
@@ -56,12 +56,17 @@ def render_letter_link_index(
             letter = "#"
         by_letter.setdefault(letter, []).append(key)
 
+    column_headers = headers or ["Topic"]
     groups: dict[str, list[list[str]]] = {}
     for letter in by_letter:
         items = sorted(by_letter[letter])
-        groups[letter if letter != "#" else "0–9"] = [[link_fn(key)] for key in items]
+        rows = []
+        for key in items:
+            row = link_fn(key)
+            rows.append(row if isinstance(row, list) else [row])
+        groups[letter if letter != "#" else "0–9"] = rows
 
-    return render_grouped_table_catalog(title, intro_lines, groups, [column_header])
+    return render_grouped_table_catalog(title, intro_lines, groups, column_headers)
 
 
 def render_letter_bullet_index(

@@ -4,12 +4,14 @@ AIEBOK includes a **browser-local progress bar** at the top of every page. It he
 
 ## What it tracks
 
+<!-- site-stats:progress:start -->
 | Track | Items |
 |---|---:|
 | Start here | 3 onboarding pages |
 | Guided books | 78 chapters |
 
 **Total:** 81 reading checkpoints. **Labs are not tracked** — run them in the repo at your own pace.
+<!-- site-stats:progress:end -->
 
 ## How progress is saved
 

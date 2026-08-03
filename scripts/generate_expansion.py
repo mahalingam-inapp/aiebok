@@ -14,6 +14,7 @@ from catalog_helpers import (
 )
 from concept_card_enrichments import card_enrichment
 from generate_books import BOOKS, slug
+from site_stats import collect_site_stats
 from topic_knowledge import TOPIC_FACTS, get_topic_entry, normalize
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -153,6 +154,7 @@ def classify_pattern(slug: str) -> str:
 
 
 def render_pattern_catalog(patterns: list[tuple]) -> str:
+    stats = collect_site_stats()
     groups: dict[str, list[tuple]] = {}
     for row in patterns:
         ps = row[0]
@@ -161,8 +163,11 @@ def render_pattern_catalog(patterns: list[tuple]) -> str:
     lines = [
         "# Pattern Library",
         "",
-        "**Browse collapsed groups** below — each table summarizes patterns inline. "
-        "Use site **search** (`/` ) for a specific name, or expand a group to scan.",
+        f"**{stats.patterns_total} patterns** — {stats.patterns_generated} in the catalog below "
+        f"plus {stats.patterns_manual} starter deep-dives. "
+        "Browse collapsed groups or use site **search** (`/`).",
+        "",
+        "Columns preserve the full pattern brief: context, solution, benefits, costs, and when to skip.",
         "",
         "Starter deep-dives: [Planner–Executor](planner-executor.md) · [Human Approval](human-approval.md)",
         "",
@@ -172,65 +177,91 @@ def render_pattern_catalog(patterns: list[tuple]) -> str:
         rows = [
             [
                 f"[{name}]({ps}.md)",
-                _cell(ctx, 90),
-                _cell(sol, 90),
-                _cell(avoid, 70),
+                _cell(ctx, None),
+                _cell(sol, None),
+                _cell(pos, None),
+                _cell(neg, None),
+                _cell(avoid, None),
             ]
-            for ps, name, ctx, sol, _pos, _neg, avoid in items
+            for ps, name, ctx, sol, pos, neg, avoid in items
         ]
-        body = _markdown_table(["Pattern", "Context", "Solution", "Skip when"], rows)
+        body = _markdown_table(["Pattern", "Context", "Solution", "Benefits", "Costs", "Skip when"], rows)
         lines.append(_accordion_section(f"{group} ({len(items)})", body))
     return "\n".join(lines) + "\n"
 
 
 def render_architecture_catalog(architectures: list[tuple]) -> str:
+    count = len(architectures)
     lines = [
         "# Architecture Studios",
         "",
-        "**Reference architectures** for design studios and ADRs. Expand a group or use search.",
+        f"**{count} reference architectures** for design studios and ADRs. Expand the group or use search.",
         "",
         "Featured: [Enterprise RAG](enterprise-rag.md)",
         "",
     ]
-    rows = [[f"[{name}]({asn}.md)", _cell(goal, 160)] for asn, name, goal in architectures]
+    rows = [[f"[{name}]({asn}.md)", _cell(goal, None)] for asn, name, goal in architectures]
     body = _markdown_table(["Studio", "Goal"], rows)
     lines.append(_accordion_section(f"All studios ({len(architectures)})", body))
     return "\n".join(lines) + "\n"
 
 
-def render_lab_catalog(entries: list[tuple[int, int, str, str]]) -> str:
-    """entries: book_no, chapter_no, title, slug"""
+def render_lab_catalog(entries: list[tuple[int, int, str, str, str]]) -> str:
+    """entries: book_no, chapter_no, title, slug, practice"""
+    stats = collect_site_stats()
     by_book: dict[int, list[tuple]] = {}
-    for book_no, chapter_no, title, ls in entries:
-        by_book.setdefault(book_no, []).append((chapter_no, title, ls))
+    for book_no, chapter_no, title, ls, practice in entries:
+        by_book.setdefault(book_no, []).append((chapter_no, title, ls, practice))
 
     lines = [
         "# Lab Catalog",
         "",
-        "One lab per guided book chapter. **Starter labs** are on [Hands-on start](start-here.md).",
+        f"**{stats.total_labs} labs** — {stats.chapter_labs} chapter labs below plus "
+        f"{stats.starter_labs} starter labs on [Hands-on start](start-here.md).",
+        "",
+        "Each row links the lab doc, runnable entrypoint, and chapter practice objective.",
         "",
     ]
     for book_no in sorted(by_book):
         book = BOOKS[book_no - 1]
         items = sorted(by_book[book_no])
         rows = [
-            [f"{book_no}.{chapter_no}", f"[{title}]({ls}.md)", f"`labs/{ls}/main.py`"]
-            for chapter_no, title, ls in items
+            [
+                f"{book_no}.{chapter_no}",
+                f"[{title}]({ls}.md)",
+                f"`labs/{ls}/main.py`",
+                _cell(practice, None),
+            ]
+            for chapter_no, title, ls, practice in items
         ]
-        body = _markdown_table(["§", "Lab", "Run"], rows)
+        body = _markdown_table(["§", "Lab", "Run", "Practice objective"], rows)
         lines.append(_accordion_section(f"Book {book_no:02d} — {book['title']} ({len(items)})", body))
     return "\n".join(lines) + "\n"
 
 
 def render_concept_card_index(keys: list[str]) -> str:
+    stats = collect_site_stats()
+
+    def row_for(key: str) -> list[str]:
+        explanation, _, _ = get_topic_entry(title_from_slug(key))
+        first = explanation.split(".")[0].strip()
+        if first.startswith("**"):
+            first = first.strip("*").strip()
+            if ":" in first:
+                first = first.split(":", 1)[1].strip()
+        return [f"[{title_from_slug(key)}]({key}.md)", _cell(first, None)]
+
     return render_letter_link_index(
         "Concept Card Index",
         [
-            f"**{len(keys)} cards** — expand a letter group or use search. "
+            f"**{stats.concept_cards} cards** — expand a letter group or use search. "
             "Featured topics live on the [concept index](../index.md).",
+            "",
+            "Each row includes a one-line definition; open the card for examples, checklists, and links.",
         ],
         keys,
-        lambda key: f"[{title_from_slug(key)}]({key}.md)",
+        row_for,
+        headers=["Topic", "Definition"],
     )
 
 
@@ -410,12 +441,57 @@ Apply the enterprise and reference architectures in [architectures/](../architec
 """
 
 
+def render_ka_map_index() -> str:
+    from ka_deep_content import KA_SPECS
+
+    lines = [
+        "# Knowledge-Area Map",
+        "",
+        "The knowledge areas form a curriculum backbone. Cross-cutting threads—labs, architecture, "
+        "research, security, cloud, cost, product thinking, and evolution—appear throughout.",
+        "",
+        "Use the summary table for orientation, then expand a knowledge area for purpose, lesson path, "
+        "and practice project.",
+        "",
+        "| KA | Knowledge area | Durable outcome | Primary book | Lessons |",
+        "|---:|---|---|---|---|",
+    ]
+    for ka_file, title, purpose, book_no, _project, _, _lesson_indices in KA_SPECS:
+        ka_num = ka_file.split("-", 1)[0]
+        book = BOOKS[book_no - 1]
+        book_slug = f"{book_no:02d}-{slug(book['title'])}"
+        lines.append(
+            f"| {ka_num} | [{title}]({ka_file}.md) | {_cell(purpose, None)} | "
+            f"[Book {book_no}](../books/{book_slug}/index.md) | "
+            f"[catalog](../lessons/index.md) |"
+        )
+    lines.append("")
+    for ka_file, title, purpose, book_no, project, _extra, lesson_indices in KA_SPECS:
+        book = BOOKS[book_no - 1]
+        book_slug = f"{book_no:02d}-{slug(book['title'])}"
+        ch_titles = [book["chapters"][i - 1][0] for i in lesson_indices]
+        preview = ", ".join(ch_titles[:3])
+        if len(ch_titles) > 3:
+            preview += f", … (+{len(ch_titles) - 3} more)"
+        body = [
+            f"- **Slug:** `{ka_file}`",
+            f"- **Purpose:** {purpose}",
+            f"- **Primary book:** [Book {book_no}: {book['title']}](../books/{book_slug}/index.md)",
+            f"- **Lesson path:** {preview} — [full sequence]({ka_file}.md)",
+            f"- **Practice project:** {project}",
+            f"- **Open detail page:** [{ka_file}.md]({ka_file}.md)",
+        ]
+        lines.append(_accordion_section(title, body))
+    return "\n".join(lines) + "\n"
+
+
 def generate_knowledge_areas() -> int:
     from ka_deep_content import all_ka_pages
 
     pages = all_ka_pages()
     for ka_file, text in pages.items():
         (KA / f"{ka_file}.md").write_text(text, encoding="utf-8")
+    (KA / "index.md").write_text(render_ka_map_index(), encoding="utf-8")
     return len(pages)
 
 
@@ -427,7 +503,7 @@ def generate_labs() -> int:
     from chapter_catalog import CHAPTER_HOOKS
 
     count = 0
-    catalog_entries: list[tuple[int, int, str, str]] = []
+    catalog_entries: list[tuple[int, int, str, str, str]] = []
     for book_no, book in enumerate(BOOKS, 1):
         for chapter_no, chapter in enumerate(book["chapters"], 1):
             title = chapter[0]
@@ -447,7 +523,7 @@ def generate_labs() -> int:
                 f"```bash\npython labs/{ls}/main.py\n```\n",
                 encoding="utf-8",
             )
-            catalog_entries.append((book_no, chapter_no, title, ls))
+            catalog_entries.append((book_no, chapter_no, title, ls, chapter[3]))
             count += 1
     (DOCS_LABS / "catalog.md").write_text(render_lab_catalog(catalog_entries), encoding="utf-8")
     return count

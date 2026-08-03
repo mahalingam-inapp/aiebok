@@ -1,8 +1,10 @@
 # Lab Guide
 
-**New?** Start with **[Hands-on start](start-here.md)** — five starter labs in order with book chapters and notebook links.
+<!-- site-stats:intro:start -->
+**New?** Start with **[Hands-on start](start-here.md)** — 5 starter labs in order with book chapters and notebook links.
 
-**78 chapter labs** plus five foundational starter labs with notebooks. See [catalog.md](catalog.md) for the full list.
+**78 chapter labs** plus 5 foundational starter labs (**83 total**). See [catalog.md](catalog.md) for the full list.
+<!-- site-stats:intro:end -->
 
 ## Starter labs (with notebooks)
 
