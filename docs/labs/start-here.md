@@ -46,7 +46,7 @@ flowchart LR
 
 - Browse the full [lab catalog](catalog.md) — chapter labs match book numbers (`labs/0603-retrieval/` → Book 06, ch. 3).
 - Return to the [newcomer guide](../getting-started/newcomer-guide.md) for a role-based reading plan.
-- Explore [patterns](../patterns/catalog.md) and [architectures](../architectures/catalog.md) once you can run Labs 1–5 confidently.
+- Explore [patterns](../patterns/index.md) and [architectures](../architectures/index.md) once you can run Labs 1–5 confidently.
 
 ## Quick links
 

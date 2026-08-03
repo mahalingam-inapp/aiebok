@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from catalog_helpers import _cell, classify_cloud_capability, render_grouped_table_catalog
+
 ROOT = Path(__file__).resolve().parents[1]
 CLOUD = ROOT / "docs" / "cloud"
 CAPABILITIES = CLOUD / "capabilities"
@@ -314,20 +316,27 @@ def render_capability(spec: tuple[str, str, str, str, str, str, str, str]) -> st
 
 def generate() -> int:
     CAPABILITIES.mkdir(parents=True, exist_ok=True)
-    lines = [
-        "# Cloud Capability Guides",
-        "",
-        "Provider-neutral capability pages with dated AWS, Azure, and Google Cloud mappings.",
-        "",
-        "Verify product names, regions, limits, and pricing in official documentation before production use.",
-        "",
-    ]
+    groups: dict[str, list[list[str]]] = {}
     for spec in CAPABILITY_SPECS:
         slug = spec[0]
         (CAPABILITIES / f"{slug}.md").write_text(render_capability(spec), encoding="utf-8")
-        lines.append(f"- [{spec[1]}]({slug}.md)")
+        groups.setdefault(classify_cloud_capability(slug), []).append(
+            [f"[{spec[1]}]({slug}.md)", _cell(spec[2], 120)]
+        )
 
-    (CAPABILITIES / "index.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    index = render_grouped_table_catalog(
+        "Cloud Capability Guides",
+        [
+            "Provider-neutral capability pages with dated AWS, Azure, and Google Cloud mappings.",
+            "",
+            "Verify product names, regions, limits, and pricing in official documentation before production use.",
+            "",
+            "Expand a category or use search (`/`).",
+        ],
+        groups,
+        ["Capability", "Summary"],
+    )
+    (CAPABILITIES / "index.md").write_text(index, encoding="utf-8")
 
     # Update cloud index with link to capabilities catalog
     index = (CLOUD / "index.md").read_text(encoding="utf-8")

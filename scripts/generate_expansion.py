@@ -5,6 +5,13 @@ import re
 import textwrap
 from pathlib import Path
 
+from catalog_helpers import (
+    _accordion_section,
+    _cell,
+    _markdown_table,
+    render_letter_link_index,
+    title_from_slug,
+)
 from concept_card_enrichments import card_enrichment
 from generate_books import BOOKS, slug
 from topic_knowledge import TOPIC_FACTS, get_topic_entry, normalize
@@ -25,8 +32,206 @@ EXISTING_CONCEPTS = {
 }
 
 
-def title_from_slug(s: str) -> str:
-    return " ".join(w if w.isupper() and len(w) <= 4 else w.capitalize() for w in s.split("-"))
+def classify_pattern(slug: str) -> str:
+    if any(
+        x in slug
+        for x in (
+            "retriev",
+            "hybrid",
+            "rerank",
+            "semantic",
+            "embed",
+            "chunk",
+            "fusion",
+            "graph-retrieval",
+            "metadata",
+            "parent",
+            "temporal",
+            "index-comp",
+            "retrieval",
+            "cross-encoder",
+            "multi-index",
+            "query",
+            "citation",
+            "grounded",
+            "batch-embed",
+            "incremental",
+            "dual-write",
+            "doc-version",
+        )
+    ):
+        return "Retrieval & knowledge"
+    if any(
+        x in slug
+        for x in (
+            "agent",
+            "supervisor",
+            "checkpoint",
+            "durable",
+            "planner",
+            "tool",
+            "human",
+            "router",
+            "evaluator",
+            "map-reduce",
+            "workflow",
+            "queue",
+            "heart",
+        )
+    ):
+        return "Agents & orchestration"
+    if any(
+        x in slug
+        for x in (
+            "eval",
+            "slice",
+            "adversarial",
+            "offline",
+            "online",
+            "canary",
+            "shadow",
+            "judge",
+            "feedback",
+            "confidence",
+            "observability",
+            "trace",
+            "slo",
+            "gradual",
+            "feature-flag",
+            "data-card",
+            "negative-feedback",
+        )
+    ):
+        return "Evaluation & observability"
+    if any(
+        x in slug
+        for x in (
+            "prompt",
+            "context",
+            "structured",
+            "schema",
+            "role-based",
+            "streaming",
+            "speculative",
+            "adapter",
+            "model-rout",
+            "fallback",
+            "circuit",
+            "batch-inf",
+            "latency",
+            "quality-tier",
+            "token-budget",
+            "session",
+            "request-idempotency",
+            "tenant",
+            "warm-pool",
+            "undo",
+            "compressor",
+            "cache-key",
+            "lint",
+        )
+    ):
+        return "Prompts, context & routing"
+    if any(
+        x in slug
+        for x in (
+            "injection",
+            "pii",
+            "policy",
+            "secrets",
+            "uncertainty",
+            "refusal",
+            "sandbox",
+            "allowlist",
+            "redact",
+            "terms-filter",
+            "residency",
+        )
+    ):
+        return "Safety & governance"
+    return "Platform & operations"
+
+
+def render_pattern_catalog(patterns: list[tuple]) -> str:
+    groups: dict[str, list[tuple]] = {}
+    for row in patterns:
+        ps = row[0]
+        groups.setdefault(classify_pattern(ps), []).append(row)
+
+    lines = [
+        "# Pattern Library",
+        "",
+        "**Browse collapsed groups** below — each table summarizes patterns inline. "
+        "Use site **search** (`/` ) for a specific name, or expand a group to scan.",
+        "",
+        "Starter deep-dives: [Planner–Executor](planner-executor.md) · [Human Approval](human-approval.md)",
+        "",
+    ]
+    for group in sorted(groups):
+        items = sorted(groups[group], key=lambda r: r[1])
+        rows = [
+            [
+                f"[{name}]({ps}.md)",
+                _cell(ctx, 90),
+                _cell(sol, 90),
+                _cell(avoid, 70),
+            ]
+            for ps, name, ctx, sol, _pos, _neg, avoid in items
+        ]
+        body = _markdown_table(["Pattern", "Context", "Solution", "Skip when"], rows)
+        lines.append(_accordion_section(f"{group} ({len(items)})", body))
+    return "\n".join(lines) + "\n"
+
+
+def render_architecture_catalog(architectures: list[tuple]) -> str:
+    lines = [
+        "# Architecture Studios",
+        "",
+        "**Reference architectures** for design studios and ADRs. Expand a group or use search.",
+        "",
+        "Featured: [Enterprise RAG](enterprise-rag.md)",
+        "",
+    ]
+    rows = [[f"[{name}]({asn}.md)", _cell(goal, 160)] for asn, name, goal in architectures]
+    body = _markdown_table(["Studio", "Goal"], rows)
+    lines.append(_accordion_section(f"All studios ({len(architectures)})", body))
+    return "\n".join(lines) + "\n"
+
+
+def render_lab_catalog(entries: list[tuple[int, int, str, str]]) -> str:
+    """entries: book_no, chapter_no, title, slug"""
+    by_book: dict[int, list[tuple]] = {}
+    for book_no, chapter_no, title, ls in entries:
+        by_book.setdefault(book_no, []).append((chapter_no, title, ls))
+
+    lines = [
+        "# Lab Catalog",
+        "",
+        "One lab per guided book chapter. **Starter labs** are on [Hands-on start](start-here.md).",
+        "",
+    ]
+    for book_no in sorted(by_book):
+        book = BOOKS[book_no - 1]
+        items = sorted(by_book[book_no])
+        rows = [
+            [f"{book_no}.{chapter_no}", f"[{title}]({ls}.md)", f"`labs/{ls}/main.py`"]
+            for chapter_no, title, ls in items
+        ]
+        body = _markdown_table(["§", "Lab", "Run"], rows)
+        lines.append(_accordion_section(f"Book {book_no:02d} — {book['title']} ({len(items)})", body))
+    return "\n".join(lines) + "\n"
+
+
+def render_concept_card_index(keys: list[str]) -> str:
+    return render_letter_link_index(
+        "Concept Card Index",
+        [
+            f"**{len(keys)} cards** — expand a letter group or use search. "
+            "Featured topics live on the [concept index](../index.md).",
+        ],
+        keys,
+        lambda key: f"[{title_from_slug(key)}]({key}.md)",
+    )
 
 
 def render_concept_card(topic: str) -> str:
@@ -98,14 +303,14 @@ No mechanism is universal. Compare {title.lower()} against a simpler baseline on
 def generate_concept_cards() -> int:
     CONCEPTS.mkdir(parents=True, exist_ok=True)
     count = 0
-    lines = ["# Concept Card Index", "", "Alphabetical reference cards for catalog topics.", ""]
+    keys: list[str] = []
     for key in sorted(TOPIC_FACTS):
         path = CONCEPTS / f"{key}.md"
         topic = title_from_slug(key)
         path.write_text(render_concept_card(topic), encoding="utf-8")
-        lines.append(f"- [{topic}]({key}.md)")
+        keys.append(key)
         count += 1
-    (CONCEPTS / "index.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (CONCEPTS / "index.md").write_text(render_concept_card_index(keys), encoding="utf-8")
     return count
 
 
@@ -222,7 +427,7 @@ def generate_labs() -> int:
     from chapter_catalog import CHAPTER_HOOKS
 
     count = 0
-    doc_lines = ["# Lab Catalog", "", "One lab per guided book chapter.", ""]
+    catalog_entries: list[tuple[int, int, str, str]] = []
     for book_no, book in enumerate(BOOKS, 1):
         for chapter_no, chapter in enumerate(book["chapters"], 1):
             title = chapter[0]
@@ -242,9 +447,9 @@ def generate_labs() -> int:
                 f"```bash\npython labs/{ls}/main.py\n```\n",
                 encoding="utf-8",
             )
-            doc_lines.append(f"- [Lab {book_no}.{chapter_no} — {title}]({ls}.md)")
+            catalog_entries.append((book_no, chapter_no, title, ls))
             count += 1
-    (DOCS_LABS / "catalog.md").write_text("\n".join(doc_lines) + "\n", encoding="utf-8")
+    (DOCS_LABS / "catalog.md").write_text(render_lab_catalog(catalog_entries), encoding="utf-8")
     return count
 
 
@@ -355,7 +560,6 @@ EXTRA_PATTERN_SPECS = [
 
 def generate_patterns() -> int:
     all_patterns = PATTERN_SPECS + EXTRA_PATTERN_SPECS
-    lines = ["# Pattern Catalog", "", "Reusable architecture patterns for AI systems.", ""]
     for ps, name, ctx, sol, pos, neg, avoid in all_patterns:
         text = f"""# {name}
 
@@ -376,8 +580,12 @@ def generate_patterns() -> int:
 {avoid}
 """
         (PATTERNS / f"{ps}.md").write_text(text, encoding="utf-8")
-        lines.append(f"- [{name}]({ps}.md)")
-    (PATTERNS / "catalog.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    catalog = render_pattern_catalog(all_patterns)
+    (PATTERNS / "index.md").write_text(catalog, encoding="utf-8")
+    (PATTERNS / "catalog.md").write_text(
+        "# Pattern Library\n\nBrowse collapsed groups on the [pattern library](index.md).\n",
+        encoding="utf-8",
+    )
     return len(all_patterns)
 
 
@@ -411,8 +619,8 @@ ARCH_SPECS = [
 
 
 def generate_architectures() -> int:
-    lines = ["# Architecture Studio Catalog", "", "Reference architectures for design studios.", ""]
-    for asn, name, goal in ARCH_SPECS:
+    catalog_entries = ARCH_SPECS
+    for asn, name, goal in catalog_entries:
         text = f"""# {name}
 
 ## Goal
@@ -443,9 +651,13 @@ Unauthorized access, stale knowledge, tool abuse, invalid structured output, pro
 Define component-level and journey-level metrics before choosing vendors or frameworks.
 """
         (ARCH / f"{asn}.md").write_text(text, encoding="utf-8")
-        lines.append(f"- [{name}]({asn}.md)")
-    (ARCH / "catalog.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    return len(ARCH_SPECS)
+    catalog = render_architecture_catalog(catalog_entries)
+    (ARCH / "index.md").write_text(catalog, encoding="utf-8")
+    (ARCH / "catalog.md").write_text(
+        "# Architecture Studios\n\nBrowse collapsed groups on the [architecture library](index.md).\n",
+        encoding="utf-8",
+    )
+    return len(catalog_entries)
 
 
 def update_concept_library_links() -> None:
@@ -480,7 +692,7 @@ def update_index_pages(cards: int, labs: int, patterns: int, arch: int) -> None:
     (DOCS / "concepts" / "index.md").write_text(
         f"""# Concept Cards
 
-Curated deep-dive cards plus **{cards} generated reference cards** in [cards/index.md](cards/index.md).
+Curated deep-dive pages plus **{cards} reference cards** in [All Cards](cards/index.md) (collapsed A–Z groups).
 
 ## Featured cards
 
@@ -490,47 +702,7 @@ Curated deep-dive cards plus **{cards} generated reference cards** in [cards/ind
 - [Tool Calling](tool-calling.md), [Fine-Tuning](fine-tuning.md), [Chunking](chunking.md), [Reranking](reranking.md)
 - [Skills & Harnesses](skills-harnesses.md)
 
-See the [full card index](cards/index.md) for every catalog topic.
-""",
-        encoding="utf-8",
-    )
-    (DOCS_LABS / "index.md").write_text(
-        f"""# Lab Guide
-
-**{labs} chapter labs** plus five foundational starter labs. See [catalog.md](catalog.md) for the full list.
-
-| Starter | Concept | Run |
-|---:|---|---|
-| 01 | Cosine similarity | `python labs/01-cosine-similarity/main.py` |
-| 02 | Semantic search | `python labs/02-semantic-search/main.py` |
-| 03 | Basic RAG stages | `python labs/03-basic-rag/main.py` |
-| 04 | Bounded agent loop | `python labs/04-agent-loop/main.py` |
-| 05 | Evaluation harness | `python labs/05-eval-harness/main.py` |
-
-Chapter labs follow `labs/BBCC-topic/main.py` where `BB` is book number and `CC` is chapter number.
-
-## Lab standard
-
-Every lab includes a runnable `main.py`, README, and docs page with practice alignment to the matching book chapter.
-""",
-        encoding="utf-8",
-    )
-    (PATTERNS / "index.md").write_text(
-        f"""# Pattern Library
-
-**{patterns} patterns** documented. Starters: [planner–executor](planner-executor.md), [human approval](human-approval.md).
-
-See [catalog.md](catalog.md) for the full pattern list.
-""",
-        encoding="utf-8",
-    )
-    (ARCH / "index.md").write_text(
-        f"""# Architecture Studios
-
-**{arch} reference architectures** for design studios and ADRs.
-
-- [Enterprise RAG](enterprise-rag.md)
-- [catalog.md](catalog.md) — full list
+Use **search** (`/`) for a specific term, or browse [All Cards](cards/index.md).
 """,
         encoding="utf-8",
     )

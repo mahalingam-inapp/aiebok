@@ -4,6 +4,15 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from catalog_helpers import (
+    _accordion_section,
+    _cell,
+    classify_guide,
+    classify_paper,
+    render_grouped_table_catalog,
+    render_letter_bullet_index,
+    title_from_slug,
+)
 from chapter_catalog import CHAPTER_HOOKS
 from generate_books import BOOKS, slug
 from generate_expansion import lab_slug
@@ -19,10 +28,6 @@ GUIDES = DOCS / "guides"
 LABS = ROOT / "labs"
 DOCS_LABS = DOCS / "labs"
 REFERENCE = DOCS / "reference"
-
-
-def title_from_slug(s: str) -> str:
-    return " ".join(w if w.isupper() and len(w) <= 4 else w.capitalize() for w in s.split("-"))
 
 
 PAPER_SPECS: list[tuple[str, str, str, str, str, str]] = [
@@ -178,12 +183,28 @@ def render_paper(ps: tuple[str, str, str, str, str, str]) -> str:
 
 def generate_readings() -> int:
     PAPERS.mkdir(parents=True, exist_ok=True)
-    lines = ["# Research Readings Catalog", "", f"{len(ALL_PAPER_SPECS)} primary-source summaries.", ""]
+    groups: dict[str, list[list[str]]] = {}
     for spec in ALL_PAPER_SPECS:
-        key = spec[0]
+        key, title, authors, year, _url, blurb = spec
         (PAPERS / f"{key}.md").write_text(render_paper(spec), encoding="utf-8")
-        lines.append(f"- [{spec[1]}]({key}.md)")
-    (PAPERS / "index.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        group = classify_paper(key)
+        groups.setdefault(group, []).append(
+            [f"[{title}]({key}.md)", authors, year, _cell(blurb, 100)]
+        )
+    for group in groups:
+        groups[group] = sorted(groups[group], key=lambda row: (row[2], row[0]))
+
+    index = render_grouped_table_catalog(
+        "Research Readings Catalog",
+        [
+            f"{len(ALL_PAPER_SPECS)} primary-source summaries.",
+            "",
+            "Expand a theme or use search (`/`) for a specific paper.",
+        ],
+        groups,
+        ["Paper", "Authors", "Year", "Summary"],
+    )
+    (PAPERS / "index.md").write_text(index, encoding="utf-8")
     return len(ALL_PAPER_SPECS)
 
 
@@ -313,11 +334,22 @@ You can demo the system on normal, boundary, and adversarial cases; explain meas
 
 def generate_build_guides() -> int:
     GUIDES.mkdir(parents=True, exist_ok=True)
-    lines = ["# Build Guides", "", "End-to-end projects from spec to evidence.", ""]
+    groups: dict[str, list[list[str]]] = {}
     for key, title, goal, phases, book in BUILD_GUIDES:
         (GUIDES / f"{key}.md").write_text(render_build_guide(key, title, goal, phases, book), encoding="utf-8")
-        lines.append(f"- [{title}]({key}.md)")
-    (GUIDES / "index.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        groups.setdefault(classify_guide(key), []).append([f"[{title}]({key}.md)", _cell(goal, 120)])
+
+    index = render_grouped_table_catalog(
+        "Build Guides",
+        [
+            "End-to-end projects from spec to evidence.",
+            "",
+            "Expand a theme or use search (`/`) for a specific guide.",
+        ],
+        groups,
+        ["Guide", "Goal"],
+    )
+    (GUIDES / "index.md").write_text(index, encoding="utf-8")
     return len(BUILD_GUIDES)
 
 
@@ -371,23 +403,25 @@ QUESTION_SPECS: list[tuple[str, str, list[tuple[str, str]]]] = [
 
 
 def generate_question_index() -> None:
-    lines = ["# Question Index", "", "Navigate by question to books, concepts, patterns, guides, and papers.", ""]
+    lines = [
+        "# Question Index",
+        "",
+        "Navigate by question to books, concepts, patterns, guides, and papers.",
+        "",
+        "Expand a section or use search (`/`).",
+        "",
+    ]
     for section, _anchor, items in QUESTION_SPECS:
-        lines.append(f"## {section}")
-        lines.append("")
-        for q, link in items:
-            lines.append(f"- **{q}** → [{link.split('/')[-1].replace('.md','')}]({link})")
-        lines.append("")
+        body = [
+            f"- **{q}** → [{link.split('/')[-1].replace('.md', '')}]({link})"
+            for q, link in items
+        ]
+        lines.append(_accordion_section(f"{section} ({len(items)})", body))
     (REFERENCE / "question-index.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def generate_glossary() -> int:
-    lines = [
-        "# Glossary",
-        "",
-        "Alphabetical definitions for AIEBOK catalog terms. See [concept cards](../concepts/cards/index.md) for expanded entries.",
-        "",
-    ]
+    entries: list[tuple[str, str]] = []
     for key in sorted(TOPIC_FACTS):
         explanation, _, _ = get_topic_entry(title_from_slug(key))
         first = explanation.split(".")[0].strip()
@@ -395,8 +429,20 @@ def generate_glossary() -> int:
             first = f"**{title_from_slug(key)}:** {first}"
         else:
             first = first.replace("**", f"**{title_from_slug(key)}:** ", 1)
-        lines.append(f"- {first}.")
-    (REFERENCE / "glossary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        letter = key[0].upper() if key and key[0].isalpha() else "#"
+        entries.append((letter, f"- {first}."))
+
+    text = render_letter_bullet_index(
+        "Glossary",
+        [
+            "Alphabetical definitions for AIEBOK catalog terms. "
+            "See [concept cards](../concepts/cards/index.md) for expanded entries.",
+            "",
+            "Expand a letter group or use search (`/`).",
+        ],
+        entries,
+    )
+    (REFERENCE / "glossary.md").write_text(text, encoding="utf-8")
     return len(TOPIC_FACTS)
 
 
@@ -658,7 +704,7 @@ Read primary sources to understand how ideas evolve, not to memorize every formu
 
 ## Catalog
 
-**{readings} reading summaries** in [readings/index.md](readings/index.md).
+**{readings} reading summaries** in the [readings catalog](readings/index.md) (collapsed by theme).
 
 ## Suggested sequence
 

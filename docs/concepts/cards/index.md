@@ -1,365 +1,457 @@
 # Concept Card Index
 
-Alphabetical reference cards for catalog topics.
+**361 cards** — expand a letter group or use search. Featured topics live on the [concept index](../index.md).
 
-- [A](a.md)
-- [A B Testing](a-b-testing.md)
-- [A B Tests](a-b-tests.md)
-- [Ablations](ablations.md)
-- [Abstention](abstention.md)
-- [Acceptance Criteria](acceptance-criteria.md)
-- [Accessibility](accessibility.md)
-- [Action Spaces](action-spaces.md)
-- [Activations](activations.md)
-- [Adaptive Rag](adaptive-rag.md)
-- [Adoption](adoption.md)
-- [Adversarial Tests](adversarial-tests.md)
-- [Agency](agency.md)
-- [Ai Coding Agents](ai-coding-agents.md)
-- [Ai Gateways](ai-gateways.md)
-- [Ai Inventory](ai-inventory.md)
-- [Aks And Functions](aks-and-functions.md)
-- [Amazon Bedrock](amazon-bedrock.md)
-- [Ambiguity](ambiguity.md)
-- [Ann Indexes](ann-indexes.md)
-- [Answer Validation](answer-validation.md)
-- [Approval Gates](approval-gates.md)
-- [Attention Masks](attention-masks.md)
-- [Audit](audit.md)
-- [Audit Evidence](audit-evidence.md)
-- [Authentication](authentication.md)
-- [Authorization](authorization.md)
-- [Autoencoders](autoencoders.md)
-- [Autonomy](autonomy.md)
-- [Autoscaling](autoscaling.md)
-- [Azure Ai Foundry](azure-ai-foundry.md)
-- [Azure Ai Search](azure-ai-search.md)
-- [Azure Openai](azure-openai.md)
-- [Backpropagation](backpropagation.md)
-- [Backtracking](backtracking.md)
-- [Baseline Workflow](baseline-workflow.md)
-- [Baselines](baselines.md)
-- [Batching](batching.md)
-- [Behavior Versus Knowledge](behavior-versus-knowledge.md)
-- [Benchmarks](benchmarks.md)
-- [Best Of N](best-of-n.md)
-- [Bias And Variance](bias-and-variance.md)
-- [Bm25](bm25.md)
-- [Bottlenecks](bottlenecks.md)
-- [Bounded Rationality](bounded-rationality.md)
-- [Bpe](bpe.md)
-- [Breadth First Search](breadth-first-search.md)
-- [Budgets](budgets.md)
-- [Build Versus Buy](build-versus-buy.md)
-- [Caching](caching.md)
-- [Calibration](calibration.md)
-- [Canaries](canaries.md)
-- [Cancellation](cancellation.md)
-- [Capability Decomposition](capability-decomposition.md)
-- [Checkpoints](checkpoints.md)
-- [Chunking](chunking.md)
-- [Citation Precision](citation-precision.md)
-- [Citations](citations.md)
-- [Classification](classification.md)
-- [Cloud Iam](cloud-iam.md)
-- [Cloud Run And Gke](cloud-run-and-gke.md)
-- [Cloudwatch And Iam](cloudwatch-and-iam.md)
-- [Clustering](clustering.md)
-- [Code Review](code-review.md)
-- [Compensation](compensation.md)
-- [Component Evals](component-evals.md)
-- [Compression](compression.md)
-- [Computer Use](computer-use.md)
-- [Conditioning](conditioning.md)
-- [Confidence Intervals](confidence-intervals.md)
-- [Confusion Matrix](confusion-matrix.md)
-- [Consensus](consensus.md)
-- [Constraints](constraints.md)
-- [Containers](containers.md)
-- [Contamination](contamination.md)
-- [Context Assembly](context-assembly.md)
-- [Context Files](context-files.md)
-- [Context Packing](context-packing.md)
-- [Context Poisoning](context-poisoning.md)
-- [Context Traces](context-traces.md)
-- [Context Windows](context-windows.md)
-- [Continual Learning](continual-learning.md)
-- [Continuous Evaluation](continuous-evaluation.md)
-- [Contract Tests](contract-tests.md)
-- [Control](control.md)
-- [Coordination](coordination.md)
-- [Corpora](corpora.md)
-- [Correction](correction.md)
-- [Cosine Similarity](cosine-similarity.md)
-- [Cost Quality Curves](cost-quality-curves.md)
-- [Critique](critique.md)
-- [Cross Validation](cross-validation.md)
-- [Data Cards](data-cards.md)
-- [Data Curation](data-curation.md)
-- [Data Exfiltration](data-exfiltration.md)
-- [Data Leakage](data-leakage.md)
-- [Data Mixtures](data-mixtures.md)
-- [Data Provenance](data-provenance.md)
-- [Data Residency](data-residency.md)
-- [Data Validation](data-validation.md)
-- [Decision Thresholds](decision-thresholds.md)
-- [Decomposition](decomposition.md)
-- [Deduplication](deduplication.md)
-- [Deep Learning](deep-learning.md)
-- [Delegation](delegation.md)
-- [Delimiters](delimiters.md)
-- [Dense Retrieval](dense-retrieval.md)
-- [Dependencies](dependencies.md)
-- [Deterministic Metrics](deterministic-metrics.md)
-- [Diarization](diarization.md)
-- [Diffusion](diffusion.md)
-- [Dimensionality Reduction](dimensionality-reduction.md)
-- [Discourse](discourse.md)
-- [Distillation](distillation.md)
-- [Distribution Shift](distribution-shift.md)
-- [Diversity](diversity.md)
-- [Document Ai](document-ai.md)
-- [Dot Product](dot-product.md)
-- [Dpo](dpo.md)
-- [Drift](drift.md)
-- [Durable Execution](durable-execution.md)
-- [Embedding Evaluation](embedding-evaluation.md)
-- [End To End Evals](end-to-end-evals.md)
-- [Entra Id And Monitor](entra-id-and-monitor.md)
-- [Entropy](entropy.md)
-- [Episodic Memory](episodic-memory.md)
-- [Eval Datasets](eval-datasets.md)
-- [Evaluation Specs](evaluation-specs.md)
-- [Expected Cost](expected-cost.md)
-- [Experiment Tracking](experiment-tracking.md)
-- [Expert Systems](expert-systems.md)
-- [Fairness](fairness.md)
-- [Faithfulness](faithfulness.md)
-- [Fallbacks](fallbacks.md)
-- [Feasibility](feasibility.md)
-- [Features And Labels](features-and-labels.md)
-- [Feedback](feedback.md)
-- [Few Shot Examples](few-shot-examples.md)
-- [Fine Tuning](fine-tuning.md)
-- [Finops](finops.md)
-- [Freshness](freshness.md)
-- [Function Calling](function-calling.md)
-- [Functional Specifications](functional-specifications.md)
-- [Generalization](generalization.md)
-- [Goal Decomposition](goal-decomposition.md)
-- [Goal Directed Behavior](goal-directed-behavior.md)
-- [Gold Datasets](gold-datasets.md)
-- [Gpus](gpus.md)
-- [Gradient Descent](gradient-descent.md)
-- [Graph Rag](graph-rag.md)
-- [Grounded Generation](grounded-generation.md)
-- [Grounding](grounding.md)
-- [Hard Negatives](hard-negatives.md)
-- [Heuristics](heuristics.md)
-- [Human Evaluation](human-evaluation.md)
-- [Human Oversight](human-oversight.md)
-- [Human Review](human-review.md)
-- [Hybrid Search](hybrid-search.md)
-- [Idempotency](idempotency.md)
-- [Identity](identity.md)
-- [Impact Assessment](impact-assessment.md)
-- [Incident Response](incident-response.md)
-- [Inference](inference.md)
-- [Instruction Conflict](instruction-conflict.md)
-- [Instruction Hierarchy](instruction-hierarchy.md)
-- [Instruction Tuning](instruction-tuning.md)
-- [Inter Rater Agreement](inter-rater-agreement.md)
-- [Jobs To Be Done](jobs-to-be-done.md)
-- [Json Schema](json-schema.md)
-- [Keys](keys.md)
-- [Knowledge Freshness](knowledge-freshness.md)
-- [Knowledge Representation](knowledge-representation.md)
-- [Kv Cache](kv-cache.md)
-- [Lambda And Eks](lambda-and-eks.md)
-- [Latency](latency.md)
-- [Latent Space](latent-space.md)
-- [Layout Models](layout-models.md)
-- [Leases](leases.md)
-- [Llm Judges](llm-judges.md)
-- [Logits](logits.md)
-- [Long Context](long-context.md)
-- [Long Term Memory](long-term-memory.md)
-- [Lora](lora.md)
-- [Loss Functions](loss-functions.md)
-- [Lstms](lstms.md)
-- [Matrix Transformations](matrix-transformations.md)
-- [Mcp](mcp.md)
-- [Memory](memory.md)
-- [Memory Retrieval](memory-retrieval.md)
-- [Metadata](metadata.md)
-- [Metadata Filtering](metadata-filtering.md)
-- [Mixture Of Experts](mixture-of-experts.md)
-- [Mlp Blocks](mlp-blocks.md)
-- [Model Cards](model-cards.md)
-- [Model Catalog](model-catalog.md)
-- [Model Registry](model-registry.md)
-- [Model Routing](model-routing.md)
-- [Model Selection](model-selection.md)
-- [Monitoring](monitoring.md)
-- [Multi Head Attention](multi-head-attention.md)
-- [Multi Hop Retrieval](multi-hop-retrieval.md)
-- [Multi Tenancy](multi-tenancy.md)
-- [Multilingual Models](multilingual-models.md)
-- [Multimodal Models](multimodal-models.md)
-- [N Grams](n-grams.md)
-- [Nearest Neighbors](nearest-neighbors.md)
-- [Neurons And Layers](neurons-and-layers.md)
-- [Normalization](normalization.md)
-- [Ocr](ocr.md)
-- [One Hot Vectors](one-hot-vectors.md)
-- [Open Weights](open-weights.md)
-- [Opensearch](opensearch.md)
-- [Optimization](optimization.md)
-- [Optimizers](optimizers.md)
-- [Parent Child Retrieval](parent-child-retrieval.md)
-- [Parsing](parsing.md)
-- [Permissions](permissions.md)
-- [Plan Act Observe](plan-act-observe.md)
-- [Plan Representation](plan-representation.md)
-- [Planner Executor](planner-executor.md)
-- [Planning](planning.md)
-- [Platform Engineering](platform-engineering.md)
-- [Portable Interfaces](portable-interfaces.md)
-- [Position](position.md)
-- [Pragmatics](pragmatics.md)
-- [Precision And Recall](precision-and-recall.md)
-- [Pretraining Objectives](pretraining-objectives.md)
-- [Primary Sources](primary-sources.md)
-- [Privacy](privacy.md)
-- [Probability](probability.md)
-- [Problem Framing](problem-framing.md)
-- [Prompt Injection](prompt-injection.md)
-- [Prompt Specs](prompt-specs.md)
-- [Prompt Versioning](prompt-versioning.md)
-- [Prompting](prompting.md)
-- [Provenance](provenance.md)
-- [Qlora](qlora.md)
-- [Quantization](quantization.md)
-- [Queries](queries.md)
-- [Query Rewriting](query-rewriting.md)
-- [Queues](queues.md)
-- [Rag](rag.md)
-- [Ranking](ranking.md)
-- [Rational Agents](rational-agents.md)
-- [Re Indexing](re-indexing.md)
-- [Reasoning Models](reasoning-models.md)
-- [Reciprocal Rank Fusion](reciprocal-rank-fusion.md)
-- [Recovery](recovery.md)
-- [Reflection](reflection.md)
-- [Regression](regression.md)
-- [Regression Evaluation](regression-evaluation.md)
-- [Regularization](regularization.md)
-- [Release Gates](release-gates.md)
-- [Repair](repair.md)
-- [Replanning](replanning.md)
-- [Repo Instructions](repo-instructions.md)
-- [Representation Learning](representation-learning.md)
-- [Reproduction](reproduction.md)
-- [Rerankers](rerankers.md)
-- [Residual Connections](residual-connections.md)
-- [Resilience](resilience.md)
-- [Resources](resources.md)
-- [Retries](retries.md)
-- [Retrieval](retrieval.md)
-- [Retrieval Metrics](retrieval-metrics.md)
-- [Reviewer](reviewer.md)
-- [Risk Tiers](risk-tiers.md)
-- [Rnns](rnns.md)
-- [Robotics Interfaces](robotics-interfaces.md)
-- [Roi](roi.md)
-- [Role Isolation](role-isolation.md)
-- [Roles](roles.md)
-- [Routing](routing.md)
-- [Rubrics](rubrics.md)
-- [Sagemaker](sagemaker.md)
-- [Sampling](sampling.md)
-- [Sandboxing](sandboxing.md)
-- [Scaled Dot Product](scaled-dot-product.md)
-- [Scaling Laws](scaling-laws.md)
-- [Search](search.md)
-- [Segmentation](segmentation.md)
-- [Self Consistency](self-consistency.md)
-- [Self Supervision](self-supervision.md)
-- [Semantics](semantics.md)
-- [Sentence Embeddings](sentence-embeddings.md)
-- [Sentencepiece](sentencepiece.md)
-- [Seq2seq](seq2seq.md)
-- [Service Catalog](service-catalog.md)
-- [Session Memory](session-memory.md)
-- [Sft](sft.md)
-- [Shared Retrieval](shared-retrieval.md)
-- [Shared State](shared-state.md)
-- [Skills](skills.md)
-- [Slice Analysis](slice-analysis.md)
-- [Slices](slices.md)
-- [Slos](slos.md)
-- [Speech Recognition](speech-recognition.md)
-- [State](state.md)
-- [State Machines](state-machines.md)
-- [State Spaces](state-spaces.md)
-- [Statistical Learning](statistical-learning.md)
-- [Streaming Audio](streaming-audio.md)
-- [Structured Data](structured-data.md)
-- [Structured Output](structured-output.md)
-- [Subwords](subwords.md)
-- [Success Metrics](success-metrics.md)
-- [Summarization](summarization.md)
-- [Supervisor Worker](supervisor-worker.md)
-- [Symbolic Ai](symbolic-ai.md)
-- [Syntax](syntax.md)
-- [Synthetic Data](synthetic-data.md)
-- [Task Definitions](task-definitions.md)
-- [Task Success](task-success.md)
-- [Team Topology](team-topology.md)
-- [Technology Forecasting](technology-forecasting.md)
-- [Temperature](temperature.md)
-- [Termination](termination.md)
-- [Test Time Adaptation](test-time-adaptation.md)
-- [Test Time Compute](test-time-compute.md)
-- [Tests](tests.md)
-- [Text To Speech](text-to-speech.md)
-- [Tf Idf](tf-idf.md)
-- [Threat Modeling](threat-modeling.md)
-- [Thresholds](thresholds.md)
-- [Timeouts](timeouts.md)
-- [Token Budgeting](token-budgeting.md)
-- [Token Budgets](token-budgets.md)
-- [Tool Abuse](tool-abuse.md)
-- [Tool Contracts](tool-contracts.md)
-- [Tool Discovery](tool-discovery.md)
-- [Tool Registry](tool-registry.md)
-- [Tool Schemas](tool-schemas.md)
-- [Tool Success](tool-success.md)
-- [Tracing](tracing.md)
-- [Training](training.md)
-- [Transparency](transparency.md)
-- [Transports](transports.md)
-- [Uncertainty Ux](uncertainty-ux.md)
-- [Undo](undo.md)
-- [Unicode](unicode.md)
-- [Unit Tests](unit-tests.md)
-- [User Research](user-research.md)
-- [Validation](validation.md)
-- [Values](values.md)
-- [Vector Governance](vector-governance.md)
-- [Vectors](vectors.md)
-- [Vendor Management](vendor-management.md)
-- [Verifiers](verifiers.md)
-- [Versioning](versioning.md)
-- [Vertex Ai](vertex-ai.md)
-- [Vertex Ai Search](vertex-ai-search.md)
-- [Video Generation](video-generation.md)
-- [Vision Encoders](vision-encoders.md)
-- [Visual Grounding](visual-grounding.md)
-- [Vllm](vllm.md)
-- [Vocabulary](vocabulary.md)
-- [Voice Safety](voice-safety.md)
-- [Word Embeddings](word-embeddings.md)
-- [Workflows](workflows.md)
-- [Working Memory](working-memory.md)
-- [World Models](world-models.md)
+??? abstract "A (33)"
+    | Topic |
+    | --- |
+    | [A](a.md) |
+    | [A B Testing](a-b-testing.md) |
+    | [A B Tests](a-b-tests.md) |
+    | [Ablations](ablations.md) |
+    | [Abstention](abstention.md) |
+    | [Acceptance Criteria](acceptance-criteria.md) |
+    | [Accessibility](accessibility.md) |
+    | [Action Spaces](action-spaces.md) |
+    | [Activations](activations.md) |
+    | [Adaptive Rag](adaptive-rag.md) |
+    | [Adoption](adoption.md) |
+    | [Adversarial Tests](adversarial-tests.md) |
+    | [Agency](agency.md) |
+    | [Ai Coding Agents](ai-coding-agents.md) |
+    | [Ai Gateways](ai-gateways.md) |
+    | [Ai Inventory](ai-inventory.md) |
+    | [Aks And Functions](aks-and-functions.md) |
+    | [Amazon Bedrock](amazon-bedrock.md) |
+    | [Ambiguity](ambiguity.md) |
+    | [Ann Indexes](ann-indexes.md) |
+    | [Answer Validation](answer-validation.md) |
+    | [Approval Gates](approval-gates.md) |
+    | [Attention Masks](attention-masks.md) |
+    | [Audit](audit.md) |
+    | [Audit Evidence](audit-evidence.md) |
+    | [Authentication](authentication.md) |
+    | [Authorization](authorization.md) |
+    | [Autoencoders](autoencoders.md) |
+    | [Autonomy](autonomy.md) |
+    | [Autoscaling](autoscaling.md) |
+    | [Azure Ai Foundry](azure-ai-foundry.md) |
+    | [Azure Ai Search](azure-ai-search.md) |
+    | [Azure Openai](azure-openai.md) |
+
+??? abstract "B (16)"
+    | Topic |
+    | --- |
+    | [Backpropagation](backpropagation.md) |
+    | [Backtracking](backtracking.md) |
+    | [Baseline Workflow](baseline-workflow.md) |
+    | [Baselines](baselines.md) |
+    | [Batching](batching.md) |
+    | [Behavior Versus Knowledge](behavior-versus-knowledge.md) |
+    | [Benchmarks](benchmarks.md) |
+    | [Best Of N](best-of-n.md) |
+    | [Bias And Variance](bias-and-variance.md) |
+    | [Bm25](bm25.md) |
+    | [Bottlenecks](bottlenecks.md) |
+    | [Bounded Rationality](bounded-rationality.md) |
+    | [Bpe](bpe.md) |
+    | [Breadth First Search](breadth-first-search.md) |
+    | [Budgets](budgets.md) |
+    | [Build Versus Buy](build-versus-buy.md) |
+
+??? abstract "C (43)"
+    | Topic |
+    | --- |
+    | [Caching](caching.md) |
+    | [Calibration](calibration.md) |
+    | [Canaries](canaries.md) |
+    | [Cancellation](cancellation.md) |
+    | [Capability Decomposition](capability-decomposition.md) |
+    | [Checkpoints](checkpoints.md) |
+    | [Chunking](chunking.md) |
+    | [Citation Precision](citation-precision.md) |
+    | [Citations](citations.md) |
+    | [Classification](classification.md) |
+    | [Cloud Iam](cloud-iam.md) |
+    | [Cloud Run And Gke](cloud-run-and-gke.md) |
+    | [Cloudwatch And Iam](cloudwatch-and-iam.md) |
+    | [Clustering](clustering.md) |
+    | [Code Review](code-review.md) |
+    | [Compensation](compensation.md) |
+    | [Component Evals](component-evals.md) |
+    | [Compression](compression.md) |
+    | [Computer Use](computer-use.md) |
+    | [Conditioning](conditioning.md) |
+    | [Confidence Intervals](confidence-intervals.md) |
+    | [Confusion Matrix](confusion-matrix.md) |
+    | [Consensus](consensus.md) |
+    | [Constraints](constraints.md) |
+    | [Containers](containers.md) |
+    | [Contamination](contamination.md) |
+    | [Context Assembly](context-assembly.md) |
+    | [Context Files](context-files.md) |
+    | [Context Packing](context-packing.md) |
+    | [Context Poisoning](context-poisoning.md) |
+    | [Context Traces](context-traces.md) |
+    | [Context Windows](context-windows.md) |
+    | [Continual Learning](continual-learning.md) |
+    | [Continuous Evaluation](continuous-evaluation.md) |
+    | [Contract Tests](contract-tests.md) |
+    | [Control](control.md) |
+    | [Coordination](coordination.md) |
+    | [Corpora](corpora.md) |
+    | [Correction](correction.md) |
+    | [Cosine Similarity](cosine-similarity.md) |
+    | [Cost Quality Curves](cost-quality-curves.md) |
+    | [Critique](critique.md) |
+    | [Cross Validation](cross-validation.md) |
+
+??? abstract "D (29)"
+    | Topic |
+    | --- |
+    | [Data Cards](data-cards.md) |
+    | [Data Curation](data-curation.md) |
+    | [Data Exfiltration](data-exfiltration.md) |
+    | [Data Leakage](data-leakage.md) |
+    | [Data Mixtures](data-mixtures.md) |
+    | [Data Provenance](data-provenance.md) |
+    | [Data Residency](data-residency.md) |
+    | [Data Validation](data-validation.md) |
+    | [Decision Thresholds](decision-thresholds.md) |
+    | [Decomposition](decomposition.md) |
+    | [Deduplication](deduplication.md) |
+    | [Deep Learning](deep-learning.md) |
+    | [Delegation](delegation.md) |
+    | [Delimiters](delimiters.md) |
+    | [Dense Retrieval](dense-retrieval.md) |
+    | [Dependencies](dependencies.md) |
+    | [Deterministic Metrics](deterministic-metrics.md) |
+    | [Diarization](diarization.md) |
+    | [Diffusion](diffusion.md) |
+    | [Dimensionality Reduction](dimensionality-reduction.md) |
+    | [Discourse](discourse.md) |
+    | [Distillation](distillation.md) |
+    | [Distribution Shift](distribution-shift.md) |
+    | [Diversity](diversity.md) |
+    | [Document Ai](document-ai.md) |
+    | [Dot Product](dot-product.md) |
+    | [Dpo](dpo.md) |
+    | [Drift](drift.md) |
+    | [Durable Execution](durable-execution.md) |
+
+??? abstract "E (10)"
+    | Topic |
+    | --- |
+    | [Embedding Evaluation](embedding-evaluation.md) |
+    | [End To End Evals](end-to-end-evals.md) |
+    | [Entra Id And Monitor](entra-id-and-monitor.md) |
+    | [Entropy](entropy.md) |
+    | [Episodic Memory](episodic-memory.md) |
+    | [Eval Datasets](eval-datasets.md) |
+    | [Evaluation Specs](evaluation-specs.md) |
+    | [Expected Cost](expected-cost.md) |
+    | [Experiment Tracking](experiment-tracking.md) |
+    | [Expert Systems](expert-systems.md) |
+
+??? abstract "F (12)"
+    | Topic |
+    | --- |
+    | [Fairness](fairness.md) |
+    | [Faithfulness](faithfulness.md) |
+    | [Fallbacks](fallbacks.md) |
+    | [Feasibility](feasibility.md) |
+    | [Features And Labels](features-and-labels.md) |
+    | [Feedback](feedback.md) |
+    | [Few Shot Examples](few-shot-examples.md) |
+    | [Fine Tuning](fine-tuning.md) |
+    | [Finops](finops.md) |
+    | [Freshness](freshness.md) |
+    | [Function Calling](function-calling.md) |
+    | [Functional Specifications](functional-specifications.md) |
+
+??? abstract "G (9)"
+    | Topic |
+    | --- |
+    | [Generalization](generalization.md) |
+    | [Goal Decomposition](goal-decomposition.md) |
+    | [Goal Directed Behavior](goal-directed-behavior.md) |
+    | [Gold Datasets](gold-datasets.md) |
+    | [Gpus](gpus.md) |
+    | [Gradient Descent](gradient-descent.md) |
+    | [Graph Rag](graph-rag.md) |
+    | [Grounded Generation](grounded-generation.md) |
+    | [Grounding](grounding.md) |
+
+??? abstract "H (6)"
+    | Topic |
+    | --- |
+    | [Hard Negatives](hard-negatives.md) |
+    | [Heuristics](heuristics.md) |
+    | [Human Evaluation](human-evaluation.md) |
+    | [Human Oversight](human-oversight.md) |
+    | [Human Review](human-review.md) |
+    | [Hybrid Search](hybrid-search.md) |
+
+??? abstract "I (9)"
+    | Topic |
+    | --- |
+    | [Idempotency](idempotency.md) |
+    | [Identity](identity.md) |
+    | [Impact Assessment](impact-assessment.md) |
+    | [Incident Response](incident-response.md) |
+    | [Inference](inference.md) |
+    | [Instruction Conflict](instruction-conflict.md) |
+    | [Instruction Hierarchy](instruction-hierarchy.md) |
+    | [Instruction Tuning](instruction-tuning.md) |
+    | [Inter Rater Agreement](inter-rater-agreement.md) |
+
+??? abstract "J (2)"
+    | Topic |
+    | --- |
+    | [Jobs To Be Done](jobs-to-be-done.md) |
+    | [Json Schema](json-schema.md) |
+
+??? abstract "K (4)"
+    | Topic |
+    | --- |
+    | [Keys](keys.md) |
+    | [Knowledge Freshness](knowledge-freshness.md) |
+    | [Knowledge Representation](knowledge-representation.md) |
+    | [Kv Cache](kv-cache.md) |
+
+??? abstract "L (12)"
+    | Topic |
+    | --- |
+    | [Lambda And Eks](lambda-and-eks.md) |
+    | [Latency](latency.md) |
+    | [Latent Space](latent-space.md) |
+    | [Layout Models](layout-models.md) |
+    | [Leases](leases.md) |
+    | [Llm Judges](llm-judges.md) |
+    | [Logits](logits.md) |
+    | [Long Context](long-context.md) |
+    | [Long Term Memory](long-term-memory.md) |
+    | [Lora](lora.md) |
+    | [Loss Functions](loss-functions.md) |
+    | [Lstms](lstms.md) |
+
+??? abstract "M (19)"
+    | Topic |
+    | --- |
+    | [Matrix Transformations](matrix-transformations.md) |
+    | [Mcp](mcp.md) |
+    | [Memory](memory.md) |
+    | [Memory Retrieval](memory-retrieval.md) |
+    | [Metadata](metadata.md) |
+    | [Metadata Filtering](metadata-filtering.md) |
+    | [Mixture Of Experts](mixture-of-experts.md) |
+    | [Mlp Blocks](mlp-blocks.md) |
+    | [Model Cards](model-cards.md) |
+    | [Model Catalog](model-catalog.md) |
+    | [Model Registry](model-registry.md) |
+    | [Model Routing](model-routing.md) |
+    | [Model Selection](model-selection.md) |
+    | [Monitoring](monitoring.md) |
+    | [Multi Head Attention](multi-head-attention.md) |
+    | [Multi Hop Retrieval](multi-hop-retrieval.md) |
+    | [Multi Tenancy](multi-tenancy.md) |
+    | [Multilingual Models](multilingual-models.md) |
+    | [Multimodal Models](multimodal-models.md) |
+
+??? abstract "N (4)"
+    | Topic |
+    | --- |
+    | [N Grams](n-grams.md) |
+    | [Nearest Neighbors](nearest-neighbors.md) |
+    | [Neurons And Layers](neurons-and-layers.md) |
+    | [Normalization](normalization.md) |
+
+??? abstract "O (6)"
+    | Topic |
+    | --- |
+    | [Ocr](ocr.md) |
+    | [One Hot Vectors](one-hot-vectors.md) |
+    | [Open Weights](open-weights.md) |
+    | [Opensearch](opensearch.md) |
+    | [Optimization](optimization.md) |
+    | [Optimizers](optimizers.md) |
+
+??? abstract "P (22)"
+    | Topic |
+    | --- |
+    | [Parent Child Retrieval](parent-child-retrieval.md) |
+    | [Parsing](parsing.md) |
+    | [Permissions](permissions.md) |
+    | [Plan Act Observe](plan-act-observe.md) |
+    | [Plan Representation](plan-representation.md) |
+    | [Planner Executor](planner-executor.md) |
+    | [Planning](planning.md) |
+    | [Platform Engineering](platform-engineering.md) |
+    | [Portable Interfaces](portable-interfaces.md) |
+    | [Position](position.md) |
+    | [Pragmatics](pragmatics.md) |
+    | [Precision And Recall](precision-and-recall.md) |
+    | [Pretraining Objectives](pretraining-objectives.md) |
+    | [Primary Sources](primary-sources.md) |
+    | [Privacy](privacy.md) |
+    | [Probability](probability.md) |
+    | [Problem Framing](problem-framing.md) |
+    | [Prompt Injection](prompt-injection.md) |
+    | [Prompt Specs](prompt-specs.md) |
+    | [Prompt Versioning](prompt-versioning.md) |
+    | [Prompting](prompting.md) |
+    | [Provenance](provenance.md) |
+
+??? abstract "Q (5)"
+    | Topic |
+    | --- |
+    | [Qlora](qlora.md) |
+    | [Quantization](quantization.md) |
+    | [Queries](queries.md) |
+    | [Query Rewriting](query-rewriting.md) |
+    | [Queues](queues.md) |
+
+??? abstract "R (33)"
+    | Topic |
+    | --- |
+    | [Rag](rag.md) |
+    | [Ranking](ranking.md) |
+    | [Rational Agents](rational-agents.md) |
+    | [Re Indexing](re-indexing.md) |
+    | [Reasoning Models](reasoning-models.md) |
+    | [Reciprocal Rank Fusion](reciprocal-rank-fusion.md) |
+    | [Recovery](recovery.md) |
+    | [Reflection](reflection.md) |
+    | [Regression](regression.md) |
+    | [Regression Evaluation](regression-evaluation.md) |
+    | [Regularization](regularization.md) |
+    | [Release Gates](release-gates.md) |
+    | [Repair](repair.md) |
+    | [Replanning](replanning.md) |
+    | [Repo Instructions](repo-instructions.md) |
+    | [Representation Learning](representation-learning.md) |
+    | [Reproduction](reproduction.md) |
+    | [Rerankers](rerankers.md) |
+    | [Residual Connections](residual-connections.md) |
+    | [Resilience](resilience.md) |
+    | [Resources](resources.md) |
+    | [Retries](retries.md) |
+    | [Retrieval](retrieval.md) |
+    | [Retrieval Metrics](retrieval-metrics.md) |
+    | [Reviewer](reviewer.md) |
+    | [Risk Tiers](risk-tiers.md) |
+    | [Rnns](rnns.md) |
+    | [Robotics Interfaces](robotics-interfaces.md) |
+    | [Roi](roi.md) |
+    | [Role Isolation](role-isolation.md) |
+    | [Roles](roles.md) |
+    | [Routing](routing.md) |
+    | [Rubrics](rubrics.md) |
+
+??? abstract "S (37)"
+    | Topic |
+    | --- |
+    | [Sagemaker](sagemaker.md) |
+    | [Sampling](sampling.md) |
+    | [Sandboxing](sandboxing.md) |
+    | [Scaled Dot Product](scaled-dot-product.md) |
+    | [Scaling Laws](scaling-laws.md) |
+    | [Search](search.md) |
+    | [Segmentation](segmentation.md) |
+    | [Self Consistency](self-consistency.md) |
+    | [Self Supervision](self-supervision.md) |
+    | [Semantics](semantics.md) |
+    | [Sentence Embeddings](sentence-embeddings.md) |
+    | [Sentencepiece](sentencepiece.md) |
+    | [Seq2seq](seq2seq.md) |
+    | [Service Catalog](service-catalog.md) |
+    | [Session Memory](session-memory.md) |
+    | [Sft](sft.md) |
+    | [Shared Retrieval](shared-retrieval.md) |
+    | [Shared State](shared-state.md) |
+    | [Skills](skills.md) |
+    | [Slice Analysis](slice-analysis.md) |
+    | [Slices](slices.md) |
+    | [Slos](slos.md) |
+    | [Speech Recognition](speech-recognition.md) |
+    | [State](state.md) |
+    | [State Machines](state-machines.md) |
+    | [State Spaces](state-spaces.md) |
+    | [Statistical Learning](statistical-learning.md) |
+    | [Streaming Audio](streaming-audio.md) |
+    | [Structured Data](structured-data.md) |
+    | [Structured Output](structured-output.md) |
+    | [Subwords](subwords.md) |
+    | [Success Metrics](success-metrics.md) |
+    | [Summarization](summarization.md) |
+    | [Supervisor Worker](supervisor-worker.md) |
+    | [Symbolic Ai](symbolic-ai.md) |
+    | [Syntax](syntax.md) |
+    | [Synthetic Data](synthetic-data.md) |
+
+??? abstract "T (26)"
+    | Topic |
+    | --- |
+    | [Task Definitions](task-definitions.md) |
+    | [Task Success](task-success.md) |
+    | [Team Topology](team-topology.md) |
+    | [Technology Forecasting](technology-forecasting.md) |
+    | [Temperature](temperature.md) |
+    | [Termination](termination.md) |
+    | [Test Time Adaptation](test-time-adaptation.md) |
+    | [Test Time Compute](test-time-compute.md) |
+    | [Tests](tests.md) |
+    | [Text To Speech](text-to-speech.md) |
+    | [Tf Idf](tf-idf.md) |
+    | [Threat Modeling](threat-modeling.md) |
+    | [Thresholds](thresholds.md) |
+    | [Timeouts](timeouts.md) |
+    | [Token Budgeting](token-budgeting.md) |
+    | [Token Budgets](token-budgets.md) |
+    | [Tool Abuse](tool-abuse.md) |
+    | [Tool Contracts](tool-contracts.md) |
+    | [Tool Discovery](tool-discovery.md) |
+    | [Tool Registry](tool-registry.md) |
+    | [Tool Schemas](tool-schemas.md) |
+    | [Tool Success](tool-success.md) |
+    | [Tracing](tracing.md) |
+    | [Training](training.md) |
+    | [Transparency](transparency.md) |
+    | [Transports](transports.md) |
+
+??? abstract "U (5)"
+    | Topic |
+    | --- |
+    | [Uncertainty Ux](uncertainty-ux.md) |
+    | [Undo](undo.md) |
+    | [Unicode](unicode.md) |
+    | [Unit Tests](unit-tests.md) |
+    | [User Research](user-research.md) |
+
+??? abstract "V (15)"
+    | Topic |
+    | --- |
+    | [Validation](validation.md) |
+    | [Values](values.md) |
+    | [Vector Governance](vector-governance.md) |
+    | [Vectors](vectors.md) |
+    | [Vendor Management](vendor-management.md) |
+    | [Verifiers](verifiers.md) |
+    | [Versioning](versioning.md) |
+    | [Vertex Ai](vertex-ai.md) |
+    | [Vertex Ai Search](vertex-ai-search.md) |
+    | [Video Generation](video-generation.md) |
+    | [Vision Encoders](vision-encoders.md) |
+    | [Visual Grounding](visual-grounding.md) |
+    | [Vllm](vllm.md) |
+    | [Vocabulary](vocabulary.md) |
+    | [Voice Safety](voice-safety.md) |
+
+??? abstract "W (4)"
+    | Topic |
+    | --- |
+    | [Word Embeddings](word-embeddings.md) |
+    | [Workflows](workflows.md) |
+    | [Working Memory](working-memory.md) |
+    | [World Models](world-models.md) |
+

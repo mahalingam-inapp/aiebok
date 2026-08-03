@@ -53,10 +53,13 @@ A **progress bar** at the top of every page tracks reading progress through onbo
 | **Knowledge Areas** | Curriculum map by domain | [KA index](../knowledge-areas/index.md) |
 | **Guided Lessons** | Short lesson sequences | [Lesson catalog](../lessons/index.md) |
 | **Concepts** | Fast lookup and vocabulary | [Featured concepts](../concepts/index.md) |
-| **Patterns / Architectures** | Production design patterns | [Pattern catalog](../patterns/catalog.md) |
+| **Patterns / Architectures** | Production design patterns | [Pattern library](../patterns/index.md) (collapsed groups) |
 | **Labs** | Runnable Python and notebooks | [Hands-on start](../labs/start-here.md) |
 | **Research** | Paper reading program | [Reading program](../papers/index.md) |
 | **Reference** | Glossary, prerequisites, print | [Glossary](../reference/glossary.md) |
+
+!!! tip "Fewer clicks"
+    Large catalogs (patterns, labs, lessons, papers, cloud capabilities, glossary, concept cards) use **collapsed accordion groups** — expand one section instead of scrolling long link lists. Chapters are listed on each **book overview** page; use **search** (`/`) to jump anywhere.
 
 ## What lives on GitHub Pages vs in the repo
 

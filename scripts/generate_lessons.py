@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from catalog_helpers import _accordion_section, _markdown_table
 from generate_books import BOOKS, slug
 from ka_deep_content import KA_SPECS, chapter_href, lab_slug
 from topic_knowledge import normalize
@@ -124,12 +125,39 @@ def title_from_slug(s: str) -> str:
     return " ".join(w if w.isupper() and len(w) <= 4 else w.capitalize() for w in s.split("-"))
 
 
+def render_lessons_index(
+    ka_groups: list[tuple[str, str, list[tuple[str, str]]]],
+    supplemental: list[tuple[str, str]],
+) -> str:
+    lines = [
+        "# Guided Lessons",
+        "",
+        "120 standalone lessons across knowledge areas and cross-cutting topics.",
+        "",
+        "**Expand a knowledge area** or use search (`/`) to jump to a lesson.",
+        "",
+    ]
+    for _ka_file, ka_title, items in ka_groups:
+        rows = [[f"[{title}]({lesson_id}.md)"] for lesson_id, title in items]
+        lines.append(_accordion_section(f"{ka_title} ({len(items)})", _markdown_table(["Lesson"], rows)))
+    if supplemental:
+        rows = [[f"[{title}]({lesson_id}.md)"] for lesson_id, title in supplemental]
+        lines.append(_accordion_section(f"Supplemental ({len(supplemental)})", _markdown_table(["Lesson"], rows)))
+    return "\n".join(lines) + "\n"
+
+
 def generate() -> int:
     LESSONS.mkdir(parents=True, exist_ok=True)
-    lines = ["# Guided Lessons", "", "120 standalone lessons across knowledge areas and cross-cutting topics.", ""]
+    ka_groups: list[tuple[str, str, list[tuple[str, str]]]] = []
+    ka_index: dict[str, int] = {}
     count = 0
 
-    for ka_file, _, _, book_no, _, _, lesson_indices in KA_SPECS:
+    for ka_file, ka_title, _, book_no, _, _, lesson_indices in KA_SPECS:
+        if ka_file not in ka_index:
+            ka_index[ka_file] = len(ka_groups)
+            ka_groups.append((ka_file, ka_title, []))
+        group_items = ka_groups[ka_index[ka_file]][2]
+
         for i, ch_no in enumerate(lesson_indices, 1):
             lesson_id = f"{ka_file}-{i:02d}"
             href, ch_title = chapter_href(book_no, ch_no)
@@ -146,17 +174,18 @@ def generate() -> int:
                 f"../labs/{ls}.md",
             )
             (LESSONS / f"{lesson_id}.md").write_text(text, encoding="utf-8")
-            lines.append(f"- [{ch_title}]({lesson_id}.md) — {ka_file}")
+            group_items.append((lesson_id, ch_title))
             count += 1
 
+    supplemental: list[tuple[str, str]] = []
     for slug_id, title, objective, read_link, concepts, exercise in SUPPLEMENTAL:
         lesson_id = f"sup-{slug_id}"
         text = render_lesson(lesson_id, title, objective, read_link, concepts, exercise)
         (LESSONS / f"{lesson_id}.md").write_text(text, encoding="utf-8")
-        lines.append(f"- [{title}]({lesson_id}.md) — supplemental")
+        supplemental.append((lesson_id, title))
         count += 1
 
-    (LESSONS / "index.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (LESSONS / "index.md").write_text(render_lessons_index(ka_groups, supplemental), encoding="utf-8")
     return count
 
 

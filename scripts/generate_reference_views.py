@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from catalog_helpers import _accordion_section
 from generate_books import BOOKS, slug
 from ka_deep_content import KA_SPECS, chapter_href
 
@@ -15,24 +16,35 @@ def generate_prerequisites() -> None:
         "",
         "Suggested order before diving into advanced topics. Books are sequential within each row.",
         "",
+        "Expand a book or knowledge area, or use search (`/`).",
+        "",
     ]
     for book_no, book in enumerate(BOOKS, 1):
         book_slug = f"{book_no:02d}-{slug(book['title'])}"
-        prereq = f"[Book {book_no - 1}](../books/{book_no - 1:02d}-{slug(BOOKS[book_no - 2]['title'])}/index.md)" if book_no > 1 else "None (entry path)"
-        lines.append(f"## Book {book_no} — {book['title']}")
-        lines.append("")
-        lines.append(f"- **Prerequisite:** {prereq}")
-        lines.append(f"- **Unlocks:** Book {book_no + 1} topics" if book_no < len(BOOKS) else "- **Unlocks:** Advanced guides and enterprise paths")
-        lines.append(f"- **Start:** [Overview](../books/{book_slug}/index.md)")
-        lines.append("")
+        prereq = (
+            f"[Book {book_no - 1}](../books/{book_no - 1:02d}-{slug(BOOKS[book_no - 2]['title'])}/index.md)"
+            if book_no > 1
+            else "None (entry path)"
+        )
+        unlocks = (
+            f"Book {book_no + 1} topics"
+            if book_no < len(BOOKS)
+            else "Advanced guides and enterprise paths"
+        )
+        body = [
+            f"- **Prerequisite:** {prereq}",
+            f"- **Unlocks:** {unlocks}",
+            f"- **Start:** [Overview](../books/{book_slug}/index.md)",
+        ]
+        lines.append(_accordion_section(f"Book {book_no} — {book['title']}", body))
 
     for ka_file, title, _, book_no, _, _, _ in KA_SPECS:
         book_slug = f"{book_no:02d}-{slug(BOOKS[book_no - 1]['title'])}"
-        lines.append(f"## {title}")
-        lines.append("")
-        lines.append(f"- **Primary book:** [Book {book_no}](../books/{book_slug}/index.md)")
-        lines.append(f"- **Lessons:** [Lesson catalog](../lessons/index.md) (filter `{ka_file}`)")
-        lines.append("")
+        body = [
+            f"- **Primary book:** [Book {book_no}](../books/{book_slug}/index.md)",
+            f"- **Lessons:** [Lesson catalog](../lessons/index.md) (filter `{ka_file}`)",
+        ]
+        lines.append(_accordion_section(title, body))
 
     (REFERENCE / "prerequisites.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
