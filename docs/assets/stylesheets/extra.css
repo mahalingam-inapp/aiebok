@@ -15,8 +15,7 @@
   overflow-x: auto;
 }
 .md-typeset a.external-link::after,
-.md-typeset a[href^="https://github.com/"]::after,
-.md-typeset a[href^="http://github.com/"]::after {
+.md-typeset a[target="_blank"]::after {
   content: "↗";
   display: inline-block;
   margin-left: .15em;
