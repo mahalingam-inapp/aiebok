@@ -4,20 +4,53 @@
 
 Design the information, instructions, state, and output boundaries that make model behavior useful and testable.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Instructions That Work__
+
+    Write clear tasks, roles, constraints, examples, delimiters, and success criteria while avoiding unnecessary…
+
+    [Open chapter →](01-instructions-that-work.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __Structured Generation__
+
+    Use schemas, constrained decoding, validation, repair, retries, and typed application boundaries.
+
+    [Open chapter →](02-structured-generation.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __Context Construction__
+
+    Assemble instructions, user input, state, evidence, tools, and examples under priority and token constraints.
+
+    [Open chapter →](03-context-construction.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __Conversation and Memory__
+
+    Separate transcript, session state, summaries, semantic memory, episodic memory, user preferences, and source…
+
+    [Open chapter →](04-conversation-and-memory.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __Context Failure and Security__
+
+    Recognize instruction conflict, prompt injection, context poisoning, stale memory, overflow, lost provenance,…
+
+    [Open chapter →](05-context-failure-and-security.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __Prompt and Context Operations__
+
+    Version prompts, trace context, cache safely, run regressions, compare variants, and monitor cost and quality.
+
+    [Open chapter →](06-prompt-and-context-operations.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Book 4
 - Model inference
 - Tokens and context windows
-
-## Chapters
-
-1. [Instructions That Work](01-instructions-that-work.md)
-2. [Structured Generation](02-structured-generation.md)
-3. [Context Construction](03-context-construction.md)
-4. [Conversation and Memory](04-conversation-and-memory.md)
-5. [Context Failure and Security](05-context-failure-and-security.md)
-6. [Prompt and Context Operations](06-prompt-and-context-operations.md)
 
 ## Book project
 

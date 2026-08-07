@@ -4,20 +4,53 @@
 
 Build evidence that AI systems meet task, safety, security, compliance, and business requirements.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Evaluation as Requirements__
+
+    Turn desired behavior into tasks, cases, metrics, rubrics, slices, thresholds, and explicit failure tolerance…
+
+    [Open chapter →](01-evaluation-as-requirements.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __Metrics and Human Judgment__
+
+    Combine exact metrics, semantic similarity, pairwise comparison, human review, LLM judges, calibration, and u…
+
+    [Open chapter →](02-metrics-and-human-judgment.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __Evaluation by System Stage__
+
+    Evaluate ingestion, retrieval, generation, tools, agents, UX, latency, cost, and business outcomes separately…
+
+    [Open chapter →](03-evaluation-by-system-stage.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __Security of AI Systems__
+
+    Threat-model prompt injection, data exfiltration, tool abuse, identity confusion, insecure output handling, s…
+
+    [Open chapter →](04-security-of-ai-systems.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __Responsible AI and Risk__
+
+    Assess bias, privacy, transparency, human impact, misuse, accessibility, high-impact decisions, and safe fail…
+
+    [Open chapter →](05-responsible-ai-and-risk.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __Governance and Assurance__
+
+    Define ownership, inventory, risk tiers, policies, approvals, audit evidence, incidents, exceptions, vendor r…
+
+    [Open chapter →](06-governance-and-assurance.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Books 5–9
 - Statistics intuition
 - Threat-model basics
-
-## Chapters
-
-1. [Evaluation as Requirements](01-evaluation-as-requirements.md)
-2. [Metrics and Human Judgment](02-metrics-and-human-judgment.md)
-3. [Evaluation by System Stage](03-evaluation-by-system-stage.md)
-4. [Security of AI Systems](04-security-of-ai-systems.md)
-5. [Responsible AI and Risk](05-responsible-ai-and-risk.md)
-6. [Governance and Assurance](06-governance-and-assurance.md)
 
 ## Book project
 

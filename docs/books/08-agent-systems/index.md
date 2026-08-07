@@ -4,20 +4,53 @@
 
 Design agentic systems as bounded stateful architectures rather than treating autonomy as a model feature.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Agent or Workflow?__
+
+    Define agents by goal-directed action selection in a loop and contrast them with deterministic workflows and…
+
+    [Open chapter →](01-agent-or-workflow.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __The Agent Loop__
+
+    Connect goal, state, planning, action, observation, reflection, and termination into a bounded state machine.
+
+    [Open chapter →](02-the-agent-loop.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __Agent Memory and Recovery__
+
+    Manage working state, episodic history, durable checkpoints, resumability, compensation, and idempotent tools.
+
+    [Open chapter →](03-agent-memory-and-recovery.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __Agent Patterns__
+
+    Apply planner–executor, supervisor–worker, reviewer, evaluator–optimizer, routing, and human-approval pattern…
+
+    [Open chapter →](04-agent-patterns.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __Multi-Agent Systems__
+
+    Study delegation, role boundaries, communication, shared state, consensus, conflict, security, and why many t…
+
+    [Open chapter →](05-multi-agent-systems.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __Operating Long-Running Agents__
+
+    Design durable orchestration, queues, scheduling, leases, approvals, monitoring, incident response, and safe…
+
+    [Open chapter →](06-operating-long-running-agents.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Books 5–7
 - State machines
 - Tools and evaluation
-
-## Chapters
-
-1. [Agent or Workflow?](01-agent-or-workflow.md)
-2. [The Agent Loop](02-the-agent-loop.md)
-3. [Agent Memory and Recovery](03-agent-memory-and-recovery.md)
-4. [Agent Patterns](04-agent-patterns.md)
-5. [Multi-Agent Systems](05-multi-agent-systems.md)
-6. [Operating Long-Running Agents](06-operating-long-running-agents.md)
 
 ## Book project
 

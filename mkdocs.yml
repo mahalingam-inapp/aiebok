@@ -39,10 +39,6 @@ theme:
 
 plugins:
   - search
-  - print-site:
-      add_to_navigation: true
-      print_page_title: Print site
-      add_table_of_contents: true
 
 markdown_extensions:
   - admonition
@@ -70,11 +66,9 @@ markdown_extensions:
 
 extra_css:
   - assets/stylesheets/extra.css
-  - assets/stylesheets/progress-tracker.css
 
 extra_javascript:
   - assets/javascripts/external-links.js
-  - assets/javascripts/progress-tracker.js
 
 nav:
   - Home: index.md
@@ -121,9 +115,6 @@ nav:
       - Lab Guide: labs/index.md
       - Starter Notebooks: labs/notebooks/index.md
       - Code Samples: code-samples/index.md
-  - Research:
-      - Reading Program: papers/index.md
-      - Paper Template: papers/paper-reading-template.md
   - Build Guides:
       - Guide Index: guides/index.md
   - Reference:
@@ -131,6 +122,3 @@ nav:
       - Glossary: reference/glossary.md
       - Prerequisites: reference/prerequisites.md
       - Unlocks: reference/unlocks.md
-      - Print & Offline: reference/print-and-offline.md
-      - Reading Progress: reference/progress-tracker.md
-      - Deployment Checklist: reference/deployment-checklist.md

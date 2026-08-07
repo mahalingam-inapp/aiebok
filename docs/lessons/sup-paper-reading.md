@@ -8,7 +8,7 @@ Extract claims, evidence, and limits.
 
 ## Read
 
-- Primary: [Read a Paper Critically](../papers/paper-reading-template.md)
+- Primary: [Read a Paper Critically](../books/13-multimodal-and-frontier-systems/06-how-to-track-the-frontier.md)
 
 ## Core concepts
 
@@ -18,7 +18,7 @@ Extract claims, evidence, and limits.
 
 ## Exercise
 
-Summarize one paper using the template.
+Summarize one frontier claim using the chapter checklist.
 
 ## Check yourself
 

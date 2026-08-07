@@ -11,6 +11,32 @@ AIEBOK supports three reading behaviors:
 
 The curriculum is intentionally larger than one pass. Use the map as a long-term reference and select depth based on your role.
 
+## Three ways to learn
+
+<!-- site-stats:start-cards:start -->
+<div class="grid cards" markdown>
+
+-   :material-compass:{{ .lg .middle }} __Learn sequentially__
+
+    Follow guided books or knowledge-area maps chapter by chapter.
+
+    [Book catalog →](../books/index.md)
+
+-   :material-magnify:{{ .lg .middle }} __Look up a concept__
+
+    Search the site or browse featured and A–Z concept cards.
+
+    [Concept index →](../concepts/index.md)
+
+-   :material-hammer-wrench:{{ .lg .middle }} __Build something__
+
+    Run starter labs, chapter labs, and architecture studios in the repo.
+
+    [Hands-on start →](../labs/start-here.md)
+
+</div>
+<!-- site-stats:start-cards:end -->
+
 ## Suggested rhythm
 
 - Read two lessons per week.

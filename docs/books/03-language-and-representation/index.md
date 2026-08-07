@@ -4,20 +4,53 @@
 
 Understand how language becomes computable representations and why embeddings enable semantic systems.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Why Language Is Hard__
+
+    Explore ambiguity, reference, syntax, semantics, pragmatics, intent, and the dependence of meaning on context…
+
+    [Open chapter →](01-why-language-is-hard.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __Corpora and Text Pipelines__
+
+    Learn how collection, encoding, normalization, language detection, segmentation, privacy, and provenance shap…
+
+    [Open chapter →](02-corpora-and-text-pipelines.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __Tokenization__
+
+    Understand character, word, and subword tokenization; BPE, WordPiece, and SentencePiece; and the impact on co…
+
+    [Open chapter →](03-tokenization.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __From Sparse Features to Embeddings__
+
+    Move from one-hot vectors, n-grams, TF–IDF, and BM25 to learned dense representations.
+
+    [Open chapter →](04-from-sparse-features-to-embeddings.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __Similarity and Vector Search__
+
+    Connect distance metrics, normalization, nearest neighbors, approximate indexes, clustering, filtering, and r…
+
+    [Open chapter →](05-similarity-and-vector-search.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __Embedding Systems in Production__
+
+    Select and evaluate embedding models, manage versions and re-indexing, protect tenant boundaries, and monitor…
+
+    [Open chapter →](06-embedding-systems-in-production.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Books 1–2
 - Vectors and dot products
 - Basic text processing
-
-## Chapters
-
-1. [Why Language Is Hard](01-why-language-is-hard.md)
-2. [Corpora and Text Pipelines](02-corpora-and-text-pipelines.md)
-3. [Tokenization](03-tokenization.md)
-4. [From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md)
-5. [Similarity and Vector Search](05-similarity-and-vector-search.md)
-6. [Embedding Systems in Production](06-embedding-systems-in-production.md)
 
 ## Book project
 

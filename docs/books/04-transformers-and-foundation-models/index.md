@@ -4,20 +4,53 @@
 
 Understand the architecture, training, inference, and model families behind modern generative AI.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Sequence Models Before Transformers__
+
+    Understand n-grams, recurrent networks, LSTMs, encoder–decoder models, bottlenecks, and why long-range depend…
+
+    [Open chapter →](01-sequence-models-before-transformers.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __Attention__
+
+    Build attention from queries, keys, values, similarity scores, normalization, and weighted aggregation.
+
+    [Open chapter →](02-attention.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __The Transformer Block__
+
+    Compose multi-head attention, feed-forward layers, residual paths, normalization, positional information, and…
+
+    [Open chapter →](03-the-transformer-block.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __Training Foundation Models__
+
+    Study autoregressive, masked, and sequence-to-sequence objectives; data mixtures; scaling; checkpoints; and m…
+
+    [Open chapter →](04-training-foundation-models.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __Inference and Sampling__
+
+    Trace logits, softmax, temperature, top-k, top-p, streaming, batching, KV cache, prefix cache, and speculativ…
+
+    [Open chapter →](05-inference-and-sampling.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __Model Families and Selection__
+
+    Compare base, instruction, reasoning, code, embedding, reranking, reward, safety, speech, vision, and diffusi…
+
+    [Open chapter →](06-model-families-and-selection.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Books 1–3
 - Matrix multiplication intuition
 - Neural-network basics
-
-## Chapters
-
-1. [Sequence Models Before Transformers](01-sequence-models-before-transformers.md)
-2. [Attention](02-attention.md)
-3. [The Transformer Block](03-the-transformer-block.md)
-4. [Training Foundation Models](04-training-foundation-models.md)
-5. [Inference and Sampling](05-inference-and-sampling.md)
-6. [Model Families and Selection](06-model-families-and-selection.md)
 
 ## Book project
 

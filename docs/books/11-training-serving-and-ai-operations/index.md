@@ -4,20 +4,53 @@
 
 Understand model adaptation, efficient inference, deployment, observability, release, and lifecycle operations.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Choosing Adaptation__
+
+    Diagnose whether a requirement needs prompting, retrieval, tools, fine-tuning, continued pretraining, or a di…
+
+    [Open chapter →](01-choosing-adaptation.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __Post-Training Methods__
+
+    Understand supervised fine-tuning, LoRA, QLoRA, preference data, RLHF, DPO, distillation, and model merging.
+
+    [Open chapter →](02-post-training-methods.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __Dataset Engineering__
+
+    Curate, label, deduplicate, filter, balance, version, document, and protect training and evaluation data.
+
+    [Open chapter →](03-dataset-engineering.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __Inference Infrastructure__
+
+    Connect accelerators, memory, quantization, model formats, servers, batching, streaming, caches, and speculat…
+
+    [Open chapter →](04-inference-infrastructure.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __Deployment and Routing__
+
+    Design containers, serverless endpoints, Kubernetes, autoscaling, routing, fallbacks, regional placement, and…
+
+    [Open chapter →](05-deployment-and-routing.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __LLMOps__
+
+    Version prompts, models, data, and evals; trace requests; monitor quality and cost; canary, roll back, and re…
+
+    [Open chapter →](06-llmops.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Books 2, 4, and 10
 - Containers and APIs
 - Performance measurement
-
-## Chapters
-
-1. [Choosing Adaptation](01-choosing-adaptation.md)
-2. [Post-Training Methods](02-post-training-methods.md)
-3. [Dataset Engineering](03-dataset-engineering.md)
-4. [Inference Infrastructure](04-inference-infrastructure.md)
-5. [Deployment and Routing](05-deployment-and-routing.md)
-6. [LLMOps](06-llmops.md)
 
 ## Book project
 

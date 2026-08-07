@@ -1,6 +1,6 @@
 # Question Index
 
-Navigate by question to books, concepts, patterns, guides, and papers.
+Navigate by question to books, concepts, patterns, and guides.
 
 Expand a section or use search (`/`).
 
@@ -41,11 +41,11 @@ Expand a section or use search (`/`).
     - **What is prompt injection?** → [prompt-injection](../concepts/prompt-injection.md)
     - **How do I red-team an assistant?** → [red-team-security-harness](../guides/red-team-security-harness.md)
     - **What are eval slices?** → [slices](../concepts/cards/slices.md)
-    - **How do I calibrate LLM judges?** → [ragas](../papers/readings/ragas.md)
+    - **How do I calibrate LLM judges?** → [02-metrics-and-human-judgment](../books/10-evaluation-safety-and-governance/02-metrics-and-human-judgment.md)
 
-??? abstract "Research literacy (4)"
-    - **How do I read an AI paper?** → [paper-reading-template](../papers/paper-reading-template.md)
-    - **What did the Transformer change?** → [transformer](../papers/readings/transformer.md)
-    - **What did RAG add to generation?** → [rag](../papers/readings/rag.md)
+??? abstract "Frontier literacy (4)"
+    - **How do I evaluate a frontier claim?** → [06-how-to-track-the-frontier](../books/13-multimodal-and-frontier-systems/06-how-to-track-the-frontier.md)
+    - **What did attention change in sequence modeling?** → [02-attention](../books/04-transformers-and-foundation-models/02-attention.md)
+    - **What did RAG add to generation?** → [05-rag-generation-and-citations](../books/06-knowledge-and-retrieval-systems/05-rag-generation-and-citations.md)
     - **How do I reproduce a frontier claim?** → [06-how-to-track-the-frontier](../books/13-multimodal-and-frontier-systems/06-how-to-track-the-frontier.md)
 

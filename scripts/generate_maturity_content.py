@@ -399,12 +399,12 @@ QUESTION_SPECS: list[tuple[str, str, list[tuple[str, str]]]] = [
         ("What is prompt injection?", "../concepts/prompt-injection.md"),
         ("How do I red-team an assistant?", "../guides/red-team-security-harness.md"),
         ("What are eval slices?", "../concepts/cards/slices.md"),
-        ("How do I calibrate LLM judges?", "../papers/readings/ragas.md"),
+        ("How do I calibrate LLM judges?", "../books/10-evaluation-safety-and-governance/02-metrics-and-human-judgment.md"),
     ]),
-    ("Research literacy", "research-literacy", [
-        ("How do I read an AI paper?", "../papers/paper-reading-template.md"),
-        ("What did the Transformer change?", "../papers/readings/transformer.md"),
-        ("What did RAG add to generation?", "../papers/readings/rag.md"),
+    ("Frontier literacy", "frontier-literacy", [
+        ("How do I evaluate a frontier claim?", "../books/13-multimodal-and-frontier-systems/06-how-to-track-the-frontier.md"),
+        ("What did attention change in sequence modeling?", "../books/04-transformers-and-foundation-models/02-attention.md"),
+        ("What did RAG add to generation?", "../books/06-knowledge-and-retrieval-systems/05-rag-generation-and-citations.md"),
         ("How do I reproduce a frontier claim?", "../books/13-multimodal-and-frontier-systems/06-how-to-track-the-frontier.md"),
     ]),
 ]
@@ -414,7 +414,7 @@ def generate_question_index() -> None:
     lines = [
         "# Question Index",
         "",
-        "Navigate by question to books, concepts, patterns, guides, and papers.",
+        "Navigate by question to books, concepts, patterns, and guides.",
         "",
         "Expand a section or use search (`/`).",
         "",
@@ -736,15 +736,13 @@ Use the [paper reading template](paper-reading-template.md) for every entry.
 
 
 def main() -> None:
-    readings = generate_readings()
     guides = generate_build_guides()
     generate_question_index()
     glossary = generate_glossary()
     chapter_labs = upgrade_labs()
     starter_labs = upgrade_starter_labs()
-    update_papers_index(readings)
     print(
-        f"Generated {readings} readings, {guides} build guides, glossary {glossary} terms, "
+        f"Generated {guides} build guides, glossary {glossary} terms, "
         f"upgraded {chapter_labs} chapter labs and {starter_labs} starter labs."
     )
 

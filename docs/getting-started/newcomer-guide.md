@@ -42,26 +42,64 @@ flowchart TD
 !!! tip "Repository links open in a new tab"
     Links to GitHub (notebooks, clone, source files) leave this site so you keep your reading place. Look for the ↗ marker.
 
-A **progress bar** at the top of every page tracks reading progress through onboarding and book chapters (saved locally in your browser). Labs are separate — see [Hands-on start](../labs/start-here.md). Details: [Reading progress](../reference/progress-tracker.md).
+## Where to go in the site
 
-## How the top navigation maps to you
+<!-- site-stats:nav-cards:start -->
+<div class="grid cards" markdown>
 
-| Tab | Best for | Start page |
-|---|---|---|
-| **Start Here** | Orientation and pacing | You are here |
-| **Guided Books** | Sequential learning (13 books, 78 chapters) | [Book catalog](../books/index.md) |
-| **Knowledge Areas** | Curriculum map by domain | [KA index](../knowledge-areas/index.md) |
-| **Guided Lessons** | <!-- site-stats:lessons-nav:start -->
-Short lesson sequences (163 total: 120 KA + 43 supplemental)
-<!-- site-stats:lessons-nav:end --> | [Lesson catalog](../lessons/index.md) |
-| **Concepts** | Fast lookup and vocabulary | [Featured concepts](../concepts/index.md) |
-| **Patterns / Architectures** | Production design patterns | [Pattern library](../patterns/index.md) (collapsed groups) |
-| **Labs** | Runnable Python and notebooks | [Hands-on start](../labs/start-here.md) |
-| **Research** | Paper reading program | [Reading program](../papers/index.md) |
-| **Reference** | Glossary, prerequisites, print | [Glossary](../reference/glossary.md) |
+-   :material-home:{ .lg .middle } __Start Here__
+
+    Orientation, setup, and first-week plan.
+
+    [You are here](newcomer-guide.md)
+
+-   :material-bookshelf:{ .lg .middle } __Guided Books__
+
+    13 books · 78 chapters.
+
+    [Book catalog →](../books/index.md)
+
+-   :material-sitemap:{ .lg .middle } __Knowledge Areas__
+
+    20 curriculum maps with lesson paths.
+
+    [KA map →](../knowledge-areas/index.md)
+
+-   :material-notebook:{ .lg .middle } __Guided Lessons__
+
+    163 lessons (120 KA + 43 supplemental).
+
+    [Lesson catalog →](../lessons/index.md)
+
+-   :material-lightbulb:{ .lg .middle } __Concepts__
+
+    361 reference cards.
+
+    [Featured concepts →](../concepts/index.md)
+
+-   :material-puzzle:{ .lg .middle } __Patterns & Architectures__
+
+    100 patterns · 25 studios.
+
+    [Pattern library →](../patterns/index.md)
+
+-   :material-flask-outline:{ .lg .middle } __Labs__
+
+    83 runnable labs.
+
+    [Hands-on start →](../labs/start-here.md)
+
+-   :material-book-alphabet:{ .lg .middle } __Reference__
+
+    Glossary, prerequisites, and question index.
+
+    [Glossary →](../reference/glossary.md)
+
+</div>
+<!-- site-stats:nav-cards:end -->
 
 !!! tip "Fewer clicks"
-    Large catalogs (patterns, labs, lessons, papers, cloud capabilities, glossary, concept cards) use **collapsed accordion groups** — expand one section instead of scrolling long link lists. Chapters are listed on each **book overview** page; use **search** (`/`) to jump anywhere.
+    Large catalogs (patterns, labs, lessons, cloud capabilities, glossary, concept cards) use **collapsed accordion groups** — expand one section instead of scrolling long link lists. Chapters are listed on each **book overview** page; use **search** (`/`) to jump anywhere.
 
 ## What lives on GitHub Pages vs in the repo
 
@@ -69,7 +107,7 @@ Short lesson sequences (163 total: 120 KA + 43 supplemental)
 |---|---|
 | Books, concepts, patterns, search | `labs/*/main.py` and `test_lab.py` |
 | Static guides and architecture pages | `labs/*/lab.ipynb` guided notebooks |
-| PDF companion download | Dev Container / Codespaces environment |
+| MkDocs site content | Dev Container / Codespaces environment |
 
 You **clone or open Codespaces** once, then alternate: read a chapter on the site, run the matching lab in the repo.
 

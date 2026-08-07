@@ -4,20 +4,53 @@
 
 Understand when inference-time search, planning, verification, and external tools improve task outcomes.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Reasoning as Search__
+
+    Separate recall from deliberate search and study decomposition, candidate generation, backtracking, and stopp…
+
+    [Open chapter →](01-reasoning-as-search.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __Planning__
+
+    Represent goals, prerequisites, steps, dependencies, state, uncertainty, and replanning without confusing a p…
+
+    [Open chapter →](02-planning.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __Verification and Critique__
+
+    Use deterministic checks, tests, rubrics, critics, self-consistency, best-of-N, and external evidence.
+
+    [Open chapter →](03-verification-and-critique.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __Tools as Capability Boundaries__
+
+    Design typed tools, schemas, descriptions, errors, timeouts, idempotency, permissions, and audit records.
+
+    [Open chapter →](04-tools-as-capability-boundaries.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __MCP and Integration Protocols__
+
+    Understand clients, servers, tools, resources, prompts, discovery, transport, authentication, and protocol se…
+
+    [Open chapter →](05-mcp-and-integration-protocols.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __Reasoning-System Economics__
+
+    Balance accuracy, latency, token use, parallel candidates, tool calls, caches, failure rates, and task value.
+
+    [Open chapter →](06-reasoning-system-economics.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Books 1 and 4–6
 - Search and planning
 - Typed software interfaces
-
-## Chapters
-
-1. [Reasoning as Search](01-reasoning-as-search.md)
-2. [Planning](02-planning.md)
-3. [Verification and Critique](03-verification-and-critique.md)
-4. [Tools as Capability Boundaries](04-tools-as-capability-boundaries.md)
-5. [MCP and Integration Protocols](05-mcp-and-integration-protocols.md)
-6. [Reasoning-System Economics](06-reasoning-system-economics.md)
 
 ## Book project
 

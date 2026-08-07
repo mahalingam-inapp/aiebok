@@ -4,20 +4,53 @@
 
 Use specifications, evaluations, secure development practices, and product discovery to deliver useful AI features.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Discovering the Right Problem__
+
+    Identify user jobs, workflow constraints, baseline performance, capability fit, failure cost, and measurable…
+
+    [Open chapter →](01-discovering-the-right-problem.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __Specification-Driven Development__
+
+    Translate intent into functional, prompt, tool, agent, data, safety, and evaluation specifications with accep…
+
+    [Open chapter →](02-specification-driven-development.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __AI-Native Development Workflow__
+
+    Organize repositories, instructions, skills, context files, branches, reviews, tests, and coding-agent collab…
+
+    [Open chapter →](03-ai-native-development-workflow.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __Testing AI Systems__
+
+    Combine unit, contract, integration, scenario, regression, adversarial, and human tests across deterministic…
+
+    [Open chapter →](04-testing-ai-systems.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __Human-Centered AI UX__
+
+    Design uncertainty, citations, previews, correction, undo, approval, feedback, accessibility, and graceful fa…
+
+    [Open chapter →](05-human-centered-ai-ux.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __Experiments, Adoption, and Value__
+
+    Measure task success, time, correction effort, retention, adoption, cost, risk, and ROI through staged experi…
+
+    [Open chapter →](06-experiments-adoption-and-value.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Books 5–8
 - Software testing
 - Product discovery basics
-
-## Chapters
-
-1. [Discovering the Right Problem](01-discovering-the-right-problem.md)
-2. [Specification-Driven Development](02-specification-driven-development.md)
-3. [AI-Native Development Workflow](03-ai-native-development-workflow.md)
-4. [Testing AI Systems](04-testing-ai-systems.md)
-5. [Human-Centered AI UX](05-human-centered-ai-ux.md)
-6. [Experiments, Adoption, and Value](06-experiments-adoption-and-value.md)
 
 ## Book project
 

@@ -4,20 +4,53 @@
 
 Learn how models are trained, validated, diagnosed, and integrated into reliable software systems.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Problems, Data, and Baselines__
+
+    Frame an ML task before choosing an algorithm. Define the unit of prediction, target, decision, population, t…
+
+    [Open chapter →](01-problems-data-and-baselines.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __Supervised Learning__
+
+    Understand regression and classification as function approximation under a chosen loss. Connect linear models…
+
+    [Open chapter →](02-supervised-learning.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __Unsupervised and Representation Learning__
+
+    Use unlabeled data to discover structure, compress observations, and learn reusable representations.
+
+    [Open chapter →](03-unsupervised-and-representation-learning.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __Neural Networks__
+
+    Build the mental model of layers, activations, losses, backpropagation, initialization, normalization, and op…
+
+    [Open chapter →](04-neural-networks.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __Evaluation and Error Analysis__
+
+    Choose metrics from the decision context, estimate uncertainty, inspect slices, and turn mistakes into the ne…
+
+    [Open chapter →](05-evaluation-and-error-analysis.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __The ML Lifecycle__
+
+    Connect data, experiments, models, releases, monitoring, drift, retraining, and retirement into an accountabl…
+
+    [Open chapter →](06-the-ml-lifecycle.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Book 1 or equivalent
 - Basic Python
 - Graphs and averages
-
-## Chapters
-
-1. [Problems, Data, and Baselines](01-problems-data-and-baselines.md)
-2. [Supervised Learning](02-supervised-learning.md)
-3. [Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md)
-4. [Neural Networks](04-neural-networks.md)
-5. [Evaluation and Error Analysis](05-evaluation-and-error-analysis.md)
-6. [The ML Lifecycle](06-the-ml-lifecycle.md)
 
 ## Book project
 

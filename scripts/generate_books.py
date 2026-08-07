@@ -18,6 +18,7 @@ from chapter_enrichments import (
     render_worked_example,
 )
 from concept_library import render_core_concepts
+from learning_cards import render_book_catalog_cards, render_book_cluster_cards, render_chapter_cards
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOKS_DIR = ROOT / "docs" / "books"
@@ -414,22 +415,24 @@ Return to the [book index](index.md) or use site search to follow the chapter's 
 
 
 def render_book_index(book_no: int, book: dict, chapter_files: list[tuple[str, str]]) -> str:
-    links = "\n".join(f"{i}. [{title}]({filename})" for i, (title, filename) in enumerate(chapter_files, 1))
     prerequisite_lines = "\n".join(f"- {item}" for item in PREREQUISITES[book_no - 1])
     reading_lines = "\n".join(f"- {item}" for item in READINGS[book_no - 1])
+    chapter_cards = render_chapter_cards(
+        [
+            (i, title, book["chapters"][i - 1][1], filename)
+            for i, (title, filename) in enumerate(chapter_files, 1)
+        ]
+    )
     return f"""# Book {book_no} — {book['title']}
 
 ## Purpose
 
 {book['goal']}
 
+{chapter_cards}
 ## Entry prerequisites
 
 {prerequisite_lines}
-
-## Chapters
-
-{links}
 
 ## Book project
 
@@ -464,7 +467,6 @@ You can explain the key mechanisms, complete the practice in every chapter, pass
 
 def main() -> None:
     BOOKS_DIR.mkdir(parents=True, exist_ok=True)
-    catalog = ["# Guided Books", "", "The thirteen books are the primary reading path through AIEBOK. Knowledge-area and concept pages remain the reusable reference layer.", ""]
     for book_no, book in enumerate(BOOKS, 1):
         directory = BOOKS_DIR / f"{book_no:02d}-{slug(book['title'])}"
         directory.mkdir(parents=True, exist_ok=True)
@@ -478,8 +480,15 @@ def main() -> None:
         (directory / "index.md").write_text(
             render_book_index(book_no, book, chapter_files), encoding="utf-8"
         )
-        rel = directory.relative_to(BOOKS_DIR).as_posix()
-        catalog.append(f"{book_no}. [**{book['title']}**]({rel}/index.md) — {book['goal']}")
+    catalog = [
+        "# Guided Books",
+        "",
+        "The thirteen books are the primary reading path through AIEBOK. "
+        "Knowledge-area and concept pages remain the reusable reference layer.",
+        "",
+        render_book_cluster_cards(BOOKS, slug),
+        render_book_catalog_cards(BOOKS, slug),
+    ]
     (BOOKS_DIR / "index.md").write_text("\n".join(catalog) + "\n", encoding="utf-8")
     print(f"Generated {len(BOOKS)} books and {sum(len(b['chapters']) for b in BOOKS)} chapters.")
 

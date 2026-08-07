@@ -1,4 +1,4 @@
-# RAG Paper Seminar
+# RAG Deep Dive
 
 **Lesson ID:** `sup-rag-paper`
 
@@ -8,7 +8,7 @@ Ground generation with retrieved evidence.
 
 ## Read
 
-- Primary: [RAG Paper Seminar](../papers/readings/rag.md)
+- Primary: [RAG Deep Dive](../books/06-knowledge-and-retrieval-systems/05-rag-generation-and-citations.md)
 
 ## Core concepts
 

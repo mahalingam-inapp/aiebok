@@ -8,7 +8,7 @@ Align models with human feedback.
 
 ## Read
 
-- Primary: [RLHF and Preferences](../papers/readings/instructgpt.md)
+- Primary: [RLHF and Preferences](../books/11-training-serving-and-ai-operations/02-post-training-methods.md)
 
 ## Core concepts
 

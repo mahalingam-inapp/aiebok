@@ -4,20 +4,53 @@
 
 Understand multimodal pipelines and evaluate emerging AI capabilities through enduring principles and evidence.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Vision and Document Intelligence__
+
+    Understand image representations, vision-language models, OCR, layout, tables, charts, spatial relationships,…
+
+    [Open chapter →](01-vision-and-document-intelligence.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __Speech and Audio__
+
+    Connect ASR, diarization, audio understanding, TTS, streaming, latency, consent, and voice safety.
+
+    [Open chapter →](02-speech-and-audio.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __Image and Video Generation__
+
+    Study diffusion, conditioning, latent representations, control, evaluation, provenance, copyright, and conten…
+
+    [Open chapter →](03-image-and-video-generation.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __Computer Use and Embodied Action__
+
+    Model perception–action loops, UI grounding, coordinate and semantic actions, recovery, permissions, and phys…
+
+    [Open chapter →](04-computer-use-and-embodied-action.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __Long Context, World Models, and Continual Learning__
+
+    Examine active directions without mistaking larger demonstrations for solved engineering problems.
+
+    [Open chapter →](05-long-context-world-models-and-continual-learning.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __How to Track the Frontier__
+
+    Develop research literacy, evidence hierarchies, reproduction habits, forecasting, and a review cadence for a…
+
+    [Open chapter →](06-how-to-track-the-frontier.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Books 3–12 as relevant
 - Evidence-oriented research reading
 - Risk awareness
-
-## Chapters
-
-1. [Vision and Document Intelligence](01-vision-and-document-intelligence.md)
-2. [Speech and Audio](02-speech-and-audio.md)
-3. [Image and Video Generation](03-image-and-video-generation.md)
-4. [Computer Use and Embodied Action](04-computer-use-and-embodied-action.md)
-5. [Long Context, World Models, and Continual Learning](05-long-context-world-models-and-continual-learning.md)
-6. [How to Track the Frontier](06-how-to-track-the-frontier.md)
 
 ## Book project
 

@@ -4,11 +4,11 @@
 
 ## Objective
 
-Interpret WebArena-style evaluations.
+Interpret realistic agent evaluations.
 
 ## Read
 
-- Primary: [Agent Benchmarks](../papers/readings/agent-benchmark-webarena.md)
+- Primary: [Agent Benchmarks](../books/08-agent-systems/06-operating-long-running-agents.md)
 
 ## Core concepts
 

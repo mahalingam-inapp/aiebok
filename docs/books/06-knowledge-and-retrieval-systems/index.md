@@ -4,20 +4,53 @@
 
 Build grounded knowledge systems whose ingestion, retrieval, generation, and citations can be evaluated separately.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Knowledge Outside the Model__
+
+    Decide among direct context, search, databases, knowledge graphs, RAG, fine-tuning, and deterministic rules.
+
+    [Open chapter →](01-knowledge-outside-the-model.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __Document Ingestion__
+
+    Preserve provenance while parsing documents, OCR, tables, images, metadata, permissions, versions, and deleti…
+
+    [Open chapter →](02-document-ingestion.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __Retrieval__
+
+    Compare lexical, dense, sparse, hybrid, filtered, multi-query, parent-child, and late-interaction retrieval.
+
+    [Open chapter →](03-retrieval.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __Ranking and Context Selection__
+
+    Use fusion, reranking, diversity, deduplication, compression, and token-aware packing.
+
+    [Open chapter →](04-ranking-and-context-selection.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __RAG Generation and Citations__
+
+    Construct grounded prompts, handle missing evidence, attribute claims, validate citations, and avoid unsuppor…
+
+    [Open chapter →](05-rag-generation-and-citations.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __Advanced and Enterprise RAG__
+
+    Study graph, multi-hop, adaptive, and agentic retrieval together with tenancy, freshness, security, resilienc…
+
+    [Open chapter →](06-advanced-and-enterprise-rag.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Books 3–5
 - Embeddings and search
 - Structured model output
-
-## Chapters
-
-1. [Knowledge Outside the Model](01-knowledge-outside-the-model.md)
-2. [Document Ingestion](02-document-ingestion.md)
-3. [Retrieval](03-retrieval.md)
-4. [Ranking and Context Selection](04-ranking-and-context-selection.md)
-5. [RAG Generation and Citations](05-rag-generation-and-citations.md)
-6. [Advanced and Enterprise RAG](06-advanced-and-enterprise-rag.md)
 
 ## Book project
 

@@ -244,10 +244,10 @@ Each row links the lesson, chapter reading, matching lab, and objective. Expand 
     | `sup-image-gen` | [Image Generation Controls](sup-image-gen.md) | Safety, provenance, and cost for generative media. | [reading](../books/13-multimodal-and-frontier-systems/03-image-and-video-generation.md) |
     | `sup-computer-use` | [Computer Use Risks](sup-computer-use.md) | Bound UI automation actions. | [reading](../books/13-multimodal-and-frontier-systems/04-computer-use-and-embodied-action.md) |
     | `sup-frontier-tracking` | [Track the Frontier](sup-frontier-tracking.md) | Evaluate hype with reproduction discipline. | [reading](../books/13-multimodal-and-frontier-systems/06-how-to-track-the-frontier.md) |
-    | `sup-paper-reading` | [Read a Paper Critically](sup-paper-reading.md) | Extract claims, evidence, and limits. | [reading](../papers/paper-reading-template.md) |
-    | `sup-transformer-paper` | [Transformer Paper Seminar](sup-transformer-paper.md) | Connect Attention Is All You Need to code. | [reading](../papers/readings/transformer.md) |
-    | `sup-rag-paper` | [RAG Paper Seminar](sup-rag-paper.md) | Ground generation with retrieved evidence. | [reading](../papers/readings/rag.md) |
-    | `sup-rlhf-paper` | [RLHF and Preferences](sup-rlhf-paper.md) | Align models with human feedback. | [reading](../papers/readings/instructgpt.md) |
-    | `sup-agent-benchmarks` | [Agent Benchmarks](sup-agent-benchmarks.md) | Interpret WebArena-style evaluations. | [reading](../papers/readings/agent-benchmark-webarena.md) |
-    | `sup-mcp-spec-lesson` | [MCP Specification](sup-mcp-spec-lesson.md) | Standardize tool and resource access. | [reading](../papers/readings/mcp-spec.md) |
+    | `sup-paper-reading` | [Read a Paper Critically](sup-paper-reading.md) | Extract claims, evidence, and limits. | [reading](../books/13-multimodal-and-frontier-systems/06-how-to-track-the-frontier.md) |
+    | `sup-transformer-paper` | [Transformer Deep Dive](sup-transformer-paper.md) | Connect attention mechanisms to code. | [reading](../books/04-transformers-and-foundation-models/02-attention.md) |
+    | `sup-rag-paper` | [RAG Deep Dive](sup-rag-paper.md) | Ground generation with retrieved evidence. | [reading](../books/06-knowledge-and-retrieval-systems/05-rag-generation-and-citations.md) |
+    | `sup-rlhf-paper` | [RLHF and Preferences](sup-rlhf-paper.md) | Align models with human feedback. | [reading](../books/11-training-serving-and-ai-operations/02-post-training-methods.md) |
+    | `sup-agent-benchmarks` | [Agent Benchmarks](sup-agent-benchmarks.md) | Interpret realistic agent evaluations. | [reading](../books/08-agent-systems/06-operating-long-running-agents.md) |
+    | `sup-mcp-spec-lesson` | [MCP Integration Patterns](sup-mcp-spec-lesson.md) | Standardize tool and resource access. | [reading](../books/07-reasoning-and-tool-use/05-mcp-and-integration-protocols.md) |
 

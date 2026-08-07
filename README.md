@@ -20,7 +20,7 @@ To publish, push to a GitHub repository, open **Settings → Pages**, and choose
 <!-- site-stats:readme:start -->
 - A complete 20-knowledge-area curriculum (13 books, 78 chapters)
 - 361 concept cards, 100 patterns, 25 architecture studios
-- 50 paper summaries · 13 build guides · 26 cloud guides
+- 13 build guides · 26 cloud capability guides
 - 5 runnable starter labs (+ 78 chapter labs in the repo)
 - Content templates and editorial quality system
 - Link/configuration validation and GitHub Pages deployment
@@ -39,9 +39,8 @@ python scripts/generate_lessons.py
 python scripts/generate_reference_views.py
 python scripts/generate_featured_concepts.py
 python scripts/generate_lab_notebooks.py
-python scripts/generate_pdf.py
-python scripts/generate_progress_manifest.py
 python scripts/generate_site_stats.py
+python scripts/learning_cards.py
 python scripts/validate_content.py
 python scripts/audit_book_coverage.py
 mkdocs build --strict
@@ -54,8 +53,6 @@ The published site is **static HTML only** (MkDocs → GitHub Actions → Pages)
 | Need | Where |
 |---|---|
 | Read docs, search, concept cards | Hosted site |
-| Print full sections | **Reference → Print & Offline** (print-site plugin) |
-| Offline summary PDF | [aiebok-companion.pdf](docs/assets/aiebok-companion.pdf) (built in CI) |
 | Starter lab notebooks | <a href="https://github.com/mahalingam-inapp/aiebok/tree/main/labs" target="_blank" rel="noopener"><code>labs/*/lab.ipynb</code></a> in the repo — start at **Labs → Hands-on Start** on the site |
 | Python labs | Local machine, Codespaces, or Dev Container (`.devcontainer/`) |
 

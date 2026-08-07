@@ -4,20 +4,53 @@
 
 Design secure, governed, resilient AI platforms and map them to managed services without losing vendor-neutral reasoning.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __Enterprise AI Building Blocks__
+
+    Decompose platforms into gateways, model access, retrieval, tool integration, identity, policy, observability…
+
+    [Open chapter →](01-enterprise-ai-building-blocks.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __Identity, Data, and Trust Boundaries__
+
+    Apply authentication, authorization, tenancy, secrets, encryption, residency, lineage, and audit to AI data f…
+
+    [Open chapter →](02-identity-data-and-trust-boundaries.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __AWS Managed AI__
+
+    Map foundation models, ML lifecycle, retrieval, serverless compute, containers, workflow, identity, storage,…
+
+    [Open chapter →](03-aws-managed-ai.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __Azure Managed AI__
+
+    Map models, ML, search, functions, containers, integration, identity, data, security, and operations to Azure.
+
+    [Open chapter →](04-azure-managed-ai.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __Google Cloud and Portable Patterns__
+
+    Map Vertex AI, search, Cloud Run, GKE, data, events, identity, and operations while identifying portable seam…
+
+    [Open chapter →](05-google-cloud-and-portable-patterns.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __Enterprise Operating Model__
+
+    Define platform teams, product teams, centers of enablement, governance, service catalogs, SLOs, chargeback,…
+
+    [Open chapter →](06-enterprise-operating-model.md)
+
+</div>
+
 ## Entry prerequisites
 
 - Books 5–11
 - Cloud and identity fundamentals
 - Architecture documentation
-
-## Chapters
-
-1. [Enterprise AI Building Blocks](01-enterprise-ai-building-blocks.md)
-2. [Identity, Data, and Trust Boundaries](02-identity-data-and-trust-boundaries.md)
-3. [AWS Managed AI](03-aws-managed-ai.md)
-4. [Azure Managed AI](04-azure-managed-ai.md)
-5. [Google Cloud and Portable Patterns](05-google-cloud-and-portable-patterns.md)
-6. [Enterprise Operating Model](06-enterprise-operating-model.md)
 
 ## Book project
 

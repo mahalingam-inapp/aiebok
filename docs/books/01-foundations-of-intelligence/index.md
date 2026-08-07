@@ -4,20 +4,53 @@
 
 Understand intelligence as search, learning, representation, decision-making, and feedback before studying language models.
 
+## Chapter learning path
+
+<div class="grid cards" markdown>
+
+-   :material-numeric-1-circle:{ .lg .middle } __What Intelligence Means__
+
+    Treat intelligence as a collection of capabilities rather than a mystical substance. Separate perception, rep…
+
+    [Open chapter →](01-what-intelligence-means.md)
+
+-   :material-numeric-2-circle:{ .lg .middle } __From Symbols to Statistics__
+
+    Trace the path from symbolic rules and expert systems to statistical learning, deep learning, foundation mode…
+
+    [Open chapter →](02-from-symbols-to-statistics.md)
+
+-   :material-numeric-3-circle:{ .lg .middle } __Search, Planning, and Decisions__
+
+    See classical search as an explicit form of reasoning. Learn how state, actions, transition models, costs, he…
+
+    [Open chapter →](03-search-planning-and-decisions.md)
+
+-   :material-numeric-4-circle:{ .lg .middle } __The Mathematics Engineers Need__
+
+    Develop intuition for vectors, matrices, probability, distributions, statistics, entropy, gradients, and opti…
+
+    [Open chapter →](04-the-mathematics-engineers-need.md)
+
+-   :material-numeric-5-circle:{ .lg .middle } __Learning and Generalization__
+
+    Distinguish memorization from generalization and training from inference. Understand data-generating processe…
+
+    [Open chapter →](05-learning-and-generalization.md)
+
+-   :material-numeric-6-circle:{ .lg .middle } __Engineering with Uncertainty__
+
+    Translate uncertain predictions into decisions with thresholds, costs, calibration, fallback behavior, and hu…
+
+    [Open chapter →](06-engineering-with-uncertainty.md)
+
+</div>
+
 ## Entry prerequisites
 
 - No AI background required
 - Comfort reading simple Python
 - Basic algebra
-
-## Chapters
-
-1. [What Intelligence Means](01-what-intelligence-means.md)
-2. [From Symbols to Statistics](02-from-symbols-to-statistics.md)
-3. [Search, Planning, and Decisions](03-search-planning-and-decisions.md)
-4. [The Mathematics Engineers Need](04-the-mathematics-engineers-need.md)
-5. [Learning and Generalization](05-learning-and-generalization.md)
-6. [Engineering with Uncertainty](06-engineering-with-uncertainty.md)
 
 ## Book project
 

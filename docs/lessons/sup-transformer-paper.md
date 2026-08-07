@@ -1,14 +1,14 @@
-# Transformer Paper Seminar
+# Transformer Deep Dive
 
 **Lesson ID:** `sup-transformer-paper`
 
 ## Objective
 
-Connect Attention Is All You Need to code.
+Connect attention mechanisms to code.
 
 ## Read
 
-- Primary: [Transformer Paper Seminar](../papers/readings/transformer.md)
+- Primary: [Transformer Deep Dive](../books/04-transformers-and-foundation-models/02-attention.md)
 
 ## Core concepts
 

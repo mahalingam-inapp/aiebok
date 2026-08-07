@@ -1,4 +1,4 @@
-# MCP Specification
+# MCP Integration Patterns
 
 **Lesson ID:** `sup-mcp-spec-lesson`
 
@@ -8,7 +8,7 @@ Standardize tool and resource access.
 
 ## Read
 
-- Primary: [MCP Specification](../papers/readings/mcp-spec.md)
+- Primary: [MCP Integration Patterns](../books/07-reasoning-and-tool-use/05-mcp-and-integration-protocols.md)
 
 ## Core concepts
 
