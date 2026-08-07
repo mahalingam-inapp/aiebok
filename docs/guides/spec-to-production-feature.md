@@ -58,6 +58,10 @@ Complete the matching [guided book](../books/09-ai-software-and-product-engineer
    ```bash
    python specs/validate.py --spec specs/feature-x.yaml
    python eval/run_from_spec.py --spec specs/feature-x.yaml --out reports/spec_eval.json
+   npm install -g @fission-ai/openspec@latest && openspec init
+   # In Cursor or supported assistant: /opsx:propose Add feature-x acceptance spec
+   openspec validate
+   cp templates/spec-driven/lab-acceptance.yaml specs/feature-x-acceptance.yaml
    ```
 ### 3. Feature flag rollout
 

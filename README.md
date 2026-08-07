@@ -42,6 +42,7 @@ python scripts/generate_lab_notebooks.py
 python scripts/generate_site_stats.py
 python scripts/learning_cards.py
 python scripts/generate_learning_paths.py
+python scripts/generate_spec_driven.py
 python scripts/validate_content.py
 python scripts/audit_book_coverage.py
 mkdocs build --strict

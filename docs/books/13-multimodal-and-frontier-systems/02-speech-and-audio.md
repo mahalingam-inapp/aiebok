@@ -146,6 +146,17 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+## Spec-driven habit
+
+Every chapter lab pairs reading with **executable acceptance**. Before implementing book 13.2 — speech and audio:
+
+1. Draft cases in `test_lab.py` or `specs/lab-1302.yaml`.
+2. Use [Cursor Plan/Agent](https://cursor.com/) with "read spec first, then minimal diff".
+3. Or use [OpenSpec](https://openspec.dev/) `/opsx:propose` so requirements live in `openspec/` next to code.
+
+→ [Spec-driven workflow guide](../../getting-started/spec-driven-workflow.md) · [Lab 13.2](../../labs/1302-speech-and-audio.md)
+
+
 ## Architecture lens
 
 For a production design in **Multimodal and Frontier Systems**, make the following explicit for **speech and audio**:

@@ -27,19 +27,48 @@ Complete the matching [guided book](../books/09-ai-software-and-product-engineer
    - Specify files agents must not edit (.env, secrets, generated locks).
    - Define branch naming, commit message format, and PR checklist.
    - Include examples of good vs over-scoped agent diffs.
+   - Add spec-driven rules: read specs/ and openspec/changes/ before implementation.
 
 **Acceptance:**
    - New agent session can run tests using only AGENTS.md instructions.
    - Forbidden paths explicitly listed with rationale.
    - Document updated when repo layout or test entrypoints change.
+   - AGENTS.md links to spec-driven workflow and OpenSpec/Cursor commands.
 
    **Commands:**
 
    ```bash
    cat AGENTS.md
    python -m pytest -q  # verify documented test command works
+   cp templates/spec-driven/cursor-spec-driven.mdc .cursor/rules/spec-driven.mdc
+   npm install -g @fission-ai/openspec@latest && openspec init
    ```
-### 2. Skills
+### 2. OpenSpec + Cursor alignment
+
+**Goal:** Wire repo-level specs (OpenSpec) to editor agents (Cursor).
+
+**Steps:**
+   - Initialize OpenSpec so openspec/specs/ holds current behavior by domain.
+   - Copy templates/spec-driven/cursor-spec-driven.mdc into .cursor/rules/.
+   - Practice /opsx:explore then /opsx:propose on one lab or feature change.
+   - Require /opsx:apply only after proposal and delta specs are reviewed.
+   - Archive completed changes so specs merge into openspec/specs/.
+
+**Acceptance:**
+   - Active change folder contains proposal.md, tasks.md, and delta specs.
+   - Cursor Plan mode can read the same acceptance YAML as OpenSpec requirements.
+   - pytest (or documented test command) gates /opsx:archive.
+
+   **Commands:**
+
+   ```bash
+   openspec init && openspec update
+   # Assistant: /opsx:explore then /opsx:propose <change title>
+   cursor .
+   python -m pytest labs/0902-specification-driven-development/test_lab.py -q
+   # Assistant: /opsx:apply then /opsx:archive when green
+   ```
+### 3. Skills
 
 **Goal:** Package repeatable agent workflows as reusable skill files.
 
@@ -60,7 +89,7 @@ Complete the matching [guided book](../books/09-ai-software-and-product-engineer
    ls .cursor/skills/
    head -40 .cursor/skills/add-api-endpoint/SKILL.md
    ```
-### 3. CI checks
+### 4. CI checks
 
 **Goal:** Enforce automated quality gates on agent-generated PRs.
 
@@ -82,7 +111,7 @@ Complete the matching [guided book](../books/09-ai-software-and-product-engineer
    ruff check .
    python scripts/agent_eval_smoke.py
    ```
-### 4. Review rubric
+### 5. Review rubric
 
 **Goal:** Score agent diffs consistently for human or automated review.
 

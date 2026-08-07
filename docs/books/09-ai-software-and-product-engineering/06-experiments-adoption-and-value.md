@@ -144,6 +144,17 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+## Spec-driven habit
+
+Every chapter lab pairs reading with **executable acceptance**. Before implementing book 9.6 — experiments, adoption, and value:
+
+1. Draft cases in `test_lab.py` or `specs/lab-0906.yaml`.
+2. Use [Cursor Plan/Agent](https://cursor.com/) with "read spec first, then minimal diff".
+3. Or use [OpenSpec](https://openspec.dev/) `/opsx:propose` so requirements live in `openspec/` next to code.
+
+→ [Spec-driven workflow guide](../../getting-started/spec-driven-workflow.md) · [Lab 9.6](../../labs/0906-experiments-adoption-and-value.md)
+
+
 ## Architecture lens
 
 For a production design in **AI Software and Product Engineering**, make the following explicit for **experiments, adoption, and value**:

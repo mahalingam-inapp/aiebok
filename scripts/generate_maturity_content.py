@@ -15,6 +15,7 @@ from catalog_helpers import (
 )
 from chapter_catalog import CHAPTER_HOOKS
 from generate_books import BOOKS, slug
+from spec_driven_content import render_lab_spec_section, render_starter_spec_section
 from generate_expansion import lab_slug
 from guide_deep_content import GUIDE_DETAILS
 from paper_deep_content import PAPER_DETAILS as BASE_PAPER_DETAILS
@@ -474,6 +475,18 @@ def test_main_exits_zero():
     assert result.stdout.strip()
 '''
 
+    spec_repo = render_lab_spec_section(
+        book_no, chapter_no, title, practice, extended=(ls == "0902-specification-driven-development")
+    )
+    spec_doc = render_lab_spec_section(
+        book_no,
+        chapter_no,
+        title,
+        practice,
+        extended=(ls == "0902-specification-driven-development"),
+        for_docs=True,
+    )
+
     readme = f"""# Lab {book_no}.{chapter_no} — {title}
 
 ## Objective
@@ -495,6 +508,8 @@ def test_main_exits_zero():
 python main.py
 python -m pytest test_lab.py -q
 ```
+
+{spec_repo}
 
 ## Tasks
 
@@ -534,6 +549,8 @@ Book [{book_title}](../books/{book_no:02d}-{slug(book_title)}/index.md), chapter
 python labs/{ls}/main.py
 python -m pytest labs/{ls}/test_lab.py -q
 ```
+
+{spec_doc}
 
 ## Exercises
 
@@ -615,6 +632,7 @@ STARTER_LABS: list[tuple[str, str, str, str, list[str]]] = [
 
 def render_starter_readme(slug: str, title: str, objective: str, book: str, tasks: list[str]) -> str:
     task_lines = "\n".join(f"{i+1}. {t}" for i, t in enumerate(tasks))
+    spec_section = render_starter_spec_section(slug, title, objective)
     return f"""# Lab — {title}
 
 ## Objective
@@ -640,6 +658,8 @@ python -m pytest test_lab.py -q
 ## Notebook
 
 Open [`lab.ipynb`](lab.ipynb) for a guided, step-by-step version (sync your final code into `main.py`).
+
+{spec_section}
 
 ## Tasks
 

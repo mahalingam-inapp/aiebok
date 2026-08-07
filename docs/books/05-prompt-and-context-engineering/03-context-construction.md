@@ -148,6 +148,17 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+## Spec-driven habit
+
+Every chapter lab pairs reading with **executable acceptance**. Before implementing book 5.3 — context construction:
+
+1. Draft cases in `test_lab.py` or `specs/lab-0503.yaml`.
+2. Use [Cursor Plan/Agent](https://cursor.com/) with "read spec first, then minimal diff".
+3. Or use [OpenSpec](https://openspec.dev/) `/opsx:propose` so requirements live in `openspec/` next to code.
+
+→ [Spec-driven workflow guide](../../getting-started/spec-driven-workflow.md) · [Lab 5.3](../../labs/0503-context-construction.md)
+
+
 ## Architecture lens
 
 For a production design in **Prompt and Context Engineering**, make the following explicit for **context construction**:

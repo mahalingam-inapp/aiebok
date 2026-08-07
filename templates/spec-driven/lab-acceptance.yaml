@@ -1,0 +1,12 @@
+# Copy to specs/lab-XXXX-acceptance.yaml for any lab
+lab: "example — replace with book.chapter title"
+cases:
+  - name: normal
+    input: "typical user request"
+    expect_contains: "expected phrase or metric"
+  - name: boundary
+    input: "edge case at limit"
+    expect_contains: "graceful handling"
+  - name: adversarial
+    input: "malicious or ambiguous input"
+    expect_contains: "abstain or require approval"

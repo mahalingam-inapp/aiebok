@@ -24,6 +24,22 @@ python -m pytest test_lab.py -q
 
 Open [`lab.ipynb`](lab.ipynb) for a guided, step-by-step version (sync your final code into `main.py`).
 
+## Spec-driven habit (every lab)
+
+Treat **Agent Loop** like a mini feature: write what "done" means before you tune code.
+
+1. Add 2–3 acceptance rows to `specs/04-agent-loop.yaml` (normal / boundary / adversarial) matching the objective: *Run a bounded state machine with explicit plan/act/observe steps*.
+2. In **Cursor**, open `labs/04-agent-loop/` and ask the agent to read your spec before editing `main.py`.
+3. With **OpenSpec**, run `/opsx:propose` for a change named `04-agent-loop-acceptance` and link `tasks.md` to your pytest file.
+
+```bash
+cursor labs/04-agent-loop/
+python main.py && python -m pytest test_lab.py -q
+```
+
+Full tooling walkthrough: [spec-driven workflow](../../docs/getting-started/spec-driven-workflow.md).
+
+
 ## Tasks
 
 1. Diagram the state transitions for the default goal.

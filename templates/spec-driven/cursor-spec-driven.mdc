@@ -1,0 +1,9 @@
+---
+description: Spec-first lab and feature workflow
+globs: labs/**, specs/**, openspec/**
+---
+- Read acceptance specs and failing tests before editing implementation files
+- Write or update acceptance cases before changing production logic
+- Run: python -m pytest test_lab.py -q (or path in AGENTS.md)
+- Minimal diff: implement only what the spec requires
+- When openspec/changes/<id>/ is active, treat delta specs as authoritative

@@ -5,6 +5,7 @@ import uuid
 from typing import Callable
 
 from generate_maturity_content import STARTER_LABS
+from spec_driven_content import render_notebook_spec_cell
 
 Meta = tuple[str, str, str, str, list[str]]
 
@@ -64,6 +65,7 @@ def _intro(slug: str) -> list[dict]:
             "print('Lab directory:', LAB_DIR)".format(slug=slug)
         ),
         _md("## Tasks\n\n" + task_lines),
+        _md(render_notebook_spec_cell(slug, title)),
     ]
 
 

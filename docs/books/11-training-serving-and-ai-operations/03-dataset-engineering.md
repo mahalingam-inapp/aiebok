@@ -143,6 +143,17 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+## Spec-driven habit
+
+Every chapter lab pairs reading with **executable acceptance**. Before implementing book 11.3 — dataset engineering:
+
+1. Draft cases in `test_lab.py` or `specs/lab-1103.yaml`.
+2. Use [Cursor Plan/Agent](https://cursor.com/) with "read spec first, then minimal diff".
+3. Or use [OpenSpec](https://openspec.dev/) `/opsx:propose` so requirements live in `openspec/` next to code.
+
+→ [Spec-driven workflow guide](../../getting-started/spec-driven-workflow.md) · [Lab 11.3](../../labs/1103-dataset-engineering.md)
+
+
 ## Architecture lens
 
 For a production design in **Training, Serving, and AI Operations**, make the following explicit for **dataset engineering**:

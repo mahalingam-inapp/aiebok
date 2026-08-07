@@ -9,8 +9,18 @@ from generate_expansion import lab_slug
 from generate_maturity_content import STARTER_LABS
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "docs" / "getting-started" / "learning-paths.md"
+OUTPUT_DIR = ROOT / "docs" / "getting-started" / "learning-paths"
 REPO_BLOB = "https://github.com/mahalingam-inapp/aiebok/blob/main"
+DOCS_PREFIX = "../.."
+START_HERE_PREFIX = ".."
+
+PATH_ICONS = [
+    "map-legend",
+    "robot",
+    "sitemap",
+    "chart-line",
+    "school",
+]
 
 
 def _link(label: str, href: str) -> str:
@@ -23,7 +33,7 @@ def _book_dir(book_no: int) -> str:
 
 def _chapter_href(book_no: int, chapter_no: int) -> str:
     title = BOOKS[book_no - 1]["chapters"][chapter_no - 1][0]
-    return f"../books/{_book_dir(book_no)}/{chapter_no:02d}-{slug(title)}.md"
+    return f"{DOCS_PREFIX}/books/{_book_dir(book_no)}/{chapter_no:02d}-{slug(title)}.md"
 
 
 def _chapter_label(book_no: int, chapter_no: int) -> str:
@@ -33,7 +43,7 @@ def _chapter_label(book_no: int, chapter_no: int) -> str:
 
 def _lab_href(book_no: int, chapter_no: int) -> str:
     title = BOOKS[book_no - 1]["chapters"][chapter_no - 1][0]
-    return f"../labs/{lab_slug(book_no, chapter_no, title)}.md"
+    return f"{DOCS_PREFIX}/labs/{lab_slug(book_no, chapter_no, title)}.md"
 
 
 def _lab_label(book_no: int, chapter_no: int) -> str:
@@ -70,19 +80,19 @@ def starter_step(slug_name: str) -> Step:
 
 
 def guide_step(slug_name: str, label: str | None = None) -> Step:
-    return Step("Build guide", label or slug_name.replace("-", " ").title(), f"../guides/{slug_name}.md")
+    return Step("Build guide", label or slug_name.replace("-", " ").title(), f"{DOCS_PREFIX}/guides/{slug_name}.md")
 
 
 def architecture_step(slug_name: str, label: str | None = None) -> Step:
     return Step(
         "Architecture studio",
         label or slug_name.replace("-", " ").title(),
-        f"../architectures/{slug_name}.md",
+        f"{DOCS_PREFIX}/architectures/{slug_name}.md",
     )
 
 
-def page_step(kind: str, label: str, href: str) -> Step:
-    return Step(kind, label, href)
+def page_step(kind: str, label: str, filename: str) -> Step:
+    return Step(kind, label, f"{START_HERE_PREFIX}/{filename}")
 
 
 def book_sequence(book_no: int, chapters: range | list[int] | None = None) -> list[Step]:
@@ -160,6 +170,7 @@ PATHS: tuple[LearningPath, ...] = (
         outcome="Ship a bounded coding-agent workflow with structured outputs, tool boundaries, regression evals, and a documented approval policy.",
         steps=(
             page_step("Orientation", "First 30 minutes — clone repo and run MkDocs", "first-30-minutes.md"),
+            page_step("Orientation", "Spec-driven workflow — OpenSpec + Cursor", "spec-driven-workflow.md"),
             chapter_step(3, 5),
             lab_step(3, 5),
             starter_step("01-cosine-similarity"),
@@ -294,25 +305,8 @@ PATHS: tuple[LearningPath, ...] = (
 )
 
 
-def render_path_overview(paths: tuple[LearningPath, ...]) -> str:
-    lines = ['<div class="grid cards" markdown>', ""]
-    for path in paths:
-        lines.extend(
-            [
-                f"-   :material-route:{{ .lg .middle }} __{path.rank}. {path.title}__",
-                "",
-                f"    **{path.duration}** · {len(path.steps)} steps · {_clip(path.audience, 95)}",
-                "",
-                f"    [Jump to path ↓](#{path_anchor(path)})",
-                "",
-            ]
-        )
-    lines.extend(["</div>", ""])
-    return "\n".join(lines)
-
-
-def path_anchor(path: LearningPath) -> str:
-    return f"{path.rank}-{slug(path.title)}"
+def path_filename(path: LearningPath) -> str:
+    return f"{path.rank:02d}-{slug(path.title)}.md"
 
 
 def _clip(text: str, limit: int) -> str:
@@ -320,6 +314,25 @@ def _clip(text: str, limit: int) -> str:
     if len(clean) <= limit:
         return clean
     return clean[: limit - 1].rstrip() + "…"
+
+
+def render_path_overview(paths: tuple[LearningPath, ...]) -> str:
+    lines = ['<div class="grid cards" markdown>', ""]
+    for path in paths:
+        icon = PATH_ICONS[path.rank - 1]
+        filename = path_filename(path)
+        lines.extend(
+            [
+                f"-   :material-{icon}:{{ .lg .middle }} __{path.title}__",
+                "",
+                f"    **{path.duration}** · {len(path.steps)} steps · {_clip(path.audience, 95)}",
+                "",
+                f"    [Open path →]({filename})",
+                "",
+            ]
+        )
+    lines.extend(["</div>", ""])
+    return "\n".join(lines)
 
 
 def render_path_table(steps: tuple[Step, ...]) -> str:
@@ -332,64 +345,106 @@ def render_path_table(steps: tuple[Step, ...]) -> str:
     return "\n".join(lines)
 
 
-def render_page() -> str:
-    ordered = tuple(sorted(PATHS, key=lambda path: path.rank))
-    parts = [
+def render_index_page(paths: tuple[LearningPath, ...]) -> str:
+    lines = [
         "# Learning Paths",
         "",
         "Role-based **sequences** that mix chapters, labs, build guides, and architecture studios "
         "in the order we recommend. Paths are sorted from **least to most** technical depth and time commitment.",
         "",
-        "!!! tip \"Keep this page open\"",
-        "    Every step link opens in a **new tab** so you can treat this page as your checklist while reading or coding.",
+        "Each path has its **own page** so you can bookmark or share a direct link.",
         "",
-        "## Path overview",
+        "!!! tip \"Keep your path page open\"",
+        "    Every step link opens in a **new tab** so you can treat the path page as your checklist while reading or coding.",
         "",
-        render_path_overview(ordered),
-        "## How to use a path",
+        "## Choose a path",
         "",
-        "1. Pick the path that matches your role and available time.",
-        "2. Work through steps **in order**—read the chapter, then run the matching lab when one appears.",
-        "3. Starter-lab steps link to **notebooks in the repository**; chapter and guide steps stay on this site.",
-        "4. When a path references an architecture studio, sketch an ADR or threat model before moving on.",
+        render_path_overview(paths),
+        "## All paths",
         "",
+        "| # | Path | Duration | Steps |",
+        "|:---:|---|---|---:|",
     ]
-    for path in ordered:
-        parts.extend(
-            [
-                f"## {path.rank}. {path.title} — {path.duration} {{#{path_anchor(path)}}}",
-                "",
-                path.audience,
-                "",
-                f"**Outcome:** {path.outcome}",
-                "",
-                f"**Steps:** {len(path.steps)}",
-                "",
-                render_path_table(path.steps),
-                "",
-            ]
+    for path in paths:
+        filename = path_filename(path)
+        lines.append(
+            f"| {path.rank} | [{path.title}]({filename}) | {path.duration} | {len(path.steps)} |"
         )
-    parts.extend(
+    lines.extend(
         [
+            "",
+            "## How to use a path",
+            "",
+            "1. Pick the path that matches your role and available time.",
+            "2. Work through steps **in order**—read the chapter, then run the matching lab when one appears.",
+            "3. Starter-lab steps link to **notebooks in the repository**; chapter and guide steps stay on this site.",
+            "4. When a path references an architecture studio, sketch an ADR or threat model before moving on.",
+            "",
             "## Related",
             "",
-            "- "
-            + _link("Newcomer guide", "newcomer-guide.md")
-            + "\n- "
-            + _link("Hands-on start", "../labs/start-here.md")
-            + "\n- "
-            + _link("Book catalog", "../books/index.md")
-            + "\n- "
-            + _link("Build guides", "../guides/index.md")
-            + "\n",
+            f"- {_link('Newcomer guide', f'{START_HERE_PREFIX}/newcomer-guide.md')}",
+            f"- {_link('Hands-on start', f'{DOCS_PREFIX}/labs/start-here.md')}",
+            f"- {_link('Book catalog', f'{DOCS_PREFIX}/books/index.md')}",
+            f"- {_link('Build guides', f'{DOCS_PREFIX}/guides/index.md')}",
+            "",
         ]
     )
-    return "\n".join(parts)
+    return "\n".join(lines)
+
+
+def render_path_page(path: LearningPath, paths: tuple[LearningPath, ...]) -> str:
+    prev_path = next((p for p in paths if p.rank == path.rank - 1), None)
+    next_path = next((p for p in paths if p.rank == path.rank + 1), None)
+    nav_lines = ["## Path navigation", ""]
+    if prev_path:
+        nav_lines.append(f"← Previous: [{prev_path.title}]({path_filename(prev_path)})")
+    else:
+        nav_lines.append(f"← [All learning paths](index.md)")
+    nav_lines.append("")
+    if next_path:
+        nav_lines.append(f"Next: [{next_path.title}]({path_filename(next_path)}) →")
+    nav_lines.append("")
+
+    return "\n".join(
+        [
+            f"# {path.title}",
+            "",
+            f"**Duration:** {path.duration} · **Steps:** {len(path.steps)} · **Complexity rank:** {path.rank} of {len(paths)}",
+            "",
+            path.audience,
+            "",
+            f"**Outcome:** {path.outcome}",
+            "",
+            "!!! tip \"Share this path\"",
+            f"    Send this page URL to teammates who need the **{path.title}** track.",
+            "",
+            "## Sequence",
+            "",
+            render_path_table(path.steps),
+            "",
+            *nav_lines,
+            "## Related",
+            "",
+            f"- [Learning paths overview](index.md)",
+            f"- {_link('Newcomer guide', f'{START_HERE_PREFIX}/newcomer-guide.md')}",
+            f"- {_link('Hands-on start', f'{DOCS_PREFIX}/labs/start-here.md')}",
+            "",
+        ]
+    )
 
 
 def main() -> None:
-    OUTPUT.write_text(render_page(), encoding="utf-8")
-    print(f"Wrote {OUTPUT.relative_to(ROOT)} ({len(PATHS)} paths).")
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    ordered = tuple(sorted(PATHS, key=lambda path: path.rank))
+    (OUTPUT_DIR / "index.md").write_text(render_index_page(ordered), encoding="utf-8")
+    for path in ordered:
+        (OUTPUT_DIR / path_filename(path)).write_text(
+            render_path_page(path, ordered), encoding="utf-8"
+        )
+    legacy = ROOT / "docs" / "getting-started" / "learning-paths.md"
+    if legacy.is_file():
+        legacy.unlink()
+    print(f"Wrote {OUTPUT_DIR.relative_to(ROOT)} ({len(PATHS)} path pages + index).")
 
 
 if __name__ == "__main__":

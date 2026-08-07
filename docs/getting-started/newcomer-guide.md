@@ -37,7 +37,7 @@ flowchart TD
 | 4 | Book 06 ch. 3 — [Retrieval](../books/06-knowledge-and-retrieval-systems/03-retrieval.md) | [Starter lab 03 — Basic RAG](https://github.com/mahalingam-inapp/aiebok/blob/main/labs/03-basic-rag/lab.ipynb){target="_blank" rel="noopener"} |
 | 5 | Book 08 ch. 2 — [Agent loop](../books/08-agent-systems/02-the-agent-loop.md) | [Starter lab 04 — Agent loop](https://github.com/mahalingam-inapp/aiebok/blob/main/labs/04-agent-loop/lab.ipynb){target="_blank" rel="noopener"} |
 | 6 | Book 10 ch. 1 — [Evaluation as requirements](../books/10-evaluation-safety-and-governance/01-evaluation-as-requirements.md) | [Starter lab 05 — Eval harness](https://github.com/mahalingam-inapp/aiebok/blob/main/labs/05-eval-harness/lab.ipynb){target="_blank" rel="noopener"} |
-| 7 | [Learning paths](learning-paths.md) · pick a role track | Write three things you still cannot explain |
+| 7 | [Learning paths](learning-paths/index.md) · pick a role track | Write three things you still cannot explain |
 
 !!! tip "Repository links open in a new tab"
     Links to GitHub (notebooks, clone, source files) leave this site so you keep your reading place. Look for the ↗ marker.
@@ -114,5 +114,5 @@ You **clone or open Codespaces** once, then alternate: read a chapter on the sit
 ## Next steps
 
 - **Hands-on path:** [Labs → Hands-on start](../labs/start-here.md)
-- **Role-based depth:** [Learning paths](learning-paths.md)
+- **Role-based depth:** [Learning paths](learning-paths/index.md)
 - **Full catalog:** [Lab guide](../labs/index.md) · [Book catalog](../books/index.md)

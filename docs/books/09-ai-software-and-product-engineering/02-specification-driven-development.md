@@ -144,6 +144,148 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+## Spec-driven tooling: OpenSpec and Cursor
+
+Specification-driven development is how teams keep **humans, CI, and coding agents** aligned. Two common stacks:
+
+| Tool | What it stores | Best for |
+|---|---|---|
+| **[OpenSpec](https://openspec.dev/)** | `openspec/specs/` truth + `openspec/changes/` proposals, delta specs, tasks | Repo-level requirements that survive chat sessions; brownfield changes |
+| **[Cursor](https://cursor.com/)** | `.cursor/rules/`, `AGENTS.md`, skills, Plan/Agent sessions | Day-to-day implementation with spec-first prompts and review |
+
+Both share the same discipline: **acceptance examples before code**.
+
+### 1. Executable acceptance (language-agnostic)
+
+```python
+# specs/acceptance.py — run before and after implementation
+CASES = [
+    {"input": "grant admin access", "expect": "require approval"},
+    {"input": "unknown policy", "expect": "abstain"},
+]
+
+def check(outcome: str, expected: str) -> bool:
+    return expected in outcome.lower()
+
+failures = []
+for case in CASES:
+    simulated = (
+        "abstain: no policy found"
+        if "unknown" in case["input"]
+        else "require approval"
+    )
+    if not check(simulated, case["expect"]):
+        failures.append(case)
+raise SystemExit(1 if failures else 0)
+```
+
+```bash
+python specs/acceptance.py && echo "spec green"
+```
+
+### 2. OpenSpec — init, propose, apply
+
+Requires **Node.js 20.19+**.
+
+```bash
+npm install -g @fission-ai/openspec@latest
+openspec init
+openspec update          # refresh assistant slash commands after profile changes
+```
+
+Explore a fuzzy idea without artifacts yet:
+
+```text
+/opsx:explore
+We need an onboarding assistant that abstains when policy is missing and requires approval for admin grants.
+```
+
+When scope is clear, propose a change (creates `openspec/changes/<id>/`):
+
+```text
+/opsx:propose Add onboarding assistant policy spec with abstention and approval gates
+```
+
+Review generated files before coding:
+
+```text
+openspec/changes/add-onboarding-policy/
+  proposal.md     # why and what
+  tasks.md        # implementation checklist
+  specs/          # ADDED / MODIFIED / REMOVED requirements
+  design.md       # how (optional)
+```
+
+Implement against the plan:
+
+```text
+/opsx:apply
+python -m pytest labs/0902-specification-driven-development/test_lab.py -q
+```
+
+Archive merges deltas into `openspec/specs/`:
+
+```text
+/opsx:archive
+```
+
+Example delta requirement (inside a change folder):
+
+```markdown
+## ADDED Requirements
+### Requirement: Admin grant approval
+The system SHALL require explicit approval before granting admin access.
+
+#### Scenario: Privileged grant request
+- GIVEN a user requests admin access
+- WHEN no approval token is present
+- THEN the system SHALL respond with require approval
+```
+
+### 3. Cursor — rules, Plan mode, and lab workflow
+
+**Project rules** (`.cursor/rules/spec-driven.mdc`):
+
+```markdown
+---
+description: Spec-driven AI features
+globs: labs/**, specs/**, openspec/**
+---
+- Read acceptance specs and failing tests before editing implementation files
+- Prefer minimal diffs; do not expand scope beyond the spec
+- Run: python -m pytest test_lab.py -q (or path shown in AGENTS.md)
+- Treat openspec/changes/*/specs as authoritative during active changes
+```
+
+**Plan mode prompt** (paste before Agent edits):
+
+```text
+Context: Book 9.2 Specification-Driven Development.
+Read openspec/changes/<active-change>/proposal.md OR specs/lab-0902-acceptance.yaml.
+List any missing normal/boundary/adversarial cases.
+Propose a plan that only passes existing tests plus the spec—no extra features.
+```
+
+**Commands to verify** (same gates as CI):
+
+```bash
+cursor .
+python labs/0902-specification-driven-development/main.py
+python -m pytest labs/0902-specification-driven-development/test_lab.py -q
+mkdocs build --strict
+```
+
+### 4. Tie specs to eval and release
+
+| Spec type | Lives in | Gates |
+|---|---|---|
+| Functional / acceptance | `specs/`, `test_lab.py`, OpenSpec deltas | Local pytest, PR review |
+| Prompt / tool | `specs/prompts/`, OpenSpec `specs/` | Regression eval in CI |
+| Evaluation | `eval/spec.yaml` | Release threshold ([eval-gated release](../../guides/eval-gated-release.md)) |
+
+→ Continue with [Lab 9.2](../../labs/0902-specification-driven-development.md) · [Spec-to-production guide](../../guides/spec-to-production-feature.md) · [Coding agent workspace](../../guides/coding-agent-workspace.md)
+
+
 ## Architecture lens
 
 For a production design in **AI Software and Product Engineering**, make the following explicit for **specification-driven development**:

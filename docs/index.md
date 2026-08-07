@@ -6,7 +6,7 @@ AIEBOK teaches principles before products and makes implementation, architecture
 
 !!! tip "New here?"
     Start with the **[newcomer guide](getting-started/newcomer-guide.md)** (site map + first-week plan), then **[hands-on start](labs/start-here.md)** for Labs 1–5.  
-    For local setup, see [first 30 minutes](getting-started/first-30-minutes.md) or a [learning path](getting-started/learning-paths.md).
+    For local setup, see [first 30 minutes](getting-started/first-30-minutes.md) or a [learning path](getting-started/learning-paths/index.md).
 
 ## Publication at a glance
 

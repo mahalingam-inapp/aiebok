@@ -52,4 +52,4 @@ The curriculum is intentionally larger than one pass. Use the map as a long-term
 | Understand the site | [Newcomer guide](newcomer-guide.md) |
 | Set up locally | [First 30 minutes](first-30-minutes.md) |
 | Run my first code | [Hands-on start](../labs/start-here.md) |
-| Pick a role track | [Learning paths](learning-paths.md) |
+| Pick a role track | [Learning paths](learning-paths/index.md) |

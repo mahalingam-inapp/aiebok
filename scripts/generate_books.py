@@ -19,6 +19,7 @@ from chapter_enrichments import (
 )
 from concept_library import render_core_concepts
 from learning_cards import render_book_catalog_cards, render_book_cluster_cards, render_chapter_cards
+from spec_driven_content import render_chapter_spec_section
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOKS_DIR = ROOT / "docs" / "books"
@@ -311,6 +312,7 @@ def render_chapter(book_no: int, chapter_no: int, book: dict, chapter: tuple) ->
     prerequisite_lines = "\n".join(f"- {item}" for item in PREREQUISITES[book_no - 1])
     reading_lines = "\n".join(f"- {item}" for item in READINGS[book_no - 1])
     expected = EXPECTED_OBSERVATIONS[book_no - 1]
+    spec_section = render_chapter_spec_section(book_no, chapter_no, title)
     return f"""# {book_no}.{chapter_no} — {title}
 
 *Book {book_no}: {book['title']} · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
@@ -371,6 +373,8 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 ## Engineering practice
 
 {practice_block}
+
+{spec_section}
 
 ## Architecture lens
 

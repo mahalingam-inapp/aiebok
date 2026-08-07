@@ -24,6 +24,22 @@ python -m pytest test_lab.py -q
 
 Open [`lab.ipynb`](lab.ipynb) for a guided, step-by-step version (sync your final code into `main.py`).
 
+## Spec-driven habit (every lab)
+
+Treat **Eval Harness** like a mini feature: write what "done" means before you tune code.
+
+1. Add 2–3 acceptance rows to `specs/05-eval-harness.yaml` (normal / boundary / adversarial) matching the objective: *Score candidate outputs with slices and a release gate*.
+2. In **Cursor**, open `labs/05-eval-harness/` and ask the agent to read your spec before editing `main.py`.
+3. With **OpenSpec**, run `/opsx:propose` for a change named `05-eval-harness-acceptance` and link `tasks.md` to your pytest file.
+
+```bash
+cursor labs/05-eval-harness/
+python main.py && python -m pytest test_lab.py -q
+```
+
+Full tooling walkthrough: [spec-driven workflow](../../docs/getting-started/spec-driven-workflow.md).
+
+
 ## Tasks
 
 1. Add a failing general case and observe release block.

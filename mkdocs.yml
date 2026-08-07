@@ -76,7 +76,14 @@ nav:
       - Newcomer Guide: getting-started/newcomer-guide.md
       - Overview: getting-started/index.md
       - First 30 Minutes: getting-started/first-30-minutes.md
-      - Learning Paths: getting-started/learning-paths.md
+      - Learning Paths:
+          - Overview: getting-started/learning-paths/index.md
+          - "01 Product & technical leader": getting-started/learning-paths/01-product-technical-leader.md
+          - "02 Coding-agent specialist": getting-started/learning-paths/02-coding-agent-specialist.md
+          - "03 Software architect": getting-started/learning-paths/03-software-architect.md
+          - "04 ML engineer": getting-started/learning-paths/04-ml-engineer.md
+          - "05 AI engineer": getting-started/learning-paths/05-ai-engineer.md
+      - Spec-Driven Workflow: getting-started/spec-driven-workflow.md
       - How to Use AIEBOK: getting-started/how-to-use.md
   - Guided Books:
       - Book Catalog: books/index.md

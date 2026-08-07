@@ -24,6 +24,22 @@ python -m pytest test_lab.py -q
 
 Open [`lab.ipynb`](lab.ipynb) for a guided, step-by-step version (sync your final code into `main.py`).
 
+## Spec-driven habit (every lab)
+
+Treat **Semantic Search** like a mini feature: write what "done" means before you tune code.
+
+1. Add 2–3 acceptance rows to `specs/02-semantic-search.yaml` (normal / boundary / adversarial) matching the objective: *Build a hashing-vector search pipeline over a tiny document set*.
+2. In **Cursor**, open `labs/02-semantic-search/` and ask the agent to read your spec before editing `main.py`.
+3. With **OpenSpec**, run `/opsx:propose` for a change named `02-semantic-search-acceptance` and link `tasks.md` to your pytest file.
+
+```bash
+cursor labs/02-semantic-search/
+python main.py && python -m pytest test_lab.py -q
+```
+
+Full tooling walkthrough: [spec-driven workflow](../../docs/getting-started/spec-driven-workflow.md).
+
+
 ## Tasks
 
 1. Inspect token buckets and explain why paraphrases score higher than unrelated docs.

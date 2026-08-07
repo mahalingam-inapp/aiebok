@@ -15,6 +15,7 @@ from catalog_helpers import (
 from concept_card_enrichments import card_enrichment
 from generate_books import BOOKS, slug
 from site_stats import collect_site_stats
+from spec_driven_content import render_pattern_spec_extra
 from topic_knowledge import TOPIC_FACTS, get_topic_entry, normalize
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -655,6 +656,8 @@ def generate_patterns() -> int:
 
 {avoid}
 """
+        if ps == "spec-driven-ai-feature":
+            text += render_pattern_spec_extra()
         (PATTERNS / f"{ps}.md").write_text(text, encoding="utf-8")
     catalog = render_pattern_catalog(all_patterns)
     (PATTERNS / "index.md").write_text(catalog, encoding="utf-8")
