@@ -1,10 +1,14 @@
 # 3.5 — Similarity and Vector Search
 
-*Book 3: Language and Representation · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Search and indexing · Lecture 5 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/03-language-and-representation.ipynb){ download } · Use the exercise under **Lecture 05**.
 
 ## Before you begin
 
-- Books 1–2
+- Courses 01–02 or equivalent experience
 - Vectors and dot products
 - Basic text processing
 
@@ -144,6 +148,12 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Record the top document for a token-overlap query and a synonym-only query. Explain the difference.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/03-language-and-representation.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 3.5 — similarity and vector search:
@@ -229,4 +239,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md) · [Course outline](index.md) · [Embedding Systems in Production →](06-embedding-systems-in-production.md)

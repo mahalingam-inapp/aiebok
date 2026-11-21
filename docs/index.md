@@ -4,23 +4,25 @@
 
 AIEBOK teaches principles before products and makes implementation, architecture, trade-offs, and evolution explicit in every knowledge area.
 
-!!! tip "New here?"
-    Start with the **[newcomer guide](getting-started/newcomer-guide.md)** (site map + first-week plan), then **[hands-on start](labs/start-here.md)** for Labs 1–5.  
-    For local setup, see [first 30 minutes](getting-started/first-30-minutes.md) or a [learning path](getting-started/learning-paths/index.md).
+[Choose a learning path](getting-started/learning-paths/index.md){ .md-button .md-button--primary }
+[Browse courses](courses/index.md){ .md-button }
+
+Start with **AI for Everyone** or **AI for Managers and Product Leaders** if you want to learn without coding. Technical paths start with software engineering and progress through specialist and advanced practice.
 
 ## Publication at a glance
 
 <!-- site-stats:publication:start -->
-- 13 guided books
-- 78 full study chapters
+- 14 role-based learning paths
+- 29 courses · 142 lectures
+- 23 downloadable course workbooks · 5 starter notebooks
 - 20 knowledge-area maps
-- 163 guided lessons (120 knowledge-area + 43 supplemental)
+- 163 topic guides (120 knowledge-area + 43 supplemental)
 - 361 concept cards (43 featured deep-dives)
 - 100 patterns (98 catalog + 2 starter deep-dives)
 - 25 architecture studios
 - 13 build guides · 26 cloud capability guides
 - 83 labs (78 chapter + 5 starter) · 13 code samples
-- approximately 340,000 words of deployable learning content in `docs/`
+- approximately 404,000 words of deployable learning content in `docs/`
 <!-- site-stats:publication:end -->
 
 ## Explore the curriculum
@@ -30,21 +32,21 @@ AIEBOK teaches principles before products and makes implementation, architecture
 
 -   :material-map-legend:{ .lg .middle } __Start with orientation__
 
-    Newcomer guide, first 30 minutes, and role-based learning paths.
+    Choose a role-based path from no-code AI literacy to advanced engineering.
 
-    [Newcomer guide →](getting-started/newcomer-guide.md)
+    [Learning paths →](getting-started/learning-paths/index.md)
 
 -   :material-book-open-variant:{ .lg .middle } __Read sequentially__
 
-    13 guided books · 78 chapters with diagrams and knowledge checks.
+    29 courses with sectioned lectures, practice, and projects.
 
-    [Book catalog →](books/index.md)
+    [Course catalog →](courses/index.md)
 
 -   :material-flask:{ .lg .middle } __Build hands-on__
 
-    5 starter labs + 78 chapter labs with notebooks and tests.
+    23 course workbooks and 5 starter notebooks.
 
-    [Hands-on start →](labs/start-here.md)
+    [Jupyter notebooks →](labs/notebooks/index.md)
 
 -   :material-card-search:{ .lg .middle } __Look up fast__
 
@@ -52,11 +54,11 @@ AIEBOK teaches principles before products and makes implementation, architecture
 
     [Concept index →](concepts/index.md)
 
--   :material-school:{ .lg .middle } __Short lessons__
+-   :material-school:{ .lg .middle } __Explore by topic__
 
-    163 guided lessons linked to chapters, objectives, and labs.
+    163 topic guides linked to the curriculum.
 
-    [Lesson catalog →](lessons/index.md)
+    [Topic index →](lessons/index.md)
 
 -   :material-cloud:{ .lg .middle } __Design for production__
 
@@ -93,7 +95,9 @@ flowchart LR
 
 | Layer | Use it for |
 |---|---|
-| Knowledge areas | A guided, comprehensive curriculum |
+| Learning paths | Ordered courses for a role and experience level |
+| Courses | Sectioned lectures, practice, and a project |
+| Knowledge areas | Topic maps for reference |
 | Concept cards | Fast explanations and prerequisite links |
 | Patterns | Reusable engineering solutions |
 | Architectures | End-to-end system designs and trade-offs |
@@ -103,4 +107,4 @@ flowchart LR
 
 ## Repository status
 
-This starter is deliberately an **open publication, not an LMS**. It has no accounts, backend, database, tracking, or paid infrastructure. Markdown is the source of truth; GitHub Pages is the host.
+This open publication is hosted on GitHub Pages. The lectures and course materials are available without an account.

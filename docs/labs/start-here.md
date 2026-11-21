@@ -1,11 +1,11 @@
 # Hands-on Start
 
-Five **starter labs** teach core AI-engineering mechanics in order. Complete them before diving into the 78 chapter labs.
+Five **starter labs** teach core AI-engineering mechanics in order. Use them as a short introduction, or go directly to the [course workbooks](notebooks/index.md).
 
 !!! info "Before you begin"
     1. [Clone the repository](https://github.com/mahalingam-inapp/aiebok){target="_blank" rel="noopener"} (or open in **Codespaces** / the Dev Container).
-    2. Create a virtualenv and install dependencies — see [First 30 minutes](../getting-started/first-30-minutes.md).
-    3. Work from the repo root unless a lab README says otherwise.
+    2. Create a virtual environment and follow [Jupyter setup](notebooks/index.md#set-up-jupyter).
+    3. Start the notebook kernel from the repository root or the lab folder.
 
 ## Starter track (do in order)
 
@@ -38,14 +38,14 @@ flowchart LR
 
 !!! tip "Jupyter in Codespaces"
     ```bash
-    pip install -r requirements.txt
+    python -m pip install -r requirements-notebooks.txt
     jupyter lab labs/01-cosine-similarity/lab.ipynb
     ```
 
 ## After the starter track
 
 - Browse the full [lab catalog](catalog.md) — chapter labs match book numbers (`labs/0603-retrieval/` → Book 06, ch. 3).
-- Return to the [newcomer guide](../getting-started/newcomer-guide.md) for a role-based reading plan.
+- Return to [Learning Paths](../getting-started/learning-paths/index.md) to choose your next course.
 - Explore [patterns](../patterns/index.md) and [architectures](../architectures/index.md) once you can run Labs 1–5 confidently.
 
 ## Quick links

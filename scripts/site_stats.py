@@ -16,6 +16,10 @@ MANUAL_PATTERN_PAGES = ("planner-executor", "human-approval")
 class SiteStats:
     books: int
     chapters: int
+    courses: int
+    lectures: int
+    learning_paths: int
+    workbooks: int
     knowledge_areas: int
     ka_lessons: int
     supplemental_lessons: int
@@ -44,6 +48,8 @@ def _word_count(text: str) -> int:
 
 
 def collect_site_stats() -> SiteStats:
+    from applied_courses import APPLIED_COURSES
+    from course_catalog import PATHS
     from generate_books import BOOKS
     from generate_cloud_guides import CAPABILITY_SPECS
     from generate_expansion import ARCH_SPECS, EXTRA_PATTERN_SPECS, PATTERN_SPECS
@@ -52,6 +58,7 @@ def collect_site_stats() -> SiteStats:
     from generate_maturity_content import ALL_PAPER_SPECS, BUILD_GUIDES, STARTER_LABS
     from guide_deep_content import GUIDE_DETAILS
     from ka_deep_content import KA_SPECS
+    from no_code_courses import NO_CODE_COURSES
     from topic_knowledge import TOPIC_FACTS
 
     books = len(BOOKS)
@@ -68,11 +75,16 @@ def collect_site_stats() -> SiteStats:
     for path in DOCS.rglob("*.md"):
         word_count += _word_count(path.read_text(encoding="utf-8"))
 
+    additional_courses = (*NO_CODE_COURSES, *APPLIED_COURSES)
     code_samples = len(list((DOCS / "code-samples").glob("*.py")))
 
     return SiteStats(
         books=books,
         chapters=chapters,
+        courses=books + len(additional_courses),
+        lectures=chapters + sum(len(group) for course in additional_courses for _, group in course.sections),
+        learning_paths=len(PATHS),
+        workbooks=books + len(APPLIED_COURSES),
         knowledge_areas=len(KA_SPECS),
         ka_lessons=ka_lessons,
         supplemental_lessons=supplemental,

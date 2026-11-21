@@ -1,7 +1,6 @@
 """Structured starter-lab notebook content (one guided cell sequence per lab)."""
 from __future__ import annotations
 
-import uuid
 from typing import Callable
 
 from generate_maturity_content import STARTER_LABS
@@ -10,22 +9,17 @@ from spec_driven_content import render_notebook_spec_cell
 Meta = tuple[str, str, str, str, list[str]]
 
 
-def _id() -> str:
-    return uuid.uuid4().hex[:8]
-
-
 def _md(text: str) -> dict:
     body = text if text.endswith("\n") else f"{text}\n"
-    return {"cell_type": "markdown", "id": _id(), "metadata": {}, "source": [body]}
+    return {"cell_type": "markdown", "metadata": {}, "source": body.splitlines(keepends=True)}
 
 
 def _code(text: str) -> dict:
     body = text if text.endswith("\n") else f"{text}\n"
     return {
         "cell_type": "code",
-        "id": _id(),
         "metadata": {},
-        "source": [body],
+        "source": body.splitlines(keepends=True),
         "outputs": [],
         "execution_count": None,
     }
@@ -51,16 +45,18 @@ def _intro(slug: str) -> list[dict]:
         ),
         _md(
             "## How to use this notebook\n\n"
-            "1. Open from the lab directory (`labs/{slug}/`) in Jupyter, VS Code, or Codespaces.\n"
+            "1. Open `labs/{slug}/lab.ipynb` in Jupyter, VS Code, or Codespaces.\n"
             "2. Run cells sequentially; restart the kernel if you change earlier definitions.\n"
             "3. Complete **Your turn** sections, then sync working code into `main.py`.\n"
             "4. Run the verification cell (`pytest`) before you finish.\n".format(slug=slug)
         ),
         _code(
             "from pathlib import Path\n\n"
-            "LAB_DIR = Path('.').resolve()\n"
-            "assert (LAB_DIR / 'main.py').exists(), (\n"
-            "    'Start Jupyter from the lab directory, e.g. labs/{slug}/'\n"
+            "LAB_DIR = Path.cwd().resolve()\n"
+            "if LAB_DIR.name != '{slug}':\n"
+            "    LAB_DIR = LAB_DIR / 'labs' / '{slug}'\n"
+            "assert (LAB_DIR / 'test_lab.py').is_file(), (\n"
+            "    'Run the kernel from the repository root or labs/{slug}/'\n"
             ")\n"
             "print('Lab directory:', LAB_DIR)".format(slug=slug)
         ),
@@ -77,6 +73,7 @@ def _verify_cell() -> list[dict]:
             "import sys\n\n"
             "result = subprocess.run(\n"
             "    [sys.executable, '-m', 'pytest', 'test_lab.py', '-q'],\n"
+            "    cwd=LAB_DIR,\n"
             "    capture_output=True,\n"
             "    text=True,\n"
             ")\n"
@@ -246,7 +243,8 @@ def notebook_basic_rag() -> list[dict]:
         _md(
             "## Step 1 — Evidence store\n\n"
             "RAG separates **retrieval** (find evidence) from **generation** (compose an answer). "
-            "Here generation is template-based so you can inspect each stage."
+            "Here generation is template-based so you can inspect each stage. "
+            "A short stop-word list removes common words that otherwise cause misleading matches."
         ),
         _code(
             "import re\n\n"
@@ -255,8 +253,9 @@ def notebook_basic_rag() -> list[dict]:
             "    ('expenses', 'Expense claims must be submitted within 30 days of purchase.'),\n"
             "    ('security', 'Suspected credential exposure must be reported immediately.'),\n"
             "]\n\n\n"
+            "STOP_WORDS = {'a', 'an', 'the', 'of', 'is', 'must', 'be', 'i'}\n\n\n"
             "def words(text: str) -> set[str]:\n"
-            "    return set(re.findall(r'[a-z0-9]+', text.lower()))\n\n\n"
+            "    return set(re.findall(r'[a-z0-9]+', text.lower())) - STOP_WORDS\n\n\n"
             "for source, text in PASSAGES:\n"
             "    print(f'[{source}]', text)"
         ),
@@ -272,8 +271,8 @@ def notebook_basic_rag() -> list[dict]:
         ),
         _md("## Step 3 — Ground answers in evidence with citations"),
         _code(
-            "def answer(question: str) -> str:\n"
-            "    evidence = [item for item in retrieve(question) if item[0] > 0]\n"
+            "def answer(question: str, k: int = 2) -> str:\n"
+            "    evidence = [item for item in retrieve(question, k=k) if item[0] > 0]\n"
             "    if not evidence:\n"
             "        return 'I do not have relevant evidence to answer that question.'\n"
             "    citations = ' '.join(f'[{source}]' for _, source, _ in evidence)\n"
@@ -293,7 +292,13 @@ def notebook_basic_rag() -> list[dict]:
             "off_topic = 'What is the stock price of the company?'\n"
             "print('Retrieve:', retrieve(off_topic))\n"
             "print('Answer:', answer(off_topic))\n\n"
-            "print('k=1:', answer(question))  # temporarily set k=1 in retrieve to compare"
+            "assert '[expenses]' in answer(question)\n"
+            "assert answer(off_topic) == 'I do not have relevant evidence to answer that question.'\n\n"
+            "comparison = 'Compare expense claims and annual leave'\n"
+            "one, two = answer(comparison, k=1), answer(comparison, k=2)\n"
+            "assert one.count('[') == 1 and two.count('[') == 2\n"
+            "print('k=1:', one)\n"
+            "print('k=2:', two)"
         ),
     ]
     cells += _verify_cell()

@@ -1,10 +1,14 @@
 # 4.2 — Attention
 
-*Book 4: Transformers and Foundation Models · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Sequence models and attention · Lecture 2 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/04-transformers-and-foundation-models.ipynb){ download } · Use the exercise under **Lecture 02**.
 
 ## Before you begin
 
-- Books 1–3
+- Courses 01–03 or equivalent experience
 - Matrix multiplication intuition
 - Neural-network basics
 
@@ -147,6 +151,12 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Trace one attention query and identify which key contributes most to the weighted result.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/04-transformers-and-foundation-models.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 4.2 — attention:
@@ -233,4 +243,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← Sequence Models Before Transformers](01-sequence-models-before-transformers.md) · [Course outline](index.md) · [The Transformer Block →](03-the-transformer-block.md)

@@ -1,10 +1,14 @@
 # 6.1 — Knowledge Outside the Model
 
-*Book 6: Knowledge and Retrieval Systems · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Knowledge strategy and ingestion · Lecture 1 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/06-knowledge-and-retrieval-systems.ipynb){ download } · Use the exercise under **Lecture 01**.
 
 ## Before you begin
 
-- Books 3–5
+- Courses 03–05 or equivalent experience
 - Embeddings and search
 - Structured model output
 
@@ -146,6 +150,12 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Sketch source identifiers and chunk lineage for two versions of the same policy.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/06-knowledge-and-retrieval-systems.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 6.1 — knowledge outside the model:
@@ -231,4 +241,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[Course outline](index.md) · [Document Ingestion →](02-document-ingestion.md)

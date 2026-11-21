@@ -1,6 +1,10 @@
 # 1.2 — From Symbols to Statistics
 
-*Book 1: Foundations of Intelligence · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Goals and representations · Lecture 2 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/01-foundations-of-intelligence.ipynb){ download } · Use the exercise under **Lecture 02**.
 
 ## Before you begin
 
@@ -149,6 +153,12 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Write a support-routing goal and identify an example where a fixed keyword rule misroutes a request.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/01-foundations-of-intelligence.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 1.2 — from symbols to statistics:
@@ -234,4 +244,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← What Intelligence Means](01-what-intelligence-means.md) · [Course outline](index.md) · [Search, Planning, and Decisions →](03-search-planning-and-decisions.md)

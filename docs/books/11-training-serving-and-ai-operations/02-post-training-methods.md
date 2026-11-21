@@ -1,10 +1,14 @@
 # 11.2 — Post-Training Methods
 
-*Book 11: Training, Serving, and AI Operations · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Model adaptation and post-training · Lecture 2 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/11-training-serving-and-ai-operations.ipynb){ download } · Use the exercise under **Lecture 02**.
 
 ## Before you begin
 
-- Books 2, 4, and 10
+- Courses 02, 04, and 10 or equivalent experience
 - Containers and APIs
 - Performance measurement
 
@@ -144,6 +148,63 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Specify a behavior where prompt changes are a reasonable baseline before considering an adapter.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/11-training-serving-and-ai-operations.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
+### Train a rank-one adapter and evaluate held-out inputs
+
+A frozen two-output model returns the input vector. Fit two small vectors so their outer product adds a rank-one correction. Compare base and adapted error on held-out inputs, then reduce the training steps and rerun. This exercise uses a tiny linear model to make the update visible. A transformer has many more weights and training choices.
+
+```python
+training = [(1.0, 0.0), (0.0, 1.0), (-1.0, -1.0), (2.0, 1.0)]
+holdout = [(2.0, -1.0), (-2.0, 3.0)]
+
+
+def target(point):
+    x, y = point
+    signal = 2 * x - y
+    return [x + signal, y - 0.5 * signal]
+
+
+def base(point):
+    return list(point)
+
+
+a = [0.1, -0.1]
+b = [0.0, 0.0]
+
+
+def adapted(point):
+    hidden = sum(weight * value for weight, value in zip(a, point))
+    return [value + weight * hidden for value, weight in zip(base(point), b)]
+
+
+for _ in range(200):
+    for point in training:
+        residual = [prediction - wanted for prediction, wanted in zip(adapted(point), target(point))]
+        hidden = sum(weight * value for weight, value in zip(a, point))
+        gradient_hidden = sum(error * weight for error, weight in zip(residual, b))
+        a = [weight - 0.04 * gradient_hidden * value for weight, value in zip(a, point)]
+        b = [weight - 0.04 * error * hidden for weight, error in zip(b, residual)]
+
+
+def squared_error(predict):
+    return sum(
+        (observed - expected) ** 2
+        for point in holdout
+        for observed, expected in zip(predict(point), target(point))
+    )
+
+
+base_error = squared_error(base)
+adapted_error = squared_error(adapted)
+print(f"Held-out squared error: base={base_error:.3f}, adapted={adapted_error:.3f}")
+assert adapted_error < 0.1 * base_error
+```
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 11.2 — post-training methods:
@@ -230,4 +291,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← Choosing Adaptation](01-choosing-adaptation.md) · [Course outline](index.md) · [Dataset Engineering →](03-dataset-engineering.md)

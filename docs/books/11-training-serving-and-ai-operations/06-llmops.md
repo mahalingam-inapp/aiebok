@@ -1,10 +1,14 @@
 # 11.6 — LLMOps
 
-*Book 11: Training, Serving, and AI Operations · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Deployment and operations · Lecture 6 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/11-training-serving-and-ai-operations.ipynb){ download } · Use the exercise under **Lecture 06**.
 
 ## Before you begin
 
-- Books 2, 4, and 10
+- Courses 02, 04, and 10 or equivalent experience
 - Containers and APIs
 - Performance measurement
 
@@ -143,6 +147,12 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Compare routing choices and write a rollback trigger in terms of latency and quality.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/11-training-serving-and-ai-operations.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 11.6 — llmops:
@@ -229,4 +239,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← Deployment and Routing](05-deployment-and-routing.md) · [Course outline](index.md) · [Course project →](index.md#course-project)

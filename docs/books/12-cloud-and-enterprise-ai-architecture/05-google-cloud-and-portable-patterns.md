@@ -1,10 +1,14 @@
 # 12.5 — Google Cloud and Portable Patterns
 
-*Book 12: Cloud and Enterprise AI Architecture · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Portability and operating model · Lecture 5 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/12-cloud-and-enterprise-ai-architecture.ipynb){ download } · Use the exercise under **Lecture 05**.
 
 ## Before you begin
 
-- Books 5–11
+- Courses 05–11 or equivalent experience
 - Cloud and identity fundamentals
 - Architecture documentation
 
@@ -143,6 +147,12 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Map the same design to Google Cloud and assign an owner for each operational control.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/12-cloud-and-enterprise-ai-architecture.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 12.5 — google cloud and portable patterns:
@@ -228,4 +238,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← Azure Managed AI](04-azure-managed-ai.md) · [Course outline](index.md) · [Enterprise Operating Model →](06-enterprise-operating-model.md)

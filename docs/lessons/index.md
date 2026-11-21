@@ -1,8 +1,8 @@
-# Guided Lessons
+# Topic Index
 
-**163 guided lessons** — 120 aligned to knowledge areas plus 43 supplemental cross-cutting lessons.
+**163 topic guides** — 120 aligned to knowledge areas plus 43 supplemental cross-cutting lessons.
 
-Each row links the lesson, chapter reading, matching lab, and objective. Expand a knowledge area or use search (`/`).
+Each row links a topic guide to a lecture, objective, and available lab. For a section-by-section sequence, use the [course catalog](../courses/index.md).
 
 ??? abstract "KA 00 — Foundations · `00-foundations` (6)"
     | ID | Lesson | Objective | Read | Lab |

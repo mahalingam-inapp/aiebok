@@ -76,33 +76,307 @@ nav:
       - Newcomer Guide: getting-started/newcomer-guide.md
       - Overview: getting-started/index.md
       - First 30 Minutes: getting-started/first-30-minutes.md
-      - Learning Paths:
-          - Overview: getting-started/learning-paths/index.md
-          - "01 Product & technical leader": getting-started/learning-paths/01-product-technical-leader.md
-          - "02 Coding-agent specialist": getting-started/learning-paths/02-coding-agent-specialist.md
-          - "03 Software architect": getting-started/learning-paths/03-software-architect.md
-          - "04 ML engineer": getting-started/learning-paths/04-ml-engineer.md
-          - "05 AI engineer": getting-started/learning-paths/05-ai-engineer.md
       - Spec-Driven Workflow: getting-started/spec-driven-workflow.md
       - How to Use AIEBOK: getting-started/how-to-use.md
-  - Guided Books:
-      - Book Catalog: books/index.md
-      - 01 Foundations: books/01-foundations-of-intelligence/index.md
-      - 02 Machine Learning: books/02-machine-learning-systems/index.md
-      - 03 Language & Representation: books/03-language-and-representation/index.md
-      - 04 Transformers & Models: books/04-transformers-and-foundation-models/index.md
-      - 05 Prompt & Context: books/05-prompt-and-context-engineering/index.md
-      - 06 Knowledge & RAG: books/06-knowledge-and-retrieval-systems/index.md
-      - 07 Reasoning & Tools: books/07-reasoning-and-tool-use/index.md
-      - 08 Agent Systems: books/08-agent-systems/index.md
-      - 09 AI Product Engineering: books/09-ai-software-and-product-engineering/index.md
-      - 10 Evaluation & Safety: books/10-evaluation-safety-and-governance/index.md
-      - 11 Training & AIOps: books/11-training-serving-and-ai-operations/index.md
-      - 12 Cloud & Enterprise: books/12-cloud-and-enterprise-ai-architecture/index.md
-      - 13 Multimodal & Frontier: books/13-multimodal-and-frontier-systems/index.md
+  # curriculum:start
+  - Learning Paths:
+      - Overview: getting-started/learning-paths/index.md
+      - "AI for Everyone": getting-started/learning-paths/00-ai-for-everyone.md
+      - "AI for Managers and Product Leaders": getting-started/learning-paths/01-product-technical-leader.md
+      - "Software Engineer Building with AI": getting-started/learning-paths/06-software-engineer.md
+      - "Coding-Agent Specialist": getting-started/learning-paths/02-coding-agent-specialist.md
+      - "AI Systems Architect": getting-started/learning-paths/03-software-architect.md
+      - "ML Engineer": getting-started/learning-paths/04-ml-engineer.md
+      - "AI Engineer": getting-started/learning-paths/05-ai-engineer.md
+      - AI Engineer Capstone: getting-started/learning-paths/ai-engineer-capstone.md
+      - Specialist Paths:
+          - "Model Selection for Leaders": getting-started/learning-paths/model-selection-leaders.md
+          - "Forward-Deployed AI Engineer": getting-started/learning-paths/forward-deployed-ai-engineer.md
+          - "LLM Evaluation & Model Selection Engineer": getting-started/learning-paths/llm-evaluation-model-selection.md
+          - "Retrieval & RAG Engineer": getting-started/learning-paths/retrieval-rag-engineer.md
+          - "Agent Runtime & MCP Engineer": getting-started/learning-paths/agent-runtime-mcp-engineer.md
+          - "LLM Adaptation & Inference Engineer": getting-started/learning-paths/llm-adaptation-inference-engineer.md
+          - "AI Reliability & Release Engineer": getting-started/learning-paths/ai-reliability-release-engineer.md
+  - Courses:
+      - Course Catalog: courses/index.md
+      - No-code Courses:
+          - "AI Literacy":
+              - Overview: courses/ai-literacy/index.md
+              - "Recognize the capabilities":
+                  - "What AI can do": courses/ai-literacy/01-what-ai-can-do.md
+                  - "Why confident answers can be wrong": courses/ai-literacy/02-why-confident-answers-can-be-wrong.md
+              - "Decide when to trust the output":
+                  - "Choose an appropriate use": courses/ai-literacy/03-choose-an-appropriate-use.md
+                  - "Handle sensitive information": courses/ai-literacy/04-handle-sensitive-information.md
+          - "Using AI at Work":
+              - Overview: courses/using-ai-at-work/index.md
+              - "Request and review a draft":
+                  - "Turn a request into a clear brief": courses/using-ai-at-work/01-turn-a-request-into-a-clear-brief.md
+                  - "Review output against the source": courses/using-ai-at-work/02-review-output-against-the-source.md
+              - "Build a repeatable workflow":
+                  - "Design a human handoff": courses/using-ai-at-work/03-design-a-human-handoff.md
+                  - "Measure whether the workflow helped": courses/using-ai-at-work/04-measure-whether-the-workflow-helped.md
+          - "AI Product Decisions":
+              - Overview: courses/ai-product-decisions/index.md
+              - "Find the right problem":
+                  - "Frame the decision before selecting a model": courses/ai-product-decisions/01-frame-the-decision-before-selecting-a-model.md
+                  - "Compare rules, search, and generation": courses/ai-product-decisions/02-compare-rules-search-and-generation.md
+              - "Set evidence and limits":
+                  - "Define success and guardrails": courses/ai-product-decisions/03-define-success-and-guardrails.md
+                  - "Make a ship, revise, or stop decision": courses/ai-product-decisions/04-make-a-ship-revise-or-stop-decision.md
+          - "Managing AI Delivery":
+              - Overview: courses/managing-ai-delivery/index.md
+              - "Own quality and risk":
+                  - "Find the failure hidden in the average": courses/managing-ai-delivery/01-find-the-failure-hidden-in-the-average.md
+                  - "Assign decision and data ownership": courses/managing-ai-delivery/02-assign-decision-and-data-ownership.md
+              - "Launch and respond":
+                  - "Plan a limited launch and rollback": courses/managing-ai-delivery/03-plan-a-limited-launch-and-rollback.md
+                  - "Review an incident and decide when to resume": courses/managing-ai-delivery/04-review-an-incident-and-decide-when-to-resume.md
+          - "Evaluating AI in Practice":
+              - Overview: courses/evaluating-ai-in-practice/index.md
+              - "Build the comparison":
+                  - "Pick cases that represent the real task": courses/evaluating-ai-in-practice/01-pick-cases-that-represent-the-real-task.md
+                  - "Score evidence and omissions": courses/evaluating-ai-in-practice/02-score-evidence-and-omissions.md
+              - "Make a decision with evidence":
+                  - "Measure time and review burden": courses/evaluating-ai-in-practice/03-measure-time-and-review-burden.md
+                  - "Record a keep, revise, or stop decision": courses/evaluating-ai-in-practice/04-record-a-keep-revise-or-stop-decision.md
+          - "Model Selection Decisions for Leaders":
+              - Overview: courses/model-selection-for-leaders/index.md
+              - "Frame the decision":
+                  - "Specify the workload and critical failures": courses/model-selection-for-leaders/01-specify-the-workload-and-critical-failures.md
+                  - "Interpret quality evidence and uncertainty": courses/model-selection-for-leaders/02-interpret-quality-evidence-and-uncertainty.md
+              - "Compare economics and decide":
+                  - "Cost per successful task": courses/model-selection-for-leaders/03-cost-per-successful-task.md
+                  - "Make a bounded selection decision": courses/model-selection-for-leaders/04-make-a-bounded-selection-decision.md
+      - Technical Project Practicums:
+          - "Build and Evaluate a Model-Backed Application":
+              - Overview: courses/model-backed-applications/index.md
+              - "Implement the contract and baseline":
+                  - "Model interfaces and structured output": courses/model-backed-applications/01-model-interfaces-and-structured-output.md
+                  - "Retrieval, evidence and citations": courses/model-backed-applications/02-retrieval-evidence-and-citations.md
+              - "Measure and integrate":
+                  - "Grounding checks and evaluation slices": courses/model-backed-applications/03-grounding-checks-and-evaluation-slices.md
+                  - "Compare a live provider with a local baseline": courses/model-backed-applications/04-compare-a-live-provider-with-a-local-baseline.md
+          - "Supervised Coding-Agent Harnesses":
+              - Overview: courses/supervised-coding-harness/index.md
+              - "Specify and verify a candidate":
+                  - "Write an acceptance contract for a change": courses/supervised-coding-harness/01-write-an-acceptance-contract-for-a-change.md
+                  - "Constrain proposals and run checks": courses/supervised-coding-harness/02-constrain-proposals-and-run-checks.md
+              - "Approve and audit a change":
+                  - "Approval, revisions and replay": courses/supervised-coding-harness/03-approval-revisions-and-replay.md
+                  - "Compare workflow traces and handoffs": courses/supervised-coding-harness/04-compare-workflow-traces-and-handoffs.md
+          - "Model Selection and Adaptation Lab":
+              - Overview: courses/model-selection-and-adaptation/index.md
+              - "Prepare data and learn a baseline":
+                  - "Group-aware splits and dataset lineage": courses/model-selection-and-adaptation/01-group-aware-splits-and-dataset-lineage.md
+                  - "Fit and compare a supervised baseline": courses/model-selection-and-adaptation/02-fit-and-compare-a-supervised-baseline.md
+              - "Choose a threshold and package evidence":
+                  - "Measure selective risk and cost": courses/model-selection-and-adaptation/03-measure-selective-risk-and-cost.md
+                  - "Version a model artifact and regression gate": courses/model-selection-and-adaptation/04-version-a-model-artifact-and-regression-gate.md
+          - "Deploy and Operate an AI Service":
+              - Overview: courses/operating-ai-services/index.md
+              - "Package and observe":
+                  - "Serve a versioned endpoint": courses/operating-ai-services/01-serve-a-versioned-endpoint.md
+                  - "Fallback, trace fields and durable telemetry": courses/operating-ai-services/02-fallback-trace-fields-and-durable-telemetry.md
+              - "Release and recover":
+                  - "Canary evaluation and rollout decisions": courses/operating-ai-services/03-canary-evaluation-and-rollout-decisions.md
+                  - "Rollback and production handoff": courses/operating-ai-services/04-rollback-and-production-handoff.md
+          - "Customer Pilot Engineering":
+              - Overview: courses/customer-pilot-engineering/index.md
+              - "Discover and integrate":
+                  - "Discovery and pilot acceptance": courses/customer-pilot-engineering/01-discovery-and-pilot-acceptance.md
+                  - "Map a customer data contract": courses/customer-pilot-engineering/02-map-a-customer-data-contract.md
+              - "Evaluate and hand off":
+                  - "Shadow acceptance and integration failures": courses/customer-pilot-engineering/03-shadow-acceptance-and-integration-failures.md
+                  - "Rollout, operator handoff and stop rules": courses/customer-pilot-engineering/04-rollout-operator-handoff-and-stop-rules.md
+          - "LLM Evaluation and Model Selection":
+              - Overview: courses/llm-evaluation-benchmarks/index.md
+              - "Design trustworthy evidence":
+                  - "Workload design and versioned cases": courses/llm-evaluation-benchmarks/01-workload-design-and-versioned-cases.md
+                  - "Rubrics and human agreement": courses/llm-evaluation-benchmarks/02-rubrics-and-human-agreement.md
+              - "Measure and decide":
+                  - "Paired comparison across quality, cost and latency": courses/llm-evaluation-benchmarks/03-paired-comparison-across-quality-cost-and-latency.md
+                  - "Release gates and selection memo": courses/llm-evaluation-benchmarks/04-release-gates-and-selection-memo.md
+          - "Retrieval System Engineering":
+              - Overview: courses/retrieval-system-engineering/index.md
+              - "Ingest and index evidence":
+                  - "Versioned ingestion and chunk provenance": courses/retrieval-system-engineering/01-versioned-ingestion-and-chunk-provenance.md
+                  - "Lexical retrieval and dense similarity": courses/retrieval-system-engineering/02-lexical-retrieval-and-dense-similarity.md
+              - "Fuse, rank and verify":
+                  - "Hybrid fusion and relevance diagnostics": courses/retrieval-system-engineering/03-hybrid-fusion-and-relevance-diagnostics.md
+                  - "Citation verification and freshness checks": courses/retrieval-system-engineering/04-citation-verification-and-freshness-checks.md
+          - "Durable Agent Runtime and MCP":
+              - Overview: courses/durable-agent-tool-runtime/index.md
+              - "Connect and constrain":
+                  - "Discover and call a local MCP tool": courses/durable-agent-tool-runtime/01-discover-and-call-a-local-mcp-tool.md
+                  - "Tool authorization and argument validation": courses/durable-agent-tool-runtime/02-tool-authorization-and-argument-validation.md
+              - "Pause, recover and replay":
+                  - "Persistent approval and checkpoint recovery": courses/durable-agent-tool-runtime/03-persistent-approval-and-checkpoint-recovery.md
+                  - "Idempotent execution and decision traces": courses/durable-agent-tool-runtime/04-idempotent-execution-and-decision-traces.md
+          - "LLM Adaptation and Inference Lab":
+              - Overview: courses/llm-adaptation-inference/index.md
+              - "Establish and adapt baselines":
+                  - "Autoregressive evaluation and retrieval baseline": courses/llm-adaptation-inference/01-autoregressive-evaluation-and-retrieval-baseline.md
+                  - "Train and evaluate a low-rank adapter": courses/llm-adaptation-inference/02-train-and-evaluate-a-low-rank-adapter.md
+              - "Compress and transfer":
+                  - "Quantization and inference measurement": courses/llm-adaptation-inference/03-quantization-and-inference-measurement.md
+                  - "Transfer to an open-weight checkpoint": courses/llm-adaptation-inference/04-transfer-to-an-open-weight-checkpoint.md
+          - "AI Reliability and Release Engineering":
+              - Overview: courses/ai-reliability-release/index.md
+              - "Define and observe reliability":
+                  - "Service objectives and error-budget burn": courses/ai-reliability-release/01-service-objectives-and-error-budget-burn.md
+                  - "Stage traces and failure localization": courses/ai-reliability-release/02-stage-traces-and-failure-localization.md
+              - "Release and recover":
+                  - "Canary cohorts and staged gates": courses/ai-reliability-release/03-canary-cohorts-and-staged-gates.md
+                  - "Rollback verification and incident review": courses/ai-reliability-release/04-rollback-verification-and-incident-review.md
+      - Technical Courses:
+          - "Foundations of Intelligence":
+              - Overview: books/01-foundations-of-intelligence/index.md
+              - "Goals and representations":
+                  - "What Intelligence Means": books/01-foundations-of-intelligence/01-what-intelligence-means.md
+                  - "From Symbols to Statistics": books/01-foundations-of-intelligence/02-from-symbols-to-statistics.md
+              - "Search and mathematics":
+                  - "Search, Planning, and Decisions": books/01-foundations-of-intelligence/03-search-planning-and-decisions.md
+                  - "The Mathematics Engineers Need": books/01-foundations-of-intelligence/04-the-mathematics-engineers-need.md
+              - "Learning and decisions":
+                  - "Learning and Generalization": books/01-foundations-of-intelligence/05-learning-and-generalization.md
+                  - "Engineering with Uncertainty": books/01-foundations-of-intelligence/06-engineering-with-uncertainty.md
+          - "Machine Learning Systems":
+              - Overview: books/02-machine-learning-systems/index.md
+              - "Problem framing and supervised models":
+                  - "Problems, Data, and Baselines": books/02-machine-learning-systems/01-problems-data-and-baselines.md
+                  - "Supervised Learning": books/02-machine-learning-systems/02-supervised-learning.md
+              - "Representations and neural networks":
+                  - "Unsupervised and Representation Learning": books/02-machine-learning-systems/03-unsupervised-and-representation-learning.md
+                  - "Neural Networks": books/02-machine-learning-systems/04-neural-networks.md
+              - "Evidence and lifecycle":
+                  - "Evaluation and Error Analysis": books/02-machine-learning-systems/05-evaluation-and-error-analysis.md
+                  - "The ML Lifecycle": books/02-machine-learning-systems/06-the-ml-lifecycle.md
+          - "Language and Representation":
+              - Overview: books/03-language-and-representation/index.md
+              - "Language and corpus preparation":
+                  - "Why Language Is Hard": books/03-language-and-representation/01-why-language-is-hard.md
+                  - "Corpora and Text Pipelines": books/03-language-and-representation/02-corpora-and-text-pipelines.md
+              - "Tokens and representations":
+                  - "Tokenization": books/03-language-and-representation/03-tokenization.md
+                  - "From Sparse Features to Embeddings": books/03-language-and-representation/04-from-sparse-features-to-embeddings.md
+              - "Search and indexing":
+                  - "Similarity and Vector Search": books/03-language-and-representation/05-similarity-and-vector-search.md
+                  - "Embedding Systems in Production": books/03-language-and-representation/06-embedding-systems-in-production.md
+          - "Transformers and Foundation Models":
+              - Overview: books/04-transformers-and-foundation-models/index.md
+              - "Sequence models and attention":
+                  - "Sequence Models Before Transformers": books/04-transformers-and-foundation-models/01-sequence-models-before-transformers.md
+                  - "Attention": books/04-transformers-and-foundation-models/02-attention.md
+              - "Transformer blocks and training":
+                  - "The Transformer Block": books/04-transformers-and-foundation-models/03-the-transformer-block.md
+                  - "Training Foundation Models": books/04-transformers-and-foundation-models/04-training-foundation-models.md
+              - "Decoding and model selection":
+                  - "Inference and Sampling": books/04-transformers-and-foundation-models/05-inference-and-sampling.md
+                  - "Model Families and Selection": books/04-transformers-and-foundation-models/06-model-families-and-selection.md
+          - "Prompt and Context Engineering":
+              - Overview: books/05-prompt-and-context-engineering/index.md
+              - "Instructions and output contracts":
+                  - "Instructions That Work": books/05-prompt-and-context-engineering/01-instructions-that-work.md
+                  - "Structured Generation": books/05-prompt-and-context-engineering/02-structured-generation.md
+              - "Context and memory":
+                  - "Context Construction": books/05-prompt-and-context-engineering/03-context-construction.md
+                  - "Conversation and Memory": books/05-prompt-and-context-engineering/04-conversation-and-memory.md
+              - "Trust and prompt operations":
+                  - "Context Failure and Security": books/05-prompt-and-context-engineering/05-context-failure-and-security.md
+                  - "Prompt and Context Operations": books/05-prompt-and-context-engineering/06-prompt-and-context-operations.md
+          - "Knowledge and Retrieval Systems":
+              - Overview: books/06-knowledge-and-retrieval-systems/index.md
+              - "Knowledge strategy and ingestion":
+                  - "Knowledge Outside the Model": books/06-knowledge-and-retrieval-systems/01-knowledge-outside-the-model.md
+                  - "Document Ingestion": books/06-knowledge-and-retrieval-systems/02-document-ingestion.md
+              - "Retrieval and reranking":
+                  - "Retrieval": books/06-knowledge-and-retrieval-systems/03-retrieval.md
+                  - "Ranking and Context Selection": books/06-knowledge-and-retrieval-systems/04-ranking-and-context-selection.md
+              - "Grounded answers and enterprise constraints":
+                  - "RAG Generation and Citations": books/06-knowledge-and-retrieval-systems/05-rag-generation-and-citations.md
+                  - "Advanced and Enterprise RAG": books/06-knowledge-and-retrieval-systems/06-advanced-and-enterprise-rag.md
+          - "Reasoning and Tool Use":
+              - Overview: books/07-reasoning-and-tool-use/index.md
+              - "Search and planning":
+                  - "Reasoning as Search": books/07-reasoning-and-tool-use/01-reasoning-as-search.md
+                  - "Planning": books/07-reasoning-and-tool-use/02-planning.md
+              - "Verification and tool contracts":
+                  - "Verification and Critique": books/07-reasoning-and-tool-use/03-verification-and-critique.md
+                  - "Tools as Capability Boundaries": books/07-reasoning-and-tool-use/04-tools-as-capability-boundaries.md
+              - "Integrations and reasoning cost":
+                  - "MCP and Integration Protocols": books/07-reasoning-and-tool-use/05-mcp-and-integration-protocols.md
+                  - "Reasoning-System Economics": books/07-reasoning-and-tool-use/06-reasoning-system-economics.md
+          - "Agent Systems":
+              - Overview: books/08-agent-systems/index.md
+              - "Workflows and agent loops":
+                  - "Agent or Workflow?": books/08-agent-systems/01-agent-or-workflow.md
+                  - "The Agent Loop": books/08-agent-systems/02-the-agent-loop.md
+              - "Recovery and patterns":
+                  - "Agent Memory and Recovery": books/08-agent-systems/03-agent-memory-and-recovery.md
+                  - "Agent Patterns": books/08-agent-systems/04-agent-patterns.md
+              - "Coordination and operations":
+                  - "Multi-Agent Systems": books/08-agent-systems/05-multi-agent-systems.md
+                  - "Operating Long-Running Agents": books/08-agent-systems/06-operating-long-running-agents.md
+          - "AI Software and Product Engineering":
+              - Overview: books/09-ai-software-and-product-engineering/index.md
+              - "Discovery and specifications":
+                  - "Discovering the Right Problem": books/09-ai-software-and-product-engineering/01-discovering-the-right-problem.md
+                  - "Specification-Driven Development": books/09-ai-software-and-product-engineering/02-specification-driven-development.md
+              - "Development and testing":
+                  - "AI-Native Development Workflow": books/09-ai-software-and-product-engineering/03-ai-native-development-workflow.md
+                  - "Testing AI Systems": books/09-ai-software-and-product-engineering/04-testing-ai-systems.md
+              - "Experience and value":
+                  - "Human-Centered AI UX": books/09-ai-software-and-product-engineering/05-human-centered-ai-ux.md
+                  - "Experiments, Adoption, and Value": books/09-ai-software-and-product-engineering/06-experiments-adoption-and-value.md
+          - "Evaluation, Safety, and Governance":
+              - Overview: books/10-evaluation-safety-and-governance/index.md
+              - "Requirements and judgment":
+                  - "Evaluation as Requirements": books/10-evaluation-safety-and-governance/01-evaluation-as-requirements.md
+                  - "Metrics and Human Judgment": books/10-evaluation-safety-and-governance/02-metrics-and-human-judgment.md
+              - "Stage evaluation and security":
+                  - "Evaluation by System Stage": books/10-evaluation-safety-and-governance/03-evaluation-by-system-stage.md
+                  - "Security of AI Systems": books/10-evaluation-safety-and-governance/04-security-of-ai-systems.md
+              - "Risk and governance":
+                  - "Responsible AI and Risk": books/10-evaluation-safety-and-governance/05-responsible-ai-and-risk.md
+                  - "Governance and Assurance": books/10-evaluation-safety-and-governance/06-governance-and-assurance.md
+          - "Training, Serving, and AI Operations":
+              - Overview: books/11-training-serving-and-ai-operations/index.md
+              - "Model adaptation and post-training":
+                  - "Choosing Adaptation": books/11-training-serving-and-ai-operations/01-choosing-adaptation.md
+                  - "Post-Training Methods": books/11-training-serving-and-ai-operations/02-post-training-methods.md
+              - "Datasets and inference infrastructure":
+                  - "Dataset Engineering": books/11-training-serving-and-ai-operations/03-dataset-engineering.md
+                  - "Inference Infrastructure": books/11-training-serving-and-ai-operations/04-inference-infrastructure.md
+              - "Deployment and operations":
+                  - "Deployment and Routing": books/11-training-serving-and-ai-operations/05-deployment-and-routing.md
+                  - "LLMOps": books/11-training-serving-and-ai-operations/06-llmops.md
+          - "Cloud and Enterprise AI Architecture":
+              - Overview: books/12-cloud-and-enterprise-ai-architecture/index.md
+              - "Architecture and trust boundaries":
+                  - "Enterprise AI Building Blocks": books/12-cloud-and-enterprise-ai-architecture/01-enterprise-ai-building-blocks.md
+                  - "Identity, Data, and Trust Boundaries": books/12-cloud-and-enterprise-ai-architecture/02-identity-data-and-trust-boundaries.md
+              - "AWS and Azure implementations":
+                  - "AWS Managed AI": books/12-cloud-and-enterprise-ai-architecture/03-aws-managed-ai.md
+                  - "Azure Managed AI": books/12-cloud-and-enterprise-ai-architecture/04-azure-managed-ai.md
+              - "Portability and operating model":
+                  - "Google Cloud and Portable Patterns": books/12-cloud-and-enterprise-ai-architecture/05-google-cloud-and-portable-patterns.md
+                  - "Enterprise Operating Model": books/12-cloud-and-enterprise-ai-architecture/06-enterprise-operating-model.md
+          - "Multimodal and Frontier Systems":
+              - Overview: books/13-multimodal-and-frontier-systems/index.md
+              - "Documents, vision, and audio":
+                  - "Vision and Document Intelligence": books/13-multimodal-and-frontier-systems/01-vision-and-document-intelligence.md
+                  - "Speech and Audio": books/13-multimodal-and-frontier-systems/02-speech-and-audio.md
+              - "Generative media and bounded action":
+                  - "Image and Video Generation": books/13-multimodal-and-frontier-systems/03-image-and-video-generation.md
+                  - "Computer Use and Embodied Action": books/13-multimodal-and-frontier-systems/04-computer-use-and-embodied-action.md
+              - "Emerging systems and evidence":
+                  - "Long Context, World Models, and Continual Learning": books/13-multimodal-and-frontier-systems/05-long-context-world-models-and-continual-learning.md
+                  - "How to Track the Frontier": books/13-multimodal-and-frontier-systems/06-how-to-track-the-frontier.md
+  # curriculum:end
   - Knowledge Areas:
       - Map: knowledge-areas/index.md
-  - Guided Lessons:
+  - Topic Index:
       - Lesson Catalog: lessons/index.md
   - Concepts:
       - Index: concepts/index.md
@@ -120,7 +394,7 @@ nav:
   - Labs:
       - Hands-on Start: labs/start-here.md
       - Lab Guide: labs/index.md
-      - Starter Notebooks: labs/notebooks/index.md
+      - Jupyter Notebooks: labs/notebooks/index.md
       - Code Samples: code-samples/index.md
   - Build Guides:
       - Guide Index: guides/index.md

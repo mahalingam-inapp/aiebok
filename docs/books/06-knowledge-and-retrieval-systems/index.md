@@ -1,76 +1,76 @@
-# Book 6 — Knowledge and Retrieval Systems
+# Knowledge and Retrieval Systems
 
-## Purpose
+Technical course 06 · 3 sections · 6 lectures · 10–12 hours of lecture and practice time, plus the project
 
 Build grounded knowledge systems whose ingestion, retrieval, generation, and citations can be evaluated separately.
 
-## Chapter learning path
-
-<div class="grid cards" markdown>
-
--   :material-numeric-1-circle:{ .lg .middle } __Knowledge Outside the Model__
-
-    Decide among direct context, search, databases, knowledge graphs, RAG, fine-tuning, and deterministic rules.
-
-    [Open chapter →](01-knowledge-outside-the-model.md)
-
--   :material-numeric-2-circle:{ .lg .middle } __Document Ingestion__
-
-    Preserve provenance while parsing documents, OCR, tables, images, metadata, permissions, versions, and deleti…
-
-    [Open chapter →](02-document-ingestion.md)
-
--   :material-numeric-3-circle:{ .lg .middle } __Retrieval__
-
-    Compare lexical, dense, sparse, hybrid, filtered, multi-query, parent-child, and late-interaction retrieval.
-
-    [Open chapter →](03-retrieval.md)
-
--   :material-numeric-4-circle:{ .lg .middle } __Ranking and Context Selection__
-
-    Use fusion, reranking, diversity, deduplication, compression, and token-aware packing.
-
-    [Open chapter →](04-ranking-and-context-selection.md)
-
--   :material-numeric-5-circle:{ .lg .middle } __RAG Generation and Citations__
-
-    Construct grounded prompts, handle missing evidence, attribute claims, validate citations, and avoid unsuppor…
-
-    [Open chapter →](05-rag-generation-and-citations.md)
-
--   :material-numeric-6-circle:{ .lg .middle } __Advanced and Enterprise RAG__
-
-    Study graph, multi-hop, adaptive, and agentic retrieval together with tenancy, freshness, security, resilienc…
-
-    [Open chapter →](06-advanced-and-enterprise-rag.md)
-
-</div>
+[Start the first lecture](01-knowledge-outside-the-model.md){ .md-button .md-button--primary }
+[Download the course notebook](../../assets/notebooks/06-knowledge-and-retrieval-systems.ipynb){ .md-button download }
 
 ## Entry prerequisites
 
-- Books 3–5
+- Courses 03–05 or equivalent experience
 - Embeddings and search
 - Structured model output
 
-## Book project
+## Course outline
+
+### Knowledge strategy and ingestion
+
+- [01 · Knowledge Outside the Model](01-knowledge-outside-the-model.md)
+- [02 · Document Ingestion](02-document-ingestion.md)
+
+**Checkpoint**
+
+Sketch source identifiers and chunk lineage for two versions of the same policy.
+
+### Retrieval and reranking
+
+- [03 · Retrieval](03-retrieval.md)
+- [04 · Ranking and Context Selection](04-ranking-and-context-selection.md)
+
+**Checkpoint**
+
+Compare two ranked lists and trace how reciprocal rank fusion combines them.
+
+### Grounded answers and enterprise constraints
+
+- [05 · RAG Generation and Citations](05-rag-generation-and-citations.md)
+- [06 · Advanced and Enterprise RAG](06-advanced-and-enterprise-rag.md)
+
+**Checkpoint**
+
+Define pass cases for authorized evidence, no relevant evidence, and a citation to the wrong passage.
+
+## Notebook workshop
+
+Build rankings with one shared candidate. Test how agreement affects rank before evaluating citation faithfulness separately.
+
+In the applied exercise for Lecture 05, you will evaluate grounded answers against an access boundary.
+
+The notebook includes each lecture's short demonstration and a checked exercise. For setup and execution, see [Course notebooks](../../labs/notebooks/index.md).
+
+<span id="book-project"></span>
+
+## Course project
 
 Deliver an enterprise RAG system with authorization, hybrid retrieval, reranking, citations, and stage-specific evaluation.
 
-The project should include a short specification, runnable artifact or architecture, evaluation evidence, failure analysis, and at least one ADR. Prefer a small well-measured system over a large demo with unclear behavior.
+Submit a short specification, an implementation or architecture, evidence from a baseline comparison, and one architecture decision record. Include one example that fails and explain how you would handle it.
 
 ## Suggested three-week schedule
 
-- **Week 1:** Chapters 1–2, concept notes, and quick checks.
-- **Week 2:** Chapters 3–4 and the runnable sample; begin the book project.
-- **Week 3:** Chapters 5–6, failure analysis, project evaluation, and written reflection.
+- **Week 1:** Complete the first section and its checkpoint.
+- **Week 2:** Complete the second section and start the project.
+- **Week 3:** Complete the final section and the notebook workshop. Evaluate and review the project.
 
 ## Assessment
 
 | Evidence | Weight |
 |---|---:|
-| Chapter knowledge checks | 20% |
+| Lecture knowledge checks | 20% |
 | Runnable exercises and failure cases | 30% |
-| Book project | 35% |
+| Course project | 35% |
 | Architecture defense and reflection | 15% |
 
 ## Anchor readings
@@ -80,4 +80,6 @@ The project should include a short specification, runnable artifact or architect
 
 ## Completion standard
 
-You can explain the key mechanisms, complete the practice in every chapter, pass your own mastery review, and defend the project design against simpler alternatives.
+Complete the lecture checks and section checkpoints, run the notebook workshop, and defend your project against a simpler alternative using the evidence you collected.
+
+[All courses](../../courses/index.md) · [Learning paths](../../getting-started/learning-paths/index.md)

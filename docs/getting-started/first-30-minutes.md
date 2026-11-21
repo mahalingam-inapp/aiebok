@@ -1,40 +1,15 @@
 # Your First 30 Minutes
 
-## 1. Install
+## If you want to learn without coding
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-```
+1. Choose [AI for Everyone](learning-paths/00-ai-for-everyone.md) or [AI for Managers and Product Leaders](learning-paths/01-product-technical-leader.md).
+2. Open the first course and start its first lecture. Make your own decision in the practice scenario before opening the example answer.
+3. Save a note with one thing you would try in your own workflow and one detail you would verify.
 
-On Windows PowerShell, activate with `.venv\Scripts\Activate.ps1`.
+## If you want to run code
 
-## 2. Preview
+1. Choose a [technical learning path](learning-paths/index.md), then open its first course.
+2. Read the first lecture and download the course workbook. Use the [Jupyter setup instructions](../labs/notebooks/index.md#set-up-jupyter) if you need a Python kernel.
+3. In the workbook, find the lecture by number. Predict the result, run the demonstration, and change one input to see what happens.
 
-```bash
-mkdocs serve
-```
-
-Open <http://127.0.0.1:8000>. Changes to Markdown refresh automatically.
-
-## 3. Personalize (optional)
-
-The site deploys without repository-specific configuration. Update the name, description, copyright, logo, and colors if desired. Add `site_url` only when you have chosen the final public URL.
-
-## 4. Validate
-
-```bash
-python scripts/validate_content.py
-mkdocs build --strict
-```
-
-## 5. Publish
-
-1. Create a GitHub repository named `aiebok`.
-2. Push this repository to its `main` branch.
-3. In **Settings → Pages**, select **GitHub Actions** as the source.
-4. The included workflow builds and deploys the site on each push to `main`.
-
-!!! tip "Custom domain"
-    Configure the domain in GitHub Pages, then add the final HTTPS address as `site_url` for canonical metadata and sitemap URLs.
+The [starter notebooks](../labs/start-here.md) also offer short exercises in search, RAG, agents, and evaluation.

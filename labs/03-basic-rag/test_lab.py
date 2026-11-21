@@ -19,8 +19,14 @@ def test_answer_includes_citation():
 
 
 def test_abstention_without_evidence():
-    text = answer("What is the company's stock price?")
+    text = answer("What is the stock price of the company?")
     assert "do not have relevant evidence" in text.lower()
+
+
+def test_answer_uses_requested_evidence_count():
+    question = "Compare expense claims and annual leave"
+    assert answer(question, k=1).count("[") == 1
+    assert answer(question, k=2).count("[") == 2
 
 
 def test_main_script_runs():

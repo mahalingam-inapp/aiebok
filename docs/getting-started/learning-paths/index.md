@@ -1,68 +1,29 @@
 # Learning Paths
 
-Role-based **sequences** that mix chapters, labs, build guides, and architecture studios in the order we recommend. Paths are sorted from **least to most** technical depth and time commitment.
+Choose a core path for your role or a specialist path for a specific project. Each path lists its courses in study order and describes the experience needed to start.
 
-Each path has its **own page** so you can bookmark or share a direct link.
+## Core paths
 
-!!! tip "Keep your path page open"
-    Every step link opens in a **new tab** so you can treat the path page as your checklist while reading or coding.
+| Path | Technical level | Designed for |
+|---|---|---|
+| [AI for Everyone](00-ai-for-everyone.md) | No code | People who use or encounter AI at work or in everyday life. |
+| [AI for Managers and Product Leaders](01-product-technical-leader.md) | No code · applied | Managers, product leaders, sponsors, and policy or operations teams. |
+| [Software Engineer Building with AI](06-software-engineer.md) | Technical foundations | Developers adding model-backed features to existing applications. |
+| [Coding-Agent Specialist](02-coding-agent-specialist.md) | Intermediate | Software engineers building supervised coding workflows. |
+| [AI Systems Architect](03-software-architect.md) | Advanced | Architects designing across applications, data, access, and operations. |
+| [ML Engineer](04-ml-engineer.md) | Advanced · model lifecycle | Engineers specializing in training, measurement, serving, and monitoring. |
+| [AI Engineer](05-ai-engineer.md) | Advanced · full curriculum | Practitioners building, evaluating, deploying, and operating end-to-end AI systems. |
 
-## Choose a path
+## Specialist paths
 
-<div class="grid cards" markdown>
+| Path | Technical level | Designed for |
+|---|---|---|
+| [Model Selection for Leaders](model-selection-leaders.md) | No code · specialist | Product owners, program leads, and sponsors making a model or vendor decision. |
+| [Forward-Deployed AI Engineer](forward-deployed-ai-engineer.md) | Specialist · customer delivery | Engineers delivering a pilot inside a customer’s existing workflow. |
+| [LLM Evaluation & Model Selection Engineer](llm-evaluation-model-selection.md) | Specialist · evaluation | Engineers who own model comparisons, grading protocols, or release evidence. |
+| [Retrieval & RAG Engineer](retrieval-rag-engineer.md) | Specialist · information retrieval | Engineers responsible for enterprise search, knowledge-grounded features, and citation quality. |
+| [Agent Runtime & MCP Engineer](agent-runtime-mcp-engineer.md) | Advanced specialist · runtime | Engineers building supervised, resumable workflows with tool interfaces. |
+| [LLM Adaptation & Inference Engineer](llm-adaptation-inference-engineer.md) | Advanced specialist · models | ML engineers selecting and adapting models and measuring serving trade-offs. |
+| [AI Reliability & Release Engineer](ai-reliability-release-engineer.md) | Advanced specialist · operations | Platform, ML operations, and reliability engineers operating model-backed features. |
 
--   :material-map-legend:{ .lg .middle } __Product & technical leader__
-
-    **~8 weeks** · 17 steps · Product managers and technical leaders who need capability literacy, risk framing, and build-v…
-
-    [Open path →](01-product-technical-leader.md)
-
--   :material-robot:{ .lg .middle } __Coding-agent specialist__
-
-    **~10 weeks** · 36 steps · Software engineers building spec-to-code workflows, tool-using agents, and guarded automation…
-
-    [Open path →](02-coding-agent-specialist.md)
-
--   :material-sitemap:{ .lg .middle } __Software architect__
-
-    **~12 weeks** · 35 steps · Architects designing production AI systems who need cross-cutting views of models, retrieval,…
-
-    [Open path →](03-software-architect.md)
-
--   :material-chart-line:{ .lg .middle } __ML engineer__
-
-    **~16 weeks** · 45 steps · Machine-learning engineers focused on training pipelines, embeddings, transformers, serving, a…
-
-    [Open path →](04-ml-engineer.md)
-
--   :material-school:{ .lg .middle } __AI engineer__
-
-    **~24 weeks** · 161 steps · Practitioners building end-to-end AI systems who want the full AIEBOK arc—foundations through…
-
-    [Open path →](05-ai-engineer.md)
-
-</div>
-
-## All paths
-
-| # | Path | Duration | Steps |
-|:---:|---|---|---:|
-| 1 | [Product & technical leader](01-product-technical-leader.md) | ~8 weeks | 17 |
-| 2 | [Coding-agent specialist](02-coding-agent-specialist.md) | ~10 weeks | 36 |
-| 3 | [Software architect](03-software-architect.md) | ~12 weeks | 35 |
-| 4 | [ML engineer](04-ml-engineer.md) | ~16 weeks | 45 |
-| 5 | [AI engineer](05-ai-engineer.md) | ~24 weeks | 161 |
-
-## How to use a path
-
-1. Pick the path that matches your role and available time.
-2. Work through steps **in order**—read the chapter, then run the matching lab when one appears.
-3. Starter-lab steps link to **notebooks in the repository**; chapter and guide steps stay on this site.
-4. When a path references an architecture studio, sketch an ADR or threat model before moving on.
-
-## Related
-
-- [Newcomer guide](../newcomer-guide.md){target="_blank" rel="noopener"}
-- [Hands-on start](../../labs/start-here.md){target="_blank" rel="noopener"}
-- [Book catalog](../../books/index.md){target="_blank" rel="noopener"}
-- [Build guides](../../guides/index.md){target="_blank" rel="noopener"}
+[See the coverage review and external benchmarks](../../editorial/learning-path-coverage.md).

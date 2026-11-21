@@ -15,29 +15,6 @@ def _clip(text: str, limit: int = 110) -> str:
     return clean[: limit - 1].rstrip() + "…"
 
 
-def chapter_icon(chapter_no: int) -> str:
-    if 1 <= chapter_no <= 9:
-        return f":material-numeric-{chapter_no}-circle:"
-    return ":material-book-open-page-variant:"
-
-
-def render_chapter_cards(chapters: list[tuple[int, str, str, str]]) -> str:
-    lines = ["## Chapter learning path", "", '<div class="grid cards" markdown>', ""]
-    for chapter_no, title, summary, filename in chapters:
-        lines.extend(
-            [
-                f"-   {chapter_icon(chapter_no)}{{ .lg .middle }} __{title}__",
-                "",
-                f"    {_clip(summary)}",
-                "",
-                f"    [Open chapter →]({filename})",
-                "",
-            ]
-        )
-    lines.extend(["</div>", ""])
-    return "\n".join(lines)
-
-
 BOOK_ICONS = [
     "brain", "chart-line", "text-box", "hub", "message-text", "database-search",
     "source-branch", "robot", "application-brackets", "shield-check", "server", "cloud", "rocket-launch",
@@ -107,21 +84,21 @@ def home_cards(stats) -> str:
 
 -   :material-map-legend:{{ .lg .middle }} __Start with orientation__
 
-    Newcomer guide, first 30 minutes, and role-based learning paths.
+    Choose a role-based path from no-code AI literacy to advanced engineering.
 
-    [Newcomer guide →](getting-started/newcomer-guide.md)
+    [Learning paths →](getting-started/learning-paths/index.md)
 
 -   :material-book-open-variant:{{ .lg .middle }} __Read sequentially__
 
-    {stats.books} guided books · {stats.chapters} chapters with diagrams and knowledge checks.
+    {stats.courses} courses with sectioned lectures, practice, and projects.
 
-    [Book catalog →](books/index.md)
+    [Course catalog →](courses/index.md)
 
 -   :material-flask:{{ .lg .middle }} __Build hands-on__
 
-    {stats.starter_labs} starter labs + {stats.chapter_labs} chapter labs with notebooks and tests.
+    {stats.workbooks} course workbooks and {stats.starter_labs} starter notebooks.
 
-    [Hands-on start →](labs/start-here.md)
+    [Jupyter notebooks →](labs/notebooks/index.md)
 
 -   :material-card-search:{{ .lg .middle }} __Look up fast__
 
@@ -129,11 +106,11 @@ def home_cards(stats) -> str:
 
     [Concept index →](concepts/index.md)
 
--   :material-school:{{ .lg .middle }} __Short lessons__
+-   :material-school:{{ .lg .middle }} __Explore by topic__
 
-    {stats.total_lessons} guided lessons linked to chapters, objectives, and labs.
+    {stats.total_lessons} topic guides linked to the curriculum.
 
-    [Lesson catalog →](lessons/index.md)
+    [Topic index →](lessons/index.md)
 
 -   :material-cloud:{{ .lg .middle }} __Design for production__
 
@@ -150,9 +127,9 @@ def start_here_cards(_stats) -> str:
 
 -   :material-compass:{{ .lg .middle }} __Learn sequentially__
 
-    Follow guided books or knowledge-area maps chapter by chapter.
+    Choose a learning path or browse individual courses.
 
-    [Book catalog →](../books/index.md)
+    [Course catalog →](../courses/index.md) · [Learning paths →](learning-paths/index.md)
 
 -   :material-magnify:{{ .lg .middle }} __Look up a concept__
 
@@ -169,67 +146,11 @@ def start_here_cards(_stats) -> str:
 </div>"""
 
 
-def newcomer_nav_cards(stats) -> str:
-    return f"""\
-<div class="grid cards" markdown>
-
--   :material-home:{{ .lg .middle }} __Start Here__
-
-    Orientation, setup, and first-week plan.
-
-    [You are here](newcomer-guide.md)
-
--   :material-bookshelf:{{ .lg .middle }} __Guided Books__
-
-    {stats.books} books · {stats.chapters} chapters.
-
-    [Book catalog →](../books/index.md)
-
--   :material-sitemap:{{ .lg .middle }} __Knowledge Areas__
-
-    {stats.knowledge_areas} curriculum maps with lesson paths.
-
-    [KA map →](../knowledge-areas/index.md)
-
--   :material-notebook:{{ .lg .middle }} __Guided Lessons__
-
-    {stats.total_lessons} lessons ({stats.ka_lessons} KA + {stats.supplemental_lessons} supplemental).
-
-    [Lesson catalog →](../lessons/index.md)
-
--   :material-lightbulb:{{ .lg .middle }} __Concepts__
-
-    {stats.concept_cards} reference cards.
-
-    [Featured concepts →](../concepts/index.md)
-
--   :material-puzzle:{{ .lg .middle }} __Patterns & Architectures__
-
-    {stats.patterns_total} patterns · {stats.architectures} studios.
-
-    [Pattern library →](../patterns/index.md)
-
--   :material-flask-outline:{{ .lg .middle }} __Labs__
-
-    {stats.total_labs} runnable labs.
-
-    [Hands-on start →](../labs/start-here.md)
-
--   :material-book-alphabet:{{ .lg .middle }} __Reference__
-
-    Glossary, prerequisites, and question index.
-
-    [Glossary →](../reference/glossary.md)
-
-</div>"""
-
-
 def inject_page_cards() -> None:
     stats = collect_site_stats()
     for path, marker, body in [
         (ROOT / "docs/index.md", "home-cards", home_cards(stats)),
         (ROOT / "docs/getting-started/index.md", "start-cards", start_here_cards(stats)),
-        (ROOT / "docs/getting-started/newcomer-guide.md", "nav-cards", newcomer_nav_cards(stats)),
     ]:
         replace_marked_block(path, marker, body)
 

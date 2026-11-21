@@ -1,5 +1,4 @@
 """Lab 03: observable retrieval/context/generation stages without an LLM API."""
-from pathlib import Path
 import re
 
 PASSAGES = [
@@ -7,10 +6,11 @@ PASSAGES = [
     ("expenses", "Expense claims must be submitted within 30 days of purchase."),
     ("security", "Suspected credential exposure must be reported immediately."),
 ]
+STOP_WORDS = {"a", "an", "the", "of", "is", "must", "be", "i"}
 
 
 def words(text: str) -> set[str]:
-    return set(re.findall(r"[a-z0-9]+", text.lower()))
+    return set(re.findall(r"[a-z0-9]+", text.lower())) - STOP_WORDS
 
 
 def retrieve(question: str, k: int = 2) -> list[tuple[int, str, str]]:
@@ -19,8 +19,8 @@ def retrieve(question: str, k: int = 2) -> list[tuple[int, str, str]]:
     return sorted(scored, reverse=True)[:k]
 
 
-def answer(question: str) -> str:
-    evidence = [item for item in retrieve(question) if item[0] > 0]
+def answer(question: str, k: int = 2) -> str:
+    evidence = [item for item in retrieve(question, k=k) if item[0] > 0]
     if not evidence:
         return "I do not have relevant evidence to answer that question."
     citations = " ".join(f"[{source}]" for _, source, _ in evidence)

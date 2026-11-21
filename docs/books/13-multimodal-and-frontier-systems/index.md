@@ -1,76 +1,74 @@
-# Book 13 — Multimodal and Frontier Systems
+# Multimodal and Frontier Systems
 
-## Purpose
+Technical course 13 · 3 sections · 6 lectures · 10–12 hours of lecture and practice time, plus the project
 
 Understand multimodal pipelines and evaluate emerging AI capabilities through enduring principles and evidence.
 
-## Chapter learning path
-
-<div class="grid cards" markdown>
-
--   :material-numeric-1-circle:{ .lg .middle } __Vision and Document Intelligence__
-
-    Understand image representations, vision-language models, OCR, layout, tables, charts, spatial relationships,…
-
-    [Open chapter →](01-vision-and-document-intelligence.md)
-
--   :material-numeric-2-circle:{ .lg .middle } __Speech and Audio__
-
-    Connect ASR, diarization, audio understanding, TTS, streaming, latency, consent, and voice safety.
-
-    [Open chapter →](02-speech-and-audio.md)
-
--   :material-numeric-3-circle:{ .lg .middle } __Image and Video Generation__
-
-    Study diffusion, conditioning, latent representations, control, evaluation, provenance, copyright, and conten…
-
-    [Open chapter →](03-image-and-video-generation.md)
-
--   :material-numeric-4-circle:{ .lg .middle } __Computer Use and Embodied Action__
-
-    Model perception–action loops, UI grounding, coordinate and semantic actions, recovery, permissions, and phys…
-
-    [Open chapter →](04-computer-use-and-embodied-action.md)
-
--   :material-numeric-5-circle:{ .lg .middle } __Long Context, World Models, and Continual Learning__
-
-    Examine active directions without mistaking larger demonstrations for solved engineering problems.
-
-    [Open chapter →](05-long-context-world-models-and-continual-learning.md)
-
--   :material-numeric-6-circle:{ .lg .middle } __How to Track the Frontier__
-
-    Develop research literacy, evidence hierarchies, reproduction habits, forecasting, and a review cadence for a…
-
-    [Open chapter →](06-how-to-track-the-frontier.md)
-
-</div>
+[Start the first lecture](01-vision-and-document-intelligence.md){ .md-button .md-button--primary }
+[Download the course notebook](../../assets/notebooks/13-multimodal-and-frontier-systems.ipynb){ .md-button download }
 
 ## Entry prerequisites
 
-- Books 3–12 as relevant
+- Courses 03–12 as relevant, or equivalent experience
 - Evidence-oriented research reading
 - Risk awareness
 
-## Book project
+## Course outline
+
+### Documents, vision, and audio
+
+- [01 · Vision and Document Intelligence](01-vision-and-document-intelligence.md)
+- [02 · Speech and Audio](02-speech-and-audio.md)
+
+**Checkpoint**
+
+Annotate one extracted document field with a page reference and one speech result with a time range.
+
+### Generative media and bounded action
+
+- [03 · Image and Video Generation](03-image-and-video-generation.md)
+- [04 · Computer Use and Embodied Action](04-computer-use-and-embodied-action.md)
+
+**Checkpoint**
+
+Define one review gate for a generated asset and one approval condition for an irreversible action.
+
+### Emerging systems and evidence
+
+- [05 · Long Context, World Models, and Continual Learning](05-long-context-world-models-and-continual-learning.md)
+- [06 · How to Track the Frontier](06-how-to-track-the-frontier.md)
+
+**Checkpoint**
+
+Write a falsifiable claim about a new capability and define the baseline and evidence needed.
+
+## Notebook workshop
+
+Inspect provenance and the confidence gate on the bundled evidence. Propose a separate review rule for records where confidence is unavailable.
+
+The notebook includes each lecture's short demonstration and a checked exercise. For setup and execution, see [Course notebooks](../../labs/notebooks/index.md).
+
+<span id="book-project"></span>
+
+## Course project
 
 Build a multimodal document system and reproduce one frontier claim against a strong baseline.
 
-The project should include a short specification, runnable artifact or architecture, evaluation evidence, failure analysis, and at least one ADR. Prefer a small well-measured system over a large demo with unclear behavior.
+Submit a short specification, an implementation or architecture, evidence from a baseline comparison, and one architecture decision record. Include one example that fails and explain how you would handle it.
 
 ## Suggested three-week schedule
 
-- **Week 1:** Chapters 1–2, concept notes, and quick checks.
-- **Week 2:** Chapters 3–4 and the runnable sample; begin the book project.
-- **Week 3:** Chapters 5–6, failure analysis, project evaluation, and written reflection.
+- **Week 1:** Complete the first section and its checkpoint.
+- **Week 2:** Complete the second section and start the project.
+- **Week 3:** Complete the final section and the notebook workshop. Evaluate and review the project.
 
 ## Assessment
 
 | Evidence | Weight |
 |---|---:|
-| Chapter knowledge checks | 20% |
+| Lecture knowledge checks | 20% |
 | Runnable exercises and failure cases | 30% |
-| Book project | 35% |
+| Course project | 35% |
 | Architecture defense and reflection | 15% |
 
 ## Anchor readings
@@ -80,4 +78,6 @@ The project should include a short specification, runnable artifact or architect
 
 ## Completion standard
 
-You can explain the key mechanisms, complete the practice in every chapter, pass your own mastery review, and defend the project design against simpler alternatives.
+Complete the lecture checks and section checkpoints, run the notebook workshop, and defend your project against a simpler alternative using the evidence you collected.
+
+[All courses](../../courses/index.md) · [Learning paths](../../getting-started/learning-paths/index.md)

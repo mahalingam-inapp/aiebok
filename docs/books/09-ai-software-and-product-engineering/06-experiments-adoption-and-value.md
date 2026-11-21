@@ -1,10 +1,14 @@
 # 9.6 — Experiments, Adoption, and Value
 
-*Book 9: AI Software and Product Engineering · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Experience and value · Lecture 6 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/09-ai-software-and-product-engineering.ipynb){ download } · Use the exercise under **Lecture 06**.
 
 ## Before you begin
 
-- Books 5–8
+- Courses 05–08 or equivalent experience
 - Software testing
 - Product discovery basics
 
@@ -144,6 +148,12 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Name a user-facing fallback and a guardrail metric for a pilot.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/09-ai-software-and-product-engineering.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 9.6 — experiments, adoption, and value:
@@ -229,4 +239,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← Human-Centered AI UX](05-human-centered-ai-ux.md) · [Course outline](index.md) · [Course project →](index.md#course-project)

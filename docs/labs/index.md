@@ -2,7 +2,7 @@
 
 **New?** Start with **[Hands-on start](start-here.md)** — five starter labs in order with book chapters and notebook links.
 
-**78 chapter labs** plus five foundational starter labs with notebooks. See [catalog.md](catalog.md) for the full list.
+Browse [course workbooks and Jupyter setup](notebooks/index.md), or use the [lab catalog](catalog.md) for individual lecture scripts.
 
 ## Starter labs (with notebooks)
 

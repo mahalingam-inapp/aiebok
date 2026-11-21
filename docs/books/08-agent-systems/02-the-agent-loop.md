@@ -1,10 +1,14 @@
 # 8.2 — The Agent Loop
 
-*Book 8: Agent Systems · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Workflows and agent loops · Lecture 2 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/08-agent-systems.ipynb){ download } · Use the exercise under **Lecture 02**.
 
 ## Before you begin
 
-- Books 5–7
+- Courses 05–07 or equivalent experience
 - State machines
 - Tools and evaluation
 
@@ -146,6 +150,12 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Identify where a fixed workflow is sufficient. Write an invariant for a bounded loop.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/08-agent-systems.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 8.2 — the agent loop:
@@ -231,4 +241,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← Agent or Workflow?](01-agent-or-workflow.md) · [Course outline](index.md) · [Agent Memory and Recovery →](03-agent-memory-and-recovery.md)

@@ -132,13 +132,13 @@ def render_lessons_index(
 ) -> str:
     stats = collect_site_stats()
     lines = [
-        "# Guided Lessons",
+        "# Topic Index",
         "",
-        f"**{stats.total_lessons} guided lessons** — {stats.ka_lessons} aligned to knowledge areas "
+        f"**{stats.total_lessons} topic guides** — {stats.ka_lessons} aligned to knowledge areas "
         f"plus {stats.supplemental_lessons} supplemental cross-cutting lessons.",
         "",
-        "Each row links the lesson, chapter reading, matching lab, and objective. "
-        "Expand a knowledge area or use search (`/`).",
+        "Each row links a topic guide to a lecture, objective, and available lab. "
+        "For a section-by-section sequence, use the [course catalog](../courses/index.md).",
         "",
     ]
     for ka_file, ka_title, items in ka_groups:

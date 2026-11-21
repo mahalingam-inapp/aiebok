@@ -1,6 +1,6 @@
 # Guided Books
 
-The thirteen books are the primary reading path through AIEBOK. Knowledge-area and concept pages remain the reusable reference layer.
+The thirteen technical courses are also available as guided books. For the complete catalog, including no-code learning, see [Courses](../courses/index.md).
 
 ## Reading journey
 

@@ -1,76 +1,74 @@
-# Book 2 — Machine Learning Systems
+# Machine Learning Systems
 
-## Purpose
+Technical course 02 · 3 sections · 6 lectures · 10–12 hours of lecture and practice time, plus the project
 
 Learn how models are trained, validated, diagnosed, and integrated into reliable software systems.
 
-## Chapter learning path
-
-<div class="grid cards" markdown>
-
--   :material-numeric-1-circle:{ .lg .middle } __Problems, Data, and Baselines__
-
-    Frame an ML task before choosing an algorithm. Define the unit of prediction, target, decision, population, t…
-
-    [Open chapter →](01-problems-data-and-baselines.md)
-
--   :material-numeric-2-circle:{ .lg .middle } __Supervised Learning__
-
-    Understand regression and classification as function approximation under a chosen loss. Connect linear models…
-
-    [Open chapter →](02-supervised-learning.md)
-
--   :material-numeric-3-circle:{ .lg .middle } __Unsupervised and Representation Learning__
-
-    Use unlabeled data to discover structure, compress observations, and learn reusable representations.
-
-    [Open chapter →](03-unsupervised-and-representation-learning.md)
-
--   :material-numeric-4-circle:{ .lg .middle } __Neural Networks__
-
-    Build the mental model of layers, activations, losses, backpropagation, initialization, normalization, and op…
-
-    [Open chapter →](04-neural-networks.md)
-
--   :material-numeric-5-circle:{ .lg .middle } __Evaluation and Error Analysis__
-
-    Choose metrics from the decision context, estimate uncertainty, inspect slices, and turn mistakes into the ne…
-
-    [Open chapter →](05-evaluation-and-error-analysis.md)
-
--   :material-numeric-6-circle:{ .lg .middle } __The ML Lifecycle__
-
-    Connect data, experiments, models, releases, monitoring, drift, retraining, and retirement into an accountabl…
-
-    [Open chapter →](06-the-ml-lifecycle.md)
-
-</div>
+[Start the first lecture](01-problems-data-and-baselines.md){ .md-button .md-button--primary }
+[Download the course notebook](../../assets/notebooks/02-machine-learning-systems.ipynb){ .md-button download }
 
 ## Entry prerequisites
 
-- Book 1 or equivalent
+- Course 01 or equivalent experience
 - Basic Python
 - Graphs and averages
 
-## Book project
+## Course outline
+
+### Problem framing and supervised models
+
+- [01 · Problems, Data, and Baselines](01-problems-data-and-baselines.md)
+- [02 · Supervised Learning](02-supervised-learning.md)
+
+**Checkpoint**
+
+Define a prediction cutoff and a naive baseline. Identify a feature available only after the cutoff.
+
+### Representations and neural networks
+
+- [03 · Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md)
+- [04 · Neural Networks](04-neural-networks.md)
+
+**Checkpoint**
+
+Compare fitting a line with learning an intermediate representation. Name an input for which a line would be inadequate.
+
+### Evidence and lifecycle
+
+- [05 · Evaluation and Error Analysis](05-evaluation-and-error-analysis.md)
+- [06 · The ML Lifecycle](06-the-ml-lifecycle.md)
+
+**Checkpoint**
+
+Define a holdout slice and a rollback trigger. Explain which metric would detect the failure first.
+
+## Notebook workshop
+
+Add a held-out point and compare the trained line with the mean of the training labels. Keep the held-out point outside DATA.
+
+The notebook includes each lecture's short demonstration and a checked exercise. For setup and execution, see [Course notebooks](../../labs/notebooks/index.md).
+
+<span id="book-project"></span>
+
+## Course project
 
 Deliver a prediction service with a data card, baseline, evaluation report, error analysis, and monitoring plan.
 
-The project should include a short specification, runnable artifact or architecture, evaluation evidence, failure analysis, and at least one ADR. Prefer a small well-measured system over a large demo with unclear behavior.
+Submit a short specification, an implementation or architecture, evidence from a baseline comparison, and one architecture decision record. Include one example that fails and explain how you would handle it.
 
 ## Suggested three-week schedule
 
-- **Week 1:** Chapters 1–2, concept notes, and quick checks.
-- **Week 2:** Chapters 3–4 and the runnable sample; begin the book project.
-- **Week 3:** Chapters 5–6, failure analysis, project evaluation, and written reflection.
+- **Week 1:** Complete the first section and its checkpoint.
+- **Week 2:** Complete the second section and start the project.
+- **Week 3:** Complete the final section and the notebook workshop. Evaluate and review the project.
 
 ## Assessment
 
 | Evidence | Weight |
 |---|---:|
-| Chapter knowledge checks | 20% |
+| Lecture knowledge checks | 20% |
 | Runnable exercises and failure cases | 30% |
-| Book project | 35% |
+| Course project | 35% |
 | Architecture defense and reflection | 15% |
 
 ## Anchor readings
@@ -80,4 +78,6 @@ The project should include a short specification, runnable artifact or architect
 
 ## Completion standard
 
-You can explain the key mechanisms, complete the practice in every chapter, pass your own mastery review, and defend the project design against simpler alternatives.
+Complete the lecture checks and section checkpoints, run the notebook workshop, and defend your project against a simpler alternative using the evidence you collected.
+
+[All courses](../../courses/index.md) · [Learning paths](../../getting-started/learning-paths/index.md)

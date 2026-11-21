@@ -2,6 +2,8 @@
 
 An open, mobile-friendly **AI Engineering Body of Knowledge** built with Markdown, MkDocs Material, and GitHub Pages.
 
+Choose a [learning path](docs/getting-started/learning-paths/index.md) or browse the [course catalog](docs/courses/index.md). Lectures are grouped into sections within each course.
+
 ## Start locally
 
 ```bash
@@ -11,14 +13,16 @@ python -m pip install -r requirements.txt
 mkdocs serve
 ```
 
-Open <http://127.0.0.1:8000>. See `docs/getting-started/first-30-minutes.md` for the guided setup.
+Open <http://127.0.0.1:8000>. Learners can find a suggested first session in [Your First 30 Minutes](docs/getting-started/first-30-minutes.md).
 
 To publish, push to a GitHub repository, open **Settings → Pages**, and choose **GitHub Actions**. No username, repository name, backend, or secrets are required.
 
 ## What is included
 
 <!-- site-stats:readme:start -->
-- A complete 20-knowledge-area curriculum (13 books, 78 chapters)
+- 14 role-based learning paths, 29 courses, and 142 lectures
+- 23 downloadable course workbooks and 5 starter notebooks
+- 20 knowledge-area maps
 - 361 concept cards, 100 patterns, 25 architecture studios
 - 13 build guides · 26 cloud capability guides
 - 5 runnable starter labs (+ 78 chapter labs in the repo)
@@ -39,14 +43,16 @@ python scripts/generate_lessons.py
 python scripts/generate_reference_views.py
 python scripts/generate_featured_concepts.py
 python scripts/generate_lab_notebooks.py
+python scripts/generate_learning_paths.py
 python scripts/generate_site_stats.py
 python scripts/learning_cards.py
-python scripts/generate_learning_paths.py
 python scripts/generate_spec_driven.py
 python scripts/validate_content.py
 python scripts/audit_book_coverage.py
 mkdocs build --strict
 ```
+
+After installing the notebook requirements, run `python scripts/check_notebooks.py` to validate and execute every workbook and starter notebook.
 
 ## GitHub Pages hosting
 
@@ -55,16 +61,16 @@ The published site is **static HTML only** (MkDocs → GitHub Actions → Pages)
 | Need | Where |
 |---|---|
 | Read docs, search, concept cards | Hosted site |
+| Course workbooks | [Jupyter Notebooks](docs/labs/notebooks/index.md) in the site |
 | Starter lab notebooks | <a href="https://github.com/mahalingam-inapp/aiebok/tree/main/labs" target="_blank" rel="noopener"><code>labs/*/lab.ipynb</code></a> in the repo — start at **Labs → Hands-on Start** on the site |
 | Python labs | Local machine, Codespaces, or Dev Container (`.devcontainer/`) |
 
 ## Dev Container / Codespaces
 
-Open the repo in GitHub Codespaces or VS Code Dev Containers for Python 3.12, Jupyter, and MkDocs preinstalled:
+Open the repo in GitHub Codespaces or a VS Code Dev Container to install Jupyter and MkDocs automatically. For local notebook use, run `python -m pip install -r requirements-notebooks.txt` in the active virtual environment.
 
 ```bash
-mkdocs serve
-jupyter lab labs/01-cosine-similarity/lab.ipynb
+jupyter lab docs/assets/notebooks/01-foundations-of-intelligence.ipynb
 ```
 
 ## License

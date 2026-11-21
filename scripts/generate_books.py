@@ -18,7 +18,8 @@ from chapter_enrichments import (
     render_worked_example,
 )
 from concept_library import render_core_concepts
-from learning_cards import render_book_catalog_cards, render_book_cluster_cards, render_chapter_cards
+from course_catalog import TECHNICAL_COURSES
+from learning_cards import render_book_catalog_cards, render_book_cluster_cards
 from spec_driven_content import render_chapter_spec_section
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,6 +28,14 @@ BOOKS_DIR = ROOT / "docs" / "books"
 
 def slug(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+
+
+def course_slug(number: int, title: str) -> str:
+    return f"{number:02d}-{slug(title)}"
+
+
+def chapter_filename(number: int, title: str) -> str:
+    return f"{number:02d}-{slug(title)}.md"
 
 
 BOOKS = [
@@ -243,18 +252,18 @@ WORKED_SCENARIOS = [
 
 PREREQUISITES = [
     ["No AI background required", "Comfort reading simple Python", "Basic algebra"],
-    ["Book 1 or equivalent", "Basic Python", "Graphs and averages"],
-    ["Books 1–2", "Vectors and dot products", "Basic text processing"],
-    ["Books 1–3", "Matrix multiplication intuition", "Neural-network basics"],
-    ["Book 4", "Model inference", "Tokens and context windows"],
-    ["Books 3–5", "Embeddings and search", "Structured model output"],
-    ["Books 1 and 4–6", "Search and planning", "Typed software interfaces"],
-    ["Books 5–7", "State machines", "Tools and evaluation"],
-    ["Books 5–8", "Software testing", "Product discovery basics"],
-    ["Books 5–9", "Statistics intuition", "Threat-model basics"],
-    ["Books 2, 4, and 10", "Containers and APIs", "Performance measurement"],
-    ["Books 5–11", "Cloud and identity fundamentals", "Architecture documentation"],
-    ["Books 3–12 as relevant", "Evidence-oriented research reading", "Risk awareness"],
+    ["Course 01 or equivalent experience", "Basic Python", "Graphs and averages"],
+    ["Courses 01–02 or equivalent experience", "Vectors and dot products", "Basic text processing"],
+    ["Courses 01–03 or equivalent experience", "Matrix multiplication intuition", "Neural-network basics"],
+    ["Course 04 or equivalent experience", "Model inference", "Tokens and context windows"],
+    ["Courses 03–05 or equivalent experience", "Embeddings and search", "Structured model output"],
+    ["Courses 01 and 04–06 or equivalent experience", "Search and planning", "Typed software interfaces"],
+    ["Courses 05–07 or equivalent experience", "State machines", "Tools and evaluation"],
+    ["Courses 05–08 or equivalent experience", "Software testing", "Product discovery basics"],
+    ["Test experience with model-backed systems, or Courses 05–09", "Statistics intuition", "Threat-model basics"],
+    ["Courses 02, 04, and 10 or equivalent experience", "Containers and APIs", "Performance measurement"],
+    ["Courses 05–11 or equivalent experience", "Cloud and identity fundamentals", "Architecture documentation"],
+    ["Courses 03–12 as relevant, or equivalent experience", "Evidence-oriented research reading", "Risk awareness"],
 ]
 
 READINGS = [
@@ -313,9 +322,34 @@ def render_chapter(book_no: int, chapter_no: int, book: dict, chapter: tuple) ->
     reading_lines = "\n".join(f"- {item}" for item in READINGS[book_no - 1])
     expected = EXPECTED_OBSERVATIONS[book_no - 1]
     spec_section = render_chapter_spec_section(book_no, chapter_no, title)
+    course = TECHNICAL_COURSES[book_no - 1]
+    section = (chapter_no - 1) // 2
+    notebook = f"../../assets/notebooks/{course_slug(book_no, book['title'])}.ipynb"
+    previous = (
+        f"[← {book['chapters'][chapter_no - 2][0]}]"
+        f"({chapter_filename(chapter_no - 1, book['chapters'][chapter_no - 2][0])})"
+        if chapter_no > 1 else ""
+    )
+    following = (
+        f"[{book['chapters'][chapter_no][0]} →]"
+        f"({chapter_filename(chapter_no + 1, book['chapters'][chapter_no][0])})"
+        if chapter_no < len(book["chapters"]) else "[Course project →](index.md#course-project)"
+    )
+    navigation = " · ".join(item for item in (previous, "[Course outline](index.md)", following) if item)
+    applied = ""
+    if course.applied and course.applied.lecture == chapter_no:
+        exercise = course.applied
+        applied = (
+            f"\n\n### {exercise.title}\n\n{exercise.instructions}"
+            f"\n\n```python\n{exercise.code.strip()}\n```"
+        )
     return f"""# {book_no}.{chapter_no} — {title}
 
-*Book {book_no}: {book['title']} · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · {course.sections[section]} · Lecture {chapter_no} of {len(book["chapters"])}
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook]({notebook}){{ download }} · Use the exercise under **Lecture {chapter_no:02d}**.
 
 ## Before you begin
 
@@ -374,6 +408,12 @@ This is a **book-level sample**. Its relevance to this chapter is the boundary b
 
 {practice_block}
 
+**Section checkpoint**
+
+{course.checks[section]}
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook]({notebook}){{ download }} contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.{applied}
+
 {spec_section}
 
 ## Architecture lens
@@ -414,49 +454,72 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+{navigation}
 """
 
 
 def render_book_index(book_no: int, book: dict, chapter_files: list[tuple[str, str]]) -> str:
     prerequisite_lines = "\n".join(f"- {item}" for item in PREREQUISITES[book_no - 1])
     reading_lines = "\n".join(f"- {item}" for item in READINGS[book_no - 1])
-    chapter_cards = render_chapter_cards(
-        [
-            (i, title, book["chapters"][i - 1][1], filename)
-            for i, (title, filename) in enumerate(chapter_files, 1)
-        ]
+    course = TECHNICAL_COURSES[book_no - 1]
+    sections = []
+    for index, (section, check) in enumerate(zip(course.sections, course.checks, strict=True)):
+        start = index * 2
+        lectures = "\n".join(
+            f"- [{number:02d} · {title}]({filename})"
+            for number, (title, filename) in enumerate(chapter_files[start:start + 2], start + 1)
+        )
+        sections.append(f"### {section}\n\n{lectures}\n\n**Checkpoint**\n\n{check}")
+    outline = "\n\n".join(sections)
+    notebook = f"../../assets/notebooks/{course_slug(book_no, book['title'])}.ipynb"
+    applied = (
+        f"\n\nIn the applied exercise for Lecture {course.applied.lecture:02d}, you will {course.applied.title[0].lower() + course.applied.title[1:]}."
+        if course.applied else ""
     )
-    return f"""# Book {book_no} — {book['title']}
+    return f"""# {book['title']}
 
-## Purpose
+Technical course {book_no:02d} · 3 sections · {len(chapter_files)} lectures · 10–12 hours of lecture and practice time, plus the project
 
 {book['goal']}
 
-{chapter_cards}
+[Start the first lecture]({chapter_files[0][1]}){{ .md-button .md-button--primary }}
+[Download the course notebook]({notebook}){{ .md-button download }}
+
 ## Entry prerequisites
 
 {prerequisite_lines}
 
-## Book project
+## Course outline
+
+{outline}
+
+## Notebook workshop
+
+{course.experiment}{applied}
+
+The notebook includes each lecture's short demonstration and a checked exercise. For setup and execution, see [Course notebooks](../../labs/notebooks/index.md).
+
+<span id="book-project"></span>
+
+## Course project
 
 {book['project']}
 
-The project should include a short specification, runnable artifact or architecture, evaluation evidence, failure analysis, and at least one ADR. Prefer a small well-measured system over a large demo with unclear behavior.
+Submit a short specification, an implementation or architecture, evidence from a baseline comparison, and one architecture decision record. Include one example that fails and explain how you would handle it.
 
 ## Suggested three-week schedule
 
-- **Week 1:** Chapters 1–2, concept notes, and quick checks.
-- **Week 2:** Chapters 3–4 and the runnable sample; begin the book project.
-- **Week 3:** Chapters 5–6, failure analysis, project evaluation, and written reflection.
+- **Week 1:** Complete the first section and its checkpoint.
+- **Week 2:** Complete the second section and start the project.
+- **Week 3:** Complete the final section and the notebook workshop. Evaluate and review the project.
 
 ## Assessment
 
 | Evidence | Weight |
 |---|---:|
-| Chapter knowledge checks | 20% |
+| Lecture knowledge checks | 20% |
 | Runnable exercises and failure cases | 30% |
-| Book project | 35% |
+| Course project | 35% |
 | Architecture defense and reflection | 15% |
 
 ## Anchor readings
@@ -465,18 +528,22 @@ The project should include a short specification, runnable artifact or architect
 
 ## Completion standard
 
-You can explain the key mechanisms, complete the practice in every chapter, pass your own mastery review, and defend the project design against simpler alternatives.
+Complete the lecture checks and section checkpoints, run the notebook workshop, and defend your project against a simpler alternative using the evidence you collected.
+
+[All courses](../../courses/index.md) · [Learning paths](../../getting-started/learning-paths/index.md)
 """
 
 
 def main() -> None:
+    if len(BOOKS) != len(TECHNICAL_COURSES) or any(len(book["chapters"]) != 6 for book in BOOKS):
+        raise ValueError("Each technical course must map to one six-lecture book.")
     BOOKS_DIR.mkdir(parents=True, exist_ok=True)
     for book_no, book in enumerate(BOOKS, 1):
-        directory = BOOKS_DIR / f"{book_no:02d}-{slug(book['title'])}"
+        directory = BOOKS_DIR / course_slug(book_no, book["title"])
         directory.mkdir(parents=True, exist_ok=True)
         chapter_files = []
         for chapter_no, chapter in enumerate(book["chapters"], 1):
-            filename = f"{chapter_no:02d}-{slug(chapter[0])}.md"
+            filename = chapter_filename(chapter_no, chapter[0])
             (directory / filename).write_text(
                 render_chapter(book_no, chapter_no, book, chapter), encoding="utf-8"
             )
@@ -487,8 +554,8 @@ def main() -> None:
     catalog = [
         "# Guided Books",
         "",
-        "The thirteen books are the primary reading path through AIEBOK. "
-        "Knowledge-area and concept pages remain the reusable reference layer.",
+        "The thirteen technical courses are also available as guided books. "
+        "For the complete catalog, including no-code learning, see [Courses](../courses/index.md).",
         "",
         render_book_cluster_cards(BOOKS, slug),
         render_book_catalog_cards(BOOKS, slug),

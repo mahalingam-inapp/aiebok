@@ -1,19 +1,11 @@
 # How to Use AIEBOK
 
-Every substantial topic should answer five questions:
+- A **lecture** explains a specific topic, demonstrates it in a worked example, and gives you a way to practice and check your understanding.
+- A **course** groups lectures into sections, adds checkpoints or a notebook workshop, and ends with a project.
+- A **learning path** places multiple courses in order for a role. Use its prerequisites and completion evidence to choose where to start and what to produce.
 
-1. Why does it exist?
-2. How does it work?
-3. How is it built today?
-4. How is it evaluated and operated?
-5. How will you recognize its successor?
+Choose a [learning path](learning-paths/index.md) or [browse courses](../courses/index.md). Use the [knowledge areas](../knowledge-areas/index.md), [concept cards](../concepts/index.md), and [pattern library](../patterns/index.md) when you need more background or a reference.
 
-## Three depths
+## Check your mastery
 
-- **Concept:** explain the idea and its vocabulary.
-- **Engineering:** implement, test, and debug it.
-- **Architecture:** decide when to use it and manage its trade-offs.
-
-## Mastery check
-
-At the end of a topic, try to explain it to a junior engineer, implement a small version, choose between it and an alternative, identify a failure mode, and state which principle remains if today's tools disappear.
+Explain the mechanism in your own words, compare it with a simpler approach, and identify a failure case. For technical courses, reproduce one result and explain how an input or constraint changed it. For no-code courses, compare your decision or worksheet with the example answer and record what would change your decision.

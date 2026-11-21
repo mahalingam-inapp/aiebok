@@ -1,76 +1,74 @@
-# Book 5 — Prompt and Context Engineering
+# Prompt and Context Engineering
 
-## Purpose
+Technical course 05 · 3 sections · 6 lectures · 10–12 hours of lecture and practice time, plus the project
 
 Design the information, instructions, state, and output boundaries that make model behavior useful and testable.
 
-## Chapter learning path
-
-<div class="grid cards" markdown>
-
--   :material-numeric-1-circle:{ .lg .middle } __Instructions That Work__
-
-    Write clear tasks, roles, constraints, examples, delimiters, and success criteria while avoiding unnecessary…
-
-    [Open chapter →](01-instructions-that-work.md)
-
--   :material-numeric-2-circle:{ .lg .middle } __Structured Generation__
-
-    Use schemas, constrained decoding, validation, repair, retries, and typed application boundaries.
-
-    [Open chapter →](02-structured-generation.md)
-
--   :material-numeric-3-circle:{ .lg .middle } __Context Construction__
-
-    Assemble instructions, user input, state, evidence, tools, and examples under priority and token constraints.
-
-    [Open chapter →](03-context-construction.md)
-
--   :material-numeric-4-circle:{ .lg .middle } __Conversation and Memory__
-
-    Separate transcript, session state, summaries, semantic memory, episodic memory, user preferences, and source…
-
-    [Open chapter →](04-conversation-and-memory.md)
-
--   :material-numeric-5-circle:{ .lg .middle } __Context Failure and Security__
-
-    Recognize instruction conflict, prompt injection, context poisoning, stale memory, overflow, lost provenance,…
-
-    [Open chapter →](05-context-failure-and-security.md)
-
--   :material-numeric-6-circle:{ .lg .middle } __Prompt and Context Operations__
-
-    Version prompts, trace context, cache safely, run regressions, compare variants, and monitor cost and quality.
-
-    [Open chapter →](06-prompt-and-context-operations.md)
-
-</div>
+[Start the first lecture](01-instructions-that-work.md){ .md-button .md-button--primary }
+[Download the course notebook](../../assets/notebooks/05-prompt-and-context-engineering.ipynb){ .md-button download }
 
 ## Entry prerequisites
 
-- Book 4
+- Course 04 or equivalent experience
 - Model inference
 - Tokens and context windows
 
-## Book project
+## Course outline
+
+### Instructions and output contracts
+
+- [01 · Instructions That Work](01-instructions-that-work.md)
+- [02 · Structured Generation](02-structured-generation.md)
+
+**Checkpoint**
+
+Write a prompt requirement and one schema check that can be evaluated independently of the model.
+
+### Context and memory
+
+- [03 · Context Construction](03-context-construction.md)
+- [04 · Conversation and Memory](04-conversation-and-memory.md)
+
+**Checkpoint**
+
+Rebuild the context for a smaller budget. Record which memory or evidence you would summarize first.
+
+### Trust and prompt operations
+
+- [05 · Context Failure and Security](05-context-failure-and-security.md)
+- [06 · Prompt and Context Operations](06-prompt-and-context-operations.md)
+
+**Checkpoint**
+
+Identify which text originated outside the trusted boundary and propose one regression case.
+
+## Notebook workshop
+
+Give a trusted instruction and a retrieved passage competing budgets. Inspect which survives a tight budget and how source trust is represented.
+
+The notebook includes each lecture's short demonstration and a checked exercise. For setup and execution, see [Course notebooks](../../labs/notebooks/index.md).
+
+<span id="book-project"></span>
+
+## Course project
 
 Build a context engine with structured output, memory policies, token budgets, and regression tests.
 
-The project should include a short specification, runnable artifact or architecture, evaluation evidence, failure analysis, and at least one ADR. Prefer a small well-measured system over a large demo with unclear behavior.
+Submit a short specification, an implementation or architecture, evidence from a baseline comparison, and one architecture decision record. Include one example that fails and explain how you would handle it.
 
 ## Suggested three-week schedule
 
-- **Week 1:** Chapters 1–2, concept notes, and quick checks.
-- **Week 2:** Chapters 3–4 and the runnable sample; begin the book project.
-- **Week 3:** Chapters 5–6, failure analysis, project evaluation, and written reflection.
+- **Week 1:** Complete the first section and its checkpoint.
+- **Week 2:** Complete the second section and start the project.
+- **Week 3:** Complete the final section and the notebook workshop. Evaluate and review the project.
 
 ## Assessment
 
 | Evidence | Weight |
 |---|---:|
-| Chapter knowledge checks | 20% |
+| Lecture knowledge checks | 20% |
 | Runnable exercises and failure cases | 30% |
-| Book project | 35% |
+| Course project | 35% |
 | Architecture defense and reflection | 15% |
 
 ## Anchor readings
@@ -80,4 +78,6 @@ The project should include a short specification, runnable artifact or architect
 
 ## Completion standard
 
-You can explain the key mechanisms, complete the practice in every chapter, pass your own mastery review, and defend the project design against simpler alternatives.
+Complete the lecture checks and section checkpoints, run the notebook workshop, and defend your project against a simpler alternative using the evidence you collected.
+
+[All courses](../../courses/index.md) · [Learning paths](../../getting-started/learning-paths/index.md)

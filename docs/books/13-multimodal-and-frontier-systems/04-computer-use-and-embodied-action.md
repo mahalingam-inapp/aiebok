@@ -1,10 +1,14 @@
 # 13.4 — Computer Use and Embodied Action
 
-*Book 13: Multimodal and Frontier Systems · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Generative media and bounded action · Lecture 4 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/13-multimodal-and-frontier-systems.ipynb){ download } · Use the exercise under **Lecture 04**.
 
 ## Before you begin
 
-- Books 3–12 as relevant
+- Courses 03–12 as relevant, or equivalent experience
 - Evidence-oriented research reading
 - Risk awareness
 
@@ -146,6 +150,12 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Define one review gate for a generated asset and one approval condition for an irreversible action.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/13-multimodal-and-frontier-systems.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 13.4 — computer use and embodied action:
@@ -231,4 +241,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← Image and Video Generation](03-image-and-video-generation.md) · [Course outline](index.md) · [Long Context, World Models, and Continual Learning →](05-long-context-world-models-and-continual-learning.md)

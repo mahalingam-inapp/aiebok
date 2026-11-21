@@ -1,76 +1,74 @@
-# Book 8 — Agent Systems
+# Agent Systems
 
-## Purpose
+Technical course 08 · 3 sections · 6 lectures · 10–12 hours of lecture and practice time, plus the project
 
 Design agentic systems as bounded stateful architectures rather than treating autonomy as a model feature.
 
-## Chapter learning path
-
-<div class="grid cards" markdown>
-
--   :material-numeric-1-circle:{ .lg .middle } __Agent or Workflow?__
-
-    Define agents by goal-directed action selection in a loop and contrast them with deterministic workflows and…
-
-    [Open chapter →](01-agent-or-workflow.md)
-
--   :material-numeric-2-circle:{ .lg .middle } __The Agent Loop__
-
-    Connect goal, state, planning, action, observation, reflection, and termination into a bounded state machine.
-
-    [Open chapter →](02-the-agent-loop.md)
-
--   :material-numeric-3-circle:{ .lg .middle } __Agent Memory and Recovery__
-
-    Manage working state, episodic history, durable checkpoints, resumability, compensation, and idempotent tools.
-
-    [Open chapter →](03-agent-memory-and-recovery.md)
-
--   :material-numeric-4-circle:{ .lg .middle } __Agent Patterns__
-
-    Apply planner–executor, supervisor–worker, reviewer, evaluator–optimizer, routing, and human-approval pattern…
-
-    [Open chapter →](04-agent-patterns.md)
-
--   :material-numeric-5-circle:{ .lg .middle } __Multi-Agent Systems__
-
-    Study delegation, role boundaries, communication, shared state, consensus, conflict, security, and why many t…
-
-    [Open chapter →](05-multi-agent-systems.md)
-
--   :material-numeric-6-circle:{ .lg .middle } __Operating Long-Running Agents__
-
-    Design durable orchestration, queues, scheduling, leases, approvals, monitoring, incident response, and safe…
-
-    [Open chapter →](06-operating-long-running-agents.md)
-
-</div>
+[Start the first lecture](01-agent-or-workflow.md){ .md-button .md-button--primary }
+[Download the course notebook](../../assets/notebooks/08-agent-systems.ipynb){ .md-button download }
 
 ## Entry prerequisites
 
-- Books 5–7
+- Courses 05–07 or equivalent experience
 - State machines
 - Tools and evaluation
 
-## Book project
+## Course outline
+
+### Workflows and agent loops
+
+- [01 · Agent or Workflow?](01-agent-or-workflow.md)
+- [02 · The Agent Loop](02-the-agent-loop.md)
+
+**Checkpoint**
+
+Identify where a fixed workflow is sufficient. Write an invariant for a bounded loop.
+
+### Recovery and patterns
+
+- [03 · Agent Memory and Recovery](03-agent-memory-and-recovery.md)
+- [04 · Agent Patterns](04-agent-patterns.md)
+
+**Checkpoint**
+
+Record what must survive a restart so an approved action is handled once.
+
+### Coordination and operations
+
+- [05 · Multi-Agent Systems](05-multi-agent-systems.md)
+- [06 · Operating Long-Running Agents](06-operating-long-running-agents.md)
+
+**Checkpoint**
+
+Choose a stopping rule and specify what evidence an operator receives on failure.
+
+## Notebook workshop
+
+Trace the example from planning to its approval pause, then resume after approval and verify that it reaches completion.
+
+The notebook includes each lecture's short demonstration and a checked exercise. For setup and execution, see [Course notebooks](../../labs/notebooks/index.md).
+
+<span id="book-project"></span>
+
+## Course project
 
 Build a durable multi-step agent with checkpoints, approval gates, evaluation, and observable termination.
 
-The project should include a short specification, runnable artifact or architecture, evaluation evidence, failure analysis, and at least one ADR. Prefer a small well-measured system over a large demo with unclear behavior.
+Submit a short specification, an implementation or architecture, evidence from a baseline comparison, and one architecture decision record. Include one example that fails and explain how you would handle it.
 
 ## Suggested three-week schedule
 
-- **Week 1:** Chapters 1–2, concept notes, and quick checks.
-- **Week 2:** Chapters 3–4 and the runnable sample; begin the book project.
-- **Week 3:** Chapters 5–6, failure analysis, project evaluation, and written reflection.
+- **Week 1:** Complete the first section and its checkpoint.
+- **Week 2:** Complete the second section and start the project.
+- **Week 3:** Complete the final section and the notebook workshop. Evaluate and review the project.
 
 ## Assessment
 
 | Evidence | Weight |
 |---|---:|
-| Chapter knowledge checks | 20% |
+| Lecture knowledge checks | 20% |
 | Runnable exercises and failure cases | 30% |
-| Book project | 35% |
+| Course project | 35% |
 | Architecture defense and reflection | 15% |
 
 ## Anchor readings
@@ -80,4 +78,6 @@ The project should include a short specification, runnable artifact or architect
 
 ## Completion standard
 
-You can explain the key mechanisms, complete the practice in every chapter, pass your own mastery review, and defend the project design against simpler alternatives.
+Complete the lecture checks and section checkpoints, run the notebook workshop, and defend your project against a simpler alternative using the evidence you collected.
+
+[All courses](../../courses/index.md) · [Learning paths](../../getting-started/learning-paths/index.md)

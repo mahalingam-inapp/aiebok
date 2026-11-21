@@ -1,10 +1,14 @@
 # 5.6 — Prompt and Context Operations
 
-*Book 5: Prompt and Context Engineering · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Trust and prompt operations · Lecture 6 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/05-prompt-and-context-engineering.ipynb){ download } · Use the exercise under **Lecture 06**.
 
 ## Before you begin
 
-- Book 4
+- Course 04 or equivalent experience
 - Model inference
 - Tokens and context windows
 
@@ -146,6 +150,12 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Identify which text originated outside the trusted boundary and propose one regression case.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/05-prompt-and-context-engineering.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 5.6 — prompt and context operations:
@@ -231,4 +241,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← Context Failure and Security](05-context-failure-and-security.md) · [Course outline](index.md) · [Course project →](index.md#course-project)

@@ -1,10 +1,14 @@
 # 6.5 — RAG Generation and Citations
 
-*Book 6: Knowledge and Retrieval Systems · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Grounded answers and enterprise constraints · Lecture 5 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/06-knowledge-and-retrieval-systems.ipynb){ download } · Use the exercise under **Lecture 05**.
 
 ## Before you begin
 
-- Books 3–5
+- Courses 03–05 or equivalent experience
 - Embeddings and search
 - Structured model output
 
@@ -145,6 +149,57 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Define pass cases for authorized evidence, no relevant evidence, and a citation to the wrong passage.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/06-knowledge-and-retrieval-systems.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
+### Evaluate grounded answers against an access boundary
+
+Read the labeled cases before you run the cell. Predict which sources an employee should see. Then add a case for a user who has no authorized role. Check source IDs separately from answer text. The generator here returns a passage extract, so you can inspect the retrieval and citation behavior directly.
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Passage:
+    source: str
+    tags: set[str]
+    text: str
+    roles: set[str]
+
+
+corpus = [
+    Passage("travel", {"travel", "receipt"}, "Attach travel receipts to the expense form.", {"employee", "payroll"}),
+    Passage("rates", {"payroll", "rate"}, "Use the current internal payroll rate table.", {"payroll"}),
+]
+
+
+def grounded_answer(query_terms, role):
+    allowed = [passage for passage in corpus if role in passage.roles]
+    ranked = sorted(allowed, key=lambda passage: len(query_terms & passage.tags), reverse=True)
+    if not ranked or not query_terms & ranked[0].tags:
+        return "No authorized matching evidence.", []
+    evidence = ranked[0]
+    return evidence.text, [evidence.source]
+
+
+cases = [
+    ({"travel", "receipt"}, "employee", ["travel"]),
+    ({"payroll", "rate"}, "employee", []),
+    ({"weather"}, "employee", []),
+    ({"payroll", "rate"}, "payroll", ["rates"]),
+]
+for terms, role, expected_sources in cases:
+    answer, sources = grounded_answer(terms, role)
+    assert sources == expected_sources, (terms, role, sources)
+    if not expected_sources:
+        assert answer == "No authorized matching evidence."
+    print(role, sorted(terms), answer, sources)
+```
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 6.5 — rag generation and citations:
@@ -230,4 +285,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← Ranking and Context Selection](04-ranking-and-context-selection.md) · [Course outline](index.md) · [Advanced and Enterprise RAG →](06-advanced-and-enterprise-rag.md)

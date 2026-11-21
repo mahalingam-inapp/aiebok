@@ -1,76 +1,74 @@
-# Book 3 — Language and Representation
+# Language and Representation
 
-## Purpose
+Technical course 03 · 3 sections · 6 lectures · 10–12 hours of lecture and practice time, plus the project
 
 Understand how language becomes computable representations and why embeddings enable semantic systems.
 
-## Chapter learning path
-
-<div class="grid cards" markdown>
-
--   :material-numeric-1-circle:{ .lg .middle } __Why Language Is Hard__
-
-    Explore ambiguity, reference, syntax, semantics, pragmatics, intent, and the dependence of meaning on context…
-
-    [Open chapter →](01-why-language-is-hard.md)
-
--   :material-numeric-2-circle:{ .lg .middle } __Corpora and Text Pipelines__
-
-    Learn how collection, encoding, normalization, language detection, segmentation, privacy, and provenance shap…
-
-    [Open chapter →](02-corpora-and-text-pipelines.md)
-
--   :material-numeric-3-circle:{ .lg .middle } __Tokenization__
-
-    Understand character, word, and subword tokenization; BPE, WordPiece, and SentencePiece; and the impact on co…
-
-    [Open chapter →](03-tokenization.md)
-
--   :material-numeric-4-circle:{ .lg .middle } __From Sparse Features to Embeddings__
-
-    Move from one-hot vectors, n-grams, TF–IDF, and BM25 to learned dense representations.
-
-    [Open chapter →](04-from-sparse-features-to-embeddings.md)
-
--   :material-numeric-5-circle:{ .lg .middle } __Similarity and Vector Search__
-
-    Connect distance metrics, normalization, nearest neighbors, approximate indexes, clustering, filtering, and r…
-
-    [Open chapter →](05-similarity-and-vector-search.md)
-
--   :material-numeric-6-circle:{ .lg .middle } __Embedding Systems in Production__
-
-    Select and evaluate embedding models, manage versions and re-indexing, protect tenant boundaries, and monitor…
-
-    [Open chapter →](06-embedding-systems-in-production.md)
-
-</div>
+[Start the first lecture](01-why-language-is-hard.md){ .md-button .md-button--primary }
+[Download the course notebook](../../assets/notebooks/03-language-and-representation.ipynb){ .md-button download }
 
 ## Entry prerequisites
 
-- Books 1–2
+- Courses 01–02 or equivalent experience
 - Vectors and dot products
 - Basic text processing
 
-## Book project
+## Course outline
+
+### Language and corpus preparation
+
+- [01 · Why Language Is Hard](01-why-language-is-hard.md)
+- [02 · Corpora and Text Pipelines](02-corpora-and-text-pipelines.md)
+
+**Checkpoint**
+
+Write an ambiguous search query. Normalize two spelling variants without discarding their original source text.
+
+### Tokens and representations
+
+- [03 · Tokenization](03-tokenization.md)
+- [04 · From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md)
+
+**Checkpoint**
+
+Compare the visible tokens for two search queries. Identify a distinct word that should retrieve the same policy.
+
+### Search and indexing
+
+- [05 · Similarity and Vector Search](05-similarity-and-vector-search.md)
+- [06 · Embedding Systems in Production](06-embedding-systems-in-production.md)
+
+**Checkpoint**
+
+Record the top document for a token-overlap query and a synonym-only query. Explain the difference.
+
+## Notebook workshop
+
+Compare a direct password query with an alternate wording that shares no indexed terms. Use the scores to motivate a dense retrieval baseline.
+
+The notebook includes each lecture's short demonstration and a checked exercise. For setup and execution, see [Course notebooks](../../labs/notebooks/index.md).
+
+<span id="book-project"></span>
+
+## Course project
 
 Build and evaluate a multilingual semantic search engine with lexical and vector baselines.
 
-The project should include a short specification, runnable artifact or architecture, evaluation evidence, failure analysis, and at least one ADR. Prefer a small well-measured system over a large demo with unclear behavior.
+Submit a short specification, an implementation or architecture, evidence from a baseline comparison, and one architecture decision record. Include one example that fails and explain how you would handle it.
 
 ## Suggested three-week schedule
 
-- **Week 1:** Chapters 1–2, concept notes, and quick checks.
-- **Week 2:** Chapters 3–4 and the runnable sample; begin the book project.
-- **Week 3:** Chapters 5–6, failure analysis, project evaluation, and written reflection.
+- **Week 1:** Complete the first section and its checkpoint.
+- **Week 2:** Complete the second section and start the project.
+- **Week 3:** Complete the final section and the notebook workshop. Evaluate and review the project.
 
 ## Assessment
 
 | Evidence | Weight |
 |---|---:|
-| Chapter knowledge checks | 20% |
+| Lecture knowledge checks | 20% |
 | Runnable exercises and failure cases | 30% |
-| Book project | 35% |
+| Course project | 35% |
 | Architecture defense and reflection | 15% |
 
 ## Anchor readings
@@ -80,4 +78,6 @@ The project should include a short specification, runnable artifact or architect
 
 ## Completion standard
 
-You can explain the key mechanisms, complete the practice in every chapter, pass your own mastery review, and defend the project design against simpler alternatives.
+Complete the lecture checks and section checkpoints, run the notebook workshop, and defend your project against a simpler alternative using the evidence you collected.
+
+[All courses](../../courses/index.md) · [Learning paths](../../getting-started/learning-paths/index.md)

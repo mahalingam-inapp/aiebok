@@ -12,10 +12,11 @@ def main() -> None:
     s = collect_site_stats()
 
     publication = f"""\
-- {s.books} guided books
-- {s.chapters} full study chapters
+- {s.learning_paths} role-based learning paths
+- {s.courses} courses · {s.lectures} lectures
+- {s.workbooks} downloadable course workbooks · {s.starter_labs} starter notebooks
 - {s.knowledge_areas} knowledge-area maps
-- {s.total_lessons} guided lessons ({s.ka_lessons} knowledge-area + {s.supplemental_lessons} supplemental)
+- {s.total_lessons} topic guides ({s.ka_lessons} knowledge-area + {s.supplemental_lessons} supplemental)
 - {s.concept_cards} concept cards ({s.featured_concepts} featured deep-dives)
 - {s.patterns_total} patterns ({s.patterns_generated} catalog + {s.patterns_manual} starter deep-dives)
 - {s.architectures} architecture studios
@@ -24,7 +25,9 @@ def main() -> None:
 - {format_word_count(s.word_count_docs)} words of deployable learning content in `docs/`"""
 
     readme = f"""\
-- A complete {s.knowledge_areas}-knowledge-area curriculum ({s.books} books, {s.chapters} chapters)
+- {s.learning_paths} role-based learning paths, {s.courses} courses, and {s.lectures} lectures
+- {s.workbooks} downloadable course workbooks and {s.starter_labs} starter notebooks
+- {s.knowledge_areas} knowledge-area maps
 - {s.concept_cards} concept cards, {s.patterns_total} patterns, {s.architectures} architecture studios
 - {s.build_guides} build guides · {s.cloud_capabilities} cloud capability guides
 - {s.starter_labs} runnable starter labs (+ {s.chapter_labs} chapter labs in the repo)

@@ -1,9 +1,49 @@
-# Starter Lab Notebooks
+# Jupyter Notebooks
 
-Guided notebooks live in the repository under `labs/` (not on the static GitHub Pages site). Clone the [repository](https://github.com/mahalingam-inapp/aiebok){target="_blank" rel="noopener"}, open a Codespace, or use the Dev Container, then open the notebook path below.
+Each technical course has a downloadable workbook with lecture demonstrations and a checked course workshop. The workbooks contain their own sample data and can run outside the repository.
 
-!!! tip "New here?"
-    Follow the [hands-on start](../start-here.md) page for the recommended lab order.
+## Set up Jupyter
+
+1. Clone the [repository](https://github.com/mahalingam-inapp/aiebok){target="_blank" rel="noopener"} and create a Python virtual environment, or reopen the project in its Dev Container.
+2. In the activated environment, run `python -m pip install -r requirements-notebooks.txt`.
+3. Run `jupyter lab`, open the downloaded notebook, and choose the Python 3 kernel. Use **Restart Kernel and Run All Cells** to check the initial results.
+
+## Project practicum workbooks
+
+| Practicum | Notebook |
+|---|---|
+| [Build and Evaluate a Model-Backed Application](../../courses/model-backed-applications/index.md) | [Download](../../assets/notebooks/model-backed-applications.ipynb){ download } |
+| [Supervised Coding-Agent Harnesses](../../courses/supervised-coding-harness/index.md) | [Download](../../assets/notebooks/supervised-coding-harness.ipynb){ download } |
+| [Model Selection and Adaptation Lab](../../courses/model-selection-and-adaptation/index.md) | [Download](../../assets/notebooks/model-selection-and-adaptation.ipynb){ download } |
+| [Deploy and Operate an AI Service](../../courses/operating-ai-services/index.md) | [Download](../../assets/notebooks/operating-ai-services.ipynb){ download } |
+| [Customer Pilot Engineering](../../courses/customer-pilot-engineering/index.md) | [Download](../../assets/notebooks/customer-pilot-engineering.ipynb){ download } |
+| [LLM Evaluation and Model Selection](../../courses/llm-evaluation-benchmarks/index.md) | [Download](../../assets/notebooks/llm-evaluation-benchmarks.ipynb){ download } |
+| [Retrieval System Engineering](../../courses/retrieval-system-engineering/index.md) | [Download](../../assets/notebooks/retrieval-system-engineering.ipynb){ download } |
+| [Durable Agent Runtime and MCP](../../courses/durable-agent-tool-runtime/index.md) | [Download](../../assets/notebooks/durable-agent-tool-runtime.ipynb){ download } |
+| [LLM Adaptation and Inference Lab](../../courses/llm-adaptation-inference/index.md) | [Download](../../assets/notebooks/llm-adaptation-inference.ipynb){ download } |
+| [AI Reliability and Release Engineering](../../courses/ai-reliability-release/index.md) | [Download](../../assets/notebooks/ai-reliability-release.ipynb){ download } |
+
+## Technical core workbooks
+
+| Course | Notebook |
+|---|---|
+| [Foundations of Intelligence](../../books/01-foundations-of-intelligence/index.md) | [Download](../../assets/notebooks/01-foundations-of-intelligence.ipynb){ download } |
+| [Machine Learning Systems](../../books/02-machine-learning-systems/index.md) | [Download](../../assets/notebooks/02-machine-learning-systems.ipynb){ download } |
+| [Language and Representation](../../books/03-language-and-representation/index.md) | [Download](../../assets/notebooks/03-language-and-representation.ipynb){ download } |
+| [Transformers and Foundation Models](../../books/04-transformers-and-foundation-models/index.md) | [Download](../../assets/notebooks/04-transformers-and-foundation-models.ipynb){ download } |
+| [Prompt and Context Engineering](../../books/05-prompt-and-context-engineering/index.md) | [Download](../../assets/notebooks/05-prompt-and-context-engineering.ipynb){ download } |
+| [Knowledge and Retrieval Systems](../../books/06-knowledge-and-retrieval-systems/index.md) | [Download](../../assets/notebooks/06-knowledge-and-retrieval-systems.ipynb){ download } |
+| [Reasoning and Tool Use](../../books/07-reasoning-and-tool-use/index.md) | [Download](../../assets/notebooks/07-reasoning-and-tool-use.ipynb){ download } |
+| [Agent Systems](../../books/08-agent-systems/index.md) | [Download](../../assets/notebooks/08-agent-systems.ipynb){ download } |
+| [AI Software and Product Engineering](../../books/09-ai-software-and-product-engineering/index.md) | [Download](../../assets/notebooks/09-ai-software-and-product-engineering.ipynb){ download } |
+| [Evaluation, Safety, and Governance](../../books/10-evaluation-safety-and-governance/index.md) | [Download](../../assets/notebooks/10-evaluation-safety-and-governance.ipynb){ download } |
+| [Training, Serving, and AI Operations](../../books/11-training-serving-and-ai-operations/index.md) | [Download](../../assets/notebooks/11-training-serving-and-ai-operations.ipynb){ download } |
+| [Cloud and Enterprise AI Architecture](../../books/12-cloud-and-enterprise-ai-architecture/index.md) | [Download](../../assets/notebooks/12-cloud-and-enterprise-ai-architecture.ipynb){ download } |
+| [Multimodal and Frontier Systems](../../books/13-multimodal-and-frontier-systems/index.md) | [Download](../../assets/notebooks/13-multimodal-and-frontier-systems.ipynb){ download } |
+
+## Starter lab notebooks
+
+The starter labs use the companion Python tests in the repository. Follow [Hands-on Start](../start-here.md) and run the kernel from the repo root or the lab folder.
 
 | Lab | Notebook in repo |
 |---|---|

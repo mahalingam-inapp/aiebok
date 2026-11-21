@@ -1,10 +1,14 @@
 # 7.3 — Verification and Critique
 
-*Book 7: Reasoning and Tool Use · Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+[Course overview](index.md) · Verification and tool contracts · Lecture 3 of 6
+
+*Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
+
+[Download the course notebook](../../assets/notebooks/07-reasoning-and-tool-use.ipynb){ download } · Use the exercise under **Lecture 03**.
 
 ## Before you begin
 
-- Books 1 and 4–6
+- Courses 01 and 04–06 or equivalent experience
 - Search and planning
 - Typed software interfaces
 
@@ -143,6 +147,12 @@ Work in three passes tailored to this chapter:
 
 Capture assumptions, test cases, results, and one architecture decision record. A successful lab explains *why* behavior changed, not merely that the program ran.
 
+**Section checkpoint**
+
+Pass a complete plan and then swap two dependent steps. Compare the verifier's decisions.
+
+Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/07-reasoning-and-tool-use.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+
 ## Spec-driven habit
 
 Every chapter lab pairs reading with **executable acceptance**. Before implementing book 7.3 — verification and critique:
@@ -228,4 +238,4 @@ Use primary sources for technical claims and official documentation for current 
 
 ## Continue
 
-Return to the [book index](index.md) or use site search to follow the chapter's concepts into the knowledge-area and reference pages.
+[← Planning](02-planning.md) · [Course outline](index.md) · [Tools as Capability Boundaries →](04-tools-as-capability-boundaries.md)
