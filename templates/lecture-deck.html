@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ deck.slides[0].title }} · AIeBOK Slides</title>
+  <link rel="stylesheet" href="{{ css }}">
+  <script src="{{ script }}" defer></script>
+</head>
+<body>
+  <header class="deck-header">
+    <span class="brand">AIeBOK</span>
+    <a href="{{ lecture_url }}">↖ Back to lecture</a>
+  </header>
+
+  <main id="deck" aria-label="Lecture presentation">
+    {% for slide in deck.slides %}
+    <section class="slide{% if loop.first %} slide--title{% endif %}" id="slide-{{ loop.index }}"
+             aria-labelledby="title-{{ loop.index }}">
+      {% if loop.first %}
+      <p class="course">{{ deck.course }}</p>
+      <h1 id="title-{{ loop.index }}" tabindex="-1">{{ slide.title }}</h1>
+      {% else %}
+      <h2 id="title-{{ loop.index }}" tabindex="-1">{{ slide.title }}</h2>
+      {% endif %}
+      {% if slide.text %}<p class="lead">{{ slide.text }}</p>{% endif %}
+      {% if slide.terms %}
+      <dl class="terms">
+        {% for term, definition in slide.terms %}
+        <div><dt>{{ term }}</dt><dd>{{ definition }}</dd></div>
+        {% endfor %}
+      </dl>
+      {% endif %}
+      {% if slide.questions %}
+      <ol class="questions">
+        {% for question in slide.questions %}<li>{{ question }}</li>{% endfor %}
+      </ol>
+      {% endif %}
+      {% if slide.answers %}
+      <details class="answer">
+        <summary>Reveal answer guidance</summary>
+        {% if slide.answers|length > 1 %}
+        <ol class="questions">
+          {% for answer in slide.answers %}<li>{{ answer }}</li>{% endfor %}
+        </ol>
+        {% else %}
+        <p>{{ slide.answers[0] }}</p>
+        {% endif %}
+      </details>
+      {% endif %}
+    </section>
+    {% endfor %}
+  </main>
+
+  <nav class="deck-controls" aria-label="Slide navigation" hidden>
+    <button type="button" id="previous" aria-label="Previous slide" aria-controls="deck">←</button>
+    <span id="slide-count" aria-hidden="true"></span>
+    <button type="button" id="next" aria-label="Next slide" aria-controls="deck">→</button>
+    <button type="button" id="fullscreen" aria-label="Toggle fullscreen" aria-pressed="false" hidden>⛶</button>
+    <p class="sr-only" id="announcement" aria-live="polite" aria-atomic="true"></p>
+  </nav>
+</body>
+</html>

@@ -61,9 +61,12 @@ The published site is **static HTML only** (MkDocs → GitHub Actions → Pages)
 | Need | Where |
 |---|---|
 | Read docs, search, concept cards | Hosted site |
+| Lecture slide decks | **Open slide deck** on each lecture page |
 | Course workbooks | [Jupyter Notebooks](docs/labs/notebooks/index.md) in the site |
 | Starter lab notebooks | <a href="https://github.com/mahalingam-inapp/aiebok/tree/main/labs" target="_blank" rel="noopener"><code>labs/*/lab.ipynb</code></a> in the repo — start at **Labs → Hands-on Start** on the site |
 | Python labs | Local machine, Codespaces, or Dev Container (`.devcontainer/`) |
+
+MkDocs generates the standalone HTML decks from the curriculum catalogs during each build. Open a deck from its lecture and use the onscreen controls or arrow keys to advance. The decks share local CSS and JavaScript.
 
 ## Dev Container / Codespaces
 

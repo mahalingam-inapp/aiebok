@@ -40,6 +40,9 @@ theme:
 plugins:
   - search
 
+hooks:
+  - scripts/lecture_slides.py
+
 markdown_extensions:
   - admonition
   - attr_list
