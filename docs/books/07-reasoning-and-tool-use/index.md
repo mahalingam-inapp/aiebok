@@ -4,8 +4,16 @@ Technical course 07 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Understand when inference-time search, planning, verification, and external tools improve task outcomes.
 
-[Start the first lecture](01-reasoning-as-search.md){ .md-button .md-button--primary }
+[Start the first lecture](01-reasoning-as-search.md){ .md-button .md-button--primary .study-start data-course="07-reasoning-and-tool-use" }
 [Download the course notebook](../../assets/notebooks/07-reasoning-and-tool-use.ipynb){ .md-button download }
+
+## Practice case · A permit desk with three sources of truth
+
+Ravi wants to help permit clerks answer requests that span an address register, planning rules, and human approval. Some checks are deterministic. Some require evidence from more than one source. The clerk remains responsible for sending the final decision.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [Why GitHub paused queued work](../../casebook/paused-jobs.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Understand when inference-time search, planning, verification, and external tool
 
 ### Search and planning
 
-- [01 · Reasoning as Search](01-reasoning-as-search.md)
-- [02 · Planning](02-planning.md)
+- [01 · Reasoning as Search](01-reasoning-as-search.md){ .study-lecture data-lecture="01-reasoning-as-search.md" }
+- [02 · Planning](02-planning.md){ .study-lecture data-lecture="02-planning.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Specify the goal, allowed actions, and stop condition for a small research workf
 
 ### Verification and tool contracts
 
-- [03 · Verification and Critique](03-verification-and-critique.md)
-- [04 · Tools as Capability Boundaries](04-tools-as-capability-boundaries.md)
+- [03 · Verification and Critique](03-verification-and-critique.md){ .study-lecture data-lecture="03-verification-and-critique.md" }
+- [04 · Tools as Capability Boundaries](04-tools-as-capability-boundaries.md){ .study-lecture data-lecture="04-tools-as-capability-boundaries.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Pass a complete plan and then swap two dependent steps. Compare the verifier's d
 
 ### Integrations and reasoning cost
 
-- [05 · MCP and Integration Protocols](05-mcp-and-integration-protocols.md)
-- [06 · Reasoning-System Economics](06-reasoning-system-economics.md)
+- [05 · MCP and Integration Protocols](05-mcp-and-integration-protocols.md){ .study-lecture data-lecture="05-mcp-and-integration-protocols.md" }
+- [06 · Reasoning-System Economics](06-reasoning-system-economics.md){ .study-lecture data-lecture="06-reasoning-system-economics.md" }
 
 **Checkpoint**
 

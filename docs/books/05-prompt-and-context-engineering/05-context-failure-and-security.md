@@ -1,6 +1,26 @@
 # 5.5 — Context Failure and Security
 
-[Course overview](index.md) · Trust and prompt operations · Lecture 5 of 6
+<p class="study-position" data-course="05-prompt-and-context-engineering" data-lecture="05-context-failure-and-security.md">Trust and prompt operations · Lecture 5 of 6</p>
+
+[← Conversation and Memory](04-conversation-and-memory.md) · [Course outline](index.md#course-outline){ .study-overview } · [Prompt and Context Operations →](06-prompt-and-context-operations.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Instructions and output contracts**
+
+    - [Instructions That Work](01-instructions-that-work.md)
+    - [Structured Generation](02-structured-generation.md)
+
+    **Context and memory**
+
+    - [Context Construction](03-context-construction.md)
+    - [Conversation and Memory](04-conversation-and-memory.md)
+
+    **Trust and prompt operations**
+
+    - **Context Failure and Security** (current)
+    - [Prompt and Context Operations](06-prompt-and-context-operations.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Model inference
 - Tokens and context windows
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Recognize instruction conflict, prompt injection, context poisoning, stale memory, overflow, lost provenance, and authorization mistakes.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A document can inform the model and still have no authority
+
+An imported room note contains instructions aimed at the assistant alongside a legitimate closure update. Noah expects the room data to be usable and any instruction to remain untrusted.
+
+Keep source content on the data side of the trust boundary. The approval or publishing action must check user permissions independently. Verify that the system can extract the update without acquiring authority from a document.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Evidence"] --> N3["Model"]
   N3["Model"] --> N4["Validated output"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **context failure and security** changes one or more transitions.
 
 ## Core concepts
 
@@ -135,8 +155,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Trusted high-priority sections consume the budget first; untrusted evidence remains explicitly marked as data.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **prompt injection** and **instruction conflict**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -237,8 +255,7 @@ Recognize instruction conflict, prompt injection, context poisoning, stale memor
 - Provider documentation for structured output and tool calling
 - Current prompt-injection guidance from authoritative security sources
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Conversation and Memory](04-conversation-and-memory.md) · [Course outline](index.md) · [Prompt and Context Operations →](06-prompt-and-context-operations.md)
+[← Conversation and Memory](04-conversation-and-memory.md) · [Course outline](index.md#course-outline){ .study-overview } · [Prompt and Context Operations →](06-prompt-and-context-operations.md)
+{: .study-directions .study-directions--footer }

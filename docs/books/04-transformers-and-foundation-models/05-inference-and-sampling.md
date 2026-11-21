@@ -1,6 +1,26 @@
 # 4.5 — Inference and Sampling
 
-[Course overview](index.md) · Decoding and model selection · Lecture 5 of 6
+<p class="study-position" data-course="04-transformers-and-foundation-models" data-lecture="05-inference-and-sampling.md">Decoding and model selection · Lecture 5 of 6</p>
+
+[← Training Foundation Models](04-training-foundation-models.md) · [Course outline](index.md#course-outline){ .study-overview } · [Model Families and Selection →](06-model-families-and-selection.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Sequence models and attention**
+
+    - [Sequence Models Before Transformers](01-sequence-models-before-transformers.md)
+    - [Attention](02-attention.md)
+
+    **Transformer blocks and training**
+
+    - [The Transformer Block](03-the-transformer-block.md)
+    - [Training Foundation Models](04-training-foundation-models.md)
+
+    **Decoding and model selection**
+
+    - **Inference and Sampling** (current)
+    - [Model Families and Selection](06-model-families-and-selection.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Matrix multiplication intuition
 - Neural-network basics
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Trace logits, softmax, temperature, top-k, top-p, streaming, batching, KV cache, prefix cache, and speculative decoding.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## The selector needs repeatability
+
+The team reruns the same transcript three times and sees two owners inferred. Asha can accept variation in notes phrasing, but an ownership field must stay grounded.
+
+Tune output behavior by field and enforce constraints downstream. Measure owner consistency and correctness across repeated runs, rather than assuming a single low-temperature run establishes determinism or quality.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Transformer layers"] --> N3["Logits"]
   N3["Logits"] --> N4["Sampled token"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **inference and sampling** changes one or more transitions.
 
 ## Core concepts
 
@@ -143,8 +163,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 ??? success "Expected observation"
     The query-aligned value receives more attention, and lower temperature concentrates the sampling distribution.
 
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **logits** and **sampling**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
-
 ## Engineering practice
 
 **Build:** Build a sampling playground and compare decoding strategies.
@@ -245,8 +263,7 @@ Trace logits, softmax, temperature, top-k, top-p, streaming, batching, KV cache,
 - Devlin et al. — BERT
 - Brown et al. — Language Models are Few-Shot Learners
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Training Foundation Models](04-training-foundation-models.md) · [Course outline](index.md) · [Model Families and Selection →](06-model-families-and-selection.md)
+[← Training Foundation Models](04-training-foundation-models.md) · [Course outline](index.md#course-outline){ .study-overview } · [Model Families and Selection →](06-model-families-and-selection.md)
+{: .study-directions .study-directions--footer }

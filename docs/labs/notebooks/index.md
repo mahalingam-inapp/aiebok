@@ -1,6 +1,9 @@
 # Jupyter Notebooks
 
-Each technical course has a downloadable workbook with lecture demonstrations and a checked course workshop. The workbooks contain their own sample data and can run outside the repository.
+Technical and applied workbooks pair a practice case with worked explanations, executable demonstrations, and exercises. They contain their own sample data and can run outside the repository.
+
+Open the [HarborLink interactive workbook](../interactive-workbook.md) to run a single case across the curriculum in your browser.
+For a second end-to-end case, use the [UnderCover claims harness practicum](../../guides/undercover-harness.md) and its downloadable notebook.
 
 ## Set up Jupyter
 

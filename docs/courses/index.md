@@ -40,4 +40,4 @@ Each course groups self-contained lectures into sections and ends with a project
 - [12 · Cloud and Enterprise AI Architecture](../books/12-cloud-and-enterprise-ai-architecture/index.md) — Design secure, governed, resilient AI platforms and map them to managed services without losing vendor-neutral reasoning.
 - [13 · Multimodal and Frontier Systems](../books/13-multimodal-and-frontier-systems/index.md) — Understand multimodal pipelines and evaluate emerging AI capabilities through enduring principles and evidence.
 
-[Notebook downloads and setup](../labs/notebooks/index.md)
+[Notebook downloads and setup](../labs/notebooks/index.md) · [Real-world casebook](../casebook/index.md)

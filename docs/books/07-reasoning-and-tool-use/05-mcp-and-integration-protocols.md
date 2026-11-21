@@ -1,6 +1,26 @@
 # 7.5 — MCP and Integration Protocols
 
-[Course overview](index.md) · Integrations and reasoning cost · Lecture 5 of 6
+<p class="study-position" data-course="07-reasoning-and-tool-use" data-lecture="05-mcp-and-integration-protocols.md">Integrations and reasoning cost · Lecture 5 of 6</p>
+
+[← Tools as Capability Boundaries](04-tools-as-capability-boundaries.md) · [Course outline](index.md#course-outline){ .study-overview } · [Reasoning-System Economics →](06-reasoning-system-economics.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Search and planning**
+
+    - [Reasoning as Search](01-reasoning-as-search.md)
+    - [Planning](02-planning.md)
+
+    **Verification and tool contracts**
+
+    - [Verification and Critique](03-verification-and-critique.md)
+    - [Tools as Capability Boundaries](04-tools-as-capability-boundaries.md)
+
+    **Integrations and reasoning cost**
+
+    - **MCP and Integration Protocols** (current)
+    - [Reasoning-System Economics](06-reasoning-system-economics.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Search and planning
 - Typed software interfaces
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Understand clients, servers, tools, resources, prompts, discovery, transport, authentication, and protocol security.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A discovered tool is still a dependency
+
+A connector’s lookup contract changes and starts returning a nullable address. The workflow used to assume the field was always populated.
+
+Keep a compatibility check at the tool boundary and treat missing data explicitly. A protocol simplifies discovering capabilities, while the application still owns compatibility, permitted usage, and the fallback.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Tools"] --> N3["Observations"]
   N3["Observations"] --> N4["Verifier"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **mcp and integration protocols** changes one or more transitions.
 
 ## Core concepts
 
@@ -133,8 +153,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Only the plan containing every required step in dependency order should pass verification.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **MCP** and **resources**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Understand clients, servers, tools, resources, prompts, discovery, transport, au
 - Yao et al. — ReAct
 - Primary protocol specifications for the tool interfaces studied
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Tools as Capability Boundaries](04-tools-as-capability-boundaries.md) · [Course outline](index.md) · [Reasoning-System Economics →](06-reasoning-system-economics.md)
+[← Tools as Capability Boundaries](04-tools-as-capability-boundaries.md) · [Course outline](index.md#course-outline){ .study-overview } · [Reasoning-System Economics →](06-reasoning-system-economics.md)
+{: .study-directions .study-directions--footer }

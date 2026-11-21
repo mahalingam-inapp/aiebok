@@ -4,8 +4,16 @@ Technical course 02 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Learn how models are trained, validated, diagnosed, and integrated into reliable software systems.
 
-[Start the first lecture](01-problems-data-and-baselines.md){ .md-button .md-button--primary }
+[Start the first lecture](01-problems-data-and-baselines.md){ .md-button .md-button--primary .study-start data-course="02-machine-learning-systems" }
 [Download the course notebook](../../assets/notebooks/02-machine-learning-systems.ipynb){ .md-button download }
+
+## Practice case · The repairs that arrive after moving day
+
+Daniel coordinates maintenance for a housing cooperative. Residents sometimes wait several days for a repair because the mobile form sends sparse descriptions into the same queue as rich phone reports. The board funds one pilot. Daniel can promise faster triage only if mobile requests and uncommon repair types see the same benefit.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [The errors a face-matching average hides](../../casebook/face-matching.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Learn how models are trained, validated, diagnosed, and integrated into reliable
 
 ### Problem framing and supervised models
 
-- [01 · Problems, Data, and Baselines](01-problems-data-and-baselines.md)
-- [02 · Supervised Learning](02-supervised-learning.md)
+- [01 · Problems, Data, and Baselines](01-problems-data-and-baselines.md){ .study-lecture data-lecture="01-problems-data-and-baselines.md" }
+- [02 · Supervised Learning](02-supervised-learning.md){ .study-lecture data-lecture="02-supervised-learning.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Define a prediction cutoff and a naive baseline. Identify a feature available on
 
 ### Representations and neural networks
 
-- [03 · Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md)
-- [04 · Neural Networks](04-neural-networks.md)
+- [03 · Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md){ .study-lecture data-lecture="03-unsupervised-and-representation-learning.md" }
+- [04 · Neural Networks](04-neural-networks.md){ .study-lecture data-lecture="04-neural-networks.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Compare fitting a line with learning an intermediate representation. Name an inp
 
 ### Evidence and lifecycle
 
-- [05 · Evaluation and Error Analysis](05-evaluation-and-error-analysis.md)
-- [06 · The ML Lifecycle](06-the-ml-lifecycle.md)
+- [05 · Evaluation and Error Analysis](05-evaluation-and-error-analysis.md){ .study-lecture data-lecture="05-evaluation-and-error-analysis.md" }
+- [06 · The ML Lifecycle](06-the-ml-lifecycle.md){ .study-lecture data-lecture="06-the-ml-lifecycle.md" }
 
 **Checkpoint**
 

@@ -69,9 +69,11 @@ markdown_extensions:
 
 extra_css:
   - assets/stylesheets/extra.css
+  - assets/stylesheets/study-navigation.css
 
 extra_javascript:
   - assets/javascripts/external-links.js
+  - assets/javascripts/study-navigation.js
 
 nav:
   - Home: index.md
@@ -102,6 +104,7 @@ nav:
           - "AI Reliability & Release Engineer": getting-started/learning-paths/ai-reliability-release-engineer.md
   - Courses:
       - Course Catalog: courses/index.md
+      - Casebook: casebook/index.md
       - No-code Courses:
           - "AI Literacy":
               - Overview: courses/ai-literacy/index.md
@@ -398,9 +401,17 @@ nav:
       - Hands-on Start: labs/start-here.md
       - Lab Guide: labs/index.md
       - Jupyter Notebooks: labs/notebooks/index.md
+      - Interactive Workbook: labs/interactive-workbook.md
       - Code Samples: code-samples/index.md
   - Build Guides:
       - Guide Index: guides/index.md
+      - Coding Agent Implementation:
+          - Shared Workflow: guides/coding-agents/index.md
+          - Codex: guides/coding-agents/codex.md
+          - Cursor: guides/coding-agents/cursor.md
+          - OpenCode: guides/coding-agents/opencode.md
+          - Claude Code: guides/coding-agents/claude-code.md
+      - UnderCover Claims Harness: guides/undercover-harness.md
   - Reference:
       - Question Index: reference/question-index.md
       - Glossary: reference/glossary.md

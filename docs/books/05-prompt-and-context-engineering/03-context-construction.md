@@ -1,6 +1,26 @@
 # 5.3 — Context Construction
 
-[Course overview](index.md) · Context and memory · Lecture 3 of 6
+<p class="study-position" data-course="05-prompt-and-context-engineering" data-lecture="03-context-construction.md">Context and memory · Lecture 3 of 6</p>
+
+[← Structured Generation](02-structured-generation.md) · [Course outline](index.md#course-outline){ .study-overview } · [Conversation and Memory →](04-conversation-and-memory.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Instructions and output contracts**
+
+    - [Instructions That Work](01-instructions-that-work.md)
+    - [Structured Generation](02-structured-generation.md)
+
+    **Context and memory**
+
+    - **Context Construction** (current)
+    - [Conversation and Memory](04-conversation-and-memory.md)
+
+    **Trust and prompt operations**
+
+    - [Context Failure and Security](05-context-failure-and-security.md)
+    - [Prompt and Context Operations](06-prompt-and-context-operations.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Model inference
 - Tokens and context windows
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Assemble instructions, user input, state, evidence, tools, and examples under priority and token constraints.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Which sentence deserves the last token?
+
+The room-closure notice and a three-month-old maintenance summary compete for context. The old note is longer and includes convenient dates.
+
+Budget for the current policy and evidence before adding conversation history. The next shift needs facts they can verify. Test a tight context window with the older source present to see what was dropped and why.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Evidence"] --> N3["Model"]
   N3["Model"] --> N4["Validated output"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **context construction** changes one or more transitions.
 
 ## Core concepts
 
@@ -137,8 +157,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Trusted high-priority sections consume the budget first; untrusted evidence remains explicitly marked as data.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **context windows** and **token budgeting**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -239,8 +257,7 @@ Assemble instructions, user input, state, evidence, tools, and examples under pr
 - Provider documentation for structured output and tool calling
 - Current prompt-injection guidance from authoritative security sources
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Structured Generation](02-structured-generation.md) · [Course outline](index.md) · [Conversation and Memory →](04-conversation-and-memory.md)
+[← Structured Generation](02-structured-generation.md) · [Course outline](index.md#course-outline){ .study-overview } · [Conversation and Memory →](04-conversation-and-memory.md)
+{: .study-directions .study-directions--footer }

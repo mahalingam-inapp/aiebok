@@ -10,9 +10,11 @@ No programming, AI background, or AI account required.
 
 ## Course sequence
 
-1. [AI Literacy](../../courses/ai-literacy/index.md)
-2. [Using AI at Work](../../courses/using-ai-at-work/index.md)
-3. [Evaluating AI in Practice](../../courses/evaluating-ai-in-practice/index.md)
+[Start this path](../../courses/ai-literacy/index.md){ .md-button .md-button--primary .study-path-course }
+
+1. [AI Literacy](../../courses/ai-literacy/index.md){ .study-path-course }
+2. [Using AI at Work](../../courses/using-ai-at-work/index.md){ .study-path-course }
+3. [Evaluating AI in Practice](../../courses/evaluating-ai-in-practice/index.md){ .study-path-course }
 
 ## Study pace
 

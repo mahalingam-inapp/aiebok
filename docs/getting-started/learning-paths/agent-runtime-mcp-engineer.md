@@ -10,10 +10,12 @@ Comfort with Python, JSON, testing, and tool-calling basics.
 
 ## Course sequence
 
-1. [Reasoning and Tool Use](../../books/07-reasoning-and-tool-use/index.md)
-2. [Agent Systems](../../books/08-agent-systems/index.md)
-3. [Supervised Coding-Agent Harnesses](../../courses/supervised-coding-harness/index.md)
-4. [Durable Agent Runtime and MCP](../../courses/durable-agent-tool-runtime/index.md)
+[Start this path](../../books/07-reasoning-and-tool-use/index.md){ .md-button .md-button--primary .study-path-course }
+
+1. [Reasoning and Tool Use](../../books/07-reasoning-and-tool-use/index.md){ .study-path-course }
+2. [Agent Systems](../../books/08-agent-systems/index.md){ .study-path-course }
+3. [Supervised Coding-Agent Harnesses](../../courses/supervised-coding-harness/index.md){ .study-path-course }
+4. [Durable Agent Runtime and MCP](../../courses/durable-agent-tool-runtime/index.md){ .study-path-course }
 
 ## Study pace
 

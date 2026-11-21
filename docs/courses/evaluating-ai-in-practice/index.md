@@ -4,7 +4,15 @@ No code · 2 sections · 4 lectures · About 2 hours, plus the project
 
 Compare AI-assisted workflows with an evidence scorecard and a recorded keep, revise, or stop decision.
 
-[Start the first lecture](01-pick-cases-that-represent-the-real-task.md){ .md-button .md-button--primary }
+[Start the first lecture](01-pick-cases-that-represent-the-real-task.md){ .md-button .md-button--primary .study-start data-course="evaluating-ai-in-practice" }
+
+## Practice case · Six notices and one deadline that matters
+
+Ben coordinates notices for a volunteer group. He compares his current writing process with an assisted workflow that drafts messages from source notes. He wants a small scorecard that distinguishes easy notices from cases where a wrong claim could send people to the wrong place.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [What changed for customer support workers](../../casebook/support-assistants.md).
 
 ## Entry prerequisites
 
@@ -14,13 +22,13 @@ AI Literacy or equivalent. Use the examples on each lecture page with paper or a
 
 ### Build the comparison
 
-- [01 · Pick cases that represent the real task](01-pick-cases-that-represent-the-real-task.md) — Build a small case set with typical, ambiguous, and out-of-scope requests.
-- [02 · Score evidence and omissions](02-score-evidence-and-omissions.md) — Use a small rubric consistently and record why an output passed or failed.
+- [01 · Pick cases that represent the real task](01-pick-cases-that-represent-the-real-task.md){ .study-lecture data-lecture="01-pick-cases-that-represent-the-real-task.md" } — Build a small case set with typical, ambiguous, and out-of-scope requests.
+- [02 · Score evidence and omissions](02-score-evidence-and-omissions.md){ .study-lecture data-lecture="02-score-evidence-and-omissions.md" } — Use a small rubric consistently and record why an output passed or failed.
 
 ### Make a decision with evidence
 
-- [03 · Measure time and review burden](03-measure-time-and-review-burden.md) — Calculate the total effort and compare it with the existing workflow.
-- [04 · Record a keep, revise, or stop decision](04-record-a-keep-revise-or-stop-decision.md) — Make a bounded recommendation with a named reviewer and a test for revisiting the decision.
+- [03 · Measure time and review burden](03-measure-time-and-review-burden.md){ .study-lecture data-lecture="03-measure-time-and-review-burden.md" } — Calculate the total effort and compare it with the existing workflow.
+- [04 · Record a keep, revise, or stop decision](04-record-a-keep-revise-or-stop-decision.md){ .study-lecture data-lecture="04-record-a-keep-revise-or-stop-decision.md" } — Make a bounded recommendation with a named reviewer and a test for revisiting the decision.
 
 ## Course project
 

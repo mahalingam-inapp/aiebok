@@ -1,6 +1,26 @@
 # 10.3 — Evaluation by System Stage
 
-[Course overview](index.md) · Stage evaluation and security · Lecture 3 of 6
+<p class="study-position" data-course="10-evaluation-safety-and-governance" data-lecture="03-evaluation-by-system-stage.md">Stage evaluation and security · Lecture 3 of 6</p>
+
+[← Metrics and Human Judgment](02-metrics-and-human-judgment.md) · [Course outline](index.md#course-outline){ .study-overview } · [Security of AI Systems →](04-security-of-ai-systems.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Requirements and judgment**
+
+    - [Evaluation as Requirements](01-evaluation-as-requirements.md)
+    - [Metrics and Human Judgment](02-metrics-and-human-judgment.md)
+
+    **Stage evaluation and security**
+
+    - **Evaluation by System Stage** (current)
+    - [Security of AI Systems](04-security-of-ai-systems.md)
+
+    **Risk and governance**
+
+    - [Responsible AI and Risk](05-responsible-ai-and-risk.md)
+    - [Governance and Assurance](06-governance-and-assurance.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Statistics intuition
 - Threat-model basics
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Evaluate ingestion, retrieval, generation, tools, agents, UX, latency, cost, and business outcomes separately and together.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Locate the failure before editing the prompt
+
+An eligibility exception is correctly fetched but discarded during context assembly. The answer is then wrong despite a successful retrieval hit.
+
+Measure retrieval, assembly, and final output separately. A trace that names the selected evidence can identify the broken stage. Freeze the failing example so a later prompt change cannot conceal the regression.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Measures"] --> N3["Risk gate"]
   N3["Risk gate"] --> N4["Assurance record"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **evaluation by system stage** changes one or more transitions.
 
 ## Core concepts
 
@@ -133,8 +153,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The release gate depends on both overall performance and perfect performance in the high-risk slice.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **component evals** and **retrieval metrics**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -236,8 +254,7 @@ Evaluate ingestion, retrieval, generation, tools, agents, UX, latency, cost, and
 - OWASP guidance for LLM applications
 - Task-specific evaluation research
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Metrics and Human Judgment](02-metrics-and-human-judgment.md) · [Course outline](index.md) · [Security of AI Systems →](04-security-of-ai-systems.md)
+[← Metrics and Human Judgment](02-metrics-and-human-judgment.md) · [Course outline](index.md#course-outline){ .study-overview } · [Security of AI Systems →](04-security-of-ai-systems.md)
+{: .study-directions .study-directions--footer }

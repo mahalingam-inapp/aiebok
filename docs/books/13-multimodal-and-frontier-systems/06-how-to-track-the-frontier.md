@@ -1,6 +1,26 @@
 # 13.6 — How to Track the Frontier
 
-[Course overview](index.md) · Emerging systems and evidence · Lecture 6 of 6
+<p class="study-position" data-course="13-multimodal-and-frontier-systems" data-lecture="06-how-to-track-the-frontier.md">Emerging systems and evidence · Lecture 6 of 6</p>
+
+[← Long Context, World Models, and Continual Learning](05-long-context-world-models-and-continual-learning.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Documents, vision, and audio**
+
+    - [Vision and Document Intelligence](01-vision-and-document-intelligence.md)
+    - [Speech and Audio](02-speech-and-audio.md)
+
+    **Generative media and bounded action**
+
+    - [Image and Video Generation](03-image-and-video-generation.md)
+    - [Computer Use and Embodied Action](04-computer-use-and-embodied-action.md)
+
+    **Emerging systems and evidence**
+
+    - [Long Context, World Models, and Continual Learning](05-long-context-world-models-and-continual-learning.md)
+    - **How to Track the Frontier** (current)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Evidence-oriented research reading
 - Risk awareness
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Develop research literacy, evidence hierarchies, reproduction habits, forecasting, and a review cadence for a fast-moving field.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A frontier benchmark can miss the archive
+
+A new model wins a public image benchmark and fails on faded handwritten entries from one exhibit. Elise needs a decision for that collection.
+
+Add a small labeled set from the actual archive with a process for checking errors and coverage. Record format, model version, and what reviewers had to correct before deciding which workflow to deploy.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Fusion or action"] --> N3["Provenance"]
   N3["Provenance"] --> N4["Evaluation"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **how to track the frontier** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Only evidence above the confidence threshold is emitted, and every output retains source, page, and modality.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **primary sources** and **benchmarks**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -234,8 +252,7 @@ Develop research literacy, evidence hierarchies, reproduction habits, forecastin
 - Primary papers for the selected modality or frontier claim
 - Model and dataset cards for every reproduced system
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Long Context, World Models, and Continual Learning](05-long-context-world-models-and-continual-learning.md) · [Course outline](index.md) · [Course project →](index.md#course-project)
+[← Long Context, World Models, and Continual Learning](05-long-context-world-models-and-continual-learning.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions .study-directions--footer }

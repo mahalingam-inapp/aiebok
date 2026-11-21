@@ -1,14 +1,43 @@
 # Record a keep, revise, or stop decision
 
-[Evaluating AI in Practice](index.md) · Make a decision with evidence · Lecture 4 of 4 · 20–30 min · No code
+<p class="study-position" data-course="evaluating-ai-in-practice" data-lecture="04-record-a-keep-revise-or-stop-decision.md">Make a decision with evidence · Lecture 4 of 4</p>
+
+[← Measure time and review burden](03-measure-time-and-review-burden.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Build the comparison**
+
+    - [Pick cases that represent the real task](01-pick-cases-that-represent-the-real-task.md)
+    - [Score evidence and omissions](02-score-evidence-and-omissions.md)
+
+    **Make a decision with evidence**
+
+    - [Measure time and review burden](03-measure-time-and-review-burden.md)
+    - **Record a keep, revise, or stop decision** (current)
 
 ## What you will learn
 
 Make a bounded recommendation with a named reviewer and a test for revisiting the decision.
 
+## Make every recommendation conditional on what you saw
+
+Routine notices pass and save time. The tool gets one time-sensitive notice wrong. Ben has too few cases to estimate how often that will happen.
+
+Record a limited use decision for routine work and keep time-sensitive notices on the manual path. Say what extra evidence or workflow change would make you reconsider.
+
 ## How it works
 
 Use the fixed criteria and record which cases support the decision. Keep a short note of what you tested, what failed, the allowed scope, and what evidence would change the decision. A three-case scorecard supports a small experiment and leaves uncertainty explicit.
+
+### Make the result useful to the next decision maker
+
+Put the actual evidence beside the recommendation: the tested tasks, denominators, rework, benefits, and harms. State whether you recommend continuing, revising, or stopping for each relevant task type. A responsible decision may keep the same tool for one purpose and pause it for another.
+
+Name what would change your decision. A narrower prompt could reduce unconfirmed claims on late updates. A staffed review channel could make occasional handoffs acceptable. Ask for a rerun with previously unseen requests and a threshold that can be judged without inventing a new rule after seeing results.
+
+Give a person ownership of the next run and keep the old workflow available. Good evaluation does not need a large deck of scores. It needs a clear statement of what was observed, who experienced the effect, and what action the evidence now permits.
 
 ## Worked example
 
@@ -23,4 +52,5 @@ Write a decision for a workflow that saves time but has one sensitive-data failu
 
 ## Continue
 
-[← Previous lecture](03-measure-time-and-review-burden.md) · [Course outline](index.md) · [Course project →](index.md#course-project)
+[← Measure time and review burden](03-measure-time-and-review-burden.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions .study-directions--footer }

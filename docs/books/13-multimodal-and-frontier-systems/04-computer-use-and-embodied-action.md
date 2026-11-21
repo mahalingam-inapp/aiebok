@@ -1,6 +1,26 @@
 # 13.4 — Computer Use and Embodied Action
 
-[Course overview](index.md) · Generative media and bounded action · Lecture 4 of 6
+<p class="study-position" data-course="13-multimodal-and-frontier-systems" data-lecture="04-computer-use-and-embodied-action.md">Generative media and bounded action · Lecture 4 of 6</p>
+
+[← Image and Video Generation](03-image-and-video-generation.md) · [Course outline](index.md#course-outline){ .study-overview } · [Long Context, World Models, and Continual Learning →](05-long-context-world-models-and-continual-learning.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Documents, vision, and audio**
+
+    - [Vision and Document Intelligence](01-vision-and-document-intelligence.md)
+    - [Speech and Audio](02-speech-and-audio.md)
+
+    **Generative media and bounded action**
+
+    - [Image and Video Generation](03-image-and-video-generation.md)
+    - **Computer Use and Embodied Action** (current)
+
+    **Emerging systems and evidence**
+
+    - [Long Context, World Models, and Continual Learning](05-long-context-world-models-and-continual-learning.md)
+    - [How to Track the Frontier](06-how-to-track-the-frontier.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Evidence-oriented research reading
 - Risk awareness
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Model perception–action loops, UI grounding, coordinate and semantic actions, recovery, permissions, and physical-world constraints.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A visible button can still change a real record
+
+An experimental tool proposes editing an archive entry after spotting an apparent typo. The field may contain the historical spelling that curators need to keep.
+
+Make inspection read-only by default. Put the proposed change and supporting evidence in front of an authorized reviewer. Check recoverability and expected state before applying an approved edit.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Fusion or action"] --> N3["Provenance"]
   N3["Provenance"] --> N4["Evaluation"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **computer use and embodied action** changes one or more transitions.
 
 ## Core concepts
 
@@ -135,8 +155,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Only evidence above the confidence threshold is emitted, and every output retains source, page, and modality.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **computer use** and **visual grounding**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -237,8 +255,7 @@ Model perception–action loops, UI grounding, coordinate and semantic actions, 
 - Primary papers for the selected modality or frontier claim
 - Model and dataset cards for every reproduced system
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Image and Video Generation](03-image-and-video-generation.md) · [Course outline](index.md) · [Long Context, World Models, and Continual Learning →](05-long-context-world-models-and-continual-learning.md)
+[← Image and Video Generation](03-image-and-video-generation.md) · [Course outline](index.md#course-outline){ .study-overview } · [Long Context, World Models, and Continual Learning →](05-long-context-world-models-and-continual-learning.md)
+{: .study-directions .study-directions--footer }

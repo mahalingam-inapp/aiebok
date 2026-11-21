@@ -4,8 +4,16 @@ Technical course 11 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Understand model adaptation, efficient inference, deployment, observability, release, and lifecycle operations.
 
-[Start the first lecture](01-choosing-adaptation.md){ .md-button .md-button--primary }
+[Start the first lecture](01-choosing-adaptation.md){ .md-button .md-button--primary .study-start data-course="11-training-serving-and-ai-operations" }
 [Download the course notebook](../../assets/notebooks/11-training-serving-and-ai-operations.ipynb){ .md-button download }
+
+## Practice case · The supplier assistant that learned last year’s policy
+
+Wei operates an assistant for a purchasing team. The team wants a consistent approval format and accurate current pricing guidance, but contract terms can change weekly. A pilot must also survive peak workload on order day with an identifiable release and rollback decision.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [When a better-liked model got harder to trust](../../casebook/model-behavior-rollback.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Understand model adaptation, efficient inference, deployment, observability, rel
 
 ### Model adaptation and post-training
 
-- [01 · Choosing Adaptation](01-choosing-adaptation.md)
-- [02 · Post-Training Methods](02-post-training-methods.md)
+- [01 · Choosing Adaptation](01-choosing-adaptation.md){ .study-lecture data-lecture="01-choosing-adaptation.md" }
+- [02 · Post-Training Methods](02-post-training-methods.md){ .study-lecture data-lecture="02-post-training-methods.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Specify a behavior where prompt changes are a reasonable baseline before conside
 
 ### Datasets and inference infrastructure
 
-- [03 · Dataset Engineering](03-dataset-engineering.md)
-- [04 · Inference Infrastructure](04-inference-infrastructure.md)
+- [03 · Dataset Engineering](03-dataset-engineering.md){ .study-lecture data-lecture="03-dataset-engineering.md" }
+- [04 · Inference Infrastructure](04-inference-infrastructure.md){ .study-lecture data-lecture="04-inference-infrastructure.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Describe a held-out slice and a serving constraint. Explain which one affects tr
 
 ### Deployment and operations
 
-- [05 · Deployment and Routing](05-deployment-and-routing.md)
-- [06 · LLMOps](06-llmops.md)
+- [05 · Deployment and Routing](05-deployment-and-routing.md){ .study-lecture data-lecture="05-deployment-and-routing.md" }
+- [06 · LLMOps](06-llmops.md){ .study-lecture data-lecture="06-llmops.md" }
 
 **Checkpoint**
 

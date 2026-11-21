@@ -10,15 +10,17 @@ System design, cloud identity, APIs, and familiarity with foundation models, sea
 
 ## Course sequence
 
-1. [Knowledge and Retrieval Systems](../../books/06-knowledge-and-retrieval-systems/index.md)
-2. [Reasoning and Tool Use](../../books/07-reasoning-and-tool-use/index.md)
-3. [Agent Systems](../../books/08-agent-systems/index.md)
-4. [AI Software and Product Engineering](../../books/09-ai-software-and-product-engineering/index.md)
-5. [Evaluation, Safety, and Governance](../../books/10-evaluation-safety-and-governance/index.md)
-6. [Training, Serving, and AI Operations](../../books/11-training-serving-and-ai-operations/index.md)
-7. [Cloud and Enterprise AI Architecture](../../books/12-cloud-and-enterprise-ai-architecture/index.md)
-8. [Multimodal and Frontier Systems](../../books/13-multimodal-and-frontier-systems/index.md)
-9. [Deploy and Operate an AI Service](../../courses/operating-ai-services/index.md)
+[Start this path](../../books/06-knowledge-and-retrieval-systems/index.md){ .md-button .md-button--primary .study-path-course }
+
+1. [Knowledge and Retrieval Systems](../../books/06-knowledge-and-retrieval-systems/index.md){ .study-path-course }
+2. [Reasoning and Tool Use](../../books/07-reasoning-and-tool-use/index.md){ .study-path-course }
+3. [Agent Systems](../../books/08-agent-systems/index.md){ .study-path-course }
+4. [AI Software and Product Engineering](../../books/09-ai-software-and-product-engineering/index.md){ .study-path-course }
+5. [Evaluation, Safety, and Governance](../../books/10-evaluation-safety-and-governance/index.md){ .study-path-course }
+6. [Training, Serving, and AI Operations](../../books/11-training-serving-and-ai-operations/index.md){ .study-path-course }
+7. [Cloud and Enterprise AI Architecture](../../books/12-cloud-and-enterprise-ai-architecture/index.md){ .study-path-course }
+8. [Multimodal and Frontier Systems](../../books/13-multimodal-and-frontier-systems/index.md){ .study-path-course }
+9. [Deploy and Operate an AI Service](../../courses/operating-ai-services/index.md){ .study-path-course }
 
 ## Study pace
 

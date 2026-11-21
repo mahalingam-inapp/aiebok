@@ -4,8 +4,16 @@ Technical course 06 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Build grounded knowledge systems whose ingestion, retrieval, generation, and citations can be evaluated separately.
 
-[Start the first lecture](01-knowledge-outside-the-model.md){ .md-button .md-button--primary }
+[Start the first lecture](01-knowledge-outside-the-model.md){ .md-button .md-button--primary .study-start data-course="06-knowledge-and-retrieval-systems" }
 [Download the course notebook](../../assets/notebooks/06-knowledge-and-retrieval-systems.ipynb){ .md-button download }
+
+## Practice case · The policy that changed on Monday
+
+Imani answers employee reimbursement questions. On Friday the limit is $80. A policy update makes it $60 on Monday and adds an exception for approved field work. Old copies are still in email attachments. Imani wants one answer that shows its evidence and explains which rule applied when a purchase was made.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [A chatbot answer that changed a travel decision](../../casebook/bereavement-fares.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Build grounded knowledge systems whose ingestion, retrieval, generation, and cit
 
 ### Knowledge strategy and ingestion
 
-- [01 · Knowledge Outside the Model](01-knowledge-outside-the-model.md)
-- [02 · Document Ingestion](02-document-ingestion.md)
+- [01 · Knowledge Outside the Model](01-knowledge-outside-the-model.md){ .study-lecture data-lecture="01-knowledge-outside-the-model.md" }
+- [02 · Document Ingestion](02-document-ingestion.md){ .study-lecture data-lecture="02-document-ingestion.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Sketch source identifiers and chunk lineage for two versions of the same policy.
 
 ### Retrieval and reranking
 
-- [03 · Retrieval](03-retrieval.md)
-- [04 · Ranking and Context Selection](04-ranking-and-context-selection.md)
+- [03 · Retrieval](03-retrieval.md){ .study-lecture data-lecture="03-retrieval.md" }
+- [04 · Ranking and Context Selection](04-ranking-and-context-selection.md){ .study-lecture data-lecture="04-ranking-and-context-selection.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Compare two ranked lists and trace how reciprocal rank fusion combines them.
 
 ### Grounded answers and enterprise constraints
 
-- [05 · RAG Generation and Citations](05-rag-generation-and-citations.md)
-- [06 · Advanced and Enterprise RAG](06-advanced-and-enterprise-rag.md)
+- [05 · RAG Generation and Citations](05-rag-generation-and-citations.md){ .study-lecture data-lecture="05-rag-generation-and-citations.md" }
+- [06 · Advanced and Enterprise RAG](06-advanced-and-enterprise-rag.md){ .study-lecture data-lecture="06-advanced-and-enterprise-rag.md" }
 
 **Checkpoint**
 

@@ -1,6 +1,26 @@
 # 2.4 — Neural Networks
 
-[Course overview](index.md) · Representations and neural networks · Lecture 4 of 6
+<p class="study-position" data-course="02-machine-learning-systems" data-lecture="04-neural-networks.md">Representations and neural networks · Lecture 4 of 6</p>
+
+[← Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md) · [Course outline](index.md#course-outline){ .study-overview } · [Evaluation and Error Analysis →](05-evaluation-and-error-analysis.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Problem framing and supervised models**
+
+    - [Problems, Data, and Baselines](01-problems-data-and-baselines.md)
+    - [Supervised Learning](02-supervised-learning.md)
+
+    **Representations and neural networks**
+
+    - [Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md)
+    - **Neural Networks** (current)
+
+    **Evidence and lifecycle**
+
+    - [Evaluation and Error Analysis](05-evaluation-and-error-analysis.md)
+    - [The ML Lifecycle](06-the-ml-lifecycle.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Basic Python
 - Graphs and averages
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Build the mental model of layers, activations, losses, backpropagation, initialization, normalization, and optimization.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Watch the model learn who wrote the ticket
+
+The neural model reads both description and channel. It quickly learns that phone reports are often urgent because a front-desk worker already screened them. A new contractor will begin transcribing all calls.
+
+Retraining can reduce loss by learning an unstable shortcut. Compare a model with and without the channel feature and test it during a shift in intake practice. Preserve the option to use channel for monitoring even if the predictor should ignore it.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Train"] --> N3["Evaluate slices"]
   N3["Evaluate slices"] --> N4["Operate"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **neural networks** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Loss should decline while the learned line approaches the data-generating relationship y = 2x + 1.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **neurons and layers** and **activations**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -234,8 +252,7 @@ Build the mental model of layers, activations, losses, backpropagation, initiali
 - Hastie, Tibshirani & Friedman — The Elements of Statistical Learning
 - Mitchell — Machine Learning
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md) · [Course outline](index.md) · [Evaluation and Error Analysis →](05-evaluation-and-error-analysis.md)
+[← Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md) · [Course outline](index.md#course-outline){ .study-overview } · [Evaluation and Error Analysis →](05-evaluation-and-error-analysis.md)
+{: .study-directions .study-directions--footer }

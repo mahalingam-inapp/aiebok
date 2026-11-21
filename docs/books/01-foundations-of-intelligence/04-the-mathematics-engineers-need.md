@@ -1,6 +1,26 @@
 # 1.4 — The Mathematics Engineers Need
 
-[Course overview](index.md) · Search and mathematics · Lecture 4 of 6
+<p class="study-position" data-course="01-foundations-of-intelligence" data-lecture="04-the-mathematics-engineers-need.md">Search and mathematics · Lecture 4 of 6</p>
+
+[← Search, Planning, and Decisions](03-search-planning-and-decisions.md) · [Course outline](index.md#course-outline){ .study-overview } · [Learning and Generalization →](05-learning-and-generalization.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Goals and representations**
+
+    - [What Intelligence Means](01-what-intelligence-means.md)
+    - [From Symbols to Statistics](02-from-symbols-to-statistics.md)
+
+    **Search and mathematics**
+
+    - [Search, Planning, and Decisions](03-search-planning-and-decisions.md)
+    - **The Mathematics Engineers Need** (current)
+
+    **Learning and decisions**
+
+    - [Learning and Generalization](05-learning-and-generalization.md)
+    - [Engineering with Uncertainty](06-engineering-with-uncertainty.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,26 @@
 - Comfort reading simple Python
 - Basic algebra
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Develop intuition for vectors, matrices, probability, distributions, statistics, entropy, gradients, and optimization without turning the book into a mathematics degree.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## An average that hides thirty minutes
+
+Five dispatches take 3, 4, 4, 5, and 30 minutes. The manager asks whether the new routing rule is faster. Priya remembers the passenger attached to the last number.
+
+The median is 4 minutes and the mean is 9.2. They answer different questions. Compare typical speed with the fraction over a service deadline so a system can improve its average while still exposing an unacceptable tail.
+
+### Turn the numbers into a decision
+
+| Routing plan | Observed minutes | Median | Cases taking over 10 minutes |
+|---|---|---:|---:|
+| Current | 3, 4, 4, 5, 30 | 4 | 1 of 5 |
+| Review-first trial | 4, 5, 5, 6, 8 | 5 | 0 of 5 |
+
+The current plan serves a typical case a minute faster. The review-first trial avoids the observed 30-minute wait and has a lower mean, 5.6 minutes versus 9.2. Which matters more depends on the dispatch policy. If a rider must be contacted within 10 minutes, the deadline is directly relevant. If there is only one dispatcher, the extra minute on everyday work can still matter.
+
+Five cases are enough to see the trade-off, and far too few to estimate the worst week. Priya would want to record more overnight cases and compare repeat incidents at the same station before endorsing a threshold. The numbers should make her decision more accountable rather than replacing her judgment.
 
 ## Learning objectives
 
@@ -40,8 +73,6 @@ flowchart LR
   N2["Search or learn"] --> N3["Decision"]
   N3["Decision"] --> N4["Feedback"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **the mathematics engineers need** changes one or more transitions.
 
 ## Core concepts
 
@@ -140,8 +171,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     A* should reach the same shortest path as breadth-first search while often expanding fewer states when the heuristic is informative.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **vectors** and **matrix transformations**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -242,8 +271,7 @@ Develop intuition for vectors, matrices, probability, distributions, statistics,
 - Russell & Norvig — Artificial Intelligence: A Modern Approach
 - Sutton & Barto — Reinforcement Learning: An Introduction
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Search, Planning, and Decisions](03-search-planning-and-decisions.md) · [Course outline](index.md) · [Learning and Generalization →](05-learning-and-generalization.md)
+[← Search, Planning, and Decisions](03-search-planning-and-decisions.md) · [Course outline](index.md#course-outline){ .study-overview } · [Learning and Generalization →](05-learning-and-generalization.md)
+{: .study-directions .study-directions--footer }

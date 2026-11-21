@@ -39,7 +39,8 @@ SPECIALIST_COURSES = (
                         "Recommend controlled adoption only when the thresholds pass. Identify who can pause the service and how affected work is handled."),
             )),
         ), workbook=True,
-        resources=(("Donner’s UnderCover repository", "https://github.com/ed-donner/undercover"),),
+        resources=(("UnderCover claims harness practicum", "../../guides/undercover-harness.md"),
+                   ("Donner’s UnderCover repository", "https://github.com/ed-donner/undercover")),
     ),
     Course(
         "llm-evaluation-benchmarks", "LLM Evaluation and Model Selection",
@@ -154,7 +155,8 @@ SPECIALIST_COURSES = (
             )),
         ), workbook=True,
         resources=(("Donner’s Agents course repositories and framework labs", "https://github.com/ed-donner/agents"),
-                   ("Donner’s UnderCover durable workflow examples", "https://github.com/ed-donner/undercover")),
+                   ("Donner’s UnderCover durable workflow examples", "https://github.com/ed-donner/undercover"),
+                   ("UnderCover claims harness practicum", "../../guides/undercover-harness.md")),
     ),
     Course(
         "llm-adaptation-inference", "LLM Adaptation and Inference Lab",

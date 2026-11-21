@@ -1,0 +1,1181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HarborLink | AIeBOK interactive workbook</title>
+  <style>:root {
+  color-scheme: light;
+  --navy: #24273c;
+  --ink: #1a1c2e;
+  --muted: #545b6d;
+  --accent: #ab1e23;
+  --canvas: #f3f3f7;
+  --line: #dedee7;
+  --paper: #fff;
+  background: var(--canvas);
+  color: var(--ink);
+  font: 100%/1.55 "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-padding-top: 0.8rem; }
+body { margin: 0; }
+a { color: #9d1d22; text-underline-offset: 0.18em; }
+button, input, select, textarea { font: inherit; }
+button, a, select, summary, label:has(input[type=checkbox]) { cursor: pointer; }
+:focus-visible { outline: 3px solid #b83a45; outline-offset: 3px; }
+
+.skip {
+  position: absolute;
+  z-index: 4;
+  transform: translateY(-120%);
+  background: white;
+  padding: 0.4rem;
+}
+.skip:focus { transform: none; }
+
+.site-header {
+  min-height: 3.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  padding: 0.65rem max(1rem, calc((100% - 72rem) / 2));
+  border-bottom: 2px solid var(--accent);
+  background: var(--navy);
+  color: #fff;
+}
+.site-header strong { margin-inline-end: 0.65rem; letter-spacing: 0.035em; }
+.site-header span { color: #d7d8e3; font-size: 0.86rem; }
+.site-header nav { display: flex; gap: 0.95rem; flex-wrap: wrap; }
+.site-header a { color: #f0f0f8; font-size: 0.88rem; text-decoration: none; }
+.site-header a:hover { text-decoration: underline; }
+
+.layout { width: min(72rem, calc(100% - 2rem)); margin: auto; padding-block: 1.1rem 3rem; }
+.hero {
+  padding: clamp(1.4rem, 4vw, 3.3rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 0.45rem;
+  border-left: 0.35rem solid var(--accent);
+  background: linear-gradient(115deg, #31344e, #1a1c2e 75%);
+  color: white;
+}
+.hero-content { max-width: 47rem; }
+.hero h1 { margin: 0; font-size: clamp(2.5rem, 8vw, 4.85rem); line-height: 1.05; letter-spacing: -0.035em; }
+.hero p { margin: 0.7rem 0 0; font-size: clamp(1rem, 2vw, 1.2rem); color: #e4e5ef; }
+.hero-counts { display: flex; flex-wrap: wrap; gap: 0.45rem 0.8rem; font-size: 0.86rem; color: #e4e5ef; }
+.hero-counts span { border-left: 2px solid #d9595d; padding-inline-start: 0.55rem; }
+
+main > section:not(.hero) { margin-block-start: 1.8rem; }
+.section-heading { display: flex; flex-wrap: wrap; gap: 0.45rem 1rem; justify-content: space-between; align-items: center; }
+h2 { margin: 0; font-size: clamp(1.4rem, 3vw, 1.9rem); line-height: 1.2; }
+p.summary { color: var(--muted); margin: 0.4rem 0 0.85rem; max-width: 78ch; }
+
+.workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+.request-form, .response, details {
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  background: var(--paper);
+}
+.request-form, .response { padding: clamp(0.8rem, 2.4vw, 1.45rem); }
+label { display: block; font-size: 0.86rem; font-weight: 650; margin-top: 0.55rem; }
+.request-form > label:first-child { margin-top: 0; }
+input:not([type=checkbox]), select, textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 0.28rem;
+  border: 1px solid #a6a8b5;
+  padding: 0.42rem 0.55rem;
+  color: var(--ink);
+  background: white;
+}
+textarea { resize: vertical; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 0.65rem; }
+.checks { margin-block: 0.45rem 0.75rem; }
+.checks label { font-weight: 500; display: flex; align-items: baseline; gap: 0.2rem; }
+input[type=checkbox] { accent-color: var(--accent); }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+button {
+  border: 1px solid #b9bbc7;
+  background: #fff;
+  color: var(--navy);
+  padding: 0.38rem 0.65rem;
+  border-radius: 0.3rem;
+  font-weight: 650;
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+button:hover { background: #f0f0f5; }
+button.primary { background: var(--accent); color: white; border-color: var(--accent); }
+button.primary:hover { background: #8a181c; }
+
+.response { border-top: 0.25rem solid var(--accent); overflow-wrap: anywhere; }
+.response-status { margin: 0; color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+#response-text { font-size: clamp(1.18rem, 2.5vw, 1.55rem); margin: 0.4rem 0 1rem; }
+#response-facts { margin: 0; }
+#response-facts dt { font-size: 0.83rem; font-weight: 700; color: var(--muted); }
+#response-facts dd { margin: 0 0 0.55rem; }
+.run-status { color: var(--muted); margin: 0.7rem 0 0; font-size: 0.85rem; }
+
+.cell-stack { display: grid; gap: 0.55rem; }
+.core-contract { max-width: 72rem; }
+#module-status { margin-block-end: 0.55rem; }
+details > summary { padding: 0.65rem 0.85rem; font-weight: 670; overflow-wrap: anywhere; }
+details[open] > summary { border-bottom: 1px solid var(--line); }
+.cell-body { padding: 0.25rem 0.85rem 0.85rem; }
+.cell-body p { margin: 0.5rem 0; }
+.dependencies { color: var(--muted); font-size: 0.83rem; }
+pre {
+  margin: 0.65rem 0;
+  padding: 0.72rem;
+  max-block-size: 22rem;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  background: #f7f7fa;
+  font: 0.88rem/1.55 "Cascadia Code", "Consolas", ui-monospace, monospace;
+}
+pre.output { background: #fff9f9; border-inline-start: 3px solid var(--accent); }
+#find-topic { max-width: 34rem; }
+#catalog { margin-top: 0.65rem; }
+.catalog-list { margin: 0; padding: 0.4rem 1rem 0.6rem 2.2rem; }
+.catalog-list li { margin-block: 0.32rem; overflow-wrap: anywhere; }
+.catalog-list li span { color: var(--muted); }
+.notice { padding: 0.55rem; border-left: 3px solid var(--accent); background: white; }
+
+@media (max-width: 700px) {
+  .workbench { grid-template-columns: minmax(0, 1fr); }
+  .hero { gap: 0.7rem; }
+}
+@media (max-width: 360px) {
+  .form-grid { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+</head>
+<body>
+  <a class="skip" href="#solution">Skip to the solution</a>
+  <header class="site-header">
+    <div><strong>AIeBOK</strong><span>Interactive workbook</span></div>
+    <nav aria-label="Workbook sections">
+      <a href="#solution">Solution</a>
+      <a href="#notebook">Notebook</a>
+      <a href="#curriculum">Curriculum map</a>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <section class="hero" aria-labelledby="title">
+      <div class="hero-content">
+        <h1 id="title">HarborLink</h1>
+        <p>Run a transit help desk that answers from dated policy evidence, respects audience scope, and hands unresolved work to staff.</p>
+      </div>
+      <div class="hero-counts" id="coverage-counts" aria-label="Workbook coverage"></div>
+    </section>
+    <noscript><p class="notice">Enable JavaScript to run the solution, inspect the code cells, and open the curriculum map.</p></noscript>
+
+    <section id="solution" aria-labelledby="solution-heading">
+      <div class="section-heading"><h2 id="solution-heading">Run the help desk</h2></div>
+      <p class="summary">The workbook runs in this browser using fictional policies for fare refunds, station access, student passes and lost property. It includes example staff policy and simulated approvals. The bundled source data is visible in the workbook.</p>
+      <div class="workbench">
+        <form id="request-form" class="request-form">
+          <label for="scenario">Example request</label>
+          <select id="scenario" name="scenario">
+            <option value="current">Current fare refund</option>
+            <option value="historic">Previous fare policy</option>
+            <option value="lift">Accessibility question</option>
+            <option value="ledger">Restricted staff policy</option>
+            <option value="missing">Unknown request</option>
+            <option value="audio">Question from audio evidence</option>
+            <option value="incident">Service interruption</option>
+          </select>
+          <label for="question">Rider question</label>
+          <textarea id="question" name="question" rows="2" maxlength="240" required>What is the fare refund deadline?</textarea>
+          <div class="form-grid">
+            <div><label for="role">Simulated role</label>
+              <select id="role" name="role"><option value="public">Rider</option><option value="staff">Staff reviewer</option></select>
+            </div>
+            <div><label for="date">As-of date</label>
+              <input id="date" name="date" type="date" value="2026-11-21" required>
+            </div>
+            <div><label for="ranking">Retrieval</label>
+              <select id="ranking" name="ranking">
+                <option value="hybrid">Hybrid</option><option value="lexical">Lexical</option><option value="dense">Concept vectors</option>
+              </select>
+            </div>
+            <div><label for="budget">Context budget in words</label>
+              <input id="budget" name="budget" type="number" value="80" min="10" max="500" step="1" required>
+            </div>
+          </div>
+          <div class="checks">
+            <label><input name="outage" type="checkbox"> Simulate a service outage</label>
+            <label><input name="approved" type="checkbox"> Approve a local review note as staff</label>
+          </div>
+          <div class="toolbar">
+            <button type="submit" class="primary">Run solution</button>
+            <button type="button" id="run-all">Run open cells</button>
+          </div>
+        </form>
+
+        <div class="response" aria-live="polite" aria-atomic="true">
+          <p id="response-status" class="response-status">Ready</p>
+          <p id="response-text">Select a request and run the solution.</p>
+          <dl id="response-facts"></dl>
+          <p id="run-status" class="run-status"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="notebook" aria-labelledby="notebook-heading">
+      <div class="section-heading">
+        <h2 id="notebook-heading">Notebook</h2>
+        <div class="toolbar">
+          <button type="button" id="expand-cells">Expand all</button>
+          <button type="button" id="collapse-cells">Collapse all</button>
+        </div>
+      </div>
+      <p class="summary">Opening a section enables its module. Closing it removes that module from execution. The built-in service still looks up dated policy by topic, checks audience and evidence, and routes unresolved requests to staff. Open ranked retrieval to compare ranking methods, or open the handoff module to simulate an approved review note.</p>
+      <details class="core-contract">
+        <summary>Built-in service code</summary>
+        <div class="cell-body">
+          <p>This service code is always available. Open this reference to inspect the policy checks and replacements that let the help desk run with every module closed.</p>
+          <pre tabindex="0"><code>function mediaFixtures() {
+  return [
+    { id: &quot;notice-lift&quot;, kind: &quot;image&quot;, extractedBy: &quot;synthetic OCR fixture&quot;, position: &quot;page 1 · sign region&quot;,
+      text: &quot;For a lift outage at North Pier, ask station staff for the step-free route.&quot;, family: &quot;lift-notice&quot;, topic: &quot;access&quot;,
+      from: &quot;2026-01-01&quot;, role: &quot;public&quot; },
+    { id: &quot;audio-lost&quot;, kind: &quot;audio&quot;, extractedBy: &quot;synthetic transcript fixture&quot;, position: &quot;00:14–00:22&quot;,
+      text: &quot;Found items can be collected from the Lost Property desk after confirmation.&quot;, family: &quot;lost-notice&quot;, topic: &quot;lost&quot;,
+      from: &quot;2026-01-01&quot;, role: &quot;public&quot; },
+  ];
+}
+
+function buildCorpus(observations) {
+  const records = [
+    { id: &quot;fare-v1&quot;, family: &quot;fare-refund&quot;, topic: &quot;fare&quot;, from: &quot;2026-01-01&quot;, role: &quot;public&quot;,
+      text: &quot;Submit a fare refund request within 30 days of purchase.&quot; },
+    { id: &quot;fare-v2&quot;, family: &quot;fare-refund&quot;, topic: &quot;fare&quot;, from: &quot;2026-07-01&quot;, role: &quot;public&quot;,
+      text: &quot;Submit a fare refund request within 14 days of purchase.&quot; },
+    { id: &quot;staff-review&quot;, family: &quot;internal-reconciliation&quot;, topic: &quot;ledger&quot;, from: &quot;2026-01-01&quot;, role: &quot;staff&quot;,
+      text: &quot;Send ledger reconciliation cases to the internal Finance review queue.&quot; },
+    { id: &quot;student-pass&quot;, family: &quot;student-pass&quot;, topic: &quot;pass&quot;, from: &quot;2026-01-01&quot;, role: &quot;public&quot;,
+      text: &quot;Show proof of enrollment at the ticket office to collect a student pass.&quot; },
+  ];
+  return {
+    records: [...records, ...observations].map((record) =&gt; ({
+      ...record,
+      kind: record.kind || &quot;document&quot;,
+      position: record.position || &quot;handbook · &quot; + record.family,
+      normalized: record.text.normalize(&quot;NFKC&quot;).toLowerCase(),
+    })),
+    schemaVersion: 1,
+  };
+}
+
+function languageTools(question) {
+  const groups = [
+    [&quot;refund&quot;, &quot;refunds&quot;, &quot;reimbursement&quot;, &quot;fare&quot;],
+    [&quot;lift&quot;, &quot;elevator&quot;, &quot;outage&quot;, &quot;wheelchair&quot;, &quot;step&quot;, &quot;accessibility&quot;],
+    [&quot;ledger&quot;, &quot;reconciliation&quot;, &quot;reconcile&quot;, &quot;internal&quot;],
+    [&quot;enrollment&quot;, &quot;student&quot;, &quot;pass&quot;],
+    [&quot;lost&quot;, &quot;found&quot;, &quot;items&quot;, &quot;property&quot;],
+  ];
+  const stop = new Set([&quot;a&quot;, &quot;an&quot;, &quot;the&quot;, &quot;i&quot;, &quot;for&quot;, &quot;to&quot;, &quot;in&quot;, &quot;on&quot;, &quot;is&quot;, &quot;my&quot;, &quot;what&quot;, &quot;how&quot;, &quot;can&quot;, &quot;do&quot;, &quot;of&quot;, &quot;at&quot;, &quot;days&quot;]);
+  function tokenize(text) {
+    return (text.normalize(&quot;NFKC&quot;).toLowerCase().match(/[\p{L}\p{N}]+/gu) || []).filter((term) =&gt; !stop.has(term));
+  }
+  function embed(text) {
+    const terms = new Set(tokenize(text));
+    return groups.map((group) =&gt; group.reduce((n, word) =&gt; n + Number(terms.has(word)), 0));
+  }
+  function cosine(left, right) {
+    const norm = Math.hypot(...left) * Math.hypot(...right);
+    return norm ? left.reduce((sum, x, i) =&gt; sum + x * right[i], 0) / norm : 0;
+  }
+  function overlap(left, right) {
+    const terms = new Set(tokenize(right));
+    return [...new Set(tokenize(left))].filter((text) =&gt; terms.has(text)).length;
+  }
+  return { tokens: tokenize(question), vector: embed(question), tokenize, embed, cosine, overlap };
+}
+
+function currentPolicies(input, records) {
+  const newest = new Map();
+  records.forEach((record) =&gt; {
+    if (record.from &lt;= input.date &amp;&amp; (newest.get(record.family)?.from || &quot;&quot;) &lt; record.from) newest.set(record.family, record);
+  });
+  return [...newest.values()].filter((record) =&gt; record.role === &quot;public&quot; || input.role === &quot;staff&quot;);
+}
+
+function requestedTopic(input, language) {
+  const requested = language.vector.map((weight, i) =&gt; ({ weight, i })).filter(({ weight }) =&gt; weight &gt; 0);
+  const unsupportedFareQuestion = requested.some(({ i }) =&gt; i === 0)
+    &amp;&amp; /\b(price|cost|amount|fee|fees|charge|how much)\b/i.test(input.question);
+  return { index: requested.length === 1 &amp;&amp; !unsupportedFareQuestion ? requested[0].i : null,
+    ambiguous: requested.length &gt; 1 };
+}
+
+function packEvidence(input, retrieval) {
+  const instructions = &quot;Use only the supplied policy evidence. Keep its conditions, then cite its source ID.&quot;;
+  const question = input.question.trim();
+  const count = (text) =&gt; text.trim().split(/\s+/).filter(Boolean).length;
+  const fixedWords = count(instructions) + count(question);
+  let remaining = Math.max(0, input.budget - fixedWords);
+  const supplied = [];
+  for (const record of retrieval.chosen) {
+    const words = count(record.text);
+    if (words &lt;= remaining) {
+      supplied.push(record);
+      remaining -= words;
+    }
+  }
+  return { instructions, question, budget: input.budget, fixedWords, evidenceWords: input.budget - Math.min(input.budget, fixedWords) - remaining,
+    supplied, ambiguous: retrieval.ambiguous, truncated: fixedWords &gt; input.budget || retrieval.chosen.length &gt; supplied.length };
+}
+
+function groundAnswer(input, context) {
+  const source = context.supplied[0];
+  if (!source) {
+    const reason = context.truncated ? &quot;Evidence does not fit the context budget.&quot; :
+      context.ambiguous ? &quot;Separate the topics or ask a person to review both.&quot; :
+      &quot;No relevant, currently valid evidence is available for this request.&quot;;
+    return { status: &quot;handoff&quot;, text: reason, citations: [] };
+  }
+  const proposed = { status: &quot;answered&quot;, text: source.text, citations: [{
+    id: source.id, source: source.position, kind: source.kind, effective: source.from,
+  }] };
+  const valid = proposed.citations.every((citation) =&gt; context.supplied.some((record) =&gt;
+    record.id === citation.id &amp;&amp; record.text === proposed.text &amp;&amp; record.from &lt;= input.date &amp;&amp;
+    (record.role === &quot;public&quot; || input.role === &quot;staff&quot;)));
+  return valid ? proposed : { status: &quot;handoff&quot;, text: &quot;The source verification failed.&quot;, citations: [] };
+}
+
+const serviceOwners = Object.freeze({ policy: &quot;Finance support&quot;, maintenance: &quot;Station operations&quot;, access: &quot;Accessibility desk&quot; });
+const acceptanceCriteria = Object.freeze([&quot;Current source matches request date&quot;, &quot;Caller can see all cited evidence&quot;,
+  &quot;Unresolved requests reach the manual queue&quot;, &quot;No change to live transit records&quot;]);
+
+function presentResponse(input, outcome, workflow) {
+  if (input.outage) return { status: &quot;handoff&quot;, text: &quot;Live lookup is paused in this simulation. Contact the staffed service desk.&quot;,
+    citations: [], next: &quot;Service desk&quot;, withFallback: true };
+  if (outcome.status === &quot;answered&quot;) return { ...outcome, next: &quot;Review the source and effective date&quot;, withFallback: false };
+  return { ...outcome, next: workflow.owner,
+    review: workflow.state, withFallback: false };
+}
+
+// These implementations form the standalone service. They have no dependency on cell bodies.
+const baseline = new Map(Object.entries({
+  brief: { requires: [], run: () =&gt; ({ ownerFor: serviceOwners, acceptance: acceptanceCriteria }) },
+  modalities: { requires: [], run: () =&gt; ({ observations: mediaFixtures() }) },
+  corpus: { requires: [&quot;modalities&quot;], run: ({ dependencies }) =&gt; buildCorpus(dependencies.modalities.observations) },
+  language: { requires: [], run: ({ input }) =&gt; languageTools(input.question) },
+  learning: { requires: [], run: () =&gt; ({ route: &quot;General support&quot; }) },
+  retrieve: { requires: [&quot;corpus&quot;, &quot;language&quot;], run: ({ input, dependencies }) =&gt; {
+    const topic = requestedTopic(input, dependencies.language);
+    const topicName = [&quot;fare&quot;, &quot;access&quot;, &quot;ledger&quot;, &quot;pass&quot;, &quot;lost&quot;][topic.index];
+    const chosen = currentPolicies(input, dependencies.corpus.records)
+      .filter((record) =&gt; record.topic === topicName).slice(0, 1);
+    return { ranking: &quot;topic lookup&quot;, chosen, ambiguous: topic.ambiguous };
+  } },
+  context: { requires: [&quot;retrieve&quot;], run: ({ input, dependencies }) =&gt; packEvidence(input, dependencies.retrieve) },
+  answer: { requires: [&quot;context&quot;], run: ({ input, dependencies }) =&gt; groundAnswer(input, dependencies.context) },
+  workflow: { requires: [&quot;answer&quot;], run: ({ input, dependencies }) =&gt; ({ owner: &quot;Service desk&quot;, effects: [],
+    state: input.outage ? &quot;paused&quot; : dependencies.answer.status === &quot;answered&quot; ? &quot;complete&quot; : &quot;manual review&quot; }) },
+  serve: { requires: [&quot;answer&quot;, &quot;workflow&quot;], run: ({ input, dependencies }) =&gt;
+    presentResponse(input, dependencies.answer, dependencies.workflow) },
+}));
+</code></pre>
+        </div>
+      </details>
+      <p id="module-status" class="run-status" aria-live="polite"></p>
+      <div id="cells" class="cell-stack"></div>
+    </section>
+
+    <section id="curriculum" aria-labelledby="curriculum-heading">
+      <div class="section-heading"><h2 id="curriculum-heading">Curriculum map</h2></div>
+      <p class="summary">Follow a lecture to a related runnable cell. The map also covers design and governance topics through short notes, plus references for material such as external model training, speech recognition, hosted infrastructure, and mediated computer use.</p>
+      <label for="find-topic">Find a lesson, concept, or resource</label>
+      <input id="find-topic" type="search" placeholder="Try citations, rollback, or attention">
+      <p id="match-status" class="run-status" aria-live="polite"></p>
+      <div id="catalog" class="cell-stack"></div>
+    </section>
+  </main>
+  <script id="curriculum-data" type="application/json">{"courses":[{"title":"Foundations of Intelligence","lessons":[{"title":"What Intelligence Means","description":"Treat intelligence as a collection of capabilities rather than a mystical substance.","cell":"brief","topics":["goal-directed behavior","rational agents","bounded rationality","capability decomposition","feedback"]},{"title":"From Symbols to Statistics","description":"Trace the path from symbolic rules and expert systems to statistical learning, deep learning, foundation models, and agents.","cell":"learning","topics":["symbolic AI","expert systems","knowledge representation","statistical learning","deep learning"]},{"title":"Search, Planning, and Decisions","description":"See classical search as an explicit form of reasoning.","cell":"reason","topics":["state spaces","breadth-first search","A*","heuristics","planning"]},{"title":"The Mathematics Engineers Need","description":"Develop intuition for vectors, matrices, probability, distributions, statistics, entropy, gradients, and optimization without turning the book into a mathematics degree.","cell":"language","topics":["vectors","matrix transformations","probability","entropy","gradient descent"]},{"title":"Learning and Generalization","description":"Distinguish memorization from generalization and training from inference.","cell":"learning","topics":["training","inference","generalization","bias and variance","distribution shift"]},{"title":"Engineering with Uncertainty","description":"Translate uncertain predictions into decisions with thresholds, costs, calibration, fallback behavior, and human oversight.","cell":"evaluate","topics":["calibration","decision thresholds","expected cost","abstention","human review"]}]},{"title":"Machine Learning Systems","lessons":[{"title":"Problems, Data, and Baselines","description":"Frame an ML task before choosing an algorithm.","cell":"brief","topics":["problem framing","features and labels","sampling","data leakage","baselines"]},{"title":"Supervised Learning","description":"Understand regression and classification as function approximation under a chosen loss.","cell":"learning","topics":["regression","classification","loss functions","regularization","optimization"]},{"title":"Unsupervised and Representation Learning","description":"Use unlabeled data to discover structure, compress observations, and learn reusable representations.","cell":"language","topics":["clustering","dimensionality reduction","autoencoders","self-supervision","representation learning"]},{"title":"Neural Networks","description":"Build the mental model of layers, activations, losses, backpropagation, initialization, normalization, and optimization.","cell":"attention","topics":["neurons and layers","activations","backpropagation","normalization","optimizers"]},{"title":"Evaluation and Error Analysis","description":"Choose metrics from the decision context, estimate uncertainty, inspect slices, and turn mistakes into the next experiment.","cell":"evaluate","topics":["confusion matrix","precision and recall","calibration","cross-validation","slice analysis"]},{"title":"The ML Lifecycle","description":"Connect data, experiments, models, releases, monitoring, drift, retraining, and retirement into an accountable lifecycle.","cell":"operations","topics":["experiment tracking","model registry","data validation","drift","monitoring"]}]},{"title":"Language and Representation","lessons":[{"title":"Why Language Is Hard","description":"Explore ambiguity, reference, syntax, semantics, pragmatics, intent, and the dependence of meaning on context and shared knowledge.","cell":"language","topics":["syntax","semantics","pragmatics","ambiguity","discourse"]},{"title":"Corpora and Text Pipelines","description":"Learn how collection, encoding, normalization, language detection, segmentation, privacy, and provenance shape every downstream model.","cell":"corpus","topics":["Unicode","normalization","corpora","segmentation","data provenance"]},{"title":"Tokenization","description":"Understand character, word, and subword tokenization; BPE, WordPiece, and SentencePiece; and the impact on cost, latency, languages, and code.","cell":"language","topics":["vocabulary","subwords","BPE","SentencePiece","token budgets"]},{"title":"From Sparse Features to Embeddings","description":"Move from one-hot vectors, n-grams, TF\u2013IDF, and BM25 to learned dense representations.","cell":"language","topics":["one-hot vectors","TF\u2013IDF","BM25","word embeddings","sentence embeddings"]},{"title":"Similarity and Vector Search","description":"Connect distance metrics, normalization, nearest neighbors, approximate indexes, clustering, filtering, and ranking.","cell":"retrieve","topics":["dot product","cosine similarity","nearest neighbors","ANN indexes","metadata filtering"]},{"title":"Embedding Systems in Production","description":"Select and evaluate embedding models, manage versions and re-indexing, protect tenant boundaries, and monitor drift.","cell":"serving","topics":["embedding evaluation","multilingual models","hard negatives","re-indexing","vector governance"]}]},{"title":"Transformers and Foundation Models","lessons":[{"title":"Sequence Models Before Transformers","description":"Understand n-grams, recurrent networks, LSTMs, encoder\u2013decoder models, bottlenecks, and why long-range dependencies and serial computation were difficult.","cell":"attention","topics":["n-grams","RNNs","LSTMs","seq2seq","bottlenecks"]},{"title":"Attention","description":"Build attention from queries, keys, values, similarity scores, normalization, and weighted aggregation.","cell":"attention","topics":["queries","keys","values","scaled dot product","attention masks"]},{"title":"The Transformer Block","description":"Compose multi-head attention, feed-forward layers, residual paths, normalization, positional information, and masking.","cell":"attention","topics":["multi-head attention","residual connections","normalization","MLP blocks","position"]},{"title":"Training Foundation Models","description":"Study autoregressive, masked, and sequence-to-sequence objectives; data mixtures; scaling; checkpoints; and mixture-of-experts.","cell":"adapt","topics":["pretraining objectives","data mixtures","scaling laws","checkpoints","mixture of experts"]},{"title":"Inference and Sampling","description":"Trace logits, softmax, temperature, top-k, top-p, streaming, batching, KV cache, prefix cache, and speculative decoding.","cell":"attention","topics":["logits","sampling","temperature","KV cache","batching"]},{"title":"Model Families and Selection","description":"Compare base, instruction, reasoning, code, embedding, reranking, reward, safety, speech, vision, and diffusion models.","cell":"evaluate","topics":["instruction tuning","reasoning models","multimodal models","open weights","model routing"]}]},{"title":"Prompt and Context Engineering","lessons":[{"title":"Instructions That Work","description":"Write clear tasks, roles, constraints, examples, delimiters, and success criteria while avoiding unnecessary prompt folklore.","cell":"context","topics":["instruction hierarchy","roles","few-shot examples","delimiters","constraints"]},{"title":"Structured Generation","description":"Use schemas, constrained decoding, validation, repair, retries, and typed application boundaries.","cell":"answer","topics":["JSON Schema","structured output","validation","repair","retries"]},{"title":"Context Construction","description":"Assemble instructions, user input, state, evidence, tools, and examples under priority and token constraints.","cell":"context","topics":["context windows","token budgeting","ranking","compression","context assembly"]},{"title":"Conversation and Memory","description":"Separate transcript, session state, summaries, semantic memory, episodic memory, user preferences, and source-of-truth data.","cell":"workflow","topics":["working memory","session memory","long-term memory","summarization","memory retrieval"]},{"title":"Context Failure and Security","description":"Recognize instruction conflict, prompt injection, context poisoning, stale memory, overflow, lost provenance, and authorization mistakes.","cell":"governance","topics":["prompt injection","instruction conflict","provenance","authorization","context poisoning"]},{"title":"Prompt and Context Operations","description":"Version prompts, trace context, cache safely, run regressions, compare variants, and monitor cost and quality.","cell":"delivery","topics":["prompt versioning","context traces","caching","A/B tests","regression evaluation"]}]},{"title":"Knowledge and Retrieval Systems","lessons":[{"title":"Knowledge Outside the Model","description":"Decide among direct context, search, databases, knowledge graphs, RAG, fine-tuning, and deterministic rules.","cell":"corpus","topics":["knowledge freshness","grounding","structured data","retrieval","fine-tuning"]},{"title":"Document Ingestion","description":"Preserve provenance while parsing documents, OCR, tables, images, metadata, permissions, versions, and deletions.","cell":"corpus","topics":["parsing","OCR","chunking","metadata","provenance"]},{"title":"Retrieval","description":"Compare lexical, dense, sparse, hybrid, filtered, multi-query, parent-child, and late-interaction retrieval.","cell":"retrieve","topics":["BM25","dense retrieval","hybrid search","query rewriting","parent-child retrieval"]},{"title":"Ranking and Context Selection","description":"Use fusion, reranking, diversity, deduplication, compression, and token-aware packing.","cell":"retrieve","topics":["reciprocal rank fusion","rerankers","diversity","deduplication","context packing"]},{"title":"RAG Generation and Citations","description":"Construct grounded prompts, handle missing evidence, attribute claims, validate citations, and avoid unsupported synthesis.","cell":"answer","topics":["grounded generation","abstention","citation precision","faithfulness","answer validation"]},{"title":"Advanced and Enterprise RAG","description":"Study graph, multi-hop, adaptive, and agentic retrieval together with tenancy, freshness, security, resilience, and cost.","cell":"enterprise","topics":["Graph RAG","multi-hop retrieval","adaptive RAG","authorization","freshness"]}]},{"title":"Reasoning and Tool Use","lessons":[{"title":"Reasoning as Search","description":"Separate recall from deliberate search and study decomposition, candidate generation, backtracking, and stopping.","cell":"reason","topics":["decomposition","search","backtracking","heuristics","termination"]},{"title":"Planning","description":"Represent goals, prerequisites, steps, dependencies, state, uncertainty, and replanning without confusing a plausible plan with execution.","cell":"reason","topics":["goal decomposition","plan representation","dependencies","replanning","state"]},{"title":"Verification and Critique","description":"Use deterministic checks, tests, rubrics, critics, self-consistency, best-of-N, and external evidence.","cell":"answer","topics":["verifiers","critique","self-consistency","best-of-N","tests"]},{"title":"Tools as Capability Boundaries","description":"Design typed tools, schemas, descriptions, errors, timeouts, idempotency, permissions, and audit records.","cell":"workflow","topics":["function calling","tool schemas","idempotency","timeouts","permissions"]},{"title":"MCP and Integration Protocols","description":"Understand clients, servers, tools, resources, prompts, discovery, transport, authentication, and protocol security.","cell":"workflow","topics":["MCP","resources","tool discovery","transports","authentication"]},{"title":"Reasoning-System Economics","description":"Balance accuracy, latency, token use, parallel candidates, tool calls, caches, failure rates, and task value.","cell":"operations","topics":["test-time compute","latency","cost-quality curves","routing","budgets"]}]},{"title":"Agent Systems","lessons":[{"title":"Agent or Workflow?","description":"Define agents by goal-directed action selection in a loop and contrast them with deterministic workflows and single tool calls.","cell":"workflow","topics":["agency","workflows","state machines","autonomy","control"]},{"title":"The Agent Loop","description":"Connect goal, state, planning, action, observation, reflection, and termination into a bounded state machine.","cell":"workflow","topics":["plan-act-observe","state","reflection","termination","budgets"]},{"title":"Agent Memory and Recovery","description":"Manage working state, episodic history, durable checkpoints, resumability, compensation, and idempotent tools.","cell":"workflow","topics":["checkpoints","episodic memory","recovery","compensation","idempotency"]},{"title":"Agent Patterns","description":"Apply planner\u2013executor, supervisor\u2013worker, reviewer, evaluator\u2013optimizer, routing, and human-approval patterns.","cell":"reason","topics":["planner-executor","supervisor-worker","reviewer","routing","approval gates"]},{"title":"Multi-Agent Systems","description":"Study delegation, role boundaries, communication, shared state, consensus, conflict, security, and why many tasks do not need multiple agents.","cell":"workflow","topics":["delegation","coordination","shared state","consensus","role isolation"]},{"title":"Operating Long-Running Agents","description":"Design durable orchestration, queues, scheduling, leases, approvals, monitoring, incident response, and safe cancellation.","cell":"operations","topics":["durable execution","queues","leases","human oversight","cancellation"]}]},{"title":"AI Software and Product Engineering","lessons":[{"title":"Discovering the Right Problem","description":"Identify user jobs, workflow constraints, baseline performance, capability fit, failure cost, and measurable value before building.","cell":"brief","topics":["user research","jobs-to-be-done","baseline workflow","feasibility","success metrics"]},{"title":"Specification-Driven Development","description":"Translate intent into functional, prompt, tool, agent, data, safety, and evaluation specifications with acceptance criteria.","cell":"delivery","topics":["functional specifications","acceptance criteria","prompt specs","tool contracts","evaluation specs"]},{"title":"AI-Native Development Workflow","description":"Organize repositories, instructions, skills, context files, branches, reviews, tests, and coding-agent collaboration.","cell":"workflow","topics":["repo instructions","skills","context files","AI coding agents","code review"]},{"title":"Testing AI Systems","description":"Combine unit, contract, integration, scenario, regression, adversarial, and human tests across deterministic and probabilistic components.","cell":"evaluate","topics":["unit tests","contract tests","eval datasets","adversarial tests","release gates"]},{"title":"Human-Centered AI UX","description":"Design uncertainty, citations, previews, correction, undo, approval, feedback, accessibility, and graceful failure.","cell":"serve","topics":["uncertainty UX","citations","correction","undo","accessibility"]},{"title":"Experiments, Adoption, and Value","description":"Measure task success, time, correction effort, retention, adoption, cost, risk, and ROI through staged experiments.","cell":"delivery","topics":["A/B testing","task success","adoption","ROI","build versus buy"]}]},{"title":"Evaluation, Safety, and Governance","lessons":[{"title":"Evaluation as Requirements","description":"Turn desired behavior into tasks, cases, metrics, rubrics, slices, thresholds, and explicit failure tolerances.","cell":"evaluate","topics":["task definitions","gold datasets","rubrics","slices","thresholds"]},{"title":"Metrics and Human Judgment","description":"Combine exact metrics, semantic similarity, pairwise comparison, human review, LLM judges, calibration, and uncertainty.","cell":"evaluate","topics":["deterministic metrics","human evaluation","LLM judges","confidence intervals","inter-rater agreement"]},{"title":"Evaluation by System Stage","description":"Evaluate ingestion, retrieval, generation, tools, agents, UX, latency, cost, and business outcomes separately and together.","cell":"evaluate","topics":["component evals","retrieval metrics","faithfulness","tool success","end-to-end evals"]},{"title":"Security of AI Systems","description":"Threat-model prompt injection, data exfiltration, tool abuse, identity confusion, insecure output handling, supply chain, and denial of service.","cell":"governance","topics":["prompt injection","data exfiltration","tool abuse","sandboxing","threat modeling"]},{"title":"Responsible AI and Risk","description":"Assess bias, privacy, transparency, human impact, misuse, accessibility, high-impact decisions, and safe failure.","cell":"governance","topics":["fairness","privacy","transparency","human oversight","impact assessment"]},{"title":"Governance and Assurance","description":"Define ownership, inventory, risk tiers, policies, approvals, audit evidence, incidents, exceptions, vendor review, and retirement.","cell":"delivery","topics":["AI inventory","risk tiers","model cards","audit evidence","incident response"]}]},{"title":"Training, Serving, and AI Operations","lessons":[{"title":"Choosing Adaptation","description":"Diagnose whether a requirement needs prompting, retrieval, tools, fine-tuning, continued pretraining, or a different model.","cell":"adapt","topics":["behavior versus knowledge","prompting","RAG","fine-tuning","model selection"]},{"title":"Post-Training Methods","description":"Understand supervised fine-tuning, LoRA, QLoRA, preference data, RLHF, DPO, distillation, and model merging.","cell":"adapt","topics":["SFT","LoRA","QLoRA","DPO","distillation"]},{"title":"Dataset Engineering","description":"Curate, label, deduplicate, filter, balance, version, document, and protect training and evaluation data.","cell":"corpus","topics":["data curation","synthetic data","deduplication","contamination","data cards"]},{"title":"Inference Infrastructure","description":"Connect accelerators, memory, quantization, model formats, servers, batching, streaming, caches, and speculative decoding.","cell":"serving","topics":["GPUs","quantization","vLLM","batching","KV cache"]},{"title":"Deployment and Routing","description":"Design containers, serverless endpoints, Kubernetes, autoscaling, routing, fallbacks, regional placement, and disaster recovery.","cell":"serve","topics":["containers","autoscaling","model routing","fallbacks","resilience"]},{"title":"LLMOps","description":"Version prompts, models, data, and evals; trace requests; monitor quality and cost; canary, roll back, and respond to incidents.","cell":"operations","topics":["tracing","versioning","continuous evaluation","canaries","FinOps"]}]},{"title":"Cloud and Enterprise AI Architecture","lessons":[{"title":"Enterprise AI Building Blocks","description":"Decompose platforms into gateways, model access, retrieval, tool integration, identity, policy, observability, evaluation, and developer experience.","cell":"enterprise","topics":["AI gateways","model catalog","shared retrieval","tool registry","platform engineering"]},{"title":"Identity, Data, and Trust Boundaries","description":"Apply authentication, authorization, tenancy, secrets, encryption, residency, lineage, and audit to AI data flows.","cell":"governance","topics":["identity","authorization","multi-tenancy","data residency","audit"]},{"title":"AWS Managed AI","description":"Map foundation models, ML lifecycle, retrieval, serverless compute, containers, workflow, identity, storage, and monitoring to AWS services.","cell":"enterprise","topics":["Amazon Bedrock","SageMaker","OpenSearch","Lambda and EKS","CloudWatch and IAM"]},{"title":"Azure Managed AI","description":"Map models, ML, search, functions, containers, integration, identity, data, security, and operations to Azure.","cell":"enterprise","topics":["Azure AI Foundry","Azure OpenAI","Azure AI Search","AKS and Functions","Entra ID and Monitor"]},{"title":"Google Cloud and Portable Patterns","description":"Map Vertex AI, search, Cloud Run, GKE, data, events, identity, and operations while identifying portable seams.","cell":"enterprise","topics":["Vertex AI","Vertex AI Search","Cloud Run and GKE","Cloud IAM","portable interfaces"]},{"title":"Enterprise Operating Model","description":"Define platform teams, product teams, centers of enablement, governance, service catalogs, SLOs, chargeback, vendor management, and adoption.","cell":"delivery","topics":["team topology","service catalog","SLOs","FinOps","vendor management"]}]},{"title":"Multimodal and Frontier Systems","lessons":[{"title":"Vision and Document Intelligence","description":"Understand image representations, vision-language models, OCR, layout, tables, charts, spatial relationships, and provenance.","cell":"modalities","topics":["vision encoders","OCR","layout models","document AI","visual grounding"]},{"title":"Speech and Audio","description":"Connect ASR, diarization, audio understanding, TTS, streaming, latency, consent, and voice safety.","cell":"modalities","topics":["speech recognition","diarization","text-to-speech","streaming audio","voice safety"]},{"title":"Image and Video Generation","description":"Study diffusion, conditioning, latent representations, control, evaluation, provenance, copyright, and content safety.","cell":"modalities","topics":["diffusion","conditioning","latent space","video generation","provenance"]},{"title":"Computer Use and Embodied Action","description":"Model perception\u2013action loops, UI grounding, coordinate and semantic actions, recovery, permissions, and physical-world constraints.","cell":"workflow","topics":["computer use","visual grounding","action spaces","recovery","robotics interfaces"]},{"title":"Long Context, World Models, and Continual Learning","description":"Examine active directions without mistaking larger demonstrations for solved engineering problems.","cell":"frontier","topics":["long context","world models","continual learning","memory","test-time adaptation"]},{"title":"How to Track the Frontier","description":"Develop research literacy, evidence hierarchies, reproduction habits, forecasting, and a review cadence for a fast-moving field.","cell":"frontier","topics":["primary sources","benchmarks","ablations","reproduction","technology forecasting"]}]},{"title":"AI Literacy","lessons":[{"title":"What AI can do","description":"Distinguish prediction, generation, and rules in a familiar workflow.","cell":"brief","topics":[]},{"title":"Why confident answers can be wrong","description":"Identify a claim that needs independent verification.","cell":"answer","topics":[]},{"title":"Choose an appropriate use","description":"Choose a task where errors are easy to detect and reverse.","cell":"serve","topics":[]},{"title":"Handle sensitive information","description":"Decide whether information can be shared with an AI tool.","cell":"governance","topics":[]}]},{"title":"Using AI at Work","lessons":[{"title":"Turn a request into a clear brief","description":"Write a brief with context, constraints, and a checkable output.","cell":"brief","topics":[]},{"title":"Review output against the source","description":"Use a short checklist to catch factual and format errors.","cell":"answer","topics":[]},{"title":"Design a human handoff","description":"Write a fallback for incomplete or conflicting information.","cell":"workflow","topics":[]},{"title":"Measure whether the workflow helped","description":"Compare the new workflow with the current workflow using a fair baseline.","cell":"delivery","topics":[]}]},{"title":"AI Product Decisions","lessons":[{"title":"Frame the decision before selecting a model","description":"Describe a business workflow in terms of its user, friction, and outcome.","cell":"brief","topics":[]},{"title":"Compare rules, search, and generation","description":"Choose the simplest design that can meet the requirement.","cell":"reason","topics":[]},{"title":"Define success and guardrails","description":"Write a primary metric and a separate quality threshold for a pilot.","cell":"evaluate","topics":[]},{"title":"Make a ship, revise, or stop decision","description":"State a decision based on pilot evidence and remaining uncertainty.","cell":"delivery","topics":[]}]},{"title":"Managing AI Delivery","lessons":[{"title":"Find the failure hidden in the average","description":"Identify a critical user group or circumstance that needs its own evidence.","cell":"evaluate","topics":[]},{"title":"Assign decision and data ownership","description":"Name who owns release, data access, ongoing quality, and escalation.","cell":"governance","topics":[]},{"title":"Plan a limited launch and rollback","description":"Define the trial audience, stop condition, and fallback.","cell":"operations","topics":[]},{"title":"Review an incident and decide when to resume","description":"Separate containment, learning, and the relaunch decision.","cell":"operations","topics":[]}]},{"title":"Evaluating AI in Practice","lessons":[{"title":"Pick cases that represent the real task","description":"Build a small case set with typical, ambiguous, and out-of-scope requests.","cell":"evaluate","topics":[]},{"title":"Score evidence and omissions","description":"Use a small rubric consistently and record why an output passed or failed.","cell":"evaluate","topics":[]},{"title":"Measure time and review burden","description":"Calculate the total effort and compare it with the existing workflow.","cell":"operations","topics":[]},{"title":"Record a keep, revise, or stop decision","description":"Make a bounded recommendation with a named reviewer and a test for revisiting the decision.","cell":"delivery","topics":[]}]},{"title":"Model Selection Decisions for Leaders","lessons":[{"title":"Specify the workload and critical failures","description":"Turn a model shortlist into an evaluation brief tied to representative work.","cell":"brief","topics":[]},{"title":"Interpret quality evidence and uncertainty","description":"Read aggregate and critical-slice scores without hiding the size of the test.","cell":"evaluate","topics":[]},{"title":"Cost per successful task","description":"Calculate cost per correct result and include review effort in the decision.","cell":"operations","topics":[]},{"title":"Make a bounded selection decision","description":"Specify a model choice, approval owner, and conditions for reconsidering it.","cell":"delivery","topics":[]}]},{"title":"Build and Evaluate a Model-Backed Application","lessons":[{"title":"Model interfaces and structured output","description":"Validate a model response and distinguish response-format errors from provider failures.","cell":"answer","topics":[]},{"title":"Retrieval, evidence and citations","description":"Build a retrieval baseline, measure top-k recall, and enforce evidence scope before ranking.","cell":"retrieve","topics":[]},{"title":"Grounding checks and evaluation slices","description":"Run fixed cases through a baseline and candidate and attribute errors by stage.","cell":"evaluate","topics":[]},{"title":"Compare a live provider with a local baseline","description":"Use the same contract and cases with a model endpoint and record latency and workload conditions.","cell":"evaluate","topics":[]}]},{"title":"Supervised Coding-Agent Harnesses","lessons":[{"title":"Write an acceptance contract for a change","description":"Turn a small change request into regression and acceptance examples.","cell":"delivery","topics":[]},{"title":"Constrain proposals and run checks","description":"Validate the shape and scope of a proposed change before running the acceptance suite.","cell":"workflow","topics":[]},{"title":"Approval, revisions and replay","description":"Bind an approval to the reviewed proposal and current revision.","cell":"workflow","topics":[]},{"title":"Compare workflow traces and handoffs","description":"Use a fixed suite to compare proposals and design a human handoff with useful evidence.","cell":"workflow","topics":[]}]},{"title":"Model Selection and Adaptation Lab","lessons":[{"title":"Group-aware splits and dataset lineage","description":"Split records by group and document lineage before training.","cell":"learning","topics":[]},{"title":"Fit and compare a supervised baseline","description":"Train a Naive Bayes text classifier and compare its decisions with a majority-class baseline.","cell":"learning","topics":[]},{"title":"Measure selective risk and cost","description":"Pick an abstention threshold on validation and report coverage and accuracy on test.","cell":"evaluate","topics":[]},{"title":"Version a model artifact and regression gate","description":"Serialize a fitted model, reload it, and gate release using both quality and coverage.","cell":"operations","topics":[]}]},{"title":"Deploy and Operate an AI Service","lessons":[{"title":"Serve a versioned endpoint","description":"Expose a local HTTP endpoint with explicit version and health behavior.","cell":"serve","topics":[]},{"title":"Fallback, trace fields and durable telemetry","description":"Record provider failures and successful fallback without storing request text.","cell":"operations","topics":[]},{"title":"Canary evaluation and rollout decisions","description":"Compare gated evidence and identify a canary that must pause.","cell":"operations","topics":[]},{"title":"Rollback and production handoff","description":"Persist a version-pointer rollback and verify it through a local HTTP smoke test.","cell":"operations","topics":[]}]},{"title":"Customer Pilot Engineering","lessons":[{"title":"Discovery and pilot acceptance","description":"Translate a request into a workflow, baseline, and measurable acceptance criteria.","cell":"brief","topics":[]},{"title":"Map a customer data contract","description":"Normalize a source payload and publish a versioned integration boundary.","cell":"corpus","topics":[]},{"title":"Shadow acceptance and integration failures","description":"Exercise normal, ambiguous, restricted, and unavailable-dependency cases before live use.","cell":"evaluate","topics":[]},{"title":"Rollout, operator handoff and stop rules","description":"Write a release recommendation grounded in measured outcomes and assign an operational owner.","cell":"delivery","topics":[]}]},{"title":"LLM Evaluation and Model Selection","lessons":[{"title":"Workload design and versioned cases","description":"Freeze a workload containing expected outcomes, critical slices, and realistic negative cases.","cell":"evaluate","topics":[]},{"title":"Rubrics and human agreement","description":"Calibrate a binary rubric on paired reviewer labels before relying on an automated grader.","cell":"evaluate","topics":[]},{"title":"Paired comparison across quality, cost and latency","description":"Report per-slice quality, a paired uncertainty interval, latency, and cost per correct task.","cell":"evaluate","topics":[]},{"title":"Release gates and selection memo","description":"Apply hard quality thresholds before optimizing for cost or speed.","cell":"operations","topics":[]}]},{"title":"Retrieval System Engineering","lessons":[{"title":"Versioned ingestion and chunk provenance","description":"Track source identity, revision, role, and freshness through chunk creation.","cell":"corpus","topics":[]},{"title":"Lexical retrieval and dense similarity","description":"Compare keyword ranking with a small dense semantic representation.","cell":"retrieve","topics":[]},{"title":"Hybrid fusion and relevance diagnostics","description":"Fuse two rankings, rerank the candidates, and measure retrieval by stage.","cell":"retrieve","topics":[]},{"title":"Citation verification and freshness checks","description":"Allow citations only to eligible retrieved evidence and abstain when evidence is incomplete.","cell":"answer","topics":[]}]},{"title":"Durable Agent Runtime and MCP","lessons":[{"title":"Discover and call a local MCP tool","description":"Trace the MCP initialization, tool discovery, and tool invocation over stdio.","cell":"workflow","topics":[]},{"title":"Tool authorization and argument validation","description":"Validate caller scope and arguments before dispatching a tool.","cell":"governance","topics":[]},{"title":"Persistent approval and checkpoint recovery","description":"Persist a proposal and its approval against a payload fingerprint, then reopen the runtime.","cell":"workflow","topics":[]},{"title":"Idempotent execution and decision traces","description":"Commit a local effect exactly once across retries and distinguish external effects.","cell":"workflow","topics":[]}]},{"title":"LLM Adaptation and Inference Lab","lessons":[{"title":"Autoregressive evaluation and retrieval baseline","description":"Establish frozen and retrieval-augmented baselines on a held-out task.","cell":"attention","topics":[]},{"title":"Train and evaluate a low-rank adapter","description":"Train a small adapter over frozen parameters and evaluate held-out next-token predictions.","cell":"adapt","topics":[]},{"title":"Quantization and inference measurement","description":"Quantize a learned correction and compare held-out quality, payload bytes, and latency.","cell":"adapt","topics":[]},{"title":"Transfer to an open-weight checkpoint","description":"Run the same train and holdout comparison against a compatible local transformer checkpoint.","cell":"frontier","topics":[]}]},{"title":"AI Reliability and Release Engineering","lessons":[{"title":"Service objectives and error-budget burn","description":"Define a good request and calculate reliability and budget burn over a bounded window.","cell":"operations","topics":[]},{"title":"Stage traces and failure localization","description":"Use structured events to locate the earliest divergence between candidate and baseline.","cell":"operations","topics":[]},{"title":"Canary cohorts and staged gates","description":"Use predeclared coverage, burn, latency, and cost thresholds to approve or hold a rollout.","cell":"operations","topics":[]},{"title":"Rollback verification and incident review","description":"Restore stable routing, run a smoke check, and assemble a factual incident timeline.","cell":"operations","topics":[]}]}],"knowledgeAreas":[{"title":"KA 00 \u2014 Foundations","description":"Build vocabulary for intelligence, search, learning, and decisions.","cell":"brief"},{"title":"KA 01 \u2014 Machine Learning","description":"Train, validate, and operate predictive systems.","cell":"learning"},{"title":"KA 02 \u2014 Language & Representation","description":"Make language computable for search and models.","cell":"language"},{"title":"KA 03 \u2014 Transformers","description":"Understand attention, blocks, training, and inference.","cell":"attention"},{"title":"KA 04 \u2014 Models","description":"Select and benchmark model families for tasks.","cell":"evaluate"},{"title":"KA 05 \u2014 Prompt & Context","description":"Engineer reliable inputs, state, and outputs.","cell":"context"},{"title":"KA 06 \u2014 Knowledge Systems","description":"Ground answers with retrievable evidence.","cell":"retrieve"},{"title":"KA 07 \u2014 Reasoning Systems","description":"Apply search, planning, and verification at inference.","cell":"reason"},{"title":"KA 08 \u2014 Tools & Integration","description":"Connect models to software safely.","cell":"workflow"},{"title":"KA 09 \u2014 Agents","description":"Design bounded autonomous loops.","cell":"workflow"},{"title":"KA 10 \u2014 AI Software Engineering","description":"Apply SDLC rigor to AI features.","cell":"delivery"},{"title":"KA 11 \u2014 AI Coding Ecosystem","description":"Collaborate with coding agents effectively.","cell":"workflow"},{"title":"KA 12 \u2014 Evaluation, Safety & Security","description":"Measure and constrain behavior.","cell":"governance"},{"title":"KA 13 \u2014 Model Training","description":"Adapt models with curated data.","cell":"adapt"},{"title":"KA 14 \u2014 Infrastructure & Deployment","description":"Serve models efficiently.","cell":"serving"},{"title":"KA 15 \u2014 AI Operations","description":"Observe, release, and recover AI systems.","cell":"operations"},{"title":"KA 16 \u2014 Enterprise Architecture","description":"Design governed AI platforms.","cell":"enterprise"},{"title":"KA 17 \u2014 Multimodal AI","description":"Compose text, vision, audio, and documents.","cell":"modalities"},{"title":"KA 18 \u2014 Frontier AI","description":"Evaluate emerging capabilities with evidence.","cell":"frontier"},{"title":"KA 19 \u2014 AI Product Engineering","description":"Deliver useful human-centered products.","cell":"delivery"}],"references":{"Learning paths":[{"title":"AI for Everyone","description":"No code \u00b7 Complete an AI-use checklist, a reviewed draft, and a three-case scorecard with a bounded keep, revise, or stop decision.","topics":["AI Literacy","Using AI at Work","Evaluating AI in Practice"]},{"title":"AI for Managers and Product Leaders","description":"No code \u00b7 applied \u00b7 Submit a one-page pilot decision with a baseline scorecard, launch guardrails, an accountable owner, and a pause rule.","topics":["AI Literacy","AI Product Decisions","Evaluating AI in Practice","Managing AI Delivery"]},{"title":"Software Engineer Building with AI","description":"Technical foundations \u00b7 Demonstrate a source-grounded feature with a validated response, fallback, access boundaries, and a baseline comparison on frozen cases.","topics":["Language and Representation","Transformers and Foundation Models","Prompt and Context Engineering","Knowledge and Retrieval Systems","Reasoning and Tool Use","Agent Systems","AI Software and Product Engineering","Evaluation, Safety, and Governance","Build and Evaluate a Model-Backed Application"]},{"title":"Coding-Agent Specialist","description":"Intermediate \u00b7 Demonstrate a supervised change with a typed proposal, a failing and passing regression case, an approval record, and a replay check.","topics":["Prompt and Context Engineering","Reasoning and Tool Use","Agent Systems","AI Software and Product Engineering","Evaluation, Safety, and Governance","Supervised Coding-Agent Harnesses"]},{"title":"AI Systems Architect","description":"Advanced \u00b7 Defend a design with an architecture decision record, threat model, service objectives, a measured canary, and a demonstrated rollback.","topics":["Knowledge and Retrieval Systems","Reasoning and Tool Use","Agent Systems","AI Software and Product Engineering","Evaluation, Safety, and Governance","Training, Serving, and AI Operations","Cloud and Enterprise AI Architecture","Multimodal and Frontier Systems","Deploy and Operate an AI Service"]},{"title":"ML Engineer","description":"Advanced \u00b7 model lifecycle \u00b7 Deliver a trained model artifact, held-out slice comparison against a baseline, an operating threshold, and a versioned release and rollback plan.","topics":["Foundations of Intelligence","Machine Learning Systems","Language and Representation","Transformers and Foundation Models","Prompt and Context Engineering","Evaluation, Safety, and Governance","Training, Serving, and AI Operations","Model Selection and Adaptation Lab","Deploy and Operate an AI Service"]},{"title":"AI Engineer","description":"Advanced \u00b7 full curriculum \u00b7 Complete the AI engineer capstone and defend the system using evaluation and operations evidence.","topics":["Foundations of Intelligence","Machine Learning Systems","Language and Representation","Transformers and Foundation Models","Prompt and Context Engineering","Knowledge and Retrieval Systems","Build and Evaluate a Model-Backed Application","Reasoning and Tool Use","Agent Systems","AI Software and Product Engineering","Evaluation, Safety, and Governance","Supervised Coding-Agent Harnesses","Training, Serving, and AI Operations","Model Selection and Adaptation Lab","Cloud and Enterprise AI Architecture","Multimodal and Frontier Systems","Deploy and Operate an AI Service"]},{"title":"Model Selection for Leaders","description":"No code \u00b7 specialist \u00b7 Submit a recommendation that ties one candidate to quality, economics, and launch conditions.","topics":["AI Product Decisions","Evaluating AI in Practice","Model Selection Decisions for Leaders"]},{"title":"Forward-Deployed AI Engineer","description":"Specialist \u00b7 customer delivery \u00b7 Deliver an accepted synthetic customer pilot with a working intake integration and an operator handoff.","topics":["AI Product Decisions","AI Software and Product Engineering","Build and Evaluate a Model-Backed Application","Customer Pilot Engineering"]},{"title":"LLM Evaluation & Model Selection Engineer","description":"Specialist \u00b7 evaluation \u00b7 Publish a paired comparison with agreed rating criteria and a defensible model or release decision.","topics":["Evaluation, Safety, and Governance","Build and Evaluate a Model-Backed Application","Model Selection and Adaptation Lab","LLM Evaluation and Model Selection"]},{"title":"Retrieval & RAG Engineer","description":"Specialist \u00b7 information retrieval \u00b7 Demonstrate a versioned, permission-aware retrieval pipeline and quantify its quality by stage.","topics":["Language and Representation","Knowledge and Retrieval Systems","Evaluation, Safety, and Governance","Build and Evaluate a Model-Backed Application","Retrieval System Engineering"]},{"title":"Agent Runtime & MCP Engineer","description":"Advanced specialist \u00b7 runtime \u00b7 Build a tool-using workflow that waits for approval, survives restart, and avoids duplicate local effects.","topics":["Reasoning and Tool Use","Agent Systems","Supervised Coding-Agent Harnesses","Durable Agent Runtime and MCP"]},{"title":"LLM Adaptation & Inference Engineer","description":"Advanced specialist \u00b7 models \u00b7 Compare a frozen and adapted model against a retrieval baseline on the same held-out workload.","topics":["Machine Learning Systems","Transformers and Foundation Models","Training, Serving, and AI Operations","Model Selection and Adaptation Lab","LLM Adaptation and Inference Lab"]},{"title":"AI Reliability & Release Engineer","description":"Advanced specialist \u00b7 operations \u00b7 Diagnose a staged release failure, restore the baseline, and produce an evidence-based incident review.","topics":["Evaluation, Safety, and Governance","Training, Serving, and AI Operations","Cloud and Enterprise AI Architecture","Deploy and Operate an AI Service","AI Reliability and Release Engineering"]}],"Capstones":[{"title":"Agent Runtime and MCP Engineer Capstone","description":"Build a supervised local workflow to review and record a meeting agenda note."},{"title":"AI Engineer Capstone","description":"Build a small, source-grounded assistant for an internal policy or support workflow."},{"title":"AI Reliability and Release Engineer Capstone","description":"Use a versioned local service and run a staged candidate rollout."},{"title":"Forward-Deployed AI Engineer Capstone","description":"A simulated venue operator wants a faster intake process for maintenance tickets."},{"title":"LLM Adaptation and Inference Engineer Capstone","description":"Choose a small task with one predictable output convention and one case that depends on fresh evidence."},{"title":"LLM Evaluation and Model Selection Capstone","description":"Compare three candidates for one bounded task using a workload other than the provided ten-case example."},{"title":"Model Selection for Leaders Capstone","description":"Your operations team must choose a model for a bounded policy-assistant pilot."},{"title":"Retrieval and RAG Engineer Capstone","description":"Build a source-grounded policy search feature for a synthetic organization."}],"Topic guides":[{"title":"What Intelligence Means","description":"Create a capability map for a familiar human task."},{"title":"From Symbols to Statistics","description":"Implement a tiny rule engine and document where it becomes brittle."},{"title":"Search, Planning, and Decisions","description":"Implement breadth-first search and A* on the same maze."},{"title":"The Mathematics Engineers Need","description":"Compute dot products, cosine similarity, softmax, and one gradient update by hand."},{"title":"Learning and Generalization","description":"Fit increasingly flexible models to a small noisy dataset and plot errors."},{"title":"Engineering with Uncertainty","description":"Design a decision policy for a high-cost false-positive scenario."},{"title":"Problems, Data, and Baselines","description":"Create a dataset split that respects time and entity boundaries."},{"title":"Supervised Learning","description":"Implement linear and logistic regression before using a library."},{"title":"Unsupervised and Representation Learning","description":"Cluster a dataset, visualize it, and explain why clusters are not automatically meaningful categories."},{"title":"Neural Networks","description":"Train a small network and inspect gradients and learning curves."},{"title":"Evaluation and Error Analysis","description":"Write an error taxonomy and compare two models with confidence intervals."},{"title":"The ML Lifecycle","description":"Write a release checklist and a rollback plan for a prediction service."},{"title":"Why Language Is Hard","description":"Annotate ten ambiguous requests with possible interpretations and missing context."},{"title":"Corpora and Text Pipelines","description":"Build a normalization pipeline and test it on multilingual and adversarial text."},{"title":"Tokenization","description":"Write a toy byte-pair tokenizer and compare segmentations."},{"title":"From Sparse Features to Embeddings","description":"Implement TF\u2013IDF and compare it with the included vector lab."},{"title":"Similarity and Vector Search","description":"Run the cosine and semantic-search labs, then add hybrid scoring."},{"title":"Embedding Systems in Production","description":"Create a retrieval evaluation set with realistic queries and hard negatives."},{"title":"Sequence Models Before Transformers","description":"Train an n-gram model and inspect where local context fails."},{"title":"Attention","description":"Implement scaled dot-product attention and visualize weights."},{"title":"The Transformer Block","description":"Assemble one transformer block and test tensor shapes."},{"title":"Training Foundation Models","description":"Estimate compute and data requirements for a tiny language model."},{"title":"Inference and Sampling","description":"Build a sampling playground and compare decoding strategies."},{"title":"Model Families and Selection","description":"Benchmark candidate models on a task-specific dataset."},{"title":"Training Foundation Models","description":"Estimate compute and data requirements for a tiny language model."},{"title":"Inference and Sampling","description":"Build a sampling playground and compare decoding strategies."},{"title":"Model Families and Selection","description":"Benchmark candidate models on a task-specific dataset."},{"title":"Sequence Models Before Transformers","description":"Train an n-gram model and inspect where local context fails."},{"title":"Attention","description":"Implement scaled dot-product attention and visualize weights."},{"title":"The Transformer Block","description":"Assemble one transformer block and test tensor shapes."},{"title":"Instructions That Work","description":"Solve one task with weak and strong prompts and compare failures."},{"title":"Structured Generation","description":"Build an invoice extractor with schema validation and adversarial inputs."},{"title":"Context Construction","description":"Implement a context builder with explicit section budgets."},{"title":"Conversation and Memory","description":"Implement a conversation summarizer and memory scoring policy."},{"title":"Context Failure and Security","description":"Attack a context pipeline with malicious retrieved text and test defenses."},{"title":"Prompt and Context Operations","description":"Create a prompt change report with before/after evals."},{"title":"Knowledge Outside the Model","description":"Classify ten requirements by the correct knowledge mechanism."},{"title":"Document Ingestion","description":"Create an ingestion manifest and measure parse fidelity."},{"title":"Retrieval","description":"Implement lexical and vector baselines and calculate recall@k."},{"title":"Ranking and Context Selection","description":"Add reranking and measure quality versus latency."},{"title":"RAG Generation and Citations","description":"Build a citation validator that checks claim-to-source alignment."},{"title":"Advanced and Enterprise RAG","description":"Complete the enterprise RAG architecture studio and threat model."},{"title":"Reasoning as Search","description":"Solve a constraint problem with explicit state search."},{"title":"Planning","description":"Build a planner that outputs a validated dependency graph."},{"title":"Verification and Critique","description":"Generate several candidates and select with an independent verifier."},{"title":"Tools as Capability Boundaries","description":"Wrap a read-only API as a typed tool and fuzz its arguments."},{"title":"MCP and Integration Protocols","description":"Implement a small local MCP server and test a hostile client request."},{"title":"Reasoning-System Economics","description":"Plot quality and cost for single-pass, best-of-N, and verifier loops."},{"title":"Tools as Capability Boundaries","description":"Wrap a read-only API as a typed tool and fuzz its arguments."},{"title":"MCP and Integration Protocols","description":"Implement a small local MCP server and test a hostile client request."},{"title":"Reasoning-System Economics","description":"Plot quality and cost for single-pass, best-of-N, and verifier loops."},{"title":"Reasoning as Search","description":"Solve a constraint problem with explicit state search."},{"title":"Planning","description":"Build a planner that outputs a validated dependency graph."},{"title":"Verification and Critique","description":"Generate several candidates and select with an independent verifier."},{"title":"Agent or Workflow?","description":"Model the same task as a workflow and as an agent, then compare."},{"title":"The Agent Loop","description":"Extend the included agent loop with failures and checkpointing."},{"title":"Agent Memory and Recovery","description":"Persist and resume an interrupted multi-step run."},{"title":"Agent Patterns","description":"Implement two patterns and measure coordination overhead."},{"title":"Multi-Agent Systems","description":"Split a research task across workers and compare with one-agent parallel tools."},{"title":"Operating Long-Running Agents","description":"Create an SLO and runbook for a day-long agent workflow."},{"title":"Discovering the Right Problem","description":"Write a problem brief with a non-AI alternative."},{"title":"Specification-Driven Development","description":"Write executable examples before implementation."},{"title":"AI-Native Development Workflow","description":"Run a bounded repository task with two assistants and compare review burden."},{"title":"Testing AI Systems","description":"Derive a test pyramid from an AI system architecture."},{"title":"Human-Centered AI UX","description":"Prototype a high-risk action flow with preview and approval."},{"title":"Experiments, Adoption, and Value","description":"Design a rollout with guardrails and decision thresholds."},{"title":"Specification-Driven Development","description":"Write executable examples before implementation."},{"title":"AI-Native Development Workflow","description":"Run a bounded repository task with two assistants and compare review burden."},{"title":"Testing AI Systems","description":"Derive a test pyramid from an AI system architecture."},{"title":"Human-Centered AI UX","description":"Prototype a high-risk action flow with preview and approval."},{"title":"Experiments, Adoption, and Value","description":"Design a rollout with guardrails and decision thresholds."},{"title":"Discovering the Right Problem","description":"Write a problem brief with a non-AI alternative."},{"title":"Evaluation as Requirements","description":"Write a 30-case evaluation set from real workflow risks."},{"title":"Metrics and Human Judgment","description":"Calibrate an automated judge against two human reviewers."},{"title":"Evaluation by System Stage","description":"Build a failure attribution matrix for a RAG system."},{"title":"Security of AI Systems","description":"Red-team a tool-enabled assistant and document mitigations."},{"title":"Responsible AI and Risk","description":"Write an impact assessment for a consequential use case."},{"title":"Governance and Assurance","description":"Create a lightweight governance operating model for a mid-size company."},{"title":"Choosing Adaptation","description":"Create a decision table for ten adaptation scenarios."},{"title":"Post-Training Methods","description":"Fine-tune a small model and evaluate held-out behavior."},{"title":"Dataset Engineering","description":"Create a data card and contamination check for a small dataset."},{"title":"Inference Infrastructure","description":"Load-test a local model at several concurrency levels."},{"title":"Deployment and Routing","description":"Write a deployment ADR comparing hosted and self-hosted inference."},{"title":"LLMOps","description":"Instrument a request and inject provider, retrieval, and validation failures."},{"title":"Inference Infrastructure","description":"Load-test a local model at several concurrency levels."},{"title":"Deployment and Routing","description":"Write a deployment ADR comparing hosted and self-hosted inference."},{"title":"LLMOps","description":"Instrument a request and inject provider, retrieval, and validation failures."},{"title":"Choosing Adaptation","description":"Create a decision table for ten adaptation scenarios."},{"title":"Post-Training Methods","description":"Fine-tune a small model and evaluate held-out behavior."},{"title":"Dataset Engineering","description":"Create a data card and contamination check for a small dataset."},{"title":"Deployment and Routing","description":"Write a deployment ADR comparing hosted and self-hosted inference."},{"title":"LLMOps","description":"Instrument a request and inject provider, retrieval, and validation failures."},{"title":"Choosing Adaptation","description":"Create a decision table for ten adaptation scenarios."},{"title":"Post-Training Methods","description":"Fine-tune a small model and evaluate held-out behavior."},{"title":"Dataset Engineering","description":"Create a data card and contamination check for a small dataset."},{"title":"Inference Infrastructure","description":"Load-test a local model at several concurrency levels."},{"title":"Enterprise AI Building Blocks","description":"Draw a logical platform architecture before naming products."},{"title":"Identity, Data, and Trust Boundaries","description":"Threat-model an enterprise assistant across trust boundaries."},{"title":"AWS Managed AI","description":"Map the enterprise RAG design to AWS and estimate managed-service trade-offs."},{"title":"Azure Managed AI","description":"Map the same RAG design to Azure and compare identity integration."},{"title":"Google Cloud and Portable Patterns","description":"Map the design to Google Cloud and identify the migration boundary."},{"title":"Enterprise Operating Model","description":"Create a responsibility matrix and platform roadmap."},{"title":"Vision and Document Intelligence","description":"Extract fields from documents and evaluate field and page-level accuracy."},{"title":"Speech and Audio","description":"Build a transcript pipeline with timestamps and confidence handling."},{"title":"Image and Video Generation","description":"Design an evaluation rubric for generated campaign assets."},{"title":"Computer Use and Embodied Action","description":"Design a safe browser task with confirmation and recovery."},{"title":"Long Context, World Models, and Continual Learning","description":"Compare a frontier method with retrieval, explicit state, or fine-tuning baselines."},{"title":"How to Track the Frontier","description":"Write a one-page frontier assessment with confidence levels."},{"title":"Long Context, World Models, and Continual Learning","description":"Compare a frontier method with retrieval, explicit state, or fine-tuning baselines."},{"title":"How to Track the Frontier","description":"Write a one-page frontier assessment with confidence levels."},{"title":"Vision and Document Intelligence","description":"Extract fields from documents and evaluate field and page-level accuracy."},{"title":"Speech and Audio","description":"Build a transcript pipeline with timestamps and confidence handling."},{"title":"Image and Video Generation","description":"Design an evaluation rubric for generated campaign assets."},{"title":"Computer Use and Embodied Action","description":"Design a safe browser task with confirmation and recovery."},{"title":"Discovering the Right Problem","description":"Write a problem brief with a non-AI alternative."},{"title":"Human-Centered AI UX","description":"Prototype a high-risk action flow with preview and approval."},{"title":"Experiments, Adoption, and Value","description":"Design a rollout with guardrails and decision thresholds."},{"title":"Specification-Driven Development","description":"Write executable examples before implementation."},{"title":"AI-Native Development Workflow","description":"Run a bounded repository task with two assistants and compare review burden."},{"title":"Testing AI Systems","description":"Derive a test pyramid from an AI system architecture."},{"title":"Adoption and Value","description":"Measure usage persistence after launch."},{"title":"Architecture Decisions for AI","description":"Record trade-offs with eval evidence."},{"title":"Agent Benchmarks","description":"Interpret realistic agent evaluations."},{"title":"Agent Checkpoints","description":"Persist state across failures."},{"title":"AWS Managed AI Map","description":"Translate capabilities to AWS services."},{"title":"Azure Managed AI Map","description":"Translate capabilities to Azure services."},{"title":"Canary Releases for Models","description":"Compare live metrics with guardrails."},{"title":"Citation Quality","description":"Validate that answers align with sources."},{"title":"Cloud Landing Zone for AI","description":"Map capabilities to providers neutrally."},{"title":"Coding Agent Workspace","description":"Configure repo instructions and review gates."},{"title":"Computer Use Risks","description":"Bound UI automation actions."},{"title":"Cost Modeling for LLM Features","description":"Estimate token, retrieval, and human-review cost."},{"title":"Data Cards and Lineage","description":"Document datasets used for training and eval."},{"title":"Enterprise RAG Overview","description":"End-to-end grounded retrieval system."},{"title":"Evaluation Fundamentals","description":"Define metrics from decisions, not convenience."},{"title":"Track the Frontier","description":"Evaluate hype with reproduction discipline."},{"title":"Google Cloud AI Map","description":"Translate capabilities to GCP services."},{"title":"Governance and Assurance","description":"Inventory models and enforce release gates."},{"title":"Human Review Design","description":"Route low-confidence outputs to reviewers."},{"title":"Hybrid Search Deep Dive","description":"Combine lexical and dense retrieval with fusion."},{"title":"Identity and Trust Boundaries","description":"Separate tenants and secrets."},{"title":"Image Generation Controls","description":"Safety, provenance, and cost for generative media."},{"title":"Long Context Trade-offs","description":"Choose long context vs RAG vs fine-tune."},{"title":"LoRA in Practice","description":"Adapt a base model with low-rank adapters."},{"title":"MCP Integration","description":"Connect clients to tool servers with MCP."},{"title":"MCP Integration Patterns","description":"Standardize tool and resource access."},{"title":"Multi-Agent Coordination","description":"Supervisor\u2013worker patterns and failure handling."},{"title":"Document Intelligence","description":"Parse layout and extract fields with provenance."},{"title":"Read a Paper Critically","description":"Extract claims, evidence, and limits."},{"title":"AI Product Discovery","description":"Find problems worth automating."},{"title":"Quantization Trade-offs","description":"Reduce memory with quality checks."},{"title":"RAG Deep Dive","description":"Ground generation with retrieved evidence."},{"title":"Reasoning Economics","description":"Budget test-time compute deliberately."},{"title":"Red Team Basics","description":"Maintain attack suites in CI."},{"title":"Responsible AI Review","description":"Assess harm, bias, and misuse paths."},{"title":"RLHF and Preferences","description":"Align models with human feedback."},{"title":"Security Basics for Assistants","description":"Threat-model untrusted content and tools."},{"title":"Serving and Routing","description":"Deploy endpoints with fallbacks."},{"title":"Specification Writing","description":"Turn ambiguous asks into testable specs."},{"title":"Speech and Audio Pipelines","description":"ASR and TTS integration patterns."},{"title":"Structured Outputs in Production","description":"Validate JSON against business schemas."},{"title":"Tool Contracts","description":"Design JSON schemas and auth for tools."},{"title":"Transformer Deep Dive","description":"Connect attention mechanisms to code."}],"Concepts":[{"title":"a","description":"A* expands the lowest estimated total-cost node first, combining path cost g(n) with heuristic h(n) toward the goal."},{"title":"a b testing","description":"A/B testing compares product variants on live users with ethical guardrails and pre-registered metrics."},{"title":"a b tests","description":"A/B tests compare prompt or context variants on live traffic with guardrail metrics."},{"title":"ablations","description":"Ablations remove components to measure contribution\u2014essential for judging which mechanism drives reported gains."},{"title":"abstention","description":"Abstention lets a system refuse or defer when confidence is insufficient, routing cases to humans or safer paths."},{"title":"acceptance criteria","description":"Acceptance criteria are pass/fail conditions for feature completion\u2014testable, unambiguous, tied to user value."},{"title":"accessibility","description":"Accessibility ensures AI features work with screen readers, keyboard navigation, and assistive tech\u2014not only visual chat UIs."},{"title":"action spaces","description":"Action spaces define allowed agent operations\u2014click, type, scroll, API call\u2014with granularity affecting reliability."},{"title":"activations","description":"Activation functions introduce nonlinearity\u2014ReLU, GELU, sigmoid\u2014without which deep networks collapse to linear maps."},{"title":"adaptive rag","description":"Adaptive RAG chooses retrieval depth, query rewrite, or no retrieval based on question type and confidence."},{"title":"adoption","description":"Adoption tracks who uses the feature, how often, and whether usage persists after novelty fades."},{"title":"adversarial tests","description":"Adversarial tests probe injection, jailbreaks, edge inputs, and abuse scenarios."},{"title":"agency","description":"Agency is goal-directed action selection in a loop\u2014observe, decide, act\u2014rather than a single model call."},{"title":"ai coding agents","description":"AI coding agents autonomously edit repositories given goals, tools, and constraints."},{"title":"ai gateways","description":"AI gateways centralize model access with auth, rate limits, logging, routing, and policy enforcement for enterprise teams."},{"title":"ai inventory","description":"AI inventory catalogs models, datasets, prompts, and features with owners, risk tier, and dependencies."},{"title":"aks and functions","description":"AKS and Azure Functions run containerized model servers and event-driven AI glue code on Azure."},{"title":"amazon bedrock","description":"Amazon Bedrock provides managed access to foundation models from multiple providers via unified AWS APIs with IAM integration and private networking."},{"title":"ambiguity","description":"Ambiguity arises when the same text supports multiple interpretations without disambiguating context."},{"title":"ann indexes","description":"Approximate nearest neighbor indexes\u2014HNSW, IVF, LSH\u2014trade recall for speed at million-plus scale."},{"title":"answer validation","description":"Answer validation runs programmatic checks\u2014schema, arithmetic, citation alignment\u2014on model outputs before display."},{"title":"approval gates","description":"Approval gates pause execution until authorized humans confirm high-impact actions."},{"title":"attention masks","description":"Attention masks zero out disallowed positions\u2014future tokens in decoding, padding, or cross-segment boundaries."},{"title":"audit","description":"Audit logs record who accessed which models, documents, and tools with immutable retention for compliance."},{"title":"audit evidence","description":"Audit evidence collects eval reports, approvals, change logs, and incident records demonstrating controlled AI delivery."},{"title":"authentication","description":"Authentication verifies identity of users, clients, and services before access to models, tools, or data."},{"title":"authorization","description":"Authorization ensures retrieved and acted-upon data respects user permissions\u2014not just authentication."},{"title":"autoencoders","description":"Autoencoders learn compressed representations by reconstructing inputs through a bottleneck layer."},{"title":"autonomy","description":"Autonomy is how much discretion the system has to choose actions without human approval."},{"title":"autoscaling","description":"Autoscaling adjusts inference replica count based on CPU, GPU utilization, or queue depth."},{"title":"azure ai foundry","description":"Azure AI Foundry is Microsoft's unified portal for model deployment, fine-tuning, evaluation, and agent tooling integrated with Azure services."},{"title":"azure ai search","description":"Azure AI Search provides hybrid lexical-vector search, semantic ranker, and skill pipelines for RAG on Azure."},{"title":"azure openai","description":"Azure OpenAI Service hosts OpenAI models in Azure regions with private networking, content filters, and Entra ID auth."},{"title":"backpropagation","description":"Backpropagation applies the chain rule to compute gradients through layered computations efficiently."},{"title":"backtracking","description":"Backtracking abandons partial solutions that fail constraints and returns to earlier choices."},{"title":"baseline workflow","description":"Baseline workflow documents how users solve the task today\u2014time, errors, tools\u2014before AI intervention."},{"title":"baselines","description":"Baselines are simple reference methods\u2014majority class, linear model, keyword rules\u2014that quantify what complexity must beat."},{"title":"batching","description":"Batching groups requests to amortize GPU kernel overhead, improving throughput at possible latency cost."},{"title":"behavior versus knowledge","description":"Behavior changes how the model acts\u2014tone, format, policy\u2014while knowledge is factual content."},{"title":"benchmarks","description":"Benchmarks standardize task comparisons\u2014MMLU, HumanEval, BEIR\u2014but may not reflect your production distribution."},{"title":"best of n","description":"Best-of-N generates N candidates and selects the best by a scorer or verifier."},{"title":"bias and variance","description":"Bias is systematic underfitting from overly simple models; variance is sensitivity to training noise from overly complex ones."},{"title":"bm25","description":"BM25 ranks documents by weighted term frequency with length normalization and term-frequency saturation."},{"title":"bottlenecks","description":"Information bottlenecks force compressive representations\u2014fixed-size context vectors or limited bandwidth channels."},{"title":"bounded rationality","description":"Bounded rationality acknowledges limited compute, time, memory, and information\u2014systems must satisfice within budgets."},{"title":"bpe","description":"Byte-pair encoding iteratively merges frequent symbol pairs to build a subword vocabulary from corpus statistics."},{"title":"breadth first search","description":"Breadth-first search expands nodes level by level, guaranteeing shortest path in unweighted graphs."},{"title":"budgets","description":"Budgets cap tokens, tool calls, wall time, or dollars per task or session."},{"title":"build versus buy","description":"Build versus buy weighs custom AI development against vendor APIs and platforms on control, cost, and time-to-value."},{"title":"caching","description":"Caching stores prompt prefixes, embeddings, or completions to cut latency and cost."},{"title":"calibration","description":"Calibration means predicted probabilities align with observed frequencies\u201470% confidence should be right about 70% of the time."},{"title":"canaries","description":"Canaries route small traffic percentage to new versions before full rollout."},{"title":"cancellation","description":"Cancellation stops in-flight agent work cleanly\u2014revoke leases, abort tool calls, compensate partial effects."},{"title":"capability decomposition","description":"Capability decomposition splits intelligence into perception, memory, learning, planning, and action so teams can own, test, and debug each part."},{"title":"checkpoints","description":"Checkpoints persist durable agent state so interrupted runs resume without repeating side effects."},{"title":"chunking","description":"Chunking splits documents into index units sized for retrieval precision and generation context."},{"title":"citation precision","description":"Citation precision measures whether cited sources actually support the adjacent claims."},{"title":"citations","description":"Citations link UI claims to source passages users can verify."},{"title":"classification","description":"Classification assigns inputs to discrete categories via scores converted to labels."},{"title":"cloud iam","description":"Google Cloud IAM binds roles to identities for least-privilege access to Vertex, Storage, and BigQuery in AI pipelines."},{"title":"cloud run and gke","description":"Cloud Run and GKE deploy serverless containers and Kubernetes GPU workloads on Google Cloud."},{"title":"cloudwatch and iam","description":"CloudWatch and IAM deliver AWS monitoring, alerting, and access control for AI workloads\u2014metrics, logs, roles, policies."},{"title":"clustering","description":"Clustering groups unlabeled points by similarity\u2014k-means, hierarchical, or density methods."},{"title":"code review","description":"Code review evaluates correctness, security, and maintainability of changes\u2014including agent-written code."},{"title":"compensation","description":"Compensation undo or offsets partial effects when later steps fail\u2014Saga pattern for agents."},{"title":"component evals","description":"Component evals test retrieval, generation, tools, and UX stages independently before end-to-end runs."},{"title":"compression","description":"Context compression summarizes, extracts, or prunes evidence to fit token limits while preserving decision-critical facts."},{"title":"computer use","description":"Computer use agents perceive screens and emit mouse/keyboard actions to complete software tasks."},{"title":"conditioning","description":"Conditioning steers generation with extra inputs\u2014text, masks, ControlNet edges, brand assets."},{"title":"confidence intervals","description":"Confidence intervals quantify uncertainty in metric estimates from finite eval sets."},{"title":"confusion matrix","description":"A confusion matrix counts predicted versus actual classes, exposing which errors dominate."},{"title":"consensus","description":"Consensus protocols align multiple agents on a decision before action\u2014voting, debate, or judge model."},{"title":"constraints","description":"Constraints specify forbidden actions, length limits, formats, and scope boundaries in prompts."},{"title":"containers","description":"Containers package model servers with dependencies for reproducible deployment across environments."},{"title":"contamination","description":"Contamination occurs when eval examples leak into training data, inflating benchmark scores."},{"title":"context assembly","description":"Context assembly is the pipeline that gathers instructions, state, evidence, tools, and examples into the final prompt."},{"title":"context files","description":"Context files\u2014.cursorrules, architecture docs\u2014supply persistent project knowledge to coding agents."},{"title":"context packing","description":"Context packing fits selected passages into the token window respecting priority, citation needs, and truncation rules."},{"title":"context poisoning","description":"Context poisoning inserts false or misleading evidence into retrieval or memory stores to manipulate outputs."},{"title":"context traces","description":"Context traces log the assembled prompt sections, token counts, and sources for debugging and compliance."},{"title":"context windows","description":"Context windows cap tokens the model attends to in one forward pass\u2014prompt, evidence, tools, and output compete for this budget."},{"title":"continual learning","description":"Continual learning updates models on new data without catastrophic forgetting of prior tasks."},{"title":"continuous evaluation","description":"Continuous evaluation runs production or shadow traffic against eval suites to detect drift post-release."},{"title":"contract tests","description":"Contract tests verify integrations between services\u2014API schemas, tool responses\u2014without full end-to-end runs."},{"title":"control","description":"Control mechanisms\u2014approvals, rate limits, tool allowlists\u2014 constrain agent behavior within safe envelopes."},{"title":"coordination","description":"Coordination synchronizes multiple agents\u2014shared queues, locks, message passing\u2014to avoid conflicting actions."},{"title":"corpora","description":"Corpora are curated text collections whose composition, licensing, and bias shape every downstream model."},{"title":"correction","description":"Correction flows let users fix wrong AI outputs and feed improvements\u2014labels, prompts, or models."},{"title":"cosine similarity","description":"Cosine similarity measures the angle between vectors, ignoring magnitude\u2014standard for normalized embeddings in retrieval."},{"title":"cost quality curves","description":"Cost-quality curves plot spend\u2014tokens, GPU seconds, API dollars\u2014against task metrics."},{"title":"critique","description":"Critique models or rubrics evaluate drafts and suggest fixes before finalization."},{"title":"cross validation","description":"Cross-validation rotates train and validation folds to estimate performance variance with limited data."},{"title":"data cards","description":"Data cards document dataset sources, collection, demographics, limitations, and recommended uses\u2014parallel to model cards."},{"title":"data curation","description":"Data curation selects, cleans, and balances training examples for quality over quantity."},{"title":"data exfiltration","description":"Data exfiltration via AI occurs when prompts or tools leak secrets, PII, or restricted docs to unauthorized parties."},{"title":"data leakage","description":"Data leakage lets information from the target or future timesteps into features or labels during training."},{"title":"data mixtures","description":"Data mixtures blend corpora\u2014web, code, books, dialog\u2014at tuned ratios during pretraining."},{"title":"data provenance","description":"Data provenance records origin, transformations, timestamps, and responsible parties for each document."},{"title":"data residency","description":"Data residency restricts processing and storage to approved geographic regions for legal compliance."},{"title":"data validation","description":"Data validation checks schema, ranges, distributions, and freshness of incoming data before training or inference."},{"title":"decision thresholds","description":"Decision thresholds turn continuous scores into actions\u2014approve, escalate, or abstain."},{"title":"decomposition","description":"Decomposition breaks complex tasks into subtasks with clearer stopping criteria and verifiable intermediate results."},{"title":"deduplication","description":"Deduplication removes near-duplicate training examples that inflate metrics and memorization."},{"title":"deep learning","description":"Deep learning stacks differentiable layers that learn hierarchical features from raw inputs."},{"title":"delegation","description":"Delegation assigns subtasks to specialized agents or tools with scoped permissions."},{"title":"delimiters","description":"Delimiters\u2014XML tags, markdown fences, triple quotes\u2014separate instructions from data so models parse structure reliably."},{"title":"dense retrieval","description":"Dense retrieval embeds queries and documents into the same vector space and returns nearest neighbors by similarity."},{"title":"dependencies","description":"Dependencies constrain execution order\u2014step B requires output or state from step A."},{"title":"deterministic metrics","description":"Deterministic metrics\u2014exact match, F1 on spans, JSON validity\u2014give reproducible scores without sampling variance."},{"title":"diarization","description":"Diarization labels who spoke when in multi-speaker audio\u2014essential for meetings and support calls."},{"title":"diffusion","description":"Diffusion models generate images by iterative denoising from noise, conditioning on text or layout."},{"title":"dimensionality reduction","description":"Dimensionality reduction projects high-dimensional data to fewer dimensions for visualization, compression, or denoising\u2014PCA, t-SNE, UMAP."},{"title":"discourse","description":"Discourse connects sentences across turns and documents\u2014coreference, topic continuity, rhetorical structure."},{"title":"distillation","description":"Distillation trains smaller student models to mimic larger teachers, trading capability for cost and speed."},{"title":"distribution shift","description":"Distribution shift occurs when deployment data differs from training data in language, demographics, seasonality, or product mix."},{"title":"diversity","description":"Diversity in context selection avoids redundant passages that waste tokens on repeated facts."},{"title":"document ai","description":"Document AI pipelines combine OCR, layout, extraction, and validation for structured data from unstructured files."},{"title":"dot product","description":"Dot product measures alignment between vectors\u2014used in attention scores and similarity when magnitudes carry signal."},{"title":"dpo","description":"Direct Preference Optimization aligns models from pairwise preferences without explicit reward model training."},{"title":"drift","description":"Drift is change in input or label distributions over time\u2014covariate, prior, or concept drift."},{"title":"durable execution","description":"Durable execution persists workflow state across process restarts and deploys\u2014Temporal, Step Functions patterns."},{"title":"embedding evaluation","description":"Embedding evaluation measures retrieval quality\u2014recall, MRR, nDCG\u2014on realistic queries with hard negatives."},{"title":"end to end evals","description":"End-to-end evals measure full pipeline outcomes on realistic inputs including latency and cost."},{"title":"entra id and monitor","description":"Microsoft Entra ID and Azure Monitor provide identity, RBAC, and observability for Azure AI workloads."},{"title":"entropy","description":"Entropy measures uncertainty or information content in a distribution\u2014high when outcomes are evenly spread, low when one dominates."},{"title":"episodic memory","description":"Episodic memory stores past run trajectories\u2014what was tried, what failed\u2014for future reference within or across sessions."},{"title":"eval datasets","description":"Eval datasets are labeled or rubric-scored cases representing production risks and happy paths."},{"title":"evaluation specs","description":"Evaluation specs define datasets, metrics, slices, and release thresholds before shipping."},{"title":"expected cost","description":"Expected cost combines probabilities of outcomes with their business costs to rank decisions."},{"title":"experiment tracking","description":"Experiment tracking logs hyperparameters, data versions, metrics, and artifacts for every training run."},{"title":"expert systems","description":"Expert systems capture domain heuristics in if-then rules curated by specialists, often with explanation traces."},{"title":"fairness","description":"Fairness examines disparate performance or harm across demographic or regional groups."},{"title":"faithfulness","description":"Faithfulness checks that generated statements are entailed by retrieved evidence, not hallucinated additions."},{"title":"fallbacks","description":"Fallbacks switch to alternate models, cached answers, or human handoff when primary path fails."},{"title":"feasibility","description":"Feasibility assesses whether data, latency, risk, and model capability can meet requirements\u2014not whether a demo works once."},{"title":"features and labels","description":"Features are inputs; labels are supervised targets\u2014both must be available at the decision time you actually deploy."},{"title":"feedback","description":"Feedback closes the loop: outcomes from actions update beliefs, models, or policies for subsequent decisions."},{"title":"few shot examples","description":"Few-shot examples demonstrate desired input\u2013output patterns inside the prompt."},{"title":"fine tuning","description":"Fine-tuning adapts pretrained weights with supervised or preference data when prompts and RAG cannot stabilize behavior."},{"title":"finops","description":"FinOps tracks and optimizes AI spend\u2014tokens, GPU hours, API fees\u2014against business value."},{"title":"freshness","description":"Freshness policies define acceptable document age, re-ingest cadence, and TTL for cached answers."},{"title":"function calling","description":"Function calling lets models emit structured invocations with typed arguments that runtime code validates and executes."},{"title":"functional specifications","description":"Functional specifications describe observable system behavior\u2014inputs, outputs, errors\u2014for builders and testers."},{"title":"generalization","description":"Generalization is performance on unseen data drawn from the deployment distribution, not memorization of training examples."},{"title":"goal decomposition","description":"Goal decomposition maps a top-level objective into subgoals with success conditions and dependencies."},{"title":"goal directed behavior","description":"Goal-directed behavior means selecting actions to reduce distance to an explicit objective rather than producing unconstrained text."},{"title":"gold datasets","description":"Gold datasets hold authoritative labels or reference outputs for evaluation."},{"title":"gpus","description":"GPUs accelerate matrix operations for training and inference; memory capacity limits model size and batch."},{"title":"gradient descent","description":"Gradient descent adjusts parameters in the direction that most reduces loss, using gradients computed from training examples."},{"title":"graph rag","description":"Graph RAG combines knowledge graphs with retrieval so multi-hop relations traverse explicit edges."},{"title":"grounded generation","description":"Grounded generation conditions answers strictly on provided evidence, refusing when support is insufficient."},{"title":"grounding","description":"Grounding ties model statements to verifiable evidence\u2014retrieved passages, database rows, tool outputs."},{"title":"hard negatives","description":"Hard negatives are plausible but incorrect passages that confuse retrievers\u2014essential for training and evaluation realism."},{"title":"heuristics","description":"Heuristics estimate remaining cost or promise of partial solutions to guide search toward promising branches."},{"title":"human evaluation","description":"Human evaluation labels outputs quality when automation cannot capture nuance or safety."},{"title":"human oversight","description":"Human oversight defines when and how people supervise agents\u2014monitoring dashboards, escalation queues, kill switches."},{"title":"human review","description":"Human review inserts expert judgment for high-impact or low-confidence decisions."},{"title":"hybrid search","description":"Hybrid search combines lexical and dense signals\u2014often via reciprocal rank fusion\u2014when neither alone covers identifiers and paraphrases."},{"title":"idempotency","description":"Idempotent tools produce the same effect when called repeatedly with the same idempotency key."},{"title":"identity","description":"Identity establishes who users and services are\u2014SSO, service principals, workload identity\u2014for AI data access."},{"title":"impact assessment","description":"Impact assessment evaluates consequences of deploying AI on people, rights, and society before high-risk launch."},{"title":"incident response","description":"Incident response defines detect, triage, mitigate, communicate, and postmortem for AI failures\u2014hallucination harm, data leak, outage."},{"title":"inference","description":"Inference applies a trained model to new inputs to produce predictions or generations."},{"title":"instruction conflict","description":"Instruction conflict occurs when system, developer, user, or retrieved text give incompatible directives."},{"title":"instruction hierarchy","description":"Instruction hierarchy ranks system, developer, and user messages so lower-priority text cannot override safety or policy."},{"title":"instruction tuning","description":"Instruction tuning fine-tunes models on prompt\u2013response pairs covering diverse tasks, improving zero-shot instruction following."},{"title":"inter rater agreement","description":"Inter-rater agreement measures how consistently multiple human graders apply rubrics\u2014Cohen's kappa, Krippendorff's alpha."},{"title":"jobs to be done","description":"Jobs-to-be-done frames what users hire a product to accomplish, not which technology it uses."},{"title":"json schema","description":"JSON Schema declares required fields, types, and constraints that validators enforce after model generation."},{"title":"keys","description":"Keys are attention projections indexed for lookup\u2014compatible queries receive high weights."},{"title":"knowledge freshness","description":"Knowledge freshness measures how current stored facts are relative to the real world."},{"title":"knowledge representation","description":"Knowledge representation chooses how facts, relations, and uncertainty are stored\u2014graphs, frames, schemas, or vectors."},{"title":"kv cache","description":"The KV cache stores key and value tensors for prior tokens during autoregressive decoding, avoiding recomputation of the prefix."},{"title":"lambda and eks","description":"AWS Lambda and EKS provide serverless functions and Kubernetes clusters for AI orchestration, agents, and custom servers."},{"title":"latency","description":"Latency is time from request to usable response\u2014dominated by model, retrieval, tools, and serialization."},{"title":"latent space","description":"Latent space in generative models compresses images to lower-dimensional representations for efficient editing and generation."},{"title":"layout models","description":"Layout models detect reading order, tables, figures, and headings in documents beyond raw OCR boxes."},{"title":"leases","description":"Leases grant temporary exclusive ownership of a resource\u2014document, ticket, shard\u2014preventing duplicate processing."},{"title":"llm judges","description":"LLM judges automate scoring using rubrics but must be calibrated against humans to avoid systematic bias."},{"title":"logits","description":"Logits are raw pre-softmax scores over the vocabulary for the next token."},{"title":"long context","description":"Long context models attend to hundred-thousand-plus tokens in one window\u2014reducing need for retrieval but not eliminating cost or lost-in-middle effects."},{"title":"long term memory","description":"Long-term memory stores durable facts\u2014preferences, past resolutions\u2014retrieved selectively for future sessions."},{"title":"lora","description":"LoRA fine-tunes low-rank adapter matrices in attention layers, reducing trainable parameters versus full fine-tuning."},{"title":"loss functions","description":"Loss functions score how wrong predictions are and drive optimization\u2014cross-entropy for classes, MSE for regression, custom losses for ranking."},{"title":"lstms","description":"LSTMs add gating to RNNs to mitigate vanishing gradients and capture longer dependencies than plain RNNs."},{"title":"matrix transformations","description":"Matrix transformations apply linear maps that rotate, scale, or project vector spaces\u2014core to neural layers and attention projections."},{"title":"mcp","description":"Model Context Protocol standardizes how clients discover tools, resources, and prompts from servers."},{"title":"memory","description":"Memory in frontier systems spans working, episodic, and semantic stores beyond context windows\u2014implementation varies widely."},{"title":"memory retrieval","description":"Memory retrieval selects relevant past facts given the current query\u2014vector search, keyword, or structured lookup."},{"title":"metadata","description":"Metadata tags documents with tenant, date, author, permissions, and type for filtering and ranking."},{"title":"metadata filtering","description":"Metadata filtering restricts vector or lexical search by tenant, date, permission, or document type before or after similarity scoring."},{"title":"mixture of experts","description":"Mixture-of-experts activates subsets of parameters per token, scaling capacity without proportional compute."},{"title":"mlp blocks","description":"MLP blocks apply position-wise feed-forward networks after attention, adding nonlinear capacity per token."},{"title":"model cards","description":"Model cards document intended use, training data, limitations, metrics, and ethical considerations for a model version."},{"title":"model catalog","description":"Model catalog lists approved models with risk tier, eval status, and allowed use cases for developers."},{"title":"model registry","description":"A model registry stores versioned models with stage labels\u2014staging, production, archived\u2014and metadata for audit."},{"title":"model routing","description":"Model routing directs requests to appropriate models by task, risk, cost, or latency policy."},{"title":"model selection","description":"Model selection matches capabilities, cost, latency, license, and risk to task requirements\u2014not brand prestige."},{"title":"monitoring","description":"Monitoring observes live inputs, outputs, latency, errors, and business metrics continuously."},{"title":"multi head attention","description":"Multi-head attention runs several attention operations in parallel with separate projections, letting different heads capture diverse relations."},{"title":"multi hop retrieval","description":"Multi-hop retrieval gathers evidence across sequential lookups when no single passage contains the answer."},{"title":"multi tenancy","description":"Multi-tenancy isolates customer data, indexes, quotas, and configs in shared AI platforms."},{"title":"multilingual models","description":"Multilingual models share parameters across languages, enabling cross-lingual retrieval and generation."},{"title":"multimodal models","description":"Multimodal models ingest text, images, audio, or video in shared architectures for joint understanding or generation."},{"title":"n grams","description":"N-gram models predict tokens from local history of n\u22121 prior tokens\u2014simple, fast, and limited to short context."},{"title":"nearest neighbors","description":"Nearest-neighbor search returns the closest vectors to a query by a chosen metric."},{"title":"neurons and layers","description":"Neurons apply activations to weighted sums; layers stack these transforms into composable functions."},{"title":"normalization","description":"Text normalization lowercases, strips diacritics, standardizes whitespace, and canonicalizes equivalents before indexing or tokenization."},{"title":"ocr","description":"OCR extracts text from scanned images and photos, introducing recognition errors that propagate to chunks and answers."},{"title":"one hot vectors","description":"One-hot vectors encode categorical items as sparse binary indicators\u2014simple but high-dimensional and semantically blind."},{"title":"open weights","description":"Open-weights models publish parameters for local deployment, fine-tuning, and inspection\u2014versus API-only access."},{"title":"opensearch","description":"Amazon OpenSearch supports lexical, vector, and hybrid search with k-NN indexes for RAG on AWS."},{"title":"optimization","description":"Optimization finds parameters that minimize loss\u2014SGD, Adam, learning-rate schedules, and batch size interact with convergence speed and final quality."},{"title":"optimizers","description":"Optimizers like Adam, AdamW, and SGD with momentum adapt update rules beyond vanilla gradient descent."},{"title":"parent child retrieval","description":"Parent\u2013child retrieval indexes small child chunks for precision but returns parent sections for generation context."},{"title":"parsing","description":"Parsing converts documents\u2014PDF, HTML, DOCX\u2014into clean text and structure for indexing."},{"title":"permissions","description":"Permissions bind tools and data access to authenticated identities and roles."},{"title":"plan act observe","description":"Plan\u2013act\u2013observe separates choosing the next action, executing it, and recording observations that update state."},{"title":"plan representation","description":"Plan representation encodes steps, preconditions, effects, and dependencies in structures machines can validate\u2014DAGs, STRIPS, or typed JSON plans."},{"title":"planner executor","description":"Planner\u2013executor splits strategic planning from tactical execution, often with different models or prompts."},{"title":"planning","description":"Planning sequences actions to reach a goal given a model of state transitions, costs, and constraints."},{"title":"platform engineering","description":"Platform engineering builds self-service AI infrastructure\u2014gateways, eval harnesses, templates\u2014so product teams ship faster safely."},{"title":"portable interfaces","description":"Portable interfaces\u2014OpenAI-compatible APIs, OTel traces, standard embedding dims\u2014reduce lock-in across clouds."},{"title":"position","description":"Position information tells transformers token order since self-attention is permutation-invariant without it."},{"title":"pragmatics","description":"Pragmatics interprets meaning in context\u2014speaker intent, implicature, and shared knowledge."},{"title":"precision and recall","description":"Precision is correctness among positive predictions; recall is coverage of actual positives."},{"title":"pretraining objectives","description":"Pretraining objectives define self-supervised targets\u2014causal LM, masked LM, denoising\u2014that shape what models learn from raw text."},{"title":"primary sources","description":"Primary sources are original papers, specs, and official docs\u2014not summaries or hype threads\u2014for technical claims."},{"title":"privacy","description":"Privacy limits collection, retention, and exposure of personal data in training, logs, and outputs."},{"title":"probability","description":"Probability quantifies uncertainty over outcomes, enabling expectations, risk calculations, and principled decisions under incomplete information."},{"title":"problem framing","description":"Problem framing defines the unit of prediction, target label, decision, population, and time boundary before choosing algorithms."},{"title":"prompt injection","description":"Prompt injection embeds hostile instructions in untrusted content that models may follow instead of trusted policy."},{"title":"prompt specs","description":"Prompt specs version instructions, constraints, examples, and expected behaviors like API contracts."},{"title":"prompt versioning","description":"Prompt versioning tracks template changes with IDs, authors, and diffs like code."},{"title":"prompting","description":"Prompting steers model behavior at inference via instructions and examples without weight updates."},{"title":"provenance","description":"Provenance for generated media records model, prompt, timestamp, and user for copyright and authenticity disputes."},{"title":"qlora","description":"QLoRA combines quantization of base weights with LoRA adapters for fine-tuning on consumer GPUs."},{"title":"quantization","description":"Quantization reduces weight precision\u2014INT8, INT4\u2014to cut memory and increase throughput with small quality trade-offs."},{"title":"queries","description":"In attention, queries represent what information a position seeks from other positions."},{"title":"query rewriting","description":"Query rewriting transforms requests via expansion, decomposition, or HyDE before retrieval to close vocabulary gaps."},{"title":"queues","description":"Queues decouple agent work submission from processing, smoothing load and enabling retries."},{"title":"rag","description":"Retrieval-augmented generation retrieves external evidence at query time and conditions generation on it."},{"title":"ranking","description":"Ranking orders candidates\u2014retrieved passages or context sections\u2014by relevance, recency, or priority before the model sees them."},{"title":"rational agents","description":"Rational agents choose actions that maximize expected utility toward a goal given perceived state and known constraints."},{"title":"re indexing","description":"Re-indexing rebuilds search indexes after embedding model or chunking changes."},{"title":"reasoning models","description":"Reasoning models allocate extra inference compute\u2014long chains, self-checks\u2014for math, code, and planning tasks."},{"title":"reciprocal rank fusion","description":"Reciprocal rank fusion merges ranked lists by summing 1/(k + rank) per document across retrievers."},{"title":"recovery","description":"Recovery restores consistent state after crashes, tool failures, or partial commits."},{"title":"reflection","description":"Reflection lets agents critique recent actions and adjust strategy\u2014retry, replan, or escalate."},{"title":"regression","description":"Regression predicts continuous targets\u2014latency, revenue, temperature\u2014by minimizing loss over numeric outputs."},{"title":"regression evaluation","description":"Regression evaluation re-runs fixed test suites after prompt or context changes to catch quality drops."},{"title":"regularization","description":"Regularization penalizes complexity\u2014L2 weight decay, dropout, early stopping\u2014to improve generalization."},{"title":"release gates","description":"Release gates block deployment until eval, security, and performance criteria pass."},{"title":"repair","description":"Repair loops attempt to fix invalid model outputs\u2014re-prompting with errors, partial parsing, or constrained retries."},{"title":"replanning","description":"Replanning updates the action sequence when observations invalidate assumptions."},{"title":"repo instructions","description":"Repo instructions\u2014AGENTS.md, CONTRIBUTING\u2014orient coding agents to build, test, and review conventions."},{"title":"representation learning","description":"Representation learning discovers features automatically instead of hand-engineering them."},{"title":"reproduction","description":"Reproduction reruns experiments with disclosed details to verify claims before betting architecture on results."},{"title":"rerankers","description":"Rerankers rescore top-k candidates with cross-attention models more accurate than bi-encoders alone."},{"title":"residual connections","description":"Residual connections add layer inputs to outputs, easing gradient flow through deep stacks."},{"title":"resilience","description":"Resilience designs for partial failure\u2014retries, circuit breakers, multi-region\u2014without total service loss."},{"title":"resources","description":"MCP resources expose readable data\u2014files, records, configs\u2014to clients with URI identifiers."},{"title":"retries","description":"Retries re-invoke models or tools after transient failures or validation misses, with backoff and limits."},{"title":"retrieval","description":"Retrieval selects candidate evidence from a corpus given a query before ranking and generation."},{"title":"retrieval metrics","description":"Retrieval metrics\u2014recall@k, MRR, nDCG\u2014measure candidate set quality before generation sees it."},{"title":"reviewer","description":"Reviewer pattern inserts a critique pass before delivery or irreversible actions."},{"title":"risk tiers","description":"Risk tiers classify AI systems by potential harm\u2014low, medium, high\u2014driving eval depth, approval path, and monitoring."},{"title":"rnns","description":"Recurrent neural networks process sequences step by step, maintaining hidden state across time."},{"title":"robotics interfaces","description":"Robotics interfaces connect AI planners to sensors and actuators with safety interlocks and real-time constraints."},{"title":"roi","description":"ROI compares value gained\u2014time saved, revenue, deflected tickets\u2014to total cost\u2014build, inference, review, incidents."},{"title":"role isolation","description":"Role isolation restricts each agent to tools and data matching its role, limiting blast radius of compromise or error."},{"title":"roles","description":"Roles\u2014system, user, assistant, tool\u2014label message provenance and expected behavior in chat APIs."},{"title":"routing","description":"Routing directs requests to models, tools, or strategies by task type, risk, or budget."},{"title":"rubrics","description":"Rubrics score qualitative outputs against anchored criteria with examples at each level."},{"title":"sagemaker","description":"Amazon SageMaker covers ML training, tuning, hosting, and monitoring for custom and foundation models on AWS."},{"title":"sampling","description":"Sampling draws next tokens from the predicted distribution rather than always taking the argmax."},{"title":"sandboxing","description":"Sandboxing isolates code execution, browsing, or file access in restricted environments with network and filesystem limits."},{"title":"scaled dot product","description":"Scaled dot-product attention computes softmax(QK\u1d40/\u221ad)V, scaling dot products to stable gradients."},{"title":"scaling laws","description":"Scaling laws relate model size, data, and compute to predictable loss improvements\u2014guiding budget allocation."},{"title":"search","description":"Search explores a space of partial solutions\u2014plans, code candidates, tool sequences\u2014guided by heuristics and budgets."},{"title":"segmentation","description":"Segmentation splits text into sentences, paragraphs, or utterances for processing pipelines."},{"title":"self consistency","description":"Self-consistency samples multiple reasoning paths and aggregates answers by majority vote."},{"title":"self supervision","description":"Self-supervision creates training signal from the data itself\u2014mask prediction, contrastive pairs\u2014without manual labels."},{"title":"semantics","description":"Semantics concerns meaning\u2014entities, relations, entailment\u2014not just form."},{"title":"sentence embeddings","description":"Sentence embeddings encode whole utterances into vectors for semantic search and clustering."},{"title":"sentencepiece","description":"SentencePiece trains subword models directly on raw text without pre-tokenization, simplifying multilingual pipelines."},{"title":"seq2seq","description":"Sequence-to-sequence models map input sequences to output sequences via encoder\u2013decoder architectures."},{"title":"service catalog","description":"Service catalog lists internal AI products\u2014approved models, RAG templates, tools\u2014for self-service discovery."},{"title":"session memory","description":"Session memory persists within a conversation\u2014recent turns, pending clarifications\u2014without long-term storage."},{"title":"sft","description":"Supervised fine-tuning trains on input\u2013output pairs to imitate desired behaviors on similar tasks."},{"title":"shared retrieval","description":"Shared retrieval services provide governed indexes, embedding pipelines, and search APIs reused across products."},{"title":"shared state","description":"Shared state stores variables visible to multiple agents\u2014task boards, evidence pools."},{"title":"skills","description":"Skills package reusable agent capabilities\u2014prompts, scripts, checklists\u2014for specific tasks in Cursor and similar tools."},{"title":"slice analysis","description":"Slice analysis evaluates metrics on subpopulations\u2014language, product, tenant\u2014to catch aggregate illusions."},{"title":"slices","description":"Slices are subpopulations\u2014language, tenant, risk tier\u2014where aggregate metrics may hide failure."},{"title":"slos","description":"SLOs define target reliability and latency\u2014availability, p95 latency, eval faithfulness\u2014for AI platform services."},{"title":"speech recognition","description":"Speech recognition (ASR) transcribes audio to text with word error rate varying by accent, noise, and domain."},{"title":"state","description":"State captures variables the system believes true at a point in execution\u2014inventory, user intent, pending approvals."},{"title":"state machines","description":"State machines model allowed statuses and transitions explicitly, making illegal steps unrepresentable."},{"title":"state spaces","description":"A state space enumerates all configurations a system can occupy plus the actions that move between them."},{"title":"statistical learning","description":"Statistical learning infers patterns from data with explicit assumptions about noise, independence, and generalization."},{"title":"streaming audio","description":"Streaming audio processes speech incrementally for real-time captions and voice agents."},{"title":"structured data","description":"Structured data lives in tables, APIs, and graphs with typed fields\u2014better for precise queries than prose retrieval."},{"title":"structured output","description":"Structured output forces models to emit machine-parseable formats\u2014JSON, XML, tool calls\u2014via prompting or constrained decoding."},{"title":"subwords","description":"Subword units split rare words into frequent pieces so models handle morphology and typos without huge vocabularies."},{"title":"success metrics","description":"Success metrics tie releases to user-valued outcomes\u2014task success, time saved, revenue\u2014not model perplexity alone."},{"title":"summarization","description":"Summarization compresses dialogue or documents into shorter forms for memory or display."},{"title":"supervisor worker","description":"Supervisor\u2013worker assigns subtasks to workers and integrates results, adding coordination overhead for parallelizable work."},{"title":"symbolic ai","description":"Symbolic AI represents knowledge as explicit rules, facts, and logical relations rather than learned weights."},{"title":"syntax","description":"Syntax governs how words combine into grammatical structures\u2014phrases, clauses, dependencies."},{"title":"synthetic data","description":"Synthetic data generates training examples via models or rules\u2014useful when real data is scarce but risks model collapse if overused."},{"title":"task definitions","description":"Task definitions specify input, expected output, constraints, and graders for eval cases."},{"title":"task success","description":"Task success measures whether users completed their intended job with acceptable quality\u2014not click-through on AI features."},{"title":"team topology","description":"Team topology assigns platform, product, and enabling teams for AI delivery with clear interaction modes."},{"title":"technology forecasting","description":"Technology forecasting estimates when emerging capabilities become production-ready using evidence tiers and uncertainty bounds."},{"title":"temperature","description":"Temperature scales logits before softmax\u2014lower sharpens the distribution (more deterministic), higher flattens it (more random)."},{"title":"termination","description":"Termination criteria stop search, agent loops, or generation when goals are met, budgets exhausted, or progress stalls."},{"title":"test time adaptation","description":"Test-time adaptation updates model behavior during inference from recent inputs\u2014risky for stability without guardrails."},{"title":"test time compute","description":"Test-time compute spends extra inference\u2014search, sampling, verification\u2014at query time to improve accuracy."},{"title":"tests","description":"Tests provide executable specifications for tools, plans, and outputs in reasoning pipelines."},{"title":"text to speech","description":"Text-to-speech synthesizes natural audio from text with voice, prosody, and latency trade-offs."},{"title":"tf idf","description":"TF\u2013IDF weights terms by local frequency and inverse document frequency, highlighting discriminative words in sparse retrieval."},{"title":"threat modeling","description":"Threat modeling systematically identifies assets, adversaries, and attack paths for AI systems\u2014STRIDE, attack trees adapted for LLM risks."},{"title":"thresholds","description":"Thresholds are minimum acceptable metric values for release or routing decisions."},{"title":"timeouts","description":"Timeouts cap how long tools or model calls may run before cancellation."},{"title":"token budgeting","description":"Token budgeting allocates fixed slices of the context window to system, history, evidence, and completion."},{"title":"token budgets","description":"Token budgets cap how many tokens each prompt section\u2014system, evidence, user\u2014may consume."},{"title":"tool abuse","description":"Tool abuse exploits excessive permissions\u2014delete, send email, SQL write\u2014through manipulated agent behavior."},{"title":"tool contracts","description":"Tool contracts specify schemas, auth, idempotency, errors, and SLAs for each agent tool."},{"title":"tool discovery","description":"Tool discovery lets clients list available tools and schemas at runtime instead of hardcoding integrations."},{"title":"tool registry","description":"Tool registry catalogs approved agent tools with schemas, owners, and security review status."},{"title":"tool schemas","description":"Tool schemas define parameter names, types, required fields, and descriptions models use to construct calls."},{"title":"tool success","description":"Tool success rate tracks correct schema, auth, execution, and useful results from tool calls."},{"title":"tracing","description":"Tracing records spans for retrieval, model calls, tools, and validation with correlation IDs across services."},{"title":"training","description":"Training fits model parameters to data by minimizing a loss over many examples."},{"title":"transparency","description":"Transparency discloses when users interact with AI, what data is used, and system limitations."},{"title":"transports","description":"MCP transports\u2014stdio, SSE, HTTP\u2014carry protocol messages between clients and servers."},{"title":"uncertainty ux","description":"Uncertainty UX communicates confidence, limits, and alternatives so users calibrate trust."},{"title":"undo","description":"Undo reverses AI-initiated or AI-assisted actions within a safe window."},{"title":"unicode","description":"Unicode assigns code points to characters across scripts; mishandling causes mojibake, broken tokens, and security bypasses via homoglyphs."},{"title":"unit tests","description":"Unit tests verify deterministic functions and components in isolation with fast feedback."},{"title":"user research","description":"User research observes real workflows, pain points, and workarounds before proposing AI features."},{"title":"validation","description":"Validation checks model outputs against schemas, business rules, and safety policies before downstream use."},{"title":"values","description":"Values carry the content aggregated by attention weights\u2014what actually flows between positions."},{"title":"vector governance","description":"Vector governance covers access control, versioning, retention, and audit for embedding stores and indexes."},{"title":"vectors","description":"Vectors represent objects as numeric arrays so similarity, direction, and composition become computable."},{"title":"vendor management","description":"Vendor management evaluates AI providers on security, compliance, cost, performance, and exit strategy."},{"title":"verifiers","description":"Verifiers check candidate outputs with independent logic\u2014unit tests, schemas, calculators\u2014not the same model that generated them."},{"title":"versioning","description":"Versioning tracks prompts, models, indexes, and eval suites so changes are attributable and reversible."},{"title":"vertex ai","description":"Google Vertex AI offers unified model training, tuning, deployment, and evaluation on GCP with Gemini and open models."},{"title":"vertex ai search","description":"Vertex AI Search (Discovery Engine) provides enterprise search and grounding APIs with document ingest and ranking."},{"title":"video generation","description":"Video generation extends image models temporally\u2014short clips from text with consistency and motion challenges."},{"title":"vision encoders","description":"Vision encoders map images to embeddings or tokens for multimodal models\u2014ViT, CLIP-style architectures."},{"title":"visual grounding","description":"Visual grounding links language to regions or objects in images\u2014pointing, bounding boxes, UI elements."},{"title":"vllm","description":"vLLM is a high-throughput inference server using PagedAttention for efficient KV cache memory management."},{"title":"vocabulary","description":"Vocabulary is the set of tokens a model or index recognizes; out-of-vocabulary items become unknown or split subwords."},{"title":"voice safety","description":"Voice safety covers consent, voice cloning abuse, deepfake detection, and secure storage of biometric voice data."},{"title":"word embeddings","description":"Word embeddings map tokens to dense vectors where semantic similarity corresponds to geometric proximity."},{"title":"workflows","description":"Workflows are deterministic orchestrations with predefined steps, branches, and error handlers."},{"title":"working memory","description":"Working memory holds transient state for the current turn\u2014scratchpad notes, intermediate calculations\u2014not durable across sessions."},{"title":"world models","description":"World models learn predictive representations of environments for planning or simulation\u2014active research area with engineering gaps."}],"Patterns":[{"title":"Hybrid Retrieval","description":"Combine lexical and dense retrievers when queries mix identifiers and paraphrases."},{"title":"Retrieve Then Rerank","description":"Fast first-stage retrieval followed by cross-encoder reranking."},{"title":"Human Approval Gate","description":"Pause agent loops before irreversible or high-cost actions."},{"title":"Supervisor\u2013Worker","description":"Delegate subtasks from a coordinator to specialized workers."},{"title":"Eval-Gated Release","description":"Block release until predefined eval slices pass."},{"title":"Prompt Versioning","description":"Treat prompts as versioned code with regression tests."},{"title":"Context Budget Packing","description":"Allocate fixed token budgets per context section by priority."},{"title":"Structured Output Validation","description":"Parse and validate model JSON against schemas before use."},{"title":"Checkpoint Resume","description":"Persist agent state to survive interruptions."},{"title":"Model Routing","description":"Route requests to models by risk, cost, and capability."},{"title":"Slice-Based Evaluation","description":"Report metrics per subpopulation, not aggregates alone."},{"title":"Citation-Grounded Answer","description":"Require claims to link to retrieved passages."},{"title":"Tool Sandbox","description":"Run tools with least privilege and typed arguments."},{"title":"Semantic Cache","description":"Reuse prior answers for similar queries."},{"title":"Spec-Driven AI Feature","description":"Write executable specs before model integration."},{"title":"Durable Agent Queue","description":"Orchestrate long agents with queues and leases."},{"title":"Multi-Tenant Retrieval","description":"Isolate retrieval indexes and ACLs per tenant."},{"title":"Adversarial Eval Suite","description":"Red-team prompts and retrieved poison in CI."},{"title":"Fallback Degrade","description":"Graceful degradation when models or retrieval fail."},{"title":"Observability Traces","description":"Trace retrieval, prompts, tools, and outputs per request."},{"title":"Router","description":"Classify requests to specialized handlers or models."},{"title":"Fallback Cascade","description":"Try primary path then ordered fallbacks."},{"title":"Evaluator\u2013Optimizer","description":"Generate candidates then score with independent evaluator."},{"title":"Map\u2013Reduce LLM","description":"Split large inputs, process chunks, merge results."},{"title":"Context Compressor","description":"Summarize or extract before main model call."},{"title":"Retrieval Fusion","description":"Merge multiple retriever lists without score calibration."},{"title":"Citation Validator","description":"Verify generated claims against cited passages."},{"title":"Tool Adapter","description":"Wrap legacy APIs as typed model tools."},{"title":"Durable Checkpoint","description":"Persist agent state after each external effect."},{"title":"Circuit Breaker","description":"Stop calling failing model or tool temporarily."},{"title":"Best-of-N Sampling","description":"Generate N outputs; select with verifier or reward."},{"title":"Self-Consistency","description":"Majority vote over diverse reasoning paths."},{"title":"Query Decomposition","description":"Split complex user questions into sub-queries."},{"title":"Parent\u2013Child Chunks","description":"Index small chunks; retrieve parents for context."},{"title":"Metadata Filter First","description":"Apply ACL and facet filters before vector search."},{"title":"Prompt Injection Guard","description":"Separate trusted instructions from untrusted data."},{"title":"Human Review Queue","description":"Queue low-confidence outputs for review."},{"title":"Offline Eval Regression","description":"Run eval harness on every prompt/model change."},{"title":"Online Canary","description":"Route small traffic fraction to candidate version."},{"title":"Feature-Flagged Model","description":"Toggle models or prompts without redeploy."},{"title":"Batch Inference Window","description":"Accumulate requests for efficient GPU batches."},{"title":"Streaming Partial UI","description":"Show tokens progressively with cancel option."},{"title":"Uncertainty Disclosure","description":"Show confidence and sources to users."},{"title":"Undo AI Action","description":"Make model-driven changes reversible."},{"title":"Data Card Gate","description":"Block training data use without documented card."},{"title":"Adapter Swapping","description":"Serve LoRA adapters per tenant or task."},{"title":"Speculative Decoding","description":"Draft model proposes; target model verifies."},{"title":"Graph Retrieval Augment","description":"Combine graph traversal with vector hits."},{"title":"Temporal Freshness Index","description":"Prefer recent documents when freshness matters."},{"title":"LLM Judge Calibration","description":"Calibrate automated judges against human ratings."},{"title":"Request Idempotency","description":"Duplicate agent or API calls must not double-charge or double-write."},{"title":"Prompt Cache Key","description":"Reuse prefix KV cache across similar requests."},{"title":"Tenant Rate Limit","description":"Fair usage across customers on shared models."},{"title":"Output Schema Repair","description":"One repair attempt before failing structured output."},{"title":"Retrieval Cache","description":"Cache retrieval results for hot queries."},{"title":"Embedding Drift Monitor","description":"Detect when query/doc embedding distribution shifts."},{"title":"Dual-Write Index","description":"Write new and old indexes during embedding migration."},{"title":"Shadow Model","description":"Run candidate model without serving responses."},{"title":"Tool Result Truncation","description":"Bound tool output size entering context."},{"title":"Conversation Summary Memory","description":"Compress older turns into rolling summary."},{"title":"Policy as Code","description":"Encode AI policies in testable rules."},{"title":"Secrets Scopes","description":"Scope API keys per tool and environment."},{"title":"Grounded Refusal","description":"Refuse when retrieval confidence is low."},{"title":"Answer Ensemble","description":"Combine multiple retrieval or model paths."},{"title":"Document Version Pin","description":"Pin answers to explicit corpus version."},{"title":"Latency Budget Router","description":"Pick model path by remaining SLA budget."},{"title":"Feedback to Eval","description":"Promote production failures into eval sets."},{"title":"PII Redaction","description":"Redact sensitive spans before logging or training."},{"title":"Tool Timeout Cascade","description":"Short timeouts with fallback tools."},{"title":"Chunk Overlap Tuning","description":"Tune overlap for recall vs redundancy."},{"title":"Query Rewrite Cache","description":"Cache rewritten queries for repeat intents."},{"title":"Model Warm Pool","description":"Keep minimum replicas warm."},{"title":"Gradual Rollout","description":"Increase traffic to new version slowly."},{"title":"Trace Sampling","description":"Sample traces for cost while keeping errors."},{"title":"Index Compaction","description":"Periodic compaction of vector segments."},{"title":"Role-Based Prompts","description":"Different system prompts by user role."},{"title":"Structured Logging","description":"Log JSON fields for retrieval and generation."},{"title":"Batch Embed Pipeline","description":"Embed documents in offline batches."},{"title":"Answer Diff Review","description":"Show diff when model changes answer on rerun."},{"title":"Confidence Calibration","description":"Map scores to calibrated probabilities."},{"title":"Tool Allowlist","description":"Explicit allowlist per agent profile."},{"title":"Session Affinity","description":"Route returning users to warm context."},{"title":"Negative Feedback Loop","description":"Use thumbs-down to block similar failures."},{"title":"Schema-First Tools","description":"Design tools from OpenAPI/JSON Schema first."},{"title":"Retrieval Explain","description":"Show why passages were retrieved."},{"title":"Multi-Index Query","description":"Query product, policy, and ticket indexes."},{"title":"Token Budget Forecast","description":"Estimate tokens before calling model."},{"title":"Human-in-Loop Training","description":"Collect edits for SFT/DPO datasets."},{"title":"Eval Data Versioning","description":"Version eval sets like code."},{"title":"SLO-Driven AI Ops","description":"Define SLOs for quality, latency, cost."},{"title":"Cross-Encoder Gate","description":"Cheap bi-encoder then expensive rerank."},{"title":"Prompt Lint","description":"Static checks on prompt templates."},{"title":"Agent Heartbeat","description":"Detect stuck agents via heartbeat."},{"title":"Data Residency Route","description":"Route requests to region-specific stacks."},{"title":"Model Terms Filter","description":"Block requests violating model AUP."},{"title":"Deterministic Workflow Core","description":"Keep billing/auth deterministic; LLM at edges."},{"title":"Incremental Index Update","description":"Update index incrementally on doc changes."},{"title":"Quality Tier Routing","description":"Premium vs standard model tiers."},{"title":"Planner\u2013Executor","description":"Separate planning and execution with explicit contracts."},{"title":"Human Approval","description":"Pause before an effect that needs a person's authorization."}],"Architecture studios":[{"title":"Enterprise RAG","description":"Authorized hybrid retrieval with citations and stage evals."},{"title":"Agent Platform","description":"Bounded agents with tools, checkpoints, and approval gates."},{"title":"Model Serving","description":"Routed inference with batching, caching, and fallbacks."},{"title":"Eval Harness Platform","description":"Component and E2E evals gating release."},{"title":"Prompt Context Service","description":"Versioned prompts, memory policies, and token budgets."},{"title":"Coding Agent Workspace","description":"Repo instructions, skills, and review gates for AI coding."},{"title":"Multimodal Document AI","description":"OCR, layout, extraction with provenance."},{"title":"Enterprise AI Gateway","description":"Central model access, policy, and observability."},{"title":"Fine-Tuning Pipeline","description":"Data cards, training, eval, and registry."},{"title":"Multi-Cloud AI Landing Zone","description":"Portable logical architecture across providers."},{"title":"Security Red-Team Assistant","description":"Tool-enabled assistant with sandbox and audit."},{"title":"Human-in-Loop Operations","description":"Approval workflows for high-impact actions."},{"title":"Semantic Search Engine","description":"Lexical + vector indexes with eval loop."},{"title":"LLMOps Control Plane","description":"Tracing, canaries, rollback, and FinOps."},{"title":"Research Reproduction Workbench","description":"Baseline comparisons for frontier claims."},{"title":"Customer Support Copilot","description":"Grounded replies with escalation paths."},{"title":"Data Governance for AI","description":"Lineage, residency, retention for training and RAG."},{"title":"Real-Time Voice Agent","description":"Streaming ASR/TTS with safety and latency SLOs."},{"title":"Batch Inference Factory","description":"Offline large-scale inference with cost controls."},{"title":"Feature Store for ML","description":"Consistent features between training and serving."},{"title":"Graph-Augmented RAG","description":"Graph retrieval combined with vector search."},{"title":"Policy-as-Code AI","description":"Automated policy checks on prompts, tools, and outputs."},{"title":"Edge AI Deployment","description":"Quantized models on constrained devices."},{"title":"Federated Evaluation Grid","description":"Slice evals across regions and tenants."},{"title":"AI Product Experimentation","description":"A/B infra with guardrails for AI features."}],"Build guides":[{"title":"Enterprise RAG End to End","description":"Ship authorized hybrid RAG with citations and stage evals."},{"title":"Bounded Agent Assistant","description":"Multi-step agent with typed tools, checkpoints, and approval."},{"title":"Context Engine With Tests","description":"Versioned prompts, memory policy, token budgets, regression tests."},{"title":"Model Selection Harness","description":"Vendor-neutral benchmark report for task-specific model choice."},{"title":"Eval-Gated Release Pipeline","description":"CI harness with slices, thresholds, and rollback evidence."},{"title":"Hybrid Search Engine","description":"Lexical + dense retrieval with fusion and offline eval."},{"title":"Structured Extraction API","description":"Schema-validated extraction behind a REST boundary."},{"title":"Multi-Tenant Retrieval Platform","description":"Tenant-scoped indexes, ACL filters, and audit logs."},{"title":"Coding Agent Workspace","description":"Repo instructions, skills, and review gates for AI coding."},{"title":"Fine-Tune and Serve a Small Model","description":"LoRA adaptation with eval, registry, and rollback."},{"title":"Red-Team Security Harness","description":"Prompt injection and tool abuse tests in CI."},{"title":"Multimodal Document Pipeline","description":"OCR, layout, extraction with provenance."},{"title":"Spec-to-Production AI Feature","description":"Discovery through spec, implementation, eval, and rollout."}],"Cloud capabilities":[{"title":"Foundation Model APIs","description":"Managed access to frontier and open models via HTTP with auth, quotas, and policy hooks."},{"title":"Embedding APIs","description":"Batch or online text embedding for retrieval, clustering, and classification."},{"title":"Vector Databases","description":"Approximate nearest-neighbor search at scale with metadata filtering."},{"title":"Hybrid Search Services","description":"Lexical + semantic ranking in one managed search product."},{"title":"Document Ingestion Pipelines","description":"Parse, chunk, enrich, and index documents with provenance."},{"title":"Batch Inference","description":"Offline generation over large input sets with cost controls."},{"title":"Real-Time Inference","description":"Low-latency online model serving behind autoscaling endpoints."},{"title":"Model Fine-Tuning Services","description":"Managed post-training on private data with job tracking."},{"title":"Model Registry & Artifacts","description":"Versioned model packages, metrics, and promotion workflow."},{"title":"Feature Stores","description":"Consistent offline/online features for ML and ranking systems."},{"title":"ML & LLM Pipelines","description":"Orchestrated train/eval/deploy workflows with reproducible steps."},{"title":"Serverless AI Glue","description":"Event-driven functions for lightweight AI orchestration."},{"title":"Container Model Serving","description":"Packaged inference servers (vLLM, TGI, Triton) on Kubernetes or managed containers."},{"title":"GPU Compute for Training & Inference","description":"Accelerators for fine-tuning and self-hosted serving."},{"title":"Identity for AI Workloads","description":"Authentication and authorization for humans, services, and agents."},{"title":"Secrets & Key Management","description":"Store API keys, DB credentials, and encryption keys safely."},{"title":"Private Networking for AI","description":"VPC/VNet isolation, private endpoints, and egress control."},{"title":"Observability for LLM Systems","description":"Traces, metrics, and logs for prompts, retrieval, tools, and outputs."},{"title":"Content Safety Filters","description":"Policy enforcement on inputs and outputs."},{"title":"Data Lake for AI Training & Eval","description":"Durable storage for corpora, eval sets, and experiment artifacts."},{"title":"Workflow Orchestration","description":"Long-running AI workflows with retries and human steps."},{"title":"API Gateways for AI Services","description":"Rate limits, auth, routing, and request logging at the edge."},{"title":"Cost Management for AI","description":"Budgets, tagging, and unit economics for tokens and GPUs."},{"title":"Disaster Recovery for AI Services","description":"Backups, multi-region failover, and RPO/RTO for indexes and models."},{"title":"Compliance & Audit for AI","description":"Immutable logs, data retention, and evidence for regulators."},{"title":"Edge & On-Device Inference","description":"Run smaller models close to users or devices."}],"Starter labs":[{"title":"Cosine Similarity","description":"Compute cosine similarity from first principles and rank paraphrase candidates."},{"title":"Semantic Search","description":"Build a hashing-vector search pipeline over a tiny document set."},{"title":"Basic RAG","description":"Wire retrieve \u2192 context \u2192 answer stages without an external LLM API."},{"title":"Agent Loop","description":"Run a bounded state machine with explicit plan/act/observe steps."},{"title":"Eval Harness","description":"Score candidate outputs with slices and a release gate."}],"Real-world casebook":[{"title":"A chatbot answer that changed a travel decision","description":"After the death of their grandmother in 2022, Jake Moffatt needed to book flights."},{"title":"Two studies measured two different coding jobs","description":"GitHub reported that participants with Copilot finished a controlled task faster."},{"title":"The errors a face-matching average hides","description":"In 2019, NIST published a comparison of demographic effects in face-matching algorithms."},{"title":"A feature file takes down a healthy service","description":"In November 2025, Cloudflare described a failure that affected core network traffic."},{"title":"When a better-liked model got harder to trust","description":"OpenAI rolled back an April 2025 update to GPT\u20114o after it made the model more likely to agree with or flatter users in unhelpful ways."},{"title":"Why GitHub paused queued work","description":"In October 2018, a network partition and database failover left GitHub displaying some stale or inconsistent information."},{"title":"Who gets left out of a transcript?","description":"Koenecke and coauthors tested five commercial speech-recognition systems and reported average word error rates of 35% for Black speakers and 19% for white speakers in their benchmark."},{"title":"What changed for customer support workers","description":"In a November 2023 working-paper revision, Brynjolfsson, Li, and Raymond analyze a staggered deployment of a conversational assistant for 5,179 customer support agents."},{"title":"Two zones and one deletion boundary","description":"In May 2024, Google Cloud reported that an earlier provisioning error gave one of UniSuper\u2019s private clouds a fixed term."}],"Engineering workflow":[{"title":"Spec-driven workflow","description":"Write acceptance cases and scope tool contracts before implementing a change. Use the evaluation results as release evidence.","cell":"delivery"}],"Implementation practicums":[{"title":"Coding-agent workflows","description":"Implement, delegate, and review AIeBOK changes in Codex, Cursor, OpenCode, or Claude Code.","cell":"delivery"},{"title":"UnderCover claims harness","description":"Compare a policy-aware claims proposal with manual triage. Checkpoint approvals and rerun fixed cases in the separate Python practicum.","cell":"workflow"}]}}</script>
+  <script>function mediaFixtures() {
+  return [
+    { id: "notice-lift", kind: "image", extractedBy: "synthetic OCR fixture", position: "page 1 · sign region",
+      text: "For a lift outage at North Pier, ask station staff for the step-free route.", family: "lift-notice", topic: "access",
+      from: "2026-01-01", role: "public" },
+    { id: "audio-lost", kind: "audio", extractedBy: "synthetic transcript fixture", position: "00:14–00:22",
+      text: "Found items can be collected from the Lost Property desk after confirmation.", family: "lost-notice", topic: "lost",
+      from: "2026-01-01", role: "public" },
+  ];
+}
+
+function buildCorpus(observations) {
+  const records = [
+    { id: "fare-v1", family: "fare-refund", topic: "fare", from: "2026-01-01", role: "public",
+      text: "Submit a fare refund request within 30 days of purchase." },
+    { id: "fare-v2", family: "fare-refund", topic: "fare", from: "2026-07-01", role: "public",
+      text: "Submit a fare refund request within 14 days of purchase." },
+    { id: "staff-review", family: "internal-reconciliation", topic: "ledger", from: "2026-01-01", role: "staff",
+      text: "Send ledger reconciliation cases to the internal Finance review queue." },
+    { id: "student-pass", family: "student-pass", topic: "pass", from: "2026-01-01", role: "public",
+      text: "Show proof of enrollment at the ticket office to collect a student pass." },
+  ];
+  return {
+    records: [...records, ...observations].map((record) => ({
+      ...record,
+      kind: record.kind || "document",
+      position: record.position || "handbook · " + record.family,
+      normalized: record.text.normalize("NFKC").toLowerCase(),
+    })),
+    schemaVersion: 1,
+  };
+}
+
+function languageTools(question) {
+  const groups = [
+    ["refund", "refunds", "reimbursement", "fare"],
+    ["lift", "elevator", "outage", "wheelchair", "step", "accessibility"],
+    ["ledger", "reconciliation", "reconcile", "internal"],
+    ["enrollment", "student", "pass"],
+    ["lost", "found", "items", "property"],
+  ];
+  const stop = new Set(["a", "an", "the", "i", "for", "to", "in", "on", "is", "my", "what", "how", "can", "do", "of", "at", "days"]);
+  function tokenize(text) {
+    return (text.normalize("NFKC").toLowerCase().match(/[\p{L}\p{N}]+/gu) || []).filter((term) => !stop.has(term));
+  }
+  function embed(text) {
+    const terms = new Set(tokenize(text));
+    return groups.map((group) => group.reduce((n, word) => n + Number(terms.has(word)), 0));
+  }
+  function cosine(left, right) {
+    const norm = Math.hypot(...left) * Math.hypot(...right);
+    return norm ? left.reduce((sum, x, i) => sum + x * right[i], 0) / norm : 0;
+  }
+  function overlap(left, right) {
+    const terms = new Set(tokenize(right));
+    return [...new Set(tokenize(left))].filter((text) => terms.has(text)).length;
+  }
+  return { tokens: tokenize(question), vector: embed(question), tokenize, embed, cosine, overlap };
+}
+
+function currentPolicies(input, records) {
+  const newest = new Map();
+  records.forEach((record) => {
+    if (record.from <= input.date && (newest.get(record.family)?.from || "") < record.from) newest.set(record.family, record);
+  });
+  return [...newest.values()].filter((record) => record.role === "public" || input.role === "staff");
+}
+
+function requestedTopic(input, language) {
+  const requested = language.vector.map((weight, i) => ({ weight, i })).filter(({ weight }) => weight > 0);
+  const unsupportedFareQuestion = requested.some(({ i }) => i === 0)
+    && /\b(price|cost|amount|fee|fees|charge|how much)\b/i.test(input.question);
+  return { index: requested.length === 1 && !unsupportedFareQuestion ? requested[0].i : null,
+    ambiguous: requested.length > 1 };
+}
+
+function packEvidence(input, retrieval) {
+  const instructions = "Use only the supplied policy evidence. Keep its conditions, then cite its source ID.";
+  const question = input.question.trim();
+  const count = (text) => text.trim().split(/\s+/).filter(Boolean).length;
+  const fixedWords = count(instructions) + count(question);
+  let remaining = Math.max(0, input.budget - fixedWords);
+  const supplied = [];
+  for (const record of retrieval.chosen) {
+    const words = count(record.text);
+    if (words <= remaining) {
+      supplied.push(record);
+      remaining -= words;
+    }
+  }
+  return { instructions, question, budget: input.budget, fixedWords, evidenceWords: input.budget - Math.min(input.budget, fixedWords) - remaining,
+    supplied, ambiguous: retrieval.ambiguous, truncated: fixedWords > input.budget || retrieval.chosen.length > supplied.length };
+}
+
+function groundAnswer(input, context) {
+  const source = context.supplied[0];
+  if (!source) {
+    const reason = context.truncated ? "Evidence does not fit the context budget." :
+      context.ambiguous ? "Separate the topics or ask a person to review both." :
+      "No relevant, currently valid evidence is available for this request.";
+    return { status: "handoff", text: reason, citations: [] };
+  }
+  const proposed = { status: "answered", text: source.text, citations: [{
+    id: source.id, source: source.position, kind: source.kind, effective: source.from,
+  }] };
+  const valid = proposed.citations.every((citation) => context.supplied.some((record) =>
+    record.id === citation.id && record.text === proposed.text && record.from <= input.date &&
+    (record.role === "public" || input.role === "staff")));
+  return valid ? proposed : { status: "handoff", text: "The source verification failed.", citations: [] };
+}
+
+const serviceOwners = Object.freeze({ policy: "Finance support", maintenance: "Station operations", access: "Accessibility desk" });
+const acceptanceCriteria = Object.freeze(["Current source matches request date", "Caller can see all cited evidence",
+  "Unresolved requests reach the manual queue", "No change to live transit records"]);
+
+function presentResponse(input, outcome, workflow) {
+  if (input.outage) return { status: "handoff", text: "Live lookup is paused in this simulation. Contact the staffed service desk.",
+    citations: [], next: "Service desk", withFallback: true };
+  if (outcome.status === "answered") return { ...outcome, next: "Review the source and effective date", withFallback: false };
+  return { ...outcome, next: workflow.owner,
+    review: workflow.state, withFallback: false };
+}
+
+// These implementations form the standalone service. They have no dependency on cell bodies.
+const baseline = new Map(Object.entries({
+  brief: { requires: [], run: () => ({ ownerFor: serviceOwners, acceptance: acceptanceCriteria }) },
+  modalities: { requires: [], run: () => ({ observations: mediaFixtures() }) },
+  corpus: { requires: ["modalities"], run: ({ dependencies }) => buildCorpus(dependencies.modalities.observations) },
+  language: { requires: [], run: ({ input }) => languageTools(input.question) },
+  learning: { requires: [], run: () => ({ route: "General support" }) },
+  retrieve: { requires: ["corpus", "language"], run: ({ input, dependencies }) => {
+    const topic = requestedTopic(input, dependencies.language);
+    const topicName = ["fare", "access", "ledger", "pass", "lost"][topic.index];
+    const chosen = currentPolicies(input, dependencies.corpus.records)
+      .filter((record) => record.topic === topicName).slice(0, 1);
+    return { ranking: "topic lookup", chosen, ambiguous: topic.ambiguous };
+  } },
+  context: { requires: ["retrieve"], run: ({ input, dependencies }) => packEvidence(input, dependencies.retrieve) },
+  answer: { requires: ["context"], run: ({ input, dependencies }) => groundAnswer(input, dependencies.context) },
+  workflow: { requires: ["answer"], run: ({ input, dependencies }) => ({ owner: "Service desk", effects: [],
+    state: input.outage ? "paused" : dependencies.answer.status === "answered" ? "complete" : "manual review" }) },
+  serve: { requires: ["answer", "workflow"], run: ({ input, dependencies }) =>
+    presentResponse(input, dependencies.answer, dependencies.workflow) },
+}));
+
+
+const cells = new Map();
+
+function register(id, title, description, requires, run) {
+  if (cells.has(id)) throw new Error("Duplicate workbook cell: " + id);
+  cells.set(id, { id, title, description, requires, run });
+}
+
+function createRun(input, activeIds = cells.keys()) {
+  const snapshot = Object.freeze({ ...input });
+  const active = new Set(activeIds);
+  const completed = new Map();
+  const visiting = new Set();
+  const executed = new Set();
+  const substituted = new Set();
+
+  function run(id) {
+    if (completed.has(id)) return completed.get(id);
+    if (!cells.has(id) && !baseline.has(id)) throw new Error("Unknown cell: " + id);
+    const enabled = active.has(id) && cells.has(id);
+    const cell = enabled ? cells.get(id) : baseline.get(id);
+    if (!cell) return null;
+    if (visiting.has(id)) throw new Error("Circular dependency at " + id);
+    visiting.add(id);
+    try {
+      const dependencies = Object.fromEntries(cell.requires.map((key) => [key, run(key)]));
+      const result = cell.run({
+        input: snapshot,
+        dependencies,
+        evaluate: (event, target) => createRun(event, active).run(target),
+        isActive: (key) => active.has(key) && cells.has(key),
+      });
+      (enabled ? executed : substituted).add(id);
+      completed.set(id, result);
+      return result;
+    } finally {
+      visiting.delete(id);
+    }
+  }
+  return { run, executed, substituted };
+}
+
+
+register("brief", "01 · Frame the service", "Define the request, the existing workflow, the intended decision, and who owns the handoff.", [], ({ input }) => {
+  return {
+    service: "HarborLink transit support",
+    user: input.role,
+    task: "Answer a station access or fare question with evidence, or route it to a person.",
+    manualBaseline: "A dispatcher searches the handbook and calls the owning team when needed.",
+    ownerFor: serviceOwners,
+    acceptance: acceptanceCriteria,
+    primaryMetric: "Correct and usable responses / submitted requests",
+    guardrail: "Zero restricted disclosures on the fixed test cases",
+  };
+});
+
+register("modalities", "02 · Collect evidence and provenance", "Bring document, speech and image observations into one record format using bundled, pre-extracted fixtures.", [], () => {
+  const observations = mediaFixtures();
+  return { observations, editorialRule: "Confirm uncertain extractions against the source before publishing.",
+    transfer: "Replace either fixture with an OCR or speech adapter that returns the same provenance fields. Generated media needs its own provenance and review." };
+});
+
+register("corpus", "03 · Ingest and version the handbook", "Normalize text while preserving record ID, audience, effective date and evidence location.", ["modalities"], ({ dependencies }) => {
+  return buildCorpus(dependencies.modalities.observations);
+});
+
+register("language", "04 · Represent language and similarity", "Inspect word tokens, character fragments, lexical overlap and a hand-built dense concept vector.", [], ({ input }) => {
+  const language = languageTools(input.question);
+  const characterPairs = language.tokens.slice(0, 3).flatMap((word) => {
+    const chars = Array.from(word);
+    return chars.slice(1).map((char, i) => chars[i] + char);
+  });
+  return { ...language, characterPairs };
+});
+
+register("learning", "05 · Train a routing baseline", "Train a small logistic classifier and compare its held-out routing decisions with the majority baseline.", ["language"], ({ dependencies }) => {
+  const training = [{ x: 0, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 0 }];
+  const test = [{ query: "How do I get my fare back?", y: 0 }, { query: "Wheelchair access during elevator outage", y: 1 },
+    { query: "Can I get a student pass?", y: 0 }, { query: "Step-free access to the lift", y: 1 }];
+  let weight = 0;
+  let bias = 0;
+  const predict = (x) => 1 / (1 + Math.exp(-Math.max(-40, Math.min(40, weight * x + bias))));
+  for (let epoch = 0; epoch < 80; epoch += 1) {
+    for (const row of training) {
+      const error = predict(row.x) - row.y;
+      weight -= 0.12 * error * row.x;
+      bias -= 0.12 * error;
+    }
+  }
+  const feature = (vector) => Number(vector[1] > 0);
+  const cases = test.map(({ query, y }) => {
+    const score = predict(feature(dependencies.language.embed(query)));
+    return { query, expected: y, predicted: Number(score >= 0.5) };
+  });
+  const selected = predict(feature(dependencies.language.vector));
+  return {
+    trained: { weight, bias }, cases,
+    accuracy: cases.filter((row) => row.expected === row.predicted).length / cases.length,
+    majorityAccuracy: test.filter((row) => row.y === 0).length / test.length,
+    accessScore: selected, route: selected >= 0.5 ? "Accessibility review" : "General support",
+    note: "Toy point estimate, not a calibrated probability for real rider requests.",
+  };
+});
+
+register("attention", "06 · Inspect attention and token choice", "Calculate masked scaled dot-product attention, a residual update, and temperature-adjusted next-token probabilities.", ["language"], ({ dependencies }) => {
+  const softmax = (values) => {
+    const maximum = Math.max(...values);
+    const terms = values.map((value) => Math.exp(value - maximum));
+    return terms.map((term) => term / terms.reduce((sum, value) => sum + value, 0));
+  };
+  const keys = [[1, 0], [0, 1], [1, 1]];
+  const values = [[0.2, 0.8], [0.8, 0.2], [0, 1]];
+  const query = dependencies.language.vector[1] > 0 ? [0, 1] : [1, 0];
+  const logits = keys.map((key, i) => i === 2 ? -Infinity :
+    key.reduce((sum, value, j) => sum + value * query[j], 0) / Math.sqrt(key.length));
+  const weights = softmax(logits);
+  const routed = query.map((value, j) => value + values.reduce((sum, vector, i) => sum + vector[j] * weights[i], 0));
+  const vocabulary = ["Answer", "Check", "Escalate"];
+  const tokenLogits = [routed[0], routed[1], -0.1];
+  const distribution = (temperature) => Object.fromEntries(vocabulary.map((token, i) => [
+    token, softmax(tokenLogits.map((logit) => logit / temperature))[i],
+  ]));
+  return { query, weights, residual: routed, cold: distribution(0.5), warm: distribution(1.5),
+    note: "One hand-specified attention head; this cell does not run a pretrained model." };
+});
+
+register("retrieve", "07 · Retrieve scoped, current evidence", "Select the effective revision first, apply audience scope, then compare lexical, cosine and hybrid rankings.", ["corpus", "language"], ({ input, dependencies }) => {
+  const candidates = currentPolicies(input, dependencies.corpus.records);
+  const { cosine, embed, overlap } = dependencies.language;
+  const scores = candidates.map((record) => {
+    const lexical = overlap(input.question, record.text);
+    const dense = cosine(dependencies.language.vector, embed(record.text));
+    const comparable = lexical / Math.max(1, dependencies.language.tokens.length);
+    const score = input.ranking === "lexical" ? comparable : input.ranking === "dense" ? dense : 0.55 * comparable + 0.45 * dense;
+    return { ...record, lexical, dense, score };
+  }).filter((record) => record.score > 0).sort((a, b) => b.score - a.score || a.id.localeCompare(b.id));
+  // A single matching concept is required for a definitive answer. Ranking can still surface clues.
+  const topic = requestedTopic(input, dependencies.language);
+  const eligible = topic.index !== null
+    ? scores.filter((record) => embed(record.text)[topic.index] > 0)
+    : [];
+  return { ranking: input.ranking, candidates: scores.map(({ id, lexical, dense, score }) => ({ id, lexical, dense, score })),
+    chosen: eligible.slice(0, 1), ambiguous: topic.ambiguous };
+});
+
+register("context", "08 · Assemble the prompt and evidence", "Separate product instructions from the request and evidence. Keep complete passages within the word budget.", ["retrieve"], ({ input, dependencies }) => {
+  const context = packEvidence(input, dependencies.retrieve);
+  return { ...context, modelInputExample: [{ role: "system", content: context.instructions },
+    { role: "user", content: JSON.stringify({
+      question: context.question, evidence: context.supplied.map(({ id, text }) => ({ id, text })),
+    }) }], contextRule: "The word budget covers instructions, question and passage text. Provider token counts also depend on the message format." };
+});
+
+register("answer", "09 · Ground and validate the answer", "Use an extractive answer. Verify exact support, authorized audience and effective date before returning a citation.", ["context"], ({ input, dependencies }) => {
+  return groundAnswer(input, dependencies.context);
+});
+
+register("workflow", "10 · Plan a bounded handoff", "Use a typed local tool, inspect the trace, checkpoint an approved action and reject a duplicate.", ["answer", "learning", "brief"], ({ input, dependencies }) => {
+  const tools = {
+    draftHandoff: { description: "Draft an internal review note in this workbook", input: { reason: "string", owner: "string" } },
+  };
+  const owner = dependencies.learning.route === "Accessibility review"
+    ? dependencies.brief.ownerFor.access : "Service desk";
+  if (input.outage) return { state: "paused", owner: "Service desk", steps: [], effects: [], toolDefinitions: tools };
+  if (dependencies.answer.status !== "handoff") return { state: "complete", steps: ["read", "verify"], toolDefinitions: tools };
+  const proposal = { reason: dependencies.answer.text, owner };
+  const steps = ["read", "verify", "draft"];
+  if (!(input.role === "staff" && input.approved)) {
+    return { state: "awaiting review", owner, steps, proposal, toolDefinitions: tools };
+  }
+  const checkpoint = JSON.stringify({ proposal, steps });
+  const restored = JSON.parse(checkpoint);
+  const completed = new Set();
+  const effects = [];
+  const operation = JSON.stringify([input.question, input.date, restored.proposal]);
+  function apply(id, draft) {
+    if (completed.has(id)) return "replay ignored";
+    if (typeof draft.reason !== "string" || typeof draft.owner !== "string") throw new Error("Invalid handoff");
+    completed.add(id);
+    effects.push({ owner: draft.owner, reason: draft.reason });
+    return "local note recorded";
+  }
+  const first = apply(operation, restored.proposal);
+  const replay = apply(operation, restored.proposal);
+  return { state: "local note recorded", owner, steps: [...restored.steps, "approved", "recorded"],
+    effects, replay, first, toolDefinitions: tools, scope: "Simulated local effect, no messages or writes to external systems." };
+});
+
+register("adapt", "11 · Compare adaptation and quantization", "Train a rank-one correction on a synthetic two-label task, compare against a frozen baseline, then measure integer approximation.", [], () => {
+  const examples = [{ x: -1.0, y: 0 }, { x: -0.8, y: 0 }, { x: 0.7, y: 1 }, { x: 1, y: 1 }];
+  const heldOut = [{ x: -0.4, y: 0 }, { x: 0.4, y: 1 }];
+  const sigmoid = (x) => 1 / (1 + Math.exp(-x));
+  const base = 0.15;
+  let a = 0.2;
+  let b = 0.2;
+  for (let step = 0; step < 50; step += 1) {
+    for (const { x, y } of examples) {
+      const difference = sigmoid(base + a * b * x) - y;
+      const deltaA = difference * b * x;
+      const deltaB = difference * a * x;
+      a -= 0.15 * deltaA;
+      b -= 0.15 * deltaB;
+    }
+  }
+  const original = new Float32Array([a, b]);
+  const scale = Math.max(Math.abs(a), Math.abs(b)) / 127;
+  const packed = Int8Array.from(original, (value) => Math.round(value / scale));
+  const restored = [...packed].map((value) => value * scale);
+  const loss = (left, right) => heldOut.reduce((sum, { x, y }) => {
+    const probability = sigmoid(base + left * right * x);
+    return sum - Math.log(y === 1 ? probability : 1 - probability);
+  }, 0) / heldOut.length;
+  return { baselineLoss: loss(0, 0), adapterLoss: loss(a, b), quantizedLoss: loss(...restored),
+    payloadBytes: { float32: original.byteLength, int8WithFloat32Scale: packed.byteLength + 4 },
+    note: "Synthetic rank-one correction with frozen bias; size counts this adapter only. A quantized value is simulated by dequantizing it before scoring." };
+});
+
+register("serve", "12 · Deliver the service response", "Present the actual scoped answer, a review handoff, or a safe service-degraded response.", ["answer", "workflow"], ({ input, dependencies }) => {
+  const result = presentResponse(input, dependencies.answer, dependencies.workflow);
+  return { ...result, trace: { answerStatus: dependencies.answer.status, workflowState: dependencies.workflow.state } };
+});
+
+register("evaluate", "13 · Evaluate decisions and release gates", "Run a frozen set of critical cases through the current service. Compare lexical and hybrid retrieval when ranked retrieval is active.", [], ({ input, evaluate, isActive }) => {
+  const cases = [
+    { label: "Current fare version", question: "fare refund", date: "2026-11-21", role: "public", source: "fare-v2" },
+    { label: "Historical fare version", question: "fare refund", date: "2026-03-01", role: "public", source: "fare-v1" },
+    { label: "Accessibility paraphrase", question: "elevator", date: "2026-11-21", role: "public", source: "notice-lift" },
+    { label: "Restricted policy", question: "ledger reconciliation", date: "2026-11-21", role: "public", source: null, critical: true },
+    { label: "Authorized staff", question: "ledger reconciliation", date: "2026-11-21", role: "staff", source: "staff-review" },
+    { label: "Missing evidence", question: "weather forecast", date: "2026-11-21", role: "public", source: null, critical: true },
+    { label: "Tight context budget", question: "fare refund", date: "2026-11-21", role: "public", source: null, budget: 10, critical: true },
+    { label: "Safe fallback", question: "fare refund", date: "2026-11-21", role: "public", source: null, outage: true, critical: true },
+  ];
+  function compare(ranking) {
+    const results = cases.map((test) => {
+      const result = evaluate({ ...input, ...test, budget: test.budget ?? 80, ranking, approved: false, outage: !!test.outage }, "serve");
+      const actual = result.citations[0]?.id || null;
+      const pass = actual === test.source && result.status === (test.source ? "answered" : "handoff");
+      return { case: test.label, expected: test.source || "handoff", actual: actual || result.status, critical: !!test.critical, pass };
+    });
+    return { ranking, results, passRate: results.filter(({ pass }) => pass).length / results.length,
+      criticalPass: results.filter(({ critical }) => critical).every(({ pass }) => pass) };
+  }
+  if (!isActive("retrieve")) return { topicLookup: compare("topic lookup"), recommended: "No ranking comparison in topic lookup mode" };
+  const lexical = compare("lexical");
+  const hybrid = compare("hybrid");
+  return { lexical, hybrid, recommended: hybrid.criticalPass && hybrid.passRate >= lexical.passRate ? "hybrid" : "hold",
+    uncertainty: "A small deterministic fixture establishes only the listed behaviors." };
+});
+
+function currentChecks(evaluation) {
+  return evaluation?.hybrid ?? evaluation?.topicLookup;
+}
+
+register("operations", "14 · Operate and recover", "Instrument the visible request, calculate canary burn rates from modeled events, and record a rollback decision.", ["serve", "evaluate"], ({ dependencies }) => {
+  const exampleWindow = { goal: 0.99, control: { attempts: 100, good: 99 }, canary: { attempts: 20, good: 16 } };
+  function rate({ attempts, good }) {
+    const failure = (attempts - good) / attempts;
+    return { attempts, good, success: good / attempts, burn: failure / (1 - exampleWindow.goal) };
+  }
+  const control = rate(exampleWindow.control);
+  const canary = rate(exampleWindow.canary);
+  return { currentRequest: { status: dependencies.serve.status, fallback: dependencies.serve.withFallback },
+    simulatedWindow: { control, canary }, gate: canary.burn > 2 || !currentChecks(dependencies.evaluate)?.criticalPass ? "Hold and restore stable" : "Continue limited rollout",
+    verifyRecovery: "Run a known query through the stable serving route and check both its source ID and status.",
+    costModel: { labeledAsEstimate: true, servedRequests: 120, costPerRequest: 0.002, total: 120 * 0.002 } };
+});
+
+register("enterprise", "15 · Map the enterprise boundary", "Compare replaceable capabilities and validate who owns identity, storage, model serving, telemetry and recovery.", [], () => {
+  const capabilities = [
+    { capability: "identity", owner: "Service access team", contract: "Tenant and role from trusted identity provider" },
+    { capability: "storage", owner: "Policy steward", contract: "Versioned source and retention policy" },
+    { capability: "serving", owner: "Platform team", contract: "Versioned response and safe fallback" },
+    { capability: "telemetry", owner: "Operations", contract: "Privacy-aware stage events" },
+    { capability: "recovery", owner: "On-call lead", contract: "Restore plus tenant-isolation smoke test" },
+  ];
+  const mappings = {
+    aws: ["IAM", "S3", "Bedrock or model endpoint", "CloudWatch", "Versioned backup and drill"],
+    azure: ["Entra ID", "Blob Storage", "Azure model deployment", "Azure Monitor", "Versioned backup and drill"],
+    googleCloud: ["Cloud IAM", "Cloud Storage", "Vertex AI endpoint", "Cloud Monitoring", "Versioned backup and drill"],
+  };
+  const compatible = Object.values(mappings).every((list) => list.length === capabilities.length);
+  return { capabilities, mappings, compatible, scope: "Illustrative capability map. No cloud services are contacted or provisioned." };
+});
+
+register("delivery", "16 · Decide what ships", "Combine the measured fixture evidence with a specification, an operator handoff and a human-owned release decision.", ["brief", "serve", "evaluate", "operations", "enterprise"], ({ dependencies }) => {
+  const release = currentChecks(dependencies.evaluate)?.criticalPass === true && dependencies.enterprise?.compatible === true;
+  return { owners: dependencies.brief.ownerFor, spec: dependencies.brief.acceptance,
+    releaseEvidenceReady: release, currentStatus: dependencies.serve.status, rollout: dependencies.operations?.gate ?? "Hold pending operations evidence",
+    decision: release ? "Runnable prototype. Stage and review before real use." : "Hold pending passing checks and architecture review.",
+    operatorPacket: ["Scope and owner", "Corpus and model versions", "Failure examples", "Manual intake and restore procedure"],
+    nextExperiment: "Use real, approved representative data to compare a staffed baseline, the scoped assistant and a human review queue." };
+});
+
+register("reason", "17 · Search the decision space", "Find the shortest allowed plan and compare what happens when a key observation is unavailable.", ["answer"], ({ input, dependencies }) => {
+  const graph = {
+    intake: ["evidence", "manual"],
+    evidence: ["verified"],
+    verified: ["done"],
+    manual: ["review", "evidence"],
+    review: ["done"],
+    done: [],
+  };
+  const evidence = dependencies.answer.status === "answered" && !input.outage;
+  const destination = "done";
+  const pending = [["intake"]];
+  const seen = new Set(["intake"]);
+  while (pending.length) {
+    const path = pending.shift();
+    const state = path.at(-1);
+    if (state === destination) return { plan: path, transitions: path.length - 1, examined: [...seen],
+      rule: "Evidence verification is unavailable on unsupported or degraded requests." };
+    for (const step of graph[state]) {
+      if (seen.has(step) || (step === "evidence" && !evidence)) continue;
+      seen.add(step);
+      pending.push([...path, step]);
+    }
+  }
+  return { plan: [], reason: "No allowed route" };
+});
+
+register("serving", "18 · Batch and cache conservatively", "Group synthetic requests and use a scoped cache key that separates role, date, corpus version, budget and retrieval configuration.", ["corpus"], ({ input, dependencies, evaluate }) => {
+  const cache = new Map();
+  const sameQuery = { ...input, approved: false };
+  const workload = [sameQuery, sameQuery, { ...sameQuery, role: input.role === "public" ? "staff" : "public" }];
+  function cached(request) {
+    const key = JSON.stringify([dependencies.corpus.schemaVersion, request.role, request.date,
+      request.question, request.ranking, request.budget, !!request.outage]);
+    if (cache.has(key)) return { cached: true, status: cache.get(key).status };
+    const result = evaluate(request, "serve");
+    cache.set(key, result);
+    return { cached: false, status: result.status };
+  }
+  const batches = [workload.slice(0, 2), workload.slice(2)];
+  return { batchSizes: batches.map((batch) => batch.length), outcomes: batches.flatMap((batch) => batch.map(cached)),
+    transfer: "Real service caches also key by tenant and source revision. This per-run cache never stores generated answers across workbook runs." };
+});
+
+register("governance", "19 · Audit permissions and release evidence", "Compare critical fixture results with deployment controls, record owners, and keep modeled evidence separate from production claims.", ["evaluate", "enterprise"], ({ dependencies }) => {
+  const authority = dependencies.enterprise?.capabilities.find(({ capability }) => capability === "identity");
+  const critical = currentChecks(dependencies.evaluate)?.results.filter((entry) => entry.critical) ?? [];
+  return { record: { version: "harborlink-prototype-1", accountableOwner: authority?.owner ?? "Unassigned pending architecture review",
+      protectedData: "No real rider data. All handbook entries and role selections are synthetic.",
+      decision: "Use only as a local prototype pending a real privacy, accessibility and reliability review." },
+    critical: critical.map(({ case: name, pass }) => ({ name, pass })),
+    consentAndAppeal: "A rider can ask a staffed desk to review a handoff or correct a policy reference.",
+    releaseRelevantEvidence: critical.length > 0 && critical.every(({ pass }) => pass) };
+});
+
+register("frontier", "20 · Test a frontier claim", "Ablate the semantic ranking signal on fixed requests and record where the proposed capability still needs real evidence.", ["evaluate", "modalities"], ({ dependencies }) => {
+  const { lexical, hybrid } = dependencies.evaluate ?? {};
+  const comparison = lexical && hybrid ? { compared: ["lexical", "hybrid"], sameCases: lexical.results.length,
+    netGain: hybrid.passRate - lexical.passRate,
+    changed: hybrid.results.filter(({ pass }, index) => pass !== lexical.results[index].pass).map((entry) => entry.case) } :
+    { compared: [], reason: "Open ranked retrieval and evaluation to run the ablation." };
+  return { ...comparison,
+    modalities: dependencies.modalities.observations.map(({ kind, extractedBy }) => ({ kind, extractedBy })),
+    followUp: "Measure on unseen, representative station and language slices. Image generation, audio recognition and computer-use require separately supplied adapters and validation." };
+});
+
+
+(() => {
+  const catalog = JSON.parse(document.querySelector("#curriculum-data").textContent);
+  const form = document.querySelector("#request-form");
+  const fields = form.elements;
+  const cellHost = document.querySelector("#cells");
+  const workOutput = new Map();
+  const sections = new Map();
+
+  function element(tag, text, className) {
+    const node = document.createElement(tag);
+    if (text !== undefined) node.textContent = text;
+    if (className) node.className = className;
+    return node;
+  }
+
+  const lessonCount = catalog.courses.reduce((sum, entry) => sum + entry.lessons.length, 0);
+  const counts = document.querySelector("#coverage-counts");
+  [cells.size + " runnable cells", lessonCount + " lectures mapped", catalog.knowledgeAreas.length + " knowledge areas"]
+    .forEach((item) => counts.append(element("span", item)));
+
+  const presets = {
+    current: ["What is the fare refund deadline?", "public", "2026-11-21", false],
+    historic: ["What is the fare refund deadline?", "public", "2026-03-01", false],
+    lift: ["Where is the elevator?", "public", "2026-11-21", false],
+    ledger: ["How do I submit a ledger reconciliation?", "public", "2026-11-21", false],
+    missing: ["What is the weather forecast?", "public", "2026-11-21", false],
+    audio: ["Where do I get lost property?", "public", "2026-11-21", false],
+    incident: ["What is the fare refund deadline?", "public", "2026-11-21", true],
+  };
+
+  function request() {
+    return {
+      question: fields.question.value.trim(),
+      role: fields.role.value,
+      date: fields.date.value,
+      ranking: fields.ranking.value,
+      budget: fields.budget.valueAsNumber,
+      approved: fields.approved.checked,
+      outage: fields.outage.checked,
+    };
+  }
+
+  function inspect(value) {
+    return JSON.stringify(value, (key, item) => typeof item === "function" ? "[function " + (item.name || key) + "]" :
+      typeof item === "number" && Number.isFinite(item) ? Number(item.toFixed(6)) : item, 2);
+  }
+
+  function detailsBlock(label) {
+    const section = element("details");
+    section.append(element("summary", label));
+    return section;
+  }
+
+  function writeResponse(result, evaluated) {
+    document.querySelector("#response-status").textContent = result.status === "answered" ? "Grounded answer" : "Staff handoff";
+    document.querySelector("#response-text").textContent = result.text;
+    const meta = document.querySelector("#response-facts");
+    meta.replaceChildren();
+    function row(label, value) { meta.append(element("dt", label), element("dd", value)); }
+    row("Next step", result.next);
+    if (result.review) row("Review state", result.review);
+    result.citations.forEach((citation) => row("Evidence",
+      citation.id + " · " + citation.source + " · " + citation.kind + " · effective " + citation.effective));
+    if (evaluated) {
+      const checks = currentChecks(evaluated);
+      const hits = checks.results.filter(({ pass }) => pass).length;
+      row(evaluated.hybrid ? "Fixed hybrid checks" : "Fixed topic lookup checks", hits + " / " + checks.results.length);
+    }
+  }
+
+  function openModules() {
+    return [...sections].filter(([, section]) => section.open).map(([id]) => id);
+  }
+
+  function showRun(scope, evaluateOpen = false) {
+    const result = scope.run("serve");
+    writeResponse(result, evaluateOpen ? scope.run("evaluate") : null);
+    const meta = document.querySelector("#response-facts");
+    meta.append(element("dt", "Retrieval in use"), element("dd", sections.get("retrieve").open ? fields.ranking.value : "Built-in topic lookup"));
+  }
+
+  function executeAll() {
+    if (!form.reportValidity()) return;
+    const active = openModules();
+    const scope = createRun(request(), active);
+    const status = document.querySelector("#run-status");
+    let passed = 0;
+    for (const id of active) {
+      const output = workOutput.get(id);
+      try {
+        output.textContent = inspect(scope.run(id));
+        passed += 1;
+      } catch (error) {
+        output.textContent = "Cell error: " + error.message;
+      }
+    }
+    try {
+      showRun(scope, active.includes("evaluate"));
+    } catch (error) {
+      status.textContent = error.message;
+      return;
+    }
+    status.textContent = active.length ? passed + " / " + active.length + " open cells ran for the current request." : "The built-in service ran. All modules are closed.";
+  }
+
+  function executeSolution() {
+    if (!form.reportValidity()) return;
+    const status = document.querySelector("#run-status");
+    try {
+      showRun(createRun(request(), openModules()));
+      status.textContent = "Solution ran for the current request.";
+    } catch (error) {
+      status.textContent = "Solution error: " + error.message;
+    }
+  }
+
+  for (const [id, descriptor] of cells) {
+    const section = detailsBlock(descriptor.title);
+    section.id = "cell-" + id;
+    const body = element("div", undefined, "cell-body");
+    body.append(element("p", descriptor.description));
+    if (descriptor.requires.length) {
+      const line = element("p", "Module inputs when available · ", "dependencies");
+      descriptor.requires.forEach((dependency, index) => {
+        if (index > 0) line.append(", ");
+        const anchor = element("a", cells.get(dependency).title.split(" · ")[1]);
+        anchor.href = "#cell-" + dependency;
+        line.append(anchor);
+      });
+      body.append(line);
+    }
+    const source = element("pre");
+    source.append(element("code", descriptor.run.toString()));
+    source.setAttribute("tabindex", "0");
+    const runButton = element("button", "Run cell");
+    runButton.type = "button";
+    runButton.setAttribute("aria-label", "Run cell — " + descriptor.title);
+    const output = element("pre", "Run this cell to see its output.", "output");
+    output.setAttribute("tabindex", "0");
+    output.setAttribute("aria-label", "Cell output");
+    output.setAttribute("role", "status");
+    runButton.addEventListener("click", () => {
+      if (!form.reportValidity()) return;
+      try {
+        output.textContent = inspect(createRun(request(), openModules()).run(id));
+      } catch (error) {
+        output.textContent = "Cell error: " + error.message;
+      }
+    });
+    workOutput.set(id, output);
+    sections.set(id, section);
+    body.append(source, runButton, output);
+    section.append(body);
+    cellHost.append(section);
+  }
+
+  let lastSelection;
+  let updateQueued = false;
+  function refreshModules() {
+    const active = openModules();
+    const selection = active.join(",");
+    if (selection === lastSelection) return;
+    lastSelection = selection;
+    fields.ranking.disabled = !active.includes("retrieve");
+    fields.approved.disabled = !active.includes("workflow");
+    document.querySelector("#module-status").textContent = active.length + " of " + cells.size + " modules enabled.";
+    for (const [id, output] of workOutput) {
+      output.textContent = sections.get(id).open ? "Run this cell with the current modules." : "Module closed.";
+    }
+    executeSolution();
+  }
+
+  for (const section of sections.values()) section.addEventListener("toggle", () => {
+    if (updateQueued) return;
+    updateQueued = true;
+    requestAnimationFrame(() => { updateQueued = false; refreshModules(); });
+  });
+
+  const catalogHost = document.querySelector("#catalog");
+  const filterables = [];
+  function appendGroup(title, entries) {
+    const section = detailsBlock(title + " · " + entries.length);
+    const list = element("ul", undefined, "catalog-list");
+    const items = entries.map((entry) => {
+      const item = element("li");
+      if (entry.cell) {
+        const anchor = element("a", entry.title);
+        anchor.href = "#cell-" + entry.cell;
+        item.append(anchor);
+      } else {
+        item.append(element("strong", entry.title));
+      }
+      if (entry.description) item.append(element("span", " — " + entry.description));
+      if (entry.topics?.length) item.append(element("span", " (" + entry.topics.join(", ") + ")"));
+      list.append(item);
+      return item;
+    });
+    section.append(list);
+    catalogHost.append(section);
+    filterables.push({ section, items, title: title.toLowerCase() });
+  }
+
+  appendGroup("Knowledge areas", catalog.knowledgeAreas);
+  for (const course of catalog.courses) appendGroup(course.title, course.lessons);
+  for (const [title, entries] of Object.entries(catalog.references)) appendGroup(title, entries);
+  document.querySelector("#find-topic").addEventListener("input", (event) => {
+    const query = event.target.value.trim().toLowerCase();
+    let matches = 0;
+    for (const { section, items, title } of filterables) {
+      let visible = false;
+      for (const item of items) {
+        item.hidden = Boolean(query && !title.includes(query) && !item.textContent.toLowerCase().includes(query));
+        visible ||= !item.hidden;
+        if (!item.hidden) matches += 1;
+      }
+      section.hidden = !visible;
+      if (query && visible) section.open = true;
+    }
+    document.querySelector("#match-status").textContent = query ? matches + (matches === 1 ? " match" : " matches") : "";
+  });
+
+  function revealHash() {
+    const target = /^#cell-[a-z]+$/.test(location.hash) && document.getElementById(location.hash.slice(1));
+    if (target) target.open = true;
+  }
+
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest("a[href^='#cell-']");
+    if (link) {
+      const target = document.getElementById(link.hash.slice(1));
+      if (target) target.open = true;
+    }
+  });
+  window.addEventListener("hashchange", revealHash);
+  revealHash();
+  function setAll(open) {
+    for (const section of sections.values()) section.open = open;
+    refreshModules();
+  }
+  document.querySelector("#expand-cells").onclick = () => setAll(true);
+  document.querySelector("#collapse-cells").onclick = () => setAll(false);
+  document.querySelector("#run-all").onclick = executeAll;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    executeSolution();
+  });
+  fields.scenario.addEventListener("change", () => {
+    const [question, role, date, outage] = presets[fields.scenario.value];
+    fields.question.value = question;
+    fields.role.value = role;
+    fields.date.value = date;
+    fields.outage.checked = outage;
+    fields.approved.checked = false;
+    fields.ranking.value = "hybrid";
+    fields.budget.value = "80";
+    executeSolution();
+  });
+  refreshModules();
+})();
+</script>
+</body>
+</html>

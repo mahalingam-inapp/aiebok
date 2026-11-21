@@ -10,11 +10,13 @@ Python, basic linear algebra, and held-out evaluation. Start with Machine Learni
 
 ## Course sequence
 
-1. [Machine Learning Systems](../../books/02-machine-learning-systems/index.md)
-2. [Transformers and Foundation Models](../../books/04-transformers-and-foundation-models/index.md)
-3. [Training, Serving, and AI Operations](../../books/11-training-serving-and-ai-operations/index.md)
-4. [Model Selection and Adaptation Lab](../../courses/model-selection-and-adaptation/index.md)
-5. [LLM Adaptation and Inference Lab](../../courses/llm-adaptation-inference/index.md)
+[Start this path](../../books/02-machine-learning-systems/index.md){ .md-button .md-button--primary .study-path-course }
+
+1. [Machine Learning Systems](../../books/02-machine-learning-systems/index.md){ .study-path-course }
+2. [Transformers and Foundation Models](../../books/04-transformers-and-foundation-models/index.md){ .study-path-course }
+3. [Training, Serving, and AI Operations](../../books/11-training-serving-and-ai-operations/index.md){ .study-path-course }
+4. [Model Selection and Adaptation Lab](../../courses/model-selection-and-adaptation/index.md){ .study-path-course }
+5. [LLM Adaptation and Inference Lab](../../courses/llm-adaptation-inference/index.md){ .study-path-course }
 
 ## Study pace
 

@@ -22,7 +22,7 @@ Start with **AI for Everyone** or **AI for Managers and Product Leaders** if you
 - 25 architecture studios
 - 13 build guides · 26 cloud capability guides
 - 83 labs (78 chapter + 5 starter) · 13 code samples
-- approximately 404,000 words of deployable learning content in `docs/`
+- approximately 436,000 words of deployable learning content in `docs/`
 <!-- site-stats:publication:end -->
 
 ## Explore the curriculum

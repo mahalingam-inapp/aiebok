@@ -1,6 +1,26 @@
 # 2.5 — Evaluation and Error Analysis
 
-[Course overview](index.md) · Evidence and lifecycle · Lecture 5 of 6
+<p class="study-position" data-course="02-machine-learning-systems" data-lecture="05-evaluation-and-error-analysis.md">Evidence and lifecycle · Lecture 5 of 6</p>
+
+[← Neural Networks](04-neural-networks.md) · [Course outline](index.md#course-outline){ .study-overview } · [The ML Lifecycle →](06-the-ml-lifecycle.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Problem framing and supervised models**
+
+    - [Problems, Data, and Baselines](01-problems-data-and-baselines.md)
+    - [Supervised Learning](02-supervised-learning.md)
+
+    **Representations and neural networks**
+
+    - [Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md)
+    - [Neural Networks](04-neural-networks.md)
+
+    **Evidence and lifecycle**
+
+    - **Evaluation and Error Analysis** (current)
+    - [The ML Lifecycle](06-the-ml-lifecycle.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Basic Python
 - Graphs and averages
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Choose metrics from the decision context, estimate uncertainty, inspect slices, and turn mistakes into the next experiment.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Ninety per cent overall is a poor handoff
+
+The pilot routes 90 of 100 tickets correctly. The mobile slice contributes 8 of the 10 failures even though it contributes only 20 tickets. Daniel cannot tell whether the issue is short text or an old adapter.
+
+Report per-slice denominators and inspect the serialized request reaching the model. Fix a contract if the text was lost. If it arrived intact, compare error types and availability of supporting fields before adding model complexity.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Train"] --> N3["Evaluate slices"]
   N3["Evaluate slices"] --> N4["Operate"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **evaluation and error analysis** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Loss should decline while the learned line approaches the data-generating relationship y = 2x + 1.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **confusion matrix** and **precision and recall**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -234,8 +252,7 @@ Choose metrics from the decision context, estimate uncertainty, inspect slices, 
 - Hastie, Tibshirani & Friedman — The Elements of Statistical Learning
 - Mitchell — Machine Learning
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Neural Networks](04-neural-networks.md) · [Course outline](index.md) · [The ML Lifecycle →](06-the-ml-lifecycle.md)
+[← Neural Networks](04-neural-networks.md) · [Course outline](index.md#course-outline){ .study-overview } · [The ML Lifecycle →](06-the-ml-lifecycle.md)
+{: .study-directions .study-directions--footer }

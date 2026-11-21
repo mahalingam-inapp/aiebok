@@ -10,10 +10,12 @@ Start here with basic AI literacy, or complete AI Literacy first.
 
 ## Course sequence
 
-1. [AI Literacy](../../courses/ai-literacy/index.md)
-2. [AI Product Decisions](../../courses/ai-product-decisions/index.md)
-3. [Evaluating AI in Practice](../../courses/evaluating-ai-in-practice/index.md)
-4. [Managing AI Delivery](../../courses/managing-ai-delivery/index.md)
+[Start this path](../../courses/ai-literacy/index.md){ .md-button .md-button--primary .study-path-course }
+
+1. [AI Literacy](../../courses/ai-literacy/index.md){ .study-path-course }
+2. [AI Product Decisions](../../courses/ai-product-decisions/index.md){ .study-path-course }
+3. [Evaluating AI in Practice](../../courses/evaluating-ai-in-practice/index.md){ .study-path-course }
+4. [Managing AI Delivery](../../courses/managing-ai-delivery/index.md){ .study-path-course }
 
 ## Study pace
 

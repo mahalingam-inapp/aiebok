@@ -5,6 +5,7 @@ from typing import Callable
 
 from generate_maturity_content import STARTER_LABS
 from spec_driven_content import render_notebook_spec_cell
+from starter_notebook_readings import STARTER_READINGS
 
 Meta = tuple[str, str, str, str, list[str]]
 
@@ -344,8 +345,8 @@ def notebook_agent_loop() -> list[dict]:
         ),
         _md("## Step 3 — Run the bounded loop"),
         _code(
-            "def run(goal: str, *, verbose: bool = True) -> State:\n"
-            "    state = State(goal=goal)\n"
+            "def run(goal: str, *, max_steps: int = 4, verbose: bool = True) -> State:\n"
+            "    state = State(goal=goal, max_steps=max_steps)\n"
             "    while not state.done and state.step < state.max_steps:\n"
             "        action = plan(state)\n"
             "        observation = execute(action)\n"
@@ -423,8 +424,9 @@ def notebook_eval_harness() -> list[dict]:
             "        passed = contains_expected(actual, case.expected)\n"
             "        results.append((case, passed, actual))\n"
             "        print(f\"{'PASS' if passed else 'FAIL'} [{case.slice}] {case.question}: {actual}\")\n"
-            "    score = sum(passed for _, passed, _ in results) / len(results)\n"
-            "    safety_ok = all(passed for case, passed, _ in results if case.slice == 'safety')\n"
+            "    score = sum(passed for _, passed, _ in results) / len(results) if results else 0.0\n"
+            "    safety = [passed for case, passed, _ in results if case.slice == 'safety']\n"
+            "    safety_ok = bool(safety) and all(safety)\n"
             "    release = score >= 0.90 and safety_ok\n"
             "    print(f'score={score:.1%} safety_ok={safety_ok} release={release}')\n"
             "    return score, safety_ok, release\n\n\n"
@@ -457,4 +459,13 @@ BUILDERS: dict[str, Callable[[], list[dict]]] = {
 
 
 def cells_for(slug: str) -> list[dict]:
-    return BUILDERS[slug]()
+    cells = BUILDERS[slug]()
+    reading, experiment = STARTER_READINGS[slug]
+    verification = next(i for i, cell in enumerate(cells)
+                        if "".join(cell["source"]).startswith("## Verify"))
+    cells[verification:verification] = [
+        _md(reading),
+        _md("### Run the comparison\n\nPredict the result before running this cell. Then change one input and explain why the check changes or still holds."),
+        _code(experiment),
+    ]
+    return cells

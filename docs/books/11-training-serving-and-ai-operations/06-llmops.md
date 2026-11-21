@@ -1,6 +1,26 @@
 # 11.6 — LLMOps
 
-[Course overview](index.md) · Deployment and operations · Lecture 6 of 6
+<p class="study-position" data-course="11-training-serving-and-ai-operations" data-lecture="06-llmops.md">Deployment and operations · Lecture 6 of 6</p>
+
+[← Deployment and Routing](05-deployment-and-routing.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Model adaptation and post-training**
+
+    - [Choosing Adaptation](01-choosing-adaptation.md)
+    - [Post-Training Methods](02-post-training-methods.md)
+
+    **Datasets and inference infrastructure**
+
+    - [Dataset Engineering](03-dataset-engineering.md)
+    - [Inference Infrastructure](04-inference-infrastructure.md)
+
+    **Deployment and operations**
+
+    - [Deployment and Routing](05-deployment-and-routing.md)
+    - **LLMOps** (current)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Containers and APIs
 - Performance measurement
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Version prompts, models, data, and evals; trace requests; monitor quality and cost; canary, roll back, and respond to incidents.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Ask where the regression entered the pipeline
+
+Operations sees fewer correct citations after a release. The checkpoints, quantization, and document index were all updated together.
+
+Record all relevant versions and change them separately where possible. Compare slices and retrieve-stage evidence before restoring the right artifact or rerouting to the prior configuration.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Serve"] --> N3["Trace"]
   N3["Trace"] --> N4["Canary or rollback"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **llmops** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Low-risk simple work routes to the cheaper model; high-risk work routes to the higher-quality model.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **tracing** and **versioning**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Version prompts, models, data, and evals; trace requests; monitor quality and co
 - Ouyang et al. — InstructGPT
 - Official inference-server documentation
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Deployment and Routing](05-deployment-and-routing.md) · [Course outline](index.md) · [Course project →](index.md#course-project)
+[← Deployment and Routing](05-deployment-and-routing.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions .study-directions--footer }

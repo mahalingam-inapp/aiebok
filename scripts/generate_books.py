@@ -19,8 +19,10 @@ from chapter_enrichments import (
 )
 from concept_library import render_core_concepts
 from course_catalog import TECHNICAL_COURSES
+from lecture_cases import CASES, course_case_intro, lecture_case
 from learning_cards import render_book_catalog_cards, render_book_cluster_cards
 from spec_driven_content import render_chapter_spec_section
+from study_navigation import directions, lecture_outline, lecture_progress, outline_link, start_course
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOKS_DIR = ROOT / "docs" / "books"
@@ -301,6 +303,7 @@ EXPECTED_OBSERVATIONS = [
 
 def render_chapter(book_no: int, chapter_no: int, book: dict, chapter: tuple) -> str:
     title, summary, topics, practice, principle = chapter
+    moment = lecture_case(book_no, chapter_no)
     core = render_core_concepts(topics, summary)
     objectives = learning_objectives(title, topics, summary)
     practice_block = engineering_practice(practice, topics, title)
@@ -325,17 +328,13 @@ def render_chapter(book_no: int, chapter_no: int, book: dict, chapter: tuple) ->
     course = TECHNICAL_COURSES[book_no - 1]
     section = (chapter_no - 1) // 2
     notebook = f"../../assets/notebooks/{course_slug(book_no, book['title'])}.ipynb"
-    previous = (
-        f"[← {book['chapters'][chapter_no - 2][0]}]"
-        f"({chapter_filename(chapter_no - 1, book['chapters'][chapter_no - 2][0])})"
-        if chapter_no > 1 else ""
-    )
-    following = (
-        f"[{book['chapters'][chapter_no][0]} →]"
-        f"({chapter_filename(chapter_no + 1, book['chapters'][chapter_no][0])})"
-        if chapter_no < len(book["chapters"]) else "[Course project →](index.md#course-project)"
-    )
-    navigation = " · ".join(item for item in (previous, "[Course outline](index.md)", following) if item)
+    slug_name = course_slug(book_no, book["title"])
+    titles = [(chapter[0], chapter_filename(i, chapter[0])) for i, chapter in enumerate(book["chapters"], 1)]
+    filename = titles[chapter_no - 1][1]
+    progress = lecture_progress(slug_name, filename, course.sections[section], chapter_no, len(titles))
+    navigation = directions(titles, chapter_no)
+    groups = [(heading, titles[i * 2:i * 2 + 2]) for i, heading in enumerate(course.sections)]
+    jump = lecture_outline(groups, filename)
     applied = ""
     if course.applied and course.applied.lecture == chapter_no:
         exercise = course.applied
@@ -345,7 +344,11 @@ def render_chapter(book_no: int, chapter_no: int, book: dict, chapter: tuple) ->
         )
     return f"""# {book_no}.{chapter_no} — {title}
 
-[Course overview](index.md) · {course.sections[section]} · Lecture {chapter_no} of {len(book["chapters"])}
+{progress}
+
+{navigation}
+
+{jump}
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -355,13 +358,11 @@ def render_chapter(book_no: int, chapter_no: int, book: dict, chapter: tuple) ->
 
 {prerequisite_lines}
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 {summary}
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+{moment}
 
 ## Learning objectives
 
@@ -376,8 +377,6 @@ The engineering objective is not to memorize vocabulary. By the end, you should 
 flowchart LR
 {diagram}
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **{title.lower()}** changes one or more transitions.
 
 ## Core concepts
 
@@ -401,8 +400,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     {expected}
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **{topics[0]}** and **{topics[1]}**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -450,11 +447,9 @@ Use the example above to make a prediction and compare it with the expected obse
 
 {reading_lines}
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-{navigation}
+{directions(titles, chapter_no, footer=True)}
 """
 
 
@@ -466,7 +461,7 @@ def render_book_index(book_no: int, book: dict, chapter_files: list[tuple[str, s
     for index, (section, check) in enumerate(zip(course.sections, course.checks, strict=True)):
         start = index * 2
         lectures = "\n".join(
-            f"- [{number:02d} · {title}]({filename})"
+            f"- {outline_link(f'{number:02d} · {title}', filename)}"
             for number, (title, filename) in enumerate(chapter_files[start:start + 2], start + 1)
         )
         sections.append(f"### {section}\n\n{lectures}\n\n**Checkpoint**\n\n{check}")
@@ -482,8 +477,10 @@ Technical course {book_no:02d} · 3 sections · {len(chapter_files)} lectures ·
 
 {book['goal']}
 
-[Start the first lecture]({chapter_files[0][1]}){{ .md-button .md-button--primary }}
+{start_course(course_slug(book_no, book["title"]), chapter_files[0][1])}
 [Download the course notebook]({notebook}){{ .md-button download }}
+
+{course_case_intro(CASES[book_no])}
 
 ## Entry prerequisites
 
@@ -539,6 +536,8 @@ def main() -> None:
         raise ValueError("Each technical course must map to one six-lecture book.")
     BOOKS_DIR.mkdir(parents=True, exist_ok=True)
     for book_no, book in enumerate(BOOKS, 1):
+        if len(CASES[book_no].moments) != len(book["chapters"]):
+            raise ValueError(f"Practice case must cover every lecture in {book['title']}")
         directory = BOOKS_DIR / course_slug(book_no, book["title"])
         directory.mkdir(parents=True, exist_ok=True)
         chapter_files = []

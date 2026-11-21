@@ -26,4 +26,4 @@ Choose a core path for your role or a specialist path for a specific project. Ea
 | [LLM Adaptation & Inference Engineer](llm-adaptation-inference-engineer.md) | Advanced specialist · models | ML engineers selecting and adapting models and measuring serving trade-offs. |
 | [AI Reliability & Release Engineer](ai-reliability-release-engineer.md) | Advanced specialist · operations | Platform, ML operations, and reliability engineers operating model-backed features. |
 
-[See the coverage review and external benchmarks](../../editorial/learning-path-coverage.md).
+[Learning path coverage](../../editorial/learning-path-coverage.md) · [Textbook content audit](../../editorial/textbook-audit.md)

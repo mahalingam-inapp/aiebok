@@ -4,7 +4,15 @@ Project practicum · 2 sections · 4 lectures · 3–4 hours, plus the project
 
 Build a local review workflow with typed tool access, approvals, durable state, and replay-safe execution.
 
-[Start the first lecture](01-discover-and-call-a-local-mcp-tool.md){ .md-button .md-button--primary }
+[Start the first lecture](01-discover-and-call-a-local-mcp-tool.md){ .md-button .md-button--primary .study-start data-course="durable-agent-tool-runtime" }
+
+## Practice case · The reviewer approves after the worker goes home
+
+Jo coordinates public meeting agendas. A local tool can retrieve the outline, and a separate step records an approved note. Review can take hours. Jo needs the draft to survive a restart and wants a replay to be visible without creating another copy.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [Why GitHub paused queued work](../../casebook/paused-jobs.md).
 
 ## Entry prerequisites
 
@@ -14,13 +22,13 @@ Python, JSON, and the foundations of tool calling and agent state.
 
 ### Connect and constrain
 
-- [01 · Discover and call a local MCP tool](01-discover-and-call-a-local-mcp-tool.md) — Trace the MCP initialization, tool discovery, and tool invocation over stdio.
-- [02 · Tool authorization and argument validation](02-tool-authorization-and-argument-validation.md) — Validate caller scope and arguments before dispatching a tool.
+- [01 · Discover and call a local MCP tool](01-discover-and-call-a-local-mcp-tool.md){ .study-lecture data-lecture="01-discover-and-call-a-local-mcp-tool.md" } — Trace the MCP initialization, tool discovery, and tool invocation over stdio.
+- [02 · Tool authorization and argument validation](02-tool-authorization-and-argument-validation.md){ .study-lecture data-lecture="02-tool-authorization-and-argument-validation.md" } — Validate caller scope and arguments before dispatching a tool.
 
 ### Pause, recover and replay
 
-- [03 · Persistent approval and checkpoint recovery](03-persistent-approval-and-checkpoint-recovery.md) — Persist a proposal and its approval against a payload fingerprint, then reopen the runtime.
-- [04 · Idempotent execution and decision traces](04-idempotent-execution-and-decision-traces.md) — Commit a local effect exactly once across retries and distinguish external effects.
+- [03 · Persistent approval and checkpoint recovery](03-persistent-approval-and-checkpoint-recovery.md){ .study-lecture data-lecture="03-persistent-approval-and-checkpoint-recovery.md" } — Persist a proposal and its approval against a payload fingerprint, then reopen the runtime.
+- [04 · Idempotent execution and decision traces](04-idempotent-execution-and-decision-traces.md){ .study-lecture data-lecture="04-idempotent-execution-and-decision-traces.md" } — Commit a local effect exactly once across retries and distinguish external effects.
 
 ## Workbook
 
@@ -38,5 +46,6 @@ Capture a tool discovery transcript, a denied tool call, a human approval, and a
 
 - [Donner’s Agents course repositories and framework labs](https://github.com/ed-donner/agents)
 - [Donner’s UnderCover durable workflow examples](https://github.com/ed-donner/undercover)
+- [UnderCover claims harness practicum](../../guides/undercover-harness.md)
 
 [All courses](../index.md) · [Learning paths](../../getting-started/learning-paths/index.md)

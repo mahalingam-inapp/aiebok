@@ -1,0 +1,34 @@
+.md-typeset .study-position {
+  margin-block: 0.75rem 0.45rem;
+  font-size: 0.78rem;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .study-directions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.5rem;
+  margin-block: 0.45rem 1rem;
+  font-size: 0.8rem;
+}
+
+.md-typeset .study-directions--footer {
+  padding-block: 0.75rem;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.md-typeset .study-directions a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.md-typeset .study-resume {
+  margin-inline-start: 0.4rem;
+  margin-block: 0.25rem;
+}
+
+.md-typeset .study-path-return {
+  margin-block: 0.75rem;
+  font-size: 0.78rem;
+}

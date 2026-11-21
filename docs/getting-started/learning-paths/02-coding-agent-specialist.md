@@ -10,12 +10,14 @@ Python, testing, Git, and familiarity with model inference and retrieval, or fin
 
 ## Course sequence
 
-1. [Prompt and Context Engineering](../../books/05-prompt-and-context-engineering/index.md)
-2. [Reasoning and Tool Use](../../books/07-reasoning-and-tool-use/index.md)
-3. [Agent Systems](../../books/08-agent-systems/index.md)
-4. [AI Software and Product Engineering](../../books/09-ai-software-and-product-engineering/index.md)
-5. [Evaluation, Safety, and Governance](../../books/10-evaluation-safety-and-governance/index.md)
-6. [Supervised Coding-Agent Harnesses](../../courses/supervised-coding-harness/index.md)
+[Start this path](../../books/05-prompt-and-context-engineering/index.md){ .md-button .md-button--primary .study-path-course }
+
+1. [Prompt and Context Engineering](../../books/05-prompt-and-context-engineering/index.md){ .study-path-course }
+2. [Reasoning and Tool Use](../../books/07-reasoning-and-tool-use/index.md){ .study-path-course }
+3. [Agent Systems](../../books/08-agent-systems/index.md){ .study-path-course }
+4. [AI Software and Product Engineering](../../books/09-ai-software-and-product-engineering/index.md){ .study-path-course }
+5. [Evaluation, Safety, and Governance](../../books/10-evaluation-safety-and-governance/index.md){ .study-path-course }
+6. [Supervised Coding-Agent Harnesses](../../courses/supervised-coding-harness/index.md){ .study-path-course }
 
 ## Study pace
 

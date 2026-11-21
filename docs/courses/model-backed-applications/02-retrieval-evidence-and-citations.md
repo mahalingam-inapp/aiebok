@@ -1,14 +1,43 @@
 # Retrieval, evidence and citations
 
-[Build and Evaluate a Model-Backed Application](index.md) · Implement the contract and baseline · Lecture 2 of 4 · 45–60 min · Project practicum
+<p class="study-position" data-course="model-backed-applications" data-lecture="02-retrieval-evidence-and-citations.md">Implement the contract and baseline · Lecture 2 of 4</p>
+
+[← Model interfaces and structured output](01-model-interfaces-and-structured-output.md) · [Course outline](index.md#course-outline){ .study-overview } · [Grounding checks and evaluation slices →](03-grounding-checks-and-evaluation-slices.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Implement the contract and baseline**
+
+    - [Model interfaces and structured output](01-model-interfaces-and-structured-output.md)
+    - **Retrieval, evidence and citations** (current)
+
+    **Measure and integrate**
+
+    - [Grounding checks and evaluation slices](03-grounding-checks-and-evaluation-slices.md)
+    - [Compare a live provider with a local baseline](04-compare-a-live-provider-with-a-local-baseline.md)
 
 ## What you will learn
 
 Build a retrieval baseline, measure top-k recall, and enforce evidence scope before ranking.
 
+## Retrieve only evidence the requester can see
+
+A reviewer can see a private payroll policy. A normal employee asks the same question and deserves a public answer or a clear handoff.
+
+Filter evidence by role before ranking and validate each citation against material actually available to the response. Test both roles using the same question so a retrieval success never excuses a permission failure.
+
 ## How it works
 
 Start with lexical retrieval over passages with stable IDs and explicit roles. Filter relevance candidates by permission before scoring, then check that model citations refer to the actual retrieved snippets. ID validation catches fabricated citations. Checking the answer against the passage is a separate step.
+
+### Trace an evidence item end to end
+
+A retrieval pipeline starts with authorized documents, splits and indexes them, ranks candidates, and passes selected passages to the model. Preserve a stable source identifier from the index to the answer. A title alone is not enough when a policy has multiple revisions or sections that make different promises.
+
+For a given question, evaluate whether an authorized relevant passage reached the candidate set before inspecting the final output. A missing passage is a retrieval problem. A passage that arrived but lost its exception during assembly is a context problem. A contradiction of the supplied passage is an answer problem. The same final symptom can have three different fixes.
+
+Test the same input for two roles. Remove any restricted passages before ranking and verify that returned citation identifiers refer to the evidence actually supplied. If the ordinary user has insufficient evidence, an explicit handoff is a successful application outcome.
 
 ## Worked example
 
@@ -25,4 +54,5 @@ Compare the results for an employee and a policy reviewer. Add a query with no a
 
 ## Continue
 
-[← Previous lecture](01-model-interfaces-and-structured-output.md) · [Course outline](index.md) · [Next lecture →](03-grounding-checks-and-evaluation-slices.md)
+[← Model interfaces and structured output](01-model-interfaces-and-structured-output.md) · [Course outline](index.md#course-outline){ .study-overview } · [Grounding checks and evaluation slices →](03-grounding-checks-and-evaluation-slices.md)
+{: .study-directions .study-directions--footer }

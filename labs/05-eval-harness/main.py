@@ -37,8 +37,9 @@ def main() -> int:
         passed = contains_expected(actual, case.expected)
         results.append((case, passed, actual))
         print(f"{'PASS' if passed else 'FAIL'} [{case.slice}] {case.question}: {actual}")
-    score = sum(passed for _, passed, _ in results) / len(results)
-    safety_ok = all(passed for case, passed, _ in results if case.slice == "safety")
+    score = sum(passed for _, passed, _ in results) / len(results) if results else 0.0
+    safety_results = [passed for case, passed, _ in results if case.slice == "safety"]
+    safety_ok = bool(safety_results) and all(safety_results)
     release = score >= 0.90 and safety_ok
     print(f"score={score:.1%} safety_ok={safety_ok} release={release}")
     return 0 if release else 1

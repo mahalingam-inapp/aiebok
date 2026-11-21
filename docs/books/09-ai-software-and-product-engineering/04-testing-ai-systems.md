@@ -1,6 +1,26 @@
 # 9.4 — Testing AI Systems
 
-[Course overview](index.md) · Development and testing · Lecture 4 of 6
+<p class="study-position" data-course="09-ai-software-and-product-engineering" data-lecture="04-testing-ai-systems.md">Development and testing · Lecture 4 of 6</p>
+
+[← AI-Native Development Workflow](03-ai-native-development-workflow.md) · [Course outline](index.md#course-outline){ .study-overview } · [Human-Centered AI UX →](05-human-centered-ai-ux.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Discovery and specifications**
+
+    - [Discovering the Right Problem](01-discovering-the-right-problem.md)
+    - [Specification-Driven Development](02-specification-driven-development.md)
+
+    **Development and testing**
+
+    - [AI-Native Development Workflow](03-ai-native-development-workflow.md)
+    - **Testing AI Systems** (current)
+
+    **Experience and value**
+
+    - [Human-Centered AI UX](05-human-centered-ai-ux.md)
+    - [Experiments, Adoption, and Value](06-experiments-adoption-and-value.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Software testing
 - Product discovery basics
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Combine unit, contract, integration, scenario, regression, adversarial, and human tests across deterministic and probabilistic components.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A passing example can leave a critical gap
+
+The output shape is correct and happy-path tests pass. The assistant silently approves a duplicate shift swap on a retry.
+
+Add a replay case and assert the business effect count. Keep fixture inputs and workflow versions fixed when comparing changes. Test that the race or retry does not simply disappear from logs.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Implementation"] --> N3["Evaluation"]
   N3["Evaluation"] --> N4["Release evidence"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **testing ai systems** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Both executable acceptance examples pass; changing the abstention behavior should fail the second case.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **unit tests** and **contract tests**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -234,8 +252,7 @@ Combine unit, contract, integration, scenario, regression, adversarial, and huma
 - Repository contribution and test documentation
 - Architecture Decision Record guidance and product experiment literature
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← AI-Native Development Workflow](03-ai-native-development-workflow.md) · [Course outline](index.md) · [Human-Centered AI UX →](05-human-centered-ai-ux.md)
+[← AI-Native Development Workflow](03-ai-native-development-workflow.md) · [Course outline](index.md#course-outline){ .study-overview } · [Human-Centered AI UX →](05-human-centered-ai-ux.md)
+{: .study-directions .study-directions--footer }

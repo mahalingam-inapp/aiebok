@@ -1,6 +1,26 @@
 # 13.1 — Vision and Document Intelligence
 
-[Course overview](index.md) · Documents, vision, and audio · Lecture 1 of 6
+<p class="study-position" data-course="13-multimodal-and-frontier-systems" data-lecture="01-vision-and-document-intelligence.md">Documents, vision, and audio · Lecture 1 of 6</p>
+
+[Course outline](index.md#course-outline){ .study-overview } · [Speech and Audio →](02-speech-and-audio.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Documents, vision, and audio**
+
+    - **Vision and Document Intelligence** (current)
+    - [Speech and Audio](02-speech-and-audio.md)
+
+    **Generative media and bounded action**
+
+    - [Image and Video Generation](03-image-and-video-generation.md)
+    - [Computer Use and Embodied Action](04-computer-use-and-embodied-action.md)
+
+    **Emerging systems and evidence**
+
+    - [Long Context, World Models, and Continual Learning](05-long-context-world-models-and-continual-learning.md)
+    - [How to Track the Frontier](06-how-to-track-the-frontier.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Evidence-oriented research reading
 - Risk awareness
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Understand image representations, vision-language models, OCR, layout, tables, charts, spatial relationships, and provenance.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Two lines can become one wrong record
+
+A faded form places a name above its address. The vision system reads the lines correctly but attaches the address to the neighboring record.
+
+Evaluate field extraction and record association separately. Preserve page and region references so reviewers can inspect low-confidence mappings rather than only correcting text.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Fusion or action"] --> N3["Provenance"]
   N3["Provenance"] --> N4["Evaluation"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **vision and document intelligence** changes one or more transitions.
 
 ## Core concepts
 
@@ -135,8 +155,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Only evidence above the confidence threshold is emitted, and every output retains source, page, and modality.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **vision encoders** and **OCR**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -237,8 +255,7 @@ Understand image representations, vision-language models, OCR, layout, tables, c
 - Primary papers for the selected modality or frontier claim
 - Model and dataset cards for every reproduced system
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[Course outline](index.md) · [Speech and Audio →](02-speech-and-audio.md)
+[Course outline](index.md#course-outline){ .study-overview } · [Speech and Audio →](02-speech-and-audio.md)
+{: .study-directions .study-directions--footer }

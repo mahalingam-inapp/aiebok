@@ -1,6 +1,26 @@
 # 3.3 — Tokenization
 
-[Course overview](index.md) · Tokens and representations · Lecture 3 of 6
+<p class="study-position" data-course="03-language-and-representation" data-lecture="03-tokenization.md">Tokens and representations · Lecture 3 of 6</p>
+
+[← Corpora and Text Pipelines](02-corpora-and-text-pipelines.md) · [Course outline](index.md#course-outline){ .study-overview } · [From Sparse Features to Embeddings →](04-from-sparse-features-to-embeddings.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Language and corpus preparation**
+
+    - [Why Language Is Hard](01-why-language-is-hard.md)
+    - [Corpora and Text Pipelines](02-corpora-and-text-pipelines.md)
+
+    **Tokens and representations**
+
+    - **Tokenization** (current)
+    - [From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md)
+
+    **Search and indexing**
+
+    - [Similarity and Vector Search](05-similarity-and-vector-search.md)
+    - [Embedding Systems in Production](06-embedding-systems-in-production.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Vectors and dot products
 - Basic text processing
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Understand character, word, and subword tokenization; BPE, WordPiece, and SentencePiece; and the impact on cost, latency, languages, and code.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## One character is not always one token
+
+Two translated help requests have similar character counts. One consistently uses many more tokens in a model. The longer token sequence is truncated when the chatbot adds instructions and retrieved evidence.
+
+Inspect tokenization with actual examples for each locale, then budget outputs and context accordingly. Monitoring characters alone will miss a token-boundary effect that people experience as shorter or less grounded answers.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Representation"] --> N3["Similarity"]
   N3["Similarity"] --> N4["Retrieved meaning"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **tokenization** changes one or more transitions.
 
 ## Core concepts
 
@@ -134,8 +154,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The outage document should rank highest because it shares the query's weighted terms; the example also exposes the limits of lexical features.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **vocabulary** and **subwords**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -236,8 +254,7 @@ Understand character, word, and subword tokenization; BPE, WordPiece, and Senten
 - Manning, Raghavan & Schütze — Introduction to Information Retrieval
 - Mikolov et al. — Efficient Estimation of Word Representations in Vector Space
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Corpora and Text Pipelines](02-corpora-and-text-pipelines.md) · [Course outline](index.md) · [From Sparse Features to Embeddings →](04-from-sparse-features-to-embeddings.md)
+[← Corpora and Text Pipelines](02-corpora-and-text-pipelines.md) · [Course outline](index.md#course-outline){ .study-overview } · [From Sparse Features to Embeddings →](04-from-sparse-features-to-embeddings.md)
+{: .study-directions .study-directions--footer }

@@ -1,6 +1,26 @@
 # 13.2 — Speech and Audio
 
-[Course overview](index.md) · Documents, vision, and audio · Lecture 2 of 6
+<p class="study-position" data-course="13-multimodal-and-frontier-systems" data-lecture="02-speech-and-audio.md">Documents, vision, and audio · Lecture 2 of 6</p>
+
+[← Vision and Document Intelligence](01-vision-and-document-intelligence.md) · [Course outline](index.md#course-outline){ .study-overview } · [Image and Video Generation →](03-image-and-video-generation.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Documents, vision, and audio**
+
+    - [Vision and Document Intelligence](01-vision-and-document-intelligence.md)
+    - **Speech and Audio** (current)
+
+    **Generative media and bounded action**
+
+    - [Image and Video Generation](03-image-and-video-generation.md)
+    - [Computer Use and Embodied Action](04-computer-use-and-embodied-action.md)
+
+    **Emerging systems and evidence**
+
+    - [Long Context, World Models, and Continual Learning](05-long-context-world-models-and-continual-learning.md)
+    - [How to Track the Frontier](06-how-to-track-the-frontier.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Evidence-oriented research reading
 - Risk awareness
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Connect ASR, diarization, audio understanding, TTS, streaming, latency, consent, and voice safety.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A transcript can hide where the audio failed
+
+The system transcribes the chair well but breaks down on remote participants who have noisy connections. A smooth transcript misattributes one decision.
+
+Slice by speaker and recording condition, and check whether meaning survived rather than only counting word errors. Keep a link to the source time range for a reviewer.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Fusion or action"] --> N3["Provenance"]
   N3["Provenance"] --> N4["Evaluation"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **speech and audio** changes one or more transitions.
 
 ## Core concepts
 
@@ -135,8 +155,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Only evidence above the confidence threshold is emitted, and every output retains source, page, and modality.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **speech recognition** and **diarization**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -237,8 +255,7 @@ Connect ASR, diarization, audio understanding, TTS, streaming, latency, consent,
 - Primary papers for the selected modality or frontier claim
 - Model and dataset cards for every reproduced system
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Vision and Document Intelligence](01-vision-and-document-intelligence.md) · [Course outline](index.md) · [Image and Video Generation →](03-image-and-video-generation.md)
+[← Vision and Document Intelligence](01-vision-and-document-intelligence.md) · [Course outline](index.md#course-outline){ .study-overview } · [Image and Video Generation →](03-image-and-video-generation.md)
+{: .study-directions .study-directions--footer }

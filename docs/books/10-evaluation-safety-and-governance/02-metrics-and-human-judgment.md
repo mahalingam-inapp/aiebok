@@ -1,6 +1,26 @@
 # 10.2 — Metrics and Human Judgment
 
-[Course overview](index.md) · Requirements and judgment · Lecture 2 of 6
+<p class="study-position" data-course="10-evaluation-safety-and-governance" data-lecture="02-metrics-and-human-judgment.md">Requirements and judgment · Lecture 2 of 6</p>
+
+[← Evaluation as Requirements](01-evaluation-as-requirements.md) · [Course outline](index.md#course-outline){ .study-overview } · [Evaluation by System Stage →](03-evaluation-by-system-stage.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Requirements and judgment**
+
+    - [Evaluation as Requirements](01-evaluation-as-requirements.md)
+    - **Metrics and Human Judgment** (current)
+
+    **Stage evaluation and security**
+
+    - [Evaluation by System Stage](03-evaluation-by-system-stage.md)
+    - [Security of AI Systems](04-security-of-ai-systems.md)
+
+    **Risk and governance**
+
+    - [Responsible AI and Risk](05-responsible-ai-and-risk.md)
+    - [Governance and Assurance](06-governance-and-assurance.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Statistics intuition
 - Threat-model basics
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Combine exact metrics, semantic similarity, pairwise comparison, human review, LLM judges, calibration, and uncertainty.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Two reviewers read the same answer differently
+
+One reviewer grades the policy conclusion, another grades clarity. Their mean scores agree and their individual ratings do not.
+
+Write an observable rubric for each dimension and ask both reviewers to rate a small shared sample. Inspect disagreements and label cases independently before averaging.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Measures"] --> N3["Risk gate"]
   N3["Risk gate"] --> N4["Assurance record"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **metrics and human judgment** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The release gate depends on both overall performance and perfect performance in the high-risk slice.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **deterministic metrics** and **human evaluation**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Combine exact metrics, semantic similarity, pairwise comparison, human review, L
 - OWASP guidance for LLM applications
 - Task-specific evaluation research
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Evaluation as Requirements](01-evaluation-as-requirements.md) · [Course outline](index.md) · [Evaluation by System Stage →](03-evaluation-by-system-stage.md)
+[← Evaluation as Requirements](01-evaluation-as-requirements.md) · [Course outline](index.md#course-outline){ .study-overview } · [Evaluation by System Stage →](03-evaluation-by-system-stage.md)
+{: .study-directions .study-directions--footer }

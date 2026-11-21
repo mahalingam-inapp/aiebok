@@ -44,11 +44,13 @@ python scripts/generate_reference_views.py
 python scripts/generate_featured_concepts.py
 python scripts/generate_lab_notebooks.py
 python scripts/generate_learning_paths.py
+python scripts/generate_interactive_workbook.py
 python scripts/generate_site_stats.py
 python scripts/learning_cards.py
 python scripts/generate_spec_driven.py
 python scripts/validate_content.py
 python scripts/audit_book_coverage.py
+node scripts/check_interactive_workbook.js
 mkdocs build --strict
 ```
 
@@ -63,6 +65,7 @@ The published site is **static HTML only** (MkDocs → GitHub Actions → Pages)
 | Read docs, search, concept cards | Hosted site |
 | Lecture slide decks | **Open slide deck** on each lecture page |
 | Course workbooks | [Jupyter Notebooks](docs/labs/notebooks/index.md) in the site |
+| Offline interactive workbook | [HarborLink](docs/labs/interactive-workbook.md) under Labs |
 | Starter lab notebooks | <a href="https://github.com/mahalingam-inapp/aiebok/tree/main/labs" target="_blank" rel="noopener"><code>labs/*/lab.ipynb</code></a> in the repo — start at **Labs → Hands-on Start** on the site |
 | Python labs | Local machine, Codespaces, or Dev Container (`.devcontainer/`) |
 

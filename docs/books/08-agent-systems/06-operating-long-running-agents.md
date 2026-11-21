@@ -1,6 +1,26 @@
 # 8.6 — Operating Long-Running Agents
 
-[Course overview](index.md) · Coordination and operations · Lecture 6 of 6
+<p class="study-position" data-course="08-agent-systems" data-lecture="06-operating-long-running-agents.md">Coordination and operations · Lecture 6 of 6</p>
+
+[← Multi-Agent Systems](05-multi-agent-systems.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Workflows and agent loops**
+
+    - [Agent or Workflow?](01-agent-or-workflow.md)
+    - [The Agent Loop](02-the-agent-loop.md)
+
+    **Recovery and patterns**
+
+    - [Agent Memory and Recovery](03-agent-memory-and-recovery.md)
+    - [Agent Patterns](04-agent-patterns.md)
+
+    **Coordination and operations**
+
+    - [Multi-Agent Systems](05-multi-agent-systems.md)
+    - **Operating Long-Running Agents** (current)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - State machines
 - Tools and evaluation
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Design durable orchestration, queues, scheduling, leases, approvals, monitoring, incident response, and safe cancellation.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Late results are still real results
+
+A calendar operation times out and returns success after the worker is ready to retry. Volunteers are already seeing a new shift.
+
+Use a stable operation identifier and inspect the external result before retrying an uncertain effect. Record whether it was completed, pending, or requires reconciliation so the operator knows what to do after restart.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Act"] --> N3["Checkpoint"]
   N3["Checkpoint"] --> N4["Stop or continue"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **operating long-running agents** changes one or more transitions.
 
 ## Core concepts
 
@@ -133,8 +153,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The state machine pauses at approval, resumes after approval, and terminates within the attempt budget.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **durable execution** and **queues**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Design durable orchestration, queues, scheduling, leases, approvals, monitoring,
 - Primary papers for the selected agent pattern
 - Distributed-systems references for durable execution and idempotency
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Multi-Agent Systems](05-multi-agent-systems.md) · [Course outline](index.md) · [Course project →](index.md#course-project)
+[← Multi-Agent Systems](05-multi-agent-systems.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions .study-directions--footer }

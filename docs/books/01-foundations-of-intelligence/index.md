@@ -4,8 +4,16 @@ Technical course 01 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Understand intelligence as search, learning, representation, decision-making, and feedback before studying language models.
 
-[Start the first lecture](01-what-intelligence-means.md){ .md-button .md-button--primary }
+[Start the first lecture](01-what-intelligence-means.md){ .md-button .md-button--primary .study-start data-course="01-foundations-of-intelligence" }
 [Download the course notebook](../../assets/notebooks/01-foundations-of-intelligence.ipynb){ .md-button download }
+
+## Practice case · The alarms at 2 a.m.
+
+Priya is the overnight dispatcher for a regional transit agency. Last Friday, two reports about an elevator outage went into a low-priority queue. A separate report sounded urgent because it was written in all caps. The operations lead wants a smarter dispatcher. Priya wants disabled riders to reach a working station and wants the on-call engineer to receive fewer false alarms.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [What changed for customer support workers](../../casebook/support-assistants.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Understand intelligence as search, learning, representation, decision-making, an
 
 ### Goals and representations
 
-- [01 · What Intelligence Means](01-what-intelligence-means.md)
-- [02 · From Symbols to Statistics](02-from-symbols-to-statistics.md)
+- [01 · What Intelligence Means](01-what-intelligence-means.md){ .study-lecture data-lecture="01-what-intelligence-means.md" }
+- [02 · From Symbols to Statistics](02-from-symbols-to-statistics.md){ .study-lecture data-lecture="02-from-symbols-to-statistics.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Write a support-routing goal and identify an example where a fixed keyword rule 
 
 ### Search and mathematics
 
-- [03 · Search, Planning, and Decisions](03-search-planning-and-decisions.md)
-- [04 · The Mathematics Engineers Need](04-the-mathematics-engineers-need.md)
+- [03 · Search, Planning, and Decisions](03-search-planning-and-decisions.md){ .study-lecture data-lecture="03-search-planning-and-decisions.md" }
+- [04 · The Mathematics Engineers Need](04-the-mathematics-engineers-need.md){ .study-lecture data-lecture="04-the-mathematics-engineers-need.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Trace BFS and A* on the same grid. Record both path length and states expanded.
 
 ### Learning and decisions
 
-- [05 · Learning and Generalization](05-learning-and-generalization.md)
-- [06 · Engineering with Uncertainty](06-engineering-with-uncertainty.md)
+- [05 · Learning and Generalization](05-learning-and-generalization.md){ .study-lecture data-lecture="05-learning-and-generalization.md" }
+- [06 · Engineering with Uncertainty](06-engineering-with-uncertainty.md){ .study-lecture data-lecture="06-engineering-with-uncertainty.md" }
 
 **Checkpoint**
 

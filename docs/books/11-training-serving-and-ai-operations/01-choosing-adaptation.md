@@ -1,6 +1,26 @@
 # 11.1 — Choosing Adaptation
 
-[Course overview](index.md) · Model adaptation and post-training · Lecture 1 of 6
+<p class="study-position" data-course="11-training-serving-and-ai-operations" data-lecture="01-choosing-adaptation.md">Model adaptation and post-training · Lecture 1 of 6</p>
+
+[Course outline](index.md#course-outline){ .study-overview } · [Post-Training Methods →](02-post-training-methods.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Model adaptation and post-training**
+
+    - **Choosing Adaptation** (current)
+    - [Post-Training Methods](02-post-training-methods.md)
+
+    **Datasets and inference infrastructure**
+
+    - [Dataset Engineering](03-dataset-engineering.md)
+    - [Inference Infrastructure](04-inference-infrastructure.md)
+
+    **Deployment and operations**
+
+    - [Deployment and Routing](05-deployment-and-routing.md)
+    - [LLMOps](06-llmops.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Containers and APIs
 - Performance measurement
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Diagnose whether a requirement needs prompting, retrieval, tools, fine-tuning, continued pretraining, or a different model.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Separate changing facts from persistent behavior
+
+The assistant skips a required approval field and also gives an outdated contract amount.
+
+A structured constraint or adaptation can improve the recurring format. The current amount belongs in versioned retrieval. Test the two behaviors separately to avoid paying to retrain the model whenever a contract changes.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Serve"] --> N3["Trace"]
   N3["Trace"] --> N4["Canary or rollback"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **choosing adaptation** changes one or more transitions.
 
 ## Core concepts
 
@@ -135,8 +155,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Low-risk simple work routes to the cheaper model; high-risk work routes to the higher-quality model.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **behavior versus knowledge** and **prompting**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -238,8 +256,7 @@ Diagnose whether a requirement needs prompting, retrieval, tools, fine-tuning, c
 - Ouyang et al. — InstructGPT
 - Official inference-server documentation
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[Course outline](index.md) · [Post-Training Methods →](02-post-training-methods.md)
+[Course outline](index.md#course-outline){ .study-overview } · [Post-Training Methods →](02-post-training-methods.md)
+{: .study-directions .study-directions--footer }

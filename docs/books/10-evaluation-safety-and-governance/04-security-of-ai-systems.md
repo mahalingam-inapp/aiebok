@@ -1,6 +1,26 @@
 # 10.4 — Security of AI Systems
 
-[Course overview](index.md) · Stage evaluation and security · Lecture 4 of 6
+<p class="study-position" data-course="10-evaluation-safety-and-governance" data-lecture="04-security-of-ai-systems.md">Stage evaluation and security · Lecture 4 of 6</p>
+
+[← Evaluation by System Stage](03-evaluation-by-system-stage.md) · [Course outline](index.md#course-outline){ .study-overview } · [Responsible AI and Risk →](05-responsible-ai-and-risk.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Requirements and judgment**
+
+    - [Evaluation as Requirements](01-evaluation-as-requirements.md)
+    - [Metrics and Human Judgment](02-metrics-and-human-judgment.md)
+
+    **Stage evaluation and security**
+
+    - [Evaluation by System Stage](03-evaluation-by-system-stage.md)
+    - **Security of AI Systems** (current)
+
+    **Risk and governance**
+
+    - [Responsible AI and Risk](05-responsible-ai-and-risk.md)
+    - [Governance and Assurance](06-governance-and-assurance.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Statistics intuition
 - Threat-model basics
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Threat-model prompt injection, data exfiltration, tool abuse, identity confusion, insecure output handling, supply chain, and denial of service.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Treat the action boundary as part of the test
+
+A support transcript contains untrusted text and the assistant can also retrieve restricted information. The workflow owner wants useful summaries without giving transcript text authority.
+
+Keep read permissions and action approvals independent of generated content. A test should prove that the resulting action stays within the caller’s rights and that policy-relevant transcript text still reaches the summary.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Measures"] --> N3["Risk gate"]
   N3["Risk gate"] --> N4["Assurance record"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **security of ai systems** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The release gate depends on both overall performance and perfect performance in the high-risk slice.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **prompt injection** and **data exfiltration**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Threat-model prompt injection, data exfiltration, tool abuse, identity confusion
 - OWASP guidance for LLM applications
 - Task-specific evaluation research
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Evaluation by System Stage](03-evaluation-by-system-stage.md) · [Course outline](index.md) · [Responsible AI and Risk →](05-responsible-ai-and-risk.md)
+[← Evaluation by System Stage](03-evaluation-by-system-stage.md) · [Course outline](index.md#course-outline){ .study-overview } · [Responsible AI and Risk →](05-responsible-ai-and-risk.md)
+{: .study-directions .study-directions--footer }

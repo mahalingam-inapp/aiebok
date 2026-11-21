@@ -1,6 +1,26 @@
 # 5.2 — Structured Generation
 
-[Course overview](index.md) · Instructions and output contracts · Lecture 2 of 6
+<p class="study-position" data-course="05-prompt-and-context-engineering" data-lecture="02-structured-generation.md">Instructions and output contracts · Lecture 2 of 6</p>
+
+[← Instructions That Work](01-instructions-that-work.md) · [Course outline](index.md#course-outline){ .study-overview } · [Context Construction →](03-context-construction.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Instructions and output contracts**
+
+    - [Instructions That Work](01-instructions-that-work.md)
+    - **Structured Generation** (current)
+
+    **Context and memory**
+
+    - [Context Construction](03-context-construction.md)
+    - [Conversation and Memory](04-conversation-and-memory.md)
+
+    **Trust and prompt operations**
+
+    - [Context Failure and Security](05-context-failure-and-security.md)
+    - [Prompt and Context Operations](06-prompt-and-context-operations.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Model inference
 - Tokens and context windows
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Use schemas, constrained decoding, validation, repair, retries, and typed application boundaries.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A valid field can still be a false commitment
+
+An output includes a valid date format and the right room number. The date came from the assistant’s guess.
+
+Use schema validation for required fields and format. Separately verify assertions against the source. An explicit unknown value lets the reviewer distinguish a pending date from one that the schedule confirms.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Evidence"] --> N3["Model"]
   N3["Model"] --> N4["Validated output"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **structured generation** changes one or more transitions.
 
 ## Core concepts
 
@@ -133,8 +153,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Trusted high-priority sections consume the budget first; untrusted evidence remains explicitly marked as data.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **JSON Schema** and **structured output**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Use schemas, constrained decoding, validation, repair, retries, and typed applic
 - Provider documentation for structured output and tool calling
 - Current prompt-injection guidance from authoritative security sources
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Instructions That Work](01-instructions-that-work.md) · [Course outline](index.md) · [Context Construction →](03-context-construction.md)
+[← Instructions That Work](01-instructions-that-work.md) · [Course outline](index.md#course-outline){ .study-overview } · [Context Construction →](03-context-construction.md)
+{: .study-directions .study-directions--footer }

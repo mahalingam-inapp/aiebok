@@ -4,8 +4,16 @@ Technical course 09 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Use specifications, evaluations, secure development practices, and product discovery to deliver useful AI features.
 
-[Start the first lecture](01-discovering-the-right-problem.md){ .md-button .md-button--primary }
+[Start the first lecture](01-discovering-the-right-problem.md){ .md-button .md-button--primary .study-start data-course="09-ai-software-and-product-engineering" }
 [Download the course notebook](../../assets/notebooks/09-ai-software-and-product-engineering.ipynb){ .md-button download }
+
+## Practice case · The pull request nobody has time to review
+
+Nadia’s scheduling team is asked to use a coding assistant to clear its backlog. The first demonstration creates a large change quickly. Reviewers now spend longer understanding the diffs and correcting edge cases. Nadia needs evidence that the entire workflow is getting better.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [Two studies measured two different coding jobs](../../casebook/coding-productivity.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Use specifications, evaluations, secure development practices, and product disco
 
 ### Discovery and specifications
 
-- [01 · Discovering the Right Problem](01-discovering-the-right-problem.md)
-- [02 · Specification-Driven Development](02-specification-driven-development.md)
+- [01 · Discovering the Right Problem](01-discovering-the-right-problem.md){ .study-lecture data-lecture="01-discovering-the-right-problem.md" }
+- [02 · Specification-Driven Development](02-specification-driven-development.md){ .study-lecture data-lecture="02-specification-driven-development.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Write a baseline workflow and one measurable acceptance case before adding a mod
 
 ### Development and testing
 
-- [03 · AI-Native Development Workflow](03-ai-native-development-workflow.md)
-- [04 · Testing AI Systems](04-testing-ai-systems.md)
+- [03 · AI-Native Development Workflow](03-ai-native-development-workflow.md){ .study-lecture data-lecture="03-ai-native-development-workflow.md" }
+- [04 · Testing AI Systems](04-testing-ai-systems.md){ .study-lecture data-lecture="04-testing-ai-systems.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Turn a rejection behavior into a test that fails for a plausible but incorrect a
 
 ### Experience and value
 
-- [05 · Human-Centered AI UX](05-human-centered-ai-ux.md)
-- [06 · Experiments, Adoption, and Value](06-experiments-adoption-and-value.md)
+- [05 · Human-Centered AI UX](05-human-centered-ai-ux.md){ .study-lecture data-lecture="05-human-centered-ai-ux.md" }
+- [06 · Experiments, Adoption, and Value](06-experiments-adoption-and-value.md){ .study-lecture data-lecture="06-experiments-adoption-and-value.md" }
 
 **Checkpoint**
 

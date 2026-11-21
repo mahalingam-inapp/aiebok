@@ -10,10 +10,12 @@ Basic statistics, Python, and experience building or evaluating a model-backed a
 
 ## Course sequence
 
-1. [Evaluation, Safety, and Governance](../../books/10-evaluation-safety-and-governance/index.md)
-2. [Build and Evaluate a Model-Backed Application](../../courses/model-backed-applications/index.md)
-3. [Model Selection and Adaptation Lab](../../courses/model-selection-and-adaptation/index.md)
-4. [LLM Evaluation and Model Selection](../../courses/llm-evaluation-benchmarks/index.md)
+[Start this path](../../books/10-evaluation-safety-and-governance/index.md){ .md-button .md-button--primary .study-path-course }
+
+1. [Evaluation, Safety, and Governance](../../books/10-evaluation-safety-and-governance/index.md){ .study-path-course }
+2. [Build and Evaluate a Model-Backed Application](../../courses/model-backed-applications/index.md){ .study-path-course }
+3. [Model Selection and Adaptation Lab](../../courses/model-selection-and-adaptation/index.md){ .study-path-course }
+4. [LLM Evaluation and Model Selection](../../courses/llm-evaluation-benchmarks/index.md){ .study-path-course }
 
 ## Study pace
 

@@ -1,6 +1,26 @@
 # 4.2 — Attention
 
-[Course overview](index.md) · Sequence models and attention · Lecture 2 of 6
+<p class="study-position" data-course="04-transformers-and-foundation-models" data-lecture="02-attention.md">Sequence models and attention · Lecture 2 of 6</p>
+
+[← Sequence Models Before Transformers](01-sequence-models-before-transformers.md) · [Course outline](index.md#course-outline){ .study-overview } · [The Transformer Block →](03-the-transformer-block.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Sequence models and attention**
+
+    - [Sequence Models Before Transformers](01-sequence-models-before-transformers.md)
+    - **Attention** (current)
+
+    **Transformer blocks and training**
+
+    - [The Transformer Block](03-the-transformer-block.md)
+    - [Training Foundation Models](04-training-foundation-models.md)
+
+    **Decoding and model selection**
+
+    - [Inference and Sampling](05-inference-and-sampling.md)
+    - [Model Families and Selection](06-model-families-and-selection.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Matrix multiplication intuition
 - Neural-network basics
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Build attention from queries, keys, values, similarity scores, normalization, and weighted aggregation.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Attention can favor the wrong mention
+
+The transcript mentions Jules twice in a budget discussion and once in the final ownership sentence. The extractor attaches the budget owner to the deliverable.
+
+Attention creates input-dependent mixtures of representations. It does not guarantee the weighting reflects the role required by the task. Test with a transcript that repeats a distractor and check the observable owner assignment before using attention weights as an explanation.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Transformer layers"] --> N3["Logits"]
   N3["Logits"] --> N4["Sampled token"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **attention** changes one or more transitions.
 
 ## Core concepts
 
@@ -136,8 +156,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The query-aligned value receives more attention, and lower temperature concentrates the sampling distribution.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **queries** and **keys**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -239,8 +257,7 @@ Build attention from queries, keys, values, similarity scores, normalization, an
 - Devlin et al. — BERT
 - Brown et al. — Language Models are Few-Shot Learners
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Sequence Models Before Transformers](01-sequence-models-before-transformers.md) · [Course outline](index.md) · [The Transformer Block →](03-the-transformer-block.md)
+[← Sequence Models Before Transformers](01-sequence-models-before-transformers.md) · [Course outline](index.md#course-outline){ .study-overview } · [The Transformer Block →](03-the-transformer-block.md)
+{: .study-directions .study-directions--footer }

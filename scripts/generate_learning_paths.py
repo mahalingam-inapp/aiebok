@@ -6,7 +6,10 @@ from applied_courses import APPLIED_COURSES
 from course_types import Course, Lecture
 from course_catalog import PATHS, SPECIALIST_PATHS, TECHNICAL_COURSES
 from generate_books import BOOKS, chapter_filename, course_slug, slug
+from lecture_cases import CASES, course_case_intro, lecture_case
 from no_code_courses import NO_CODE_COURSES
+from study_navigation import directions, lecture_outline, lecture_progress, outline_link, start_course
+from textbook_readings import READINGS
 
 DOCS = Path(__file__).resolve().parents[1] / "docs"
 COURSES = DOCS / "courses"
@@ -25,9 +28,17 @@ def lecture_filename(number: int, lecture: Lecture) -> str:
 def write_course(course: Course) -> None:
     directory = COURSES / course.slug
     lectures = [lecture for _, group in course.sections for lecture in group]
+    case = CASES[course.slug]
+    if len(case.moments) != len(lectures):
+        raise ValueError(f"Practice case must cover every lecture in {course.title}")
+    readings = READINGS[course.slug]
+    if len(readings) != len(lectures):
+        raise ValueError(f"Extended readings must cover every lecture in {course.title}")
     titles = [lecture_filename(number, lecture) for number, lecture in enumerate(lectures, 1)]
+    numbered_titles = [(lecture.title, filename) for lecture, filename in zip(lectures, titles, strict=True)]
+    sections = iter(numbered_titles)
+    groups = [(heading, [next(sections) for _ in group]) for heading, group in course.sections]
     mode = "Project practicum" if course.workbook else "No code"
-    pace = "45–60 min" if course.workbook else "20–30 min"
     duration = "3–4 hours" if course.workbook else "About 2 hours"
     workbook = f"[Download the workbook](../../assets/notebooks/{course.slug}.ipynb){{ download }}"
     outline = []
@@ -36,31 +47,38 @@ def write_course(course: Course) -> None:
         outline.append(f"### {section}\n")
         for lecture in group:
             filename = titles[number]
-            previous = f"[← Previous lecture]({titles[number - 1]})" if number else ""
-            following = (
-                f"[Next lecture →]({titles[number + 1]})"
-                if number + 1 < len(titles) else "[Course project →](index.md#course-project)"
-            )
-            navigation = " · ".join(item for item in (previous, "[Course outline](index.md)", following) if item)
             number += 1
+            moment = lecture_case(course.slug, number)
+            progress = lecture_progress(course.slug, filename, section, number, len(titles))
+            navigation = directions(numbered_titles, number)
+            jump = lecture_outline(groups, filename)
             practice = (
                 f"\n\n{workbook} and run through **Lecture {number:02d}** in order. "
                 "See [Jupyter setup](../../labs/notebooks/index.md#set-up-jupyter) if needed."
                 if course.workbook else ""
             )
-            outline.append(f"- [{number:02d} · {lecture.title}]({filename}) — {lecture.outcome}")
+            lesson_link = outline_link(f"{number:02d} · {lecture.title}", filename)
+            outline.append(f"- {lesson_link} — {lecture.outcome}")
             write(directory / filename, f"""
 # {lecture.title}
 
-[{course.title}](index.md) · {section} · Lecture {number} of {len(titles)} · {pace} · {mode}
+{progress}
+
+{navigation}
+
+{jump}
 
 ## What you will learn
 
 {lecture.outcome}
 
+{moment}
+
 ## How it works
 
 {lecture.explanation}
+
+{readings[number - 1]}
 
 ## Worked example
 
@@ -75,7 +93,7 @@ def write_course(course: Course) -> None:
 
 ## Continue
 
-{navigation}
+{directions(numbered_titles, number, footer=True)}
 """)
         outline.append("")
     outline_text = "\n".join(outline)
@@ -93,7 +111,9 @@ def write_course(course: Course) -> None:
 
 {course.goal}
 
-[Start the first lecture]({titles[0]}){{ .md-button .md-button--primary }}
+{start_course(course.slug, titles[0])}
+
+{course_case_intro(case)}
 
 ## Entry prerequisites
 
@@ -129,16 +149,16 @@ def write_course_catalog() -> None:
         f"- [{number:02d} · {book['title']}](../books/{course_slug(number, book['title'])}/index.md) — {book['goal']}"
         for number, book in enumerate(BOOKS, 1)
     )
-    rows.extend(("", "[Notebook downloads and setup](../labs/notebooks/index.md)"))
+    rows.extend(("", "[Notebook downloads and setup](../labs/notebooks/index.md) · [Real-world casebook](../casebook/index.md)"))
     write(COURSES / "index.md", "\n".join(rows))
 
 
-def course_link(course: str | int) -> str:
+def course_link(course: str | int, *, label: str | None = None) -> str:
     if isinstance(course, int):
         book = BOOKS[course - 1]
-        return f"[{book['title']}](../../books/{course_slug(course, book['title'])}/index.md)"
+        return f"[{label or book['title']}](../../books/{course_slug(course, book['title'])}/index.md)"
     item = next(item for item in (*NO_CODE_COURSES, *APPLIED_COURSES) if item.slug == course)
-    return f"[{item.title}](../../courses/{item.slug}/index.md)"
+    return f"[{label or item.title}](../../courses/{item.slug}/index.md)"
 
 
 def write_paths() -> None:
@@ -153,7 +173,8 @@ def write_paths() -> None:
         if path == SPECIALIST_PATHS[0]:
             rows.extend(("", "## Specialist paths", "", "| Path | Technical level | Designed for |", "|---|---|---|"))
         rows.append(f"| [{path.title}]({path.slug}.md) | {path.level} | {path.audience} |")
-        sequence = "\n".join(f"{index}. {course_link(course)}" for index, course in enumerate(path.courses, 1))
+        sequence = "\n".join(f"{index}. {course_link(course)}{{ .study-path-course }}"
+                             for index, course in enumerate(path.courses, 1))
         technical = any(isinstance(course, int) for course in path.courses)
         study = (
             "Plan for 10–12 hours per technical core course, 3–4 hours per practicum, and about two hours per no-code course, plus project work. "
@@ -182,6 +203,8 @@ def write_paths() -> None:
 
 ## Course sequence
 
+{course_link(path.courses[0], label="Start this path")}{{ .md-button .md-button--primary .study-path-course }}
+
 {sequence}
 
 ## Study pace
@@ -194,7 +217,7 @@ def write_paths() -> None:
 
 [All learning paths](index.md) · [Course catalog](../../courses/index.md)
 """)
-    rows.extend(("", "[See the coverage review and external benchmarks](../../editorial/learning-path-coverage.md)."))
+    rows.extend(("", "[Learning path coverage](../../editorial/learning-path-coverage.md) · [Textbook content audit](../../editorial/textbook-audit.md)"))
     write(PATH_PAGES / "index.md", "\n".join(rows))
 
 
@@ -218,6 +241,7 @@ def write_navigation() -> None:
         *(f"          - {label(path.title)}: getting-started/learning-paths/{path.slug}.md" for path in SPECIALIST_PATHS),
         "  - Courses:",
         "      - Course Catalog: courses/index.md",
+        "      - Casebook: casebook/index.md",
     ]
     for group, courses in (("No-code Courses", NO_CODE_COURSES), ("Technical Project Practicums", APPLIED_COURSES)):
         nav.append(f"      - {group}:")

@@ -1,6 +1,26 @@
 # 1.6 — Engineering with Uncertainty
 
-[Course overview](index.md) · Learning and decisions · Lecture 6 of 6
+<p class="study-position" data-course="01-foundations-of-intelligence" data-lecture="06-engineering-with-uncertainty.md">Learning and decisions · Lecture 6 of 6</p>
+
+[← Learning and Generalization](05-learning-and-generalization.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Goals and representations**
+
+    - [What Intelligence Means](01-what-intelligence-means.md)
+    - [From Symbols to Statistics](02-from-symbols-to-statistics.md)
+
+    **Search and mathematics**
+
+    - [Search, Planning, and Decisions](03-search-planning-and-decisions.md)
+    - [The Mathematics Engineers Need](04-the-mathematics-engineers-need.md)
+
+    **Learning and decisions**
+
+    - [Learning and Generalization](05-learning-and-generalization.md)
+    - **Engineering with Uncertainty** (current)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Comfort reading simple Python
 - Basic algebra
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Translate uncertain predictions into decisions with thresholds, costs, calibration, fallback behavior, and human oversight.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## When an uncertain alert still needs action
+
+The estimator assigns a 0.4 probability that a lift report is urgent. Manual review costs about two minutes. Leaving a rider stranded much longer would be far more costly than a review.
+
+A probability estimate can inform two policies with different action costs. Route midrange scores to a reviewer and choose the thresholds using measured errors and staffing capacity. Check that 0.4 means something similar across the stations before carrying it into a new policy.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Search or learn"] --> N3["Decision"]
   N3["Decision"] --> N4["Feedback"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **engineering with uncertainty** changes one or more transitions.
 
 ## Core concepts
 
@@ -134,8 +154,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     A* should reach the same shortest path as breadth-first search while often expanding fewer states when the heuristic is informative.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **calibration** and **decision thresholds**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -236,8 +254,7 @@ Translate uncertain predictions into decisions with thresholds, costs, calibrati
 - Russell & Norvig — Artificial Intelligence: A Modern Approach
 - Sutton & Barto — Reinforcement Learning: An Introduction
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Learning and Generalization](05-learning-and-generalization.md) · [Course outline](index.md) · [Course project →](index.md#course-project)
+[← Learning and Generalization](05-learning-and-generalization.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions .study-directions--footer }

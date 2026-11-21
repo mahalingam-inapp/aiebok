@@ -1,6 +1,26 @@
 # 1.3 — Search, Planning, and Decisions
 
-[Course overview](index.md) · Search and mathematics · Lecture 3 of 6
+<p class="study-position" data-course="01-foundations-of-intelligence" data-lecture="03-search-planning-and-decisions.md">Search and mathematics · Lecture 3 of 6</p>
+
+[← From Symbols to Statistics](02-from-symbols-to-statistics.md) · [Course outline](index.md#course-outline){ .study-overview } · [The Mathematics Engineers Need →](04-the-mathematics-engineers-need.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Goals and representations**
+
+    - [What Intelligence Means](01-what-intelligence-means.md)
+    - [From Symbols to Statistics](02-from-symbols-to-statistics.md)
+
+    **Search and mathematics**
+
+    - **Search, Planning, and Decisions** (current)
+    - [The Mathematics Engineers Need](04-the-mathematics-engineers-need.md)
+
+    **Learning and decisions**
+
+    - [Learning and Generalization](05-learning-and-generalization.md)
+    - [Engineering with Uncertainty](06-engineering-with-uncertainty.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Comfort reading simple Python
 - Basic algebra
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 See classical search as an explicit form of reasoning. Learn how state, actions, transition models, costs, heuristics, and stopping rules turn a vague goal into an algorithm.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Draw the station before choosing a route
+
+The shortest walking route to a working lift uses a gate locked after midnight. A noticeably longer route stays accessible. Priya must update the rider before asking maintenance for a repair estimate.
+
+Represent gates and locks as constraints in the state graph. If a route search receives only distance, it can return an unusable route with a perfect distance score. Test the route on a changed lock state before comparing the search algorithms.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Search or learn"] --> N3["Decision"]
   N3["Decision"] --> N4["Feedback"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **search, planning, and decisions** changes one or more transitions.
 
 ## Core concepts
 
@@ -139,8 +159,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     A* should reach the same shortest path as breadth-first search while often expanding fewer states when the heuristic is informative.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **state spaces** and **breadth-first search**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -241,8 +259,7 @@ See classical search as an explicit form of reasoning. When triaging, preserve f
 - Russell & Norvig — Artificial Intelligence: A Modern Approach
 - Sutton & Barto — Reinforcement Learning: An Introduction
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← From Symbols to Statistics](02-from-symbols-to-statistics.md) · [Course outline](index.md) · [The Mathematics Engineers Need →](04-the-mathematics-engineers-need.md)
+[← From Symbols to Statistics](02-from-symbols-to-statistics.md) · [Course outline](index.md#course-outline){ .study-overview } · [The Mathematics Engineers Need →](04-the-mathematics-engineers-need.md)
+{: .study-directions .study-directions--footer }

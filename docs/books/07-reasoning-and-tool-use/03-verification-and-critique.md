@@ -1,6 +1,26 @@
 # 7.3 — Verification and Critique
 
-[Course overview](index.md) · Verification and tool contracts · Lecture 3 of 6
+<p class="study-position" data-course="07-reasoning-and-tool-use" data-lecture="03-verification-and-critique.md">Verification and tool contracts · Lecture 3 of 6</p>
+
+[← Planning](02-planning.md) · [Course outline](index.md#course-outline){ .study-overview } · [Tools as Capability Boundaries →](04-tools-as-capability-boundaries.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Search and planning**
+
+    - [Reasoning as Search](01-reasoning-as-search.md)
+    - [Planning](02-planning.md)
+
+    **Verification and tool contracts**
+
+    - **Verification and Critique** (current)
+    - [Tools as Capability Boundaries](04-tools-as-capability-boundaries.md)
+
+    **Integrations and reasoning cost**
+
+    - [MCP and Integration Protocols](05-mcp-and-integration-protocols.md)
+    - [Reasoning-System Economics](06-reasoning-system-economics.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Search and planning
 - Typed software interfaces
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Use deterministic checks, tests, rubrics, critics, self-consistency, best-of-N, and external evidence.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A second pass needs independent evidence
+
+A model proposes that a permit requirement has been met. Asking the same model if it agrees produces agreement even when the official record is missing.
+
+Verify against a rule or a separate evidence source. Keep proposal and verification outcomes separate, and make one test where fluent wording accompanies missing proof.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Tools"] --> N3["Observations"]
   N3["Observations"] --> N4["Verifier"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **verification and critique** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Only the plan containing every required step in dependency order should pass verification.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **verifiers** and **critique**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -234,8 +252,7 @@ Use deterministic checks, tests, rubrics, critics, self-consistency, best-of-N, 
 - Yao et al. — ReAct
 - Primary protocol specifications for the tool interfaces studied
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Planning](02-planning.md) · [Course outline](index.md) · [Tools as Capability Boundaries →](04-tools-as-capability-boundaries.md)
+[← Planning](02-planning.md) · [Course outline](index.md#course-outline){ .study-overview } · [Tools as Capability Boundaries →](04-tools-as-capability-boundaries.md)
+{: .study-directions .study-directions--footer }

@@ -4,6 +4,9 @@
   const previous = document.querySelector("#previous");
   const next = document.querySelector("#next");
   const count = document.querySelector("#slide-count");
+  const progress = document.querySelector("#slide-progress");
+  const index = document.querySelector(".slide-index");
+  const indexLinks = [...index.querySelectorAll("a")];
   const announcement = document.querySelector("#announcement");
   const fullscreen = document.querySelector("#fullscreen");
   let current = 0;
@@ -16,6 +19,11 @@
     const heading = slide.querySelector("h1, h2");
     const position = `${current + 1} / ${slides.length}`;
     count.textContent = position;
+    progress.value = current + 1;
+    indexLinks.forEach((link, i) => {
+      if (i === current) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
     announcement.textContent = `Slide ${current + 1} of ${slides.length}. ${heading.textContent}`;
     previous.setAttribute("aria-disabled", String(current === 0));
     next.setAttribute("aria-disabled", String(current === slides.length - 1));
@@ -36,6 +44,11 @@
   next.addEventListener("click", () => {
     if (current < slides.length - 1) show(current + 1);
   });
+  indexLinks.forEach((link, number) => link.addEventListener("click", (event) => {
+    event.preventDefault();
+    index.open = false;
+    show(number, { focus: true });
+  }));
   window.addEventListener("hashchange", () => show(readHash(), { updateUrl: false, focus: true }));
   document.addEventListener("keydown", (event) => {
     if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey

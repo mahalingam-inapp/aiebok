@@ -1,6 +1,26 @@
 # 3.2 — Corpora and Text Pipelines
 
-[Course overview](index.md) · Language and corpus preparation · Lecture 2 of 6
+<p class="study-position" data-course="03-language-and-representation" data-lecture="02-corpora-and-text-pipelines.md">Language and corpus preparation · Lecture 2 of 6</p>
+
+[← Why Language Is Hard](01-why-language-is-hard.md) · [Course outline](index.md#course-outline){ .study-overview } · [Tokenization →](03-tokenization.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Language and corpus preparation**
+
+    - [Why Language Is Hard](01-why-language-is-hard.md)
+    - **Corpora and Text Pipelines** (current)
+
+    **Tokens and representations**
+
+    - [Tokenization](03-tokenization.md)
+    - [From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md)
+
+    **Search and indexing**
+
+    - [Similarity and Vector Search](05-similarity-and-vector-search.md)
+    - [Embedding Systems in Production](06-embedding-systems-in-production.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Vectors and dot products
 - Basic text processing
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Learn how collection, encoding, normalization, language detection, segmentation, privacy, and provenance shape every downstream model.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Preserve the distinction the source author made
+
+A cleanup job strips accents and punctuation from each policy title. Deduplication now collapses two distinct records, and one community group loses its language edition.
+
+Keep original source text and use normalized copies for lookup. Record language, revision, and transformations as provenance. Compare cases before and after normalization so a gain in matching does not hide a loss of access.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Representation"] --> N3["Similarity"]
   N3["Similarity"] --> N4["Retrieved meaning"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **corpora and text pipelines** changes one or more transitions.
 
 ## Core concepts
 
@@ -133,8 +153,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The outage document should rank highest because it shares the query's weighted terms; the example also exposes the limits of lexical features.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **Unicode** and **normalization**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Learn how collection, encoding, normalization, language detection, segmentation,
 - Manning, Raghavan & Schütze — Introduction to Information Retrieval
 - Mikolov et al. — Efficient Estimation of Word Representations in Vector Space
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Why Language Is Hard](01-why-language-is-hard.md) · [Course outline](index.md) · [Tokenization →](03-tokenization.md)
+[← Why Language Is Hard](01-why-language-is-hard.md) · [Course outline](index.md#course-outline){ .study-overview } · [Tokenization →](03-tokenization.md)
+{: .study-directions .study-directions--footer }

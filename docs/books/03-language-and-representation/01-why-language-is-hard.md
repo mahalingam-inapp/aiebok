@@ -1,6 +1,26 @@
 # 3.1 — Why Language Is Hard
 
-[Course overview](index.md) · Language and corpus preparation · Lecture 1 of 6
+<p class="study-position" data-course="03-language-and-representation" data-lecture="01-why-language-is-hard.md">Language and corpus preparation · Lecture 1 of 6</p>
+
+[Course outline](index.md#course-outline){ .study-overview } · [Corpora and Text Pipelines →](02-corpora-and-text-pipelines.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Language and corpus preparation**
+
+    - **Why Language Is Hard** (current)
+    - [Corpora and Text Pipelines](02-corpora-and-text-pipelines.md)
+
+    **Tokens and representations**
+
+    - [Tokenization](03-tokenization.md)
+    - [From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md)
+
+    **Search and indexing**
+
+    - [Similarity and Vector Search](05-similarity-and-vector-search.md)
+    - [Embedding Systems in Production](06-embedding-systems-in-production.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Vectors and dot products
 - Basic text processing
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Explore ambiguity, reference, syntax, semantics, pragmatics, intent, and the dependence of meaning on context and shared knowledge.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## What did the patron mean by ‘renew’?
+
+A patron asks to ‘renew my pass’. Staff know that pass can mean a library card or an event ticket. The system has both documents in the catalog.
+
+Treat ambiguity as a task condition rather than a vocabulary defect. A narrow follow-up distinguishes the objects with less risk than confidently retrieving one. Evaluate whether the system asks when necessary and whether the question moves the patron forward.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Representation"] --> N3["Similarity"]
   N3["Similarity"] --> N4["Retrieved meaning"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **why language is hard** changes one or more transitions.
 
 ## Core concepts
 
@@ -134,8 +154,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The outage document should rank highest because it shares the query's weighted terms; the example also exposes the limits of lexical features.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **syntax** and **semantics**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -236,8 +254,7 @@ Explore ambiguity, reference, syntax, semantics, pragmatics, intent, and the dep
 - Manning, Raghavan & Schütze — Introduction to Information Retrieval
 - Mikolov et al. — Efficient Estimation of Word Representations in Vector Space
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[Course outline](index.md) · [Corpora and Text Pipelines →](02-corpora-and-text-pipelines.md)
+[Course outline](index.md#course-outline){ .study-overview } · [Corpora and Text Pipelines →](02-corpora-and-text-pipelines.md)
+{: .study-directions .study-directions--footer }

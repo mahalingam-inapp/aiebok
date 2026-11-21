@@ -1,6 +1,26 @@
 # 6.1 — Knowledge Outside the Model
 
-[Course overview](index.md) · Knowledge strategy and ingestion · Lecture 1 of 6
+<p class="study-position" data-course="06-knowledge-and-retrieval-systems" data-lecture="01-knowledge-outside-the-model.md">Knowledge strategy and ingestion · Lecture 1 of 6</p>
+
+[Course outline](index.md#course-outline){ .study-overview } · [Document Ingestion →](02-document-ingestion.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Knowledge strategy and ingestion**
+
+    - **Knowledge Outside the Model** (current)
+    - [Document Ingestion](02-document-ingestion.md)
+
+    **Retrieval and reranking**
+
+    - [Retrieval](03-retrieval.md)
+    - [Ranking and Context Selection](04-ranking-and-context-selection.md)
+
+    **Grounded answers and enterprise constraints**
+
+    - [RAG Generation and Citations](05-rag-generation-and-citations.md)
+    - [Advanced and Enterprise RAG](06-advanced-and-enterprise-rag.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Embeddings and search
 - Structured model output
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Decide among direct context, search, databases, knowledge graphs, RAG, fine-tuning, and deterministic rules.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A policy is state that can change
+
+An employee made a purchase on Sunday and asks on Tuesday. The latest policy alone gives the wrong number for one of those dates.
+
+Persist effective dates outside the model and resolve which revision applies to the requested event. Hold the question fixed and change the event date. The evidence selection should change even if the model and prompt stay identical.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Retrieve and rerank"] --> N3["Generate"]
   N3["Generate"] --> N4["Cite and evaluate"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **knowledge outside the model** changes one or more transitions.
 
 ## Core concepts
 
@@ -135,8 +155,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Documents appearing high in both rankings receive the strongest reciprocal-rank-fusion scores.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **knowledge freshness** and **grounding**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -237,8 +255,7 @@ Decide among direct context, search, databases, knowledge graphs, RAG, fine-tuni
 - Lewis et al. — Retrieval-Augmented Generation
 - Karpukhin et al. — Dense Passage Retrieval
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[Course outline](index.md) · [Document Ingestion →](02-document-ingestion.md)
+[Course outline](index.md#course-outline){ .study-overview } · [Document Ingestion →](02-document-ingestion.md)
+{: .study-directions .study-directions--footer }

@@ -4,8 +4,16 @@ Technical course 12 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Design secure, governed, resilient AI platforms and map them to managed services without losing vendor-neutral reasoning.
 
-[Start the first lecture](01-enterprise-ai-building-blocks.md){ .md-button .md-button--primary }
+[Start the first lecture](01-enterprise-ai-building-blocks.md){ .md-button .md-button--primary .study-start data-course="12-cloud-and-enterprise-ai-architecture" }
 [Download the course notebook](../../assets/notebooks/12-cloud-and-enterprise-ai-architecture.ipynb){ .md-button download }
+
+## Practice case · Recovery day at a public utility
+
+Fatima designs a policy assistant for a utility. Field staff sometimes work with a poor connection. The legal team needs auditable access and the operations team needs a safe recovery path if a managed service or deployment is wrong. Her architecture review starts with those needs and then considers cloud capabilities.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [Two zones and one deletion boundary](../../casebook/unisuper-recovery.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Design secure, governed, resilient AI platforms and map them to managed services
 
 ### Architecture and trust boundaries
 
-- [01 · Enterprise AI Building Blocks](01-enterprise-ai-building-blocks.md)
-- [02 · Identity, Data, and Trust Boundaries](02-identity-data-and-trust-boundaries.md)
+- [01 · Enterprise AI Building Blocks](01-enterprise-ai-building-blocks.md){ .study-lecture data-lecture="01-enterprise-ai-building-blocks.md" }
+- [02 · Identity, Data, and Trust Boundaries](02-identity-data-and-trust-boundaries.md){ .study-lecture data-lecture="02-identity-data-and-trust-boundaries.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Sketch the logical model, search, compute, and identity capabilities before pick
 
 ### AWS and Azure implementations
 
-- [03 · AWS Managed AI](03-aws-managed-ai.md)
-- [04 · Azure Managed AI](04-azure-managed-ai.md)
+- [03 · AWS Managed AI](03-aws-managed-ai.md){ .study-lecture data-lecture="03-aws-managed-ai.md" }
+- [04 · Azure Managed AI](04-azure-managed-ai.md){ .study-lecture data-lecture="04-azure-managed-ai.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Compare the AWS and Azure mapping. Identify which identity and data controls req
 
 ### Portability and operating model
 
-- [05 · Google Cloud and Portable Patterns](05-google-cloud-and-portable-patterns.md)
-- [06 · Enterprise Operating Model](06-enterprise-operating-model.md)
+- [05 · Google Cloud and Portable Patterns](05-google-cloud-and-portable-patterns.md){ .study-lecture data-lecture="05-google-cloud-and-portable-patterns.md" }
+- [06 · Enterprise Operating Model](06-enterprise-operating-model.md){ .study-lecture data-lecture="06-enterprise-operating-model.md" }
 
 **Checkpoint**
 

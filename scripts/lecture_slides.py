@@ -18,6 +18,7 @@ from applied_courses import APPLIED_COURSES
 from chapter_catalog import get_knowledge_check, get_worked_example
 from generate_books import BOOKS, WORKED_SCENARIOS, chapter_filename, course_slug
 from generate_learning_paths import lecture_filename
+from lecture_cases import CASES
 from no_code_courses import NO_CODE_COURSES
 from topic_knowledge import get_topic_entry
 
@@ -38,6 +39,11 @@ class Deck:
     slides: tuple[Slide, ...]
 
 
+def case_slide(course, number):
+    moment = CASES[course].moments[number - 1]
+    return Slide(moment.title, moment.scene, answers=(moment.reasoning,))
+
+
 def build_decks():
     for book_no, book in enumerate(BOOKS, 1):
         directory = course_slug(book_no, book["title"])
@@ -51,6 +57,7 @@ def build_decks():
             yield Deck(f"books/{directory}/{chapter_filename(number, title)}", book["title"], (
                 Slide(title, principle),
                 Slide("What you’ll learn", summary),
+                case_slide(book_no, number),
                 *(Slide(concepts[start][0][:1].upper() + concepts[start][0][1:],
                         concepts[start][1], tuple(concepts[start + 1:start + 2]))
                   for start in range(0, len(concepts), 2)),
@@ -69,6 +76,7 @@ def build_decks():
         for number, lecture in enumerate(lectures, 1):
             yield Deck(f"courses/{course.slug}/{lecture_filename(number, lecture)}", course.title, (
                 Slide(lecture.title, lecture.outcome),
+                case_slide(course.slug, number),
                 Slide("How it works", lecture.explanation),
                 Slide("Worked example", lecture.example),
                 Slide("Try it yourself", lecture.practice, answers=(lecture.answer,)),

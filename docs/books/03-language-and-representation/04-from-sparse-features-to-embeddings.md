@@ -1,6 +1,26 @@
 # 3.4 — From Sparse Features to Embeddings
 
-[Course overview](index.md) · Tokens and representations · Lecture 4 of 6
+<p class="study-position" data-course="03-language-and-representation" data-lecture="04-from-sparse-features-to-embeddings.md">Tokens and representations · Lecture 4 of 6</p>
+
+[← Tokenization](03-tokenization.md) · [Course outline](index.md#course-outline){ .study-overview } · [Similarity and Vector Search →](05-similarity-and-vector-search.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Language and corpus preparation**
+
+    - [Why Language Is Hard](01-why-language-is-hard.md)
+    - [Corpora and Text Pipelines](02-corpora-and-text-pipelines.md)
+
+    **Tokens and representations**
+
+    - [Tokenization](03-tokenization.md)
+    - **From Sparse Features to Embeddings** (current)
+
+    **Search and indexing**
+
+    - [Similarity and Vector Search](05-similarity-and-vector-search.md)
+    - [Embedding Systems in Production](06-embedding-systems-in-production.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Vectors and dot products
 - Basic text processing
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Move from one-hot vectors, n-grams, TF–IDF, and BM25 to learned dense representations.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## When exact words are an asset
+
+A permit guide mentions form R14. Similar language appears in three other forms. A dense result is semantically close but points to R40 rather than R14.
+
+Use exact term and identifier evidence alongside dense retrieval. Favor semantic similarity for wording variation and preserve lexical signals for named entities and codes. Label both query types so the team can see where each approach helps.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Representation"] --> N3["Similarity"]
   N3["Similarity"] --> N4["Retrieved meaning"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **from sparse features to embeddings** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The outage document should rank highest because it shares the query's weighted terms; the example also exposes the limits of lexical features.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **one-hot vectors** and **TF–IDF**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -234,8 +252,7 @@ Move from one-hot vectors, n-grams, TF–IDF, and BM25 to learned dense represen
 - Manning, Raghavan & Schütze — Introduction to Information Retrieval
 - Mikolov et al. — Efficient Estimation of Word Representations in Vector Space
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Tokenization](03-tokenization.md) · [Course outline](index.md) · [Similarity and Vector Search →](05-similarity-and-vector-search.md)
+[← Tokenization](03-tokenization.md) · [Course outline](index.md#course-outline){ .study-overview } · [Similarity and Vector Search →](05-similarity-and-vector-search.md)
+{: .study-directions .study-directions--footer }

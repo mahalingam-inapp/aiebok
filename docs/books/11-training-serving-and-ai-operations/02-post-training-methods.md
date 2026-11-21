@@ -1,6 +1,26 @@
 # 11.2 — Post-Training Methods
 
-[Course overview](index.md) · Model adaptation and post-training · Lecture 2 of 6
+<p class="study-position" data-course="11-training-serving-and-ai-operations" data-lecture="02-post-training-methods.md">Model adaptation and post-training · Lecture 2 of 6</p>
+
+[← Choosing Adaptation](01-choosing-adaptation.md) · [Course outline](index.md#course-outline){ .study-overview } · [Dataset Engineering →](03-dataset-engineering.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Model adaptation and post-training**
+
+    - [Choosing Adaptation](01-choosing-adaptation.md)
+    - **Post-Training Methods** (current)
+
+    **Datasets and inference infrastructure**
+
+    - [Dataset Engineering](03-dataset-engineering.md)
+    - [Inference Infrastructure](04-inference-infrastructure.md)
+
+    **Deployment and operations**
+
+    - [Deployment and Routing](05-deployment-and-routing.md)
+    - [LLMOps](06-llmops.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Containers and APIs
 - Performance measurement
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Understand supervised fine-tuning, LoRA, QLoRA, preference data, RLHF, DPO, distillation, and model merging.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Adapting the model can improve the wrong thing
+
+A tuned version matches the training examples more closely. Reviewers notice it now sounds certain when an approval is missing.
+
+Hold out realistic new requests and include abstentions in the behavioral criteria. Compare the base and adapted versions on formatting and uncertainty independently before interpreting a loss improvement.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Serve"] --> N3["Trace"]
   N3["Trace"] --> N4["Canary or rollback"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **post-training methods** changes one or more transitions.
 
 ## Core concepts
 
@@ -133,8 +153,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Low-risk simple work routes to the cheaper model; high-risk work routes to the higher-quality model.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **SFT** and **LoRA**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -287,8 +305,7 @@ Understand supervised fine-tuning, LoRA, QLoRA, preference data, RLHF, DPO, dist
 - Ouyang et al. — InstructGPT
 - Official inference-server documentation
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Choosing Adaptation](01-choosing-adaptation.md) · [Course outline](index.md) · [Dataset Engineering →](03-dataset-engineering.md)
+[← Choosing Adaptation](01-choosing-adaptation.md) · [Course outline](index.md#course-outline){ .study-overview } · [Dataset Engineering →](03-dataset-engineering.md)
+{: .study-directions .study-directions--footer }

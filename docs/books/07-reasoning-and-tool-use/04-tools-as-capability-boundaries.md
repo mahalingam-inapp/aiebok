@@ -1,6 +1,26 @@
 # 7.4 — Tools as Capability Boundaries
 
-[Course overview](index.md) · Verification and tool contracts · Lecture 4 of 6
+<p class="study-position" data-course="07-reasoning-and-tool-use" data-lecture="04-tools-as-capability-boundaries.md">Verification and tool contracts · Lecture 4 of 6</p>
+
+[← Verification and Critique](03-verification-and-critique.md) · [Course outline](index.md#course-outline){ .study-overview } · [MCP and Integration Protocols →](05-mcp-and-integration-protocols.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Search and planning**
+
+    - [Reasoning as Search](01-reasoning-as-search.md)
+    - [Planning](02-planning.md)
+
+    **Verification and tool contracts**
+
+    - [Verification and Critique](03-verification-and-critique.md)
+    - **Tools as Capability Boundaries** (current)
+
+    **Integrations and reasoning cost**
+
+    - [MCP and Integration Protocols](05-mcp-and-integration-protocols.md)
+    - [Reasoning-System Economics](06-reasoning-system-economics.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Search and planning
 - Typed software interfaces
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Design typed tools, schemas, descriptions, errors, timeouts, idempotency, permissions, and audit records.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Read access and write authority are different grants
+
+The clerk’s assistant should be able to retrieve a parcel record but only a human reviewer can file the completed decision.
+
+Make read and write separate tools with independent authorizations. Confirm the caller and target record at the service boundary. Verify the behavior with clerks who can read but lack filing authority.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Tools"] --> N3["Observations"]
   N3["Observations"] --> N4["Verifier"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **tools as capability boundaries** changes one or more transitions.
 
 ## Core concepts
 
@@ -135,8 +155,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Only the plan containing every required step in dependency order should pass verification.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **function calling** and **tool schemas**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -237,8 +255,7 @@ Design typed tools, schemas, descriptions, errors, timeouts, idempotency, permis
 - Yao et al. — ReAct
 - Primary protocol specifications for the tool interfaces studied
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Verification and Critique](03-verification-and-critique.md) · [Course outline](index.md) · [MCP and Integration Protocols →](05-mcp-and-integration-protocols.md)
+[← Verification and Critique](03-verification-and-critique.md) · [Course outline](index.md#course-outline){ .study-overview } · [MCP and Integration Protocols →](05-mcp-and-integration-protocols.md)
+{: .study-directions .study-directions--footer }

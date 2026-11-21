@@ -4,7 +4,15 @@ Project practicum · 2 sections · 4 lectures · 3–4 hours, plus the project
 
 Train and compare a small text classifier using governed splits, task slices, cost estimates, and a release decision.
 
-[Start the first lecture](01-group-aware-splits-and-dataset-lineage.md){ .md-button .md-button--primary }
+[Start the first lecture](01-group-aware-splits-and-dataset-lineage.md){ .md-button .md-button--primary .study-start data-course="model-selection-and-adaptation" }
+
+## Practice case · A campus queue nobody wants to call twice
+
+Hassan is piloting a routing classifier for campus support. Some students submit one short sentence from a phone. The help desk wants to resolve requests faster and wants difficult cases to reach a person instead of being routed confidently to the wrong queue.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [The errors a face-matching average hides](../../casebook/face-matching.md).
 
 ## Entry prerequisites
 
@@ -14,13 +22,13 @@ Python, basic probability, and familiarity with held-out evaluation. See Machine
 
 ### Prepare data and learn a baseline
 
-- [01 · Group-aware splits and dataset lineage](01-group-aware-splits-and-dataset-lineage.md) — Split records by group and document lineage before training.
-- [02 · Fit and compare a supervised baseline](02-fit-and-compare-a-supervised-baseline.md) — Train a Naive Bayes text classifier and compare its decisions with a majority-class baseline.
+- [01 · Group-aware splits and dataset lineage](01-group-aware-splits-and-dataset-lineage.md){ .study-lecture data-lecture="01-group-aware-splits-and-dataset-lineage.md" } — Split records by group and document lineage before training.
+- [02 · Fit and compare a supervised baseline](02-fit-and-compare-a-supervised-baseline.md){ .study-lecture data-lecture="02-fit-and-compare-a-supervised-baseline.md" } — Train a Naive Bayes text classifier and compare its decisions with a majority-class baseline.
 
 ### Choose a threshold and package evidence
 
-- [03 · Measure selective risk and cost](03-measure-selective-risk-and-cost.md) — Pick an abstention threshold on validation and report coverage and accuracy on test.
-- [04 · Version a model artifact and regression gate](04-version-a-model-artifact-and-regression-gate.md) — Serialize a fitted model, reload it, and gate release using both quality and coverage.
+- [03 · Measure selective risk and cost](03-measure-selective-risk-and-cost.md){ .study-lecture data-lecture="03-measure-selective-risk-and-cost.md" } — Pick an abstention threshold on validation and report coverage and accuracy on test.
+- [04 · Version a model artifact and regression gate](04-version-a-model-artifact-and-regression-gate.md){ .study-lecture data-lecture="04-version-a-model-artifact-and-regression-gate.md" } — Serialize a fitted model, reload it, and gate release using both quality and coverage.
 
 ## Workbook
 

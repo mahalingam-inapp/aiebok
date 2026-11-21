@@ -8,7 +8,7 @@ from nbformat import read, validate
 
 from applied_courses import APPLIED_COURSES
 from generate_books import BOOKS, course_slug
-from generate_lab_notebooks import COURSE_NOTEBOOKS, LABS, ROOT, STARTER_LABS
+from generate_lab_notebooks import CASE_NOTEBOOK, COURSE_NOTEBOOKS, LABS, ROOT, STARTER_LABS
 
 
 def execute(notebook: Path, directory: Path) -> None:
@@ -35,15 +35,16 @@ def main() -> None:
     slugs = [course_slug(number, book["title"]) for number, book in enumerate(BOOKS, 1)]
     slugs.extend(course.slug for course in APPLIED_COURSES)
     courses = [COURSE_NOTEBOOKS / f"{slug}.ipynb" for slug in slugs]
-    if set(courses) != set(COURSE_NOTEBOOKS.glob("*.ipynb")):
-        raise ValueError("Expected exactly one identified workbook for every technical course.")
+    downloads = [*courses, CASE_NOTEBOOK]
+    if set(downloads) != set(COURSE_NOTEBOOKS.glob("*.ipynb")):
+        raise ValueError("Expected the course workbooks and the claims practicum.")
     starters = [LABS / slug / "lab.ipynb" for slug, *_ in STARTER_LABS]
     with TemporaryDirectory(prefix="aiebok-notebooks-") as scratch:
-        jobs = [(path, Path(scratch)) for path in courses]
+        jobs = [(path, Path(scratch)) for path in downloads]
         jobs.extend((path, directory) for path in starters for directory in (ROOT, path.parent))
         with ThreadPoolExecutor(max_workers=4) as pool:
             list(pool.map(check, jobs))
-    print(f"Verified {len(courses)} course workbooks and {len(starters)} starter notebooks.")
+    print(f"Verified {len(courses)} course workbooks, {len(starters)} starter notebooks, and the claims practicum.")
 
 
 if __name__ == "__main__":

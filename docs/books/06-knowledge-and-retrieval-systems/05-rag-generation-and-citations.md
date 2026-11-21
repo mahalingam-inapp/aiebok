@@ -1,6 +1,26 @@
 # 6.5 — RAG Generation and Citations
 
-[Course overview](index.md) · Grounded answers and enterprise constraints · Lecture 5 of 6
+<p class="study-position" data-course="06-knowledge-and-retrieval-systems" data-lecture="05-rag-generation-and-citations.md">Grounded answers and enterprise constraints · Lecture 5 of 6</p>
+
+[← Ranking and Context Selection](04-ranking-and-context-selection.md) · [Course outline](index.md#course-outline){ .study-overview } · [Advanced and Enterprise RAG →](06-advanced-and-enterprise-rag.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Knowledge strategy and ingestion**
+
+    - [Knowledge Outside the Model](01-knowledge-outside-the-model.md)
+    - [Document Ingestion](02-document-ingestion.md)
+
+    **Retrieval and reranking**
+
+    - [Retrieval](03-retrieval.md)
+    - [Ranking and Context Selection](04-ranking-and-context-selection.md)
+
+    **Grounded answers and enterprise constraints**
+
+    - **RAG Generation and Citations** (current)
+    - [Advanced and Enterprise RAG](06-advanced-and-enterprise-rag.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,25 @@
 - Embeddings and search
 - Structured model output
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Construct grounded prompts, handle missing evidence, attribute claims, validate citations, and avoid unsupported synthesis.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A citation can point to the wrong paragraph
+
+The answer quotes $80 and cites the correct document title. The linked paragraph is from the new revision and says $60.
+
+Verify the claim against the exact passage and revision. If the retrieved evidence does not establish what applied on Sunday, make that uncertainty visible and hand the case to Imani.
+
+### Debug the answer in three passes
+
+The purchase happened on Sunday. Imani opens the trace and finds that retrieval returned only the Monday revision. Adding stricter wording to the prompt will not restore evidence the model never received. She writes three checks.
+
+1. **Temporal retrieval** · The same query returns the Friday revision for Sunday and the Monday revision for Tuesday. Record the sources before generation.
+2. **Claim support** · Both amounts appear in the corpus. Before showing an answer, verify that the exact quoted passage supports the amount and the effective date together.
+3. **Handoff** · In a broken index with only the Monday document, the assistant says it cannot confirm the Sunday limit and gives the employee a route to staff review.
+
+These checks isolate a missing source, a wrong conclusion, and a poor fallback. The learner can now test each change separately. Change the case so that the purchase includes approved field work. Which additional evidence must the answer include before it can cite the exception?
 
 ## Learning objectives
 
@@ -40,8 +72,6 @@ flowchart LR
   N2["Retrieve and rerank"] --> N3["Generate"]
   N3["Generate"] --> N4["Cite and evaluate"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **rag generation and citations** changes one or more transitions.
 
 ## Core concepts
 
@@ -134,8 +164,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Documents appearing high in both rankings receive the strongest reciprocal-rank-fusion scores.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **grounded generation** and **abstention**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -281,8 +309,7 @@ Construct grounded prompts, handle missing evidence, attribute claims, validate 
 - Lewis et al. — Retrieval-Augmented Generation
 - Karpukhin et al. — Dense Passage Retrieval
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Ranking and Context Selection](04-ranking-and-context-selection.md) · [Course outline](index.md) · [Advanced and Enterprise RAG →](06-advanced-and-enterprise-rag.md)
+[← Ranking and Context Selection](04-ranking-and-context-selection.md) · [Course outline](index.md#course-outline){ .study-overview } · [Advanced and Enterprise RAG →](06-advanced-and-enterprise-rag.md)
+{: .study-directions .study-directions--footer }

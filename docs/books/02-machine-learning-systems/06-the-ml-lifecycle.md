@@ -1,6 +1,26 @@
 # 2.6 — The ML Lifecycle
 
-[Course overview](index.md) · Evidence and lifecycle · Lecture 6 of 6
+<p class="study-position" data-course="02-machine-learning-systems" data-lecture="06-the-ml-lifecycle.md">Evidence and lifecycle · Lecture 6 of 6</p>
+
+[← Evaluation and Error Analysis](05-evaluation-and-error-analysis.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Problem framing and supervised models**
+
+    - [Problems, Data, and Baselines](01-problems-data-and-baselines.md)
+    - [Supervised Learning](02-supervised-learning.md)
+
+    **Representations and neural networks**
+
+    - [Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md)
+    - [Neural Networks](04-neural-networks.md)
+
+    **Evidence and lifecycle**
+
+    - [Evaluation and Error Analysis](05-evaluation-and-error-analysis.md)
+    - **The ML Lifecycle** (current)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Basic Python
 - Graphs and averages
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Connect data, experiments, models, releases, monitoring, drift, retraining, and retirement into an accountable lifecycle.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Assign the person who can roll back
+
+A form release changes how the unit number is encoded. The model keeps scoring requests, but the technician tool cannot use half the routes.
+
+Monitor the output contract and the completed handoff, not just model uptime. Tie training data, model, and form versions together. Give a named operator a reversible route to the queue staff already know.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Train"] --> N3["Evaluate slices"]
   N3["Evaluate slices"] --> N4["Operate"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **the ml lifecycle** changes one or more transitions.
 
 ## Core concepts
 
@@ -134,8 +154,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Loss should decline while the learned line approaches the data-generating relationship y = 2x + 1.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **experiment tracking** and **model registry**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -236,8 +254,7 @@ Connect data, experiments, models, releases, monitoring, drift, retraining, and 
 - Hastie, Tibshirani & Friedman — The Elements of Statistical Learning
 - Mitchell — Machine Learning
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Evaluation and Error Analysis](05-evaluation-and-error-analysis.md) · [Course outline](index.md) · [Course project →](index.md#course-project)
+[← Evaluation and Error Analysis](05-evaluation-and-error-analysis.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions .study-directions--footer }

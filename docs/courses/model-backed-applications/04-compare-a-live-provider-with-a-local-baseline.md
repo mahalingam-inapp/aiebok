@@ -1,14 +1,43 @@
 # Compare a live provider with a local baseline
 
-[Build and Evaluate a Model-Backed Application](index.md) · Measure and integrate · Lecture 4 of 4 · 45–60 min · Project practicum
+<p class="study-position" data-course="model-backed-applications" data-lecture="04-compare-a-live-provider-with-a-local-baseline.md">Measure and integrate · Lecture 4 of 4</p>
+
+[← Grounding checks and evaluation slices](03-grounding-checks-and-evaluation-slices.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Implement the contract and baseline**
+
+    - [Model interfaces and structured output](01-model-interfaces-and-structured-output.md)
+    - [Retrieval, evidence and citations](02-retrieval-evidence-and-citations.md)
+
+    **Measure and integrate**
+
+    - [Grounding checks and evaluation slices](03-grounding-checks-and-evaluation-slices.md)
+    - **Compare a live provider with a local baseline** (current)
 
 ## What you will learn
 
 Use the same contract and cases with a model endpoint and record latency and workload conditions.
 
+## Compare live results without changing the experiment
+
+The local fixture responds instantly. A working model gives richer phrasing and slower answers, while some outputs fail the exact quote check.
+
+Keep corpus, cases, and validator fixed. Record runtime and measurement conditions separately from answer quality. If you want to accept paraphrases, add a rubric and test that change rather than silently relaxing it for one model.
+
 ## How it works
 
 An endpoint adapter is useful only if it preserves request and result semantics. Use a timeout, record the endpoint and model version, and separate infrastructure failures from model-quality failures. Capture median latency with the number of runs and distinguish a cold first request from warmed requests.
+
+### Make the live comparison a controlled change
+
+A deterministic baseline makes it easier to test your own application contract. A live provider introduces sampling, network delays, rate limits, and model versions. Keep the same corpus, input cases, validators, and scoring rules when changing the provider. Record anything that still differs, including timeouts and inference settings.
+
+Run each configuration over the same cases, measuring first successful results and the spread of latency over repeated trials. Report the number of attempts and failures. Compare output quality per slice rather than assuming a provider with more natural phrasing belongs on every route.
+
+If you change an exact-match validator to allow a paraphrase, treat it as another experiment. Decide what support means, review a small sample, and rerun both candidates with the same requirement. The workbook can run with a fixture when a local model is unavailable. Fixture timings are useful for understanding the harness and do not estimate a live workload.
 
 ## Worked example
 
@@ -25,4 +54,5 @@ Run the standard-library baseline. For the optional live run, start Ollama with 
 
 ## Continue
 
-[← Previous lecture](03-grounding-checks-and-evaluation-slices.md) · [Course outline](index.md) · [Course project →](index.md#course-project)
+[← Grounding checks and evaluation slices](03-grounding-checks-and-evaluation-slices.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions .study-directions--footer }

@@ -353,6 +353,9 @@ def generate_build_guides() -> int:
             "",
             "Each row lists the goal, phased deliverables, and primary book track.",
             "",
+            "Use the [coding-agent implementation guides](coding-agents/index.md) for Codex, Cursor, OpenCode, and Claude Code. "
+            "The [UnderCover claims harness](undercover-harness.md) walks through a durable workflow and its eval gates.",
+            "",
             "Expand a theme or use search (`/`) for a specific guide.",
         ],
         groups,

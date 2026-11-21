@@ -1,14 +1,43 @@
 # Rollout, operator handoff and stop rules
 
-[Customer Pilot Engineering](index.md) · Evaluate and hand off · Lecture 4 of 4 · 45–60 min · Project practicum
+<p class="study-position" data-course="customer-pilot-engineering" data-lecture="04-rollout-operator-handoff-and-stop-rules.md">Evaluate and hand off · Lecture 4 of 4</p>
+
+[← Shadow acceptance and integration failures](03-shadow-acceptance-and-integration-failures.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Discover and integrate**
+
+    - [Discovery and pilot acceptance](01-discovery-and-pilot-acceptance.md)
+    - [Map a customer data contract](02-map-a-customer-data-contract.md)
+
+    **Evaluate and hand off**
+
+    - [Shadow acceptance and integration failures](03-shadow-acceptance-and-integration-failures.md)
+    - **Rollout, operator handoff and stop rules** (current)
 
 ## What you will learn
 
 Write a release recommendation grounded in measured outcomes and assign an operational owner.
 
+## Hand over a decision someone can operate
+
+The pilot reaches its time target on routine tickets. The shift lead worries about what happens when someone submits a restricted request tomorrow.
+
+Show the restricted-case result and a working stop rule. Name the owner of manual fallback, provide a reproducible smoke case, and document how the customer can pause the pilot without the engineering team.
+
 ## How it works
 
 Report the cohort, case counts, observed limitations, and actions after launch. A stop rule links evidence to an action and owner. The handoff includes a smoke case, fallback route, data boundary, and how to read the service record.
+
+### The pilot is only as reversible as the handoff
+
+A customer-facing release needs a named owner, a defined scope, a known smoke case, and an accessible fallback. Report which tasks passed and which still go to staff. Include the threshold that triggers pause and explain how to identify requests handled during the pilot.
+
+Give the shift lead a small rehearsal. Have them recognize a failure, pause the feature, find an in-flight item, and confirm it remains in the manual queue. The ability to follow a runbook becomes part of acceptance evidence. A handoff is incomplete if preserving the workflow still requires the developer to be present.
+
+Keep a log of responsibilities and a checkpoint for reassessment. A bounded approval can be extended later when the customer has enough evidence on new categories. A limited release that the operators can understand and reverse is often more valuable than a broader demonstration with uncertain ownership.
 
 ## Worked example
 
@@ -25,4 +54,5 @@ Review both bundled pilot result sets. Write a one-page handoff with the same tr
 
 ## Continue
 
-[← Previous lecture](03-shadow-acceptance-and-integration-failures.md) · [Course outline](index.md) · [Course project →](index.md#course-project)
+[← Shadow acceptance and integration failures](03-shadow-acceptance-and-integration-failures.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions .study-directions--footer }

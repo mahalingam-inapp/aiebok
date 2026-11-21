@@ -1,6 +1,26 @@
 # 7.6 — Reasoning-System Economics
 
-[Course overview](index.md) · Integrations and reasoning cost · Lecture 6 of 6
+<p class="study-position" data-course="07-reasoning-and-tool-use" data-lecture="06-reasoning-system-economics.md">Integrations and reasoning cost · Lecture 6 of 6</p>
+
+[← MCP and Integration Protocols](05-mcp-and-integration-protocols.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Search and planning**
+
+    - [Reasoning as Search](01-reasoning-as-search.md)
+    - [Planning](02-planning.md)
+
+    **Verification and tool contracts**
+
+    - [Verification and Critique](03-verification-and-critique.md)
+    - [Tools as Capability Boundaries](04-tools-as-capability-boundaries.md)
+
+    **Integrations and reasoning cost**
+
+    - [MCP and Integration Protocols](05-mcp-and-integration-protocols.md)
+    - **Reasoning-System Economics** (current)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Search and planning
 - Typed software interfaces
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Balance accuracy, latency, token use, parallel candidates, tool calls, caches, failure rates, and task value.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A second attempt should buy evidence
+
+The first plan cannot disambiguate two parcel candidates. Ravi can pay for another reasoning pass or ask the clerk for one missing field.
+
+Compare expected resolution time and review cost. A second call is justified if it can use new evidence or recover from a transient failure. If the address register lacks a field, a human clarification is more useful.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Tools"] --> N3["Observations"]
   N3["Observations"] --> N4["Verifier"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **reasoning-system economics** changes one or more transitions.
 
 ## Core concepts
 
@@ -136,8 +156,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Only the plan containing every required step in dependency order should pass verification.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **test-time compute** and **latency**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -238,8 +256,7 @@ Balance accuracy, latency, token use, parallel candidates, tool calls, caches, f
 - Yao et al. — ReAct
 - Primary protocol specifications for the tool interfaces studied
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← MCP and Integration Protocols](05-mcp-and-integration-protocols.md) · [Course outline](index.md) · [Course project →](index.md#course-project)
+[← MCP and Integration Protocols](05-mcp-and-integration-protocols.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions .study-directions--footer }

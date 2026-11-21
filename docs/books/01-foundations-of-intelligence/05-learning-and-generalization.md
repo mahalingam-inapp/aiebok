@@ -1,6 +1,26 @@
 # 1.5 — Learning and Generalization
 
-[Course overview](index.md) · Learning and decisions · Lecture 5 of 6
+<p class="study-position" data-course="01-foundations-of-intelligence" data-lecture="05-learning-and-generalization.md">Learning and decisions · Lecture 5 of 6</p>
+
+[← The Mathematics Engineers Need](04-the-mathematics-engineers-need.md) · [Course outline](index.md#course-outline){ .study-overview } · [Engineering with Uncertainty →](06-engineering-with-uncertainty.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Goals and representations**
+
+    - [What Intelligence Means](01-what-intelligence-means.md)
+    - [From Symbols to Statistics](02-from-symbols-to-statistics.md)
+
+    **Search and mathematics**
+
+    - [Search, Planning, and Decisions](03-search-planning-and-decisions.md)
+    - [The Mathematics Engineers Need](04-the-mathematics-engineers-need.md)
+
+    **Learning and decisions**
+
+    - **Learning and Generalization** (current)
+    - [Engineering with Uncertainty](06-engineering-with-uncertainty.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Comfort reading simple Python
 - Basic algebra
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Distinguish memorization from generalization and training from inference. Understand data-generating processes, inductive bias, overfitting, underfitting, and distribution shift.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A new station breaks the naming shortcut
+
+The training set calls every lift near the old North Gate ‘NG’. A new station uses the same abbreviation for a bus stand. Early pilot accuracy looked excellent on a random sample of old tickets.
+
+Hold out whole stations or newer periods. A random split can put near-duplicate messages in training and evaluation. Comparing results on an unseen station tests whether the routing behavior depends on a general signal or on a remembered abbreviation.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Search or learn"] --> N3["Decision"]
   N3["Decision"] --> N4["Feedback"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **learning and generalization** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     A* should reach the same shortest path as breadth-first search while often expanding fewer states when the heuristic is informative.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **training** and **inference**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -234,8 +252,7 @@ Distinguish memorization from generalization and training from inference. When t
 - Russell & Norvig — Artificial Intelligence: A Modern Approach
 - Sutton & Barto — Reinforcement Learning: An Introduction
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← The Mathematics Engineers Need](04-the-mathematics-engineers-need.md) · [Course outline](index.md) · [Engineering with Uncertainty →](06-engineering-with-uncertainty.md)
+[← The Mathematics Engineers Need](04-the-mathematics-engineers-need.md) · [Course outline](index.md#course-outline){ .study-overview } · [Engineering with Uncertainty →](06-engineering-with-uncertainty.md)
+{: .study-directions .study-directions--footer }

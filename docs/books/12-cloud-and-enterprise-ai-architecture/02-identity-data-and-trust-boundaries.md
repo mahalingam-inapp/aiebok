@@ -1,6 +1,26 @@
 # 12.2 — Identity, Data, and Trust Boundaries
 
-[Course overview](index.md) · Architecture and trust boundaries · Lecture 2 of 6
+<p class="study-position" data-course="12-cloud-and-enterprise-ai-architecture" data-lecture="02-identity-data-and-trust-boundaries.md">Architecture and trust boundaries · Lecture 2 of 6</p>
+
+[← Enterprise AI Building Blocks](01-enterprise-ai-building-blocks.md) · [Course outline](index.md#course-outline){ .study-overview } · [AWS Managed AI →](03-aws-managed-ai.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Architecture and trust boundaries**
+
+    - [Enterprise AI Building Blocks](01-enterprise-ai-building-blocks.md)
+    - **Identity, Data, and Trust Boundaries** (current)
+
+    **AWS and Azure implementations**
+
+    - [AWS Managed AI](03-aws-managed-ai.md)
+    - [Azure Managed AI](04-azure-managed-ai.md)
+
+    **Portability and operating model**
+
+    - [Google Cloud and Portable Patterns](05-google-cloud-and-portable-patterns.md)
+    - [Enterprise Operating Model](06-enterprise-operating-model.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Cloud and identity fundamentals
 - Architecture documentation
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Apply authentication, authorization, tenancy, secrets, encryption, residency, lineage, and audit to AI data flows.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Permissions need to travel with the data
+
+A shared policy index serves managers and contractors. A contractor’s result should never depend on a policy document they cannot read.
+
+Propagate caller, role, and source access into retrieval and testing. Check the same question for distinct roles and verify logs and caches keep the boundary too.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Managed service"] --> N3["SLO"]
   N3["SLO"] --> N4["Governance"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **identity, data, and trust boundaries** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The logical architecture remains stable while provider-specific service names change.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **identity** and **authorization**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -234,8 +252,7 @@ Apply authentication, authorization, tenancy, secrets, encryption, residency, li
 - Official AWS, Azure, and Google Cloud architecture and service documentation
 - Organization security and data-governance standards
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Enterprise AI Building Blocks](01-enterprise-ai-building-blocks.md) · [Course outline](index.md) · [AWS Managed AI →](03-aws-managed-ai.md)
+[← Enterprise AI Building Blocks](01-enterprise-ai-building-blocks.md) · [Course outline](index.md#course-outline){ .study-overview } · [AWS Managed AI →](03-aws-managed-ai.md)
+{: .study-directions .study-directions--footer }

@@ -4,7 +4,15 @@ Project practicum · 2 sections · 4 lectures · 3–4 hours, plus the project
 
 Exercise a versioned service, fallback, canary, telemetry, and rollback in a local deployment.
 
-[Start the first lecture](01-serve-a-versioned-endpoint.md){ .md-button .md-button--primary }
+[Start the first lecture](01-serve-a-versioned-endpoint.md){ .md-button .md-button--primary .study-start data-course="operating-ai-services" }
+
+## Practice case · When a successful response is really a fallback
+
+Helena operates a review assistant for a utility. A canary route starts timing out. Callers still get responses from a fallback, so the dashboard looks healthy until staff report that manual review queues are growing.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [A feature file takes down a healthy service](../../casebook/feature-file-outage.md).
 
 ## Entry prerequisites
 
@@ -14,13 +22,13 @@ Python, HTTP, and evaluation basics. Familiarity with model-backed applications 
 
 ### Package and observe
 
-- [01 · Serve a versioned endpoint](01-serve-a-versioned-endpoint.md) — Expose a local HTTP endpoint with explicit version and health behavior.
-- [02 · Fallback, trace fields and durable telemetry](02-fallback-trace-fields-and-durable-telemetry.md) — Record provider failures and successful fallback without storing request text.
+- [01 · Serve a versioned endpoint](01-serve-a-versioned-endpoint.md){ .study-lecture data-lecture="01-serve-a-versioned-endpoint.md" } — Expose a local HTTP endpoint with explicit version and health behavior.
+- [02 · Fallback, trace fields and durable telemetry](02-fallback-trace-fields-and-durable-telemetry.md){ .study-lecture data-lecture="02-fallback-trace-fields-and-durable-telemetry.md" } — Record provider failures and successful fallback without storing request text.
 
 ### Release and recover
 
-- [03 · Canary evaluation and rollout decisions](03-canary-evaluation-and-rollout-decisions.md) — Compare gated evidence and identify a canary that must pause.
-- [04 · Rollback and production handoff](04-rollback-and-production-handoff.md) — Persist a version-pointer rollback and verify it through a local HTTP smoke test.
+- [03 · Canary evaluation and rollout decisions](03-canary-evaluation-and-rollout-decisions.md){ .study-lecture data-lecture="03-canary-evaluation-and-rollout-decisions.md" } — Compare gated evidence and identify a canary that must pause.
+- [04 · Rollback and production handoff](04-rollback-and-production-handoff.md){ .study-lecture data-lecture="04-rollback-and-production-handoff.md" } — Persist a version-pointer rollback and verify it through a local HTTP smoke test.
 
 ## Workbook
 

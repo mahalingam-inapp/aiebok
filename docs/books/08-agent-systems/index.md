@@ -4,8 +4,16 @@ Technical course 08 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Design agentic systems as bounded stateful architectures rather than treating autonomy as a model feature.
 
-[Start the first lecture](01-agent-or-workflow.md){ .md-button .md-button--primary }
+[Start the first lecture](01-agent-or-workflow.md){ .md-button .md-button--primary .study-start data-course="08-agent-systems" }
 [Download the course notebook](../../assets/notebooks/08-agent-systems.ipynb){ .md-button download }
+
+## Practice case · Tuesday's volunteer calendar
+
+Lena coordinates a volunteer program. Choosing a candidate schedule can be flexible, but publishing repeated or unapproved calendar changes wastes other people’s time. She needs the workflow to survive overnight outages with a comprehensible activity history.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [Why GitHub paused queued work](../../casebook/paused-jobs.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Design agentic systems as bounded stateful architectures rather than treating au
 
 ### Workflows and agent loops
 
-- [01 · Agent or Workflow?](01-agent-or-workflow.md)
-- [02 · The Agent Loop](02-the-agent-loop.md)
+- [01 · Agent or Workflow?](01-agent-or-workflow.md){ .study-lecture data-lecture="01-agent-or-workflow.md" }
+- [02 · The Agent Loop](02-the-agent-loop.md){ .study-lecture data-lecture="02-the-agent-loop.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Identify where a fixed workflow is sufficient. Write an invariant for a bounded 
 
 ### Recovery and patterns
 
-- [03 · Agent Memory and Recovery](03-agent-memory-and-recovery.md)
-- [04 · Agent Patterns](04-agent-patterns.md)
+- [03 · Agent Memory and Recovery](03-agent-memory-and-recovery.md){ .study-lecture data-lecture="03-agent-memory-and-recovery.md" }
+- [04 · Agent Patterns](04-agent-patterns.md){ .study-lecture data-lecture="04-agent-patterns.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Record what must survive a restart so an approved action is handled once.
 
 ### Coordination and operations
 
-- [05 · Multi-Agent Systems](05-multi-agent-systems.md)
-- [06 · Operating Long-Running Agents](06-operating-long-running-agents.md)
+- [05 · Multi-Agent Systems](05-multi-agent-systems.md){ .study-lecture data-lecture="05-multi-agent-systems.md" }
+- [06 · Operating Long-Running Agents](06-operating-long-running-agents.md){ .study-lecture data-lecture="06-operating-long-running-agents.md" }
 
 **Checkpoint**
 

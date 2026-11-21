@@ -4,8 +4,16 @@ Technical course 05 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Design the information, instructions, state, and output boundaries that make model behavior useful and testable.
 
-[Start the first lecture](01-instructions-that-work.md){ .md-button .md-button--primary }
+[Start the first lecture](01-instructions-that-work.md){ .md-button .md-button--primary .study-start data-course="05-prompt-and-context-engineering" }
 [Download the course notebook](../../assets/notebooks/05-prompt-and-context-engineering.ipynb){ .md-button download }
+
+## Practice case · The shift handoff that changed a date
+
+Noah runs scheduling for a community center. A writing assistant helps staff hand off room changes between shifts. When it turns ‘date pending’ into ‘next Thursday’, volunteers receive an incorrect message. Noah wants brief drafts while giving the next shift enough evidence to verify and approve them.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [A chatbot answer that changed a travel decision](../../casebook/bereavement-fares.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Design the information, instructions, state, and output boundaries that make mod
 
 ### Instructions and output contracts
 
-- [01 · Instructions That Work](01-instructions-that-work.md)
-- [02 · Structured Generation](02-structured-generation.md)
+- [01 · Instructions That Work](01-instructions-that-work.md){ .study-lecture data-lecture="01-instructions-that-work.md" }
+- [02 · Structured Generation](02-structured-generation.md){ .study-lecture data-lecture="02-structured-generation.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Write a prompt requirement and one schema check that can be evaluated independen
 
 ### Context and memory
 
-- [03 · Context Construction](03-context-construction.md)
-- [04 · Conversation and Memory](04-conversation-and-memory.md)
+- [03 · Context Construction](03-context-construction.md){ .study-lecture data-lecture="03-context-construction.md" }
+- [04 · Conversation and Memory](04-conversation-and-memory.md){ .study-lecture data-lecture="04-conversation-and-memory.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Rebuild the context for a smaller budget. Record which memory or evidence you wo
 
 ### Trust and prompt operations
 
-- [05 · Context Failure and Security](05-context-failure-and-security.md)
-- [06 · Prompt and Context Operations](06-prompt-and-context-operations.md)
+- [05 · Context Failure and Security](05-context-failure-and-security.md){ .study-lecture data-lecture="05-context-failure-and-security.md" }
+- [06 · Prompt and Context Operations](06-prompt-and-context-operations.md){ .study-lecture data-lecture="06-prompt-and-context-operations.md" }
 
 **Checkpoint**
 

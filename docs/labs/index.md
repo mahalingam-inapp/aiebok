@@ -2,7 +2,7 @@
 
 **New?** Start with **[Hands-on start](start-here.md)** — five starter labs in order with book chapters and notebook links.
 
-Browse [course workbooks and Jupyter setup](notebooks/index.md), or use the [lab catalog](catalog.md) for individual lecture scripts.
+Browse [course workbooks and Jupyter setup](notebooks/index.md), run the [HarborLink interactive workbook](interactive-workbook.md), or use the [lab catalog](catalog.md) for individual lecture scripts.
 
 ## Starter labs (with notebooks)
 

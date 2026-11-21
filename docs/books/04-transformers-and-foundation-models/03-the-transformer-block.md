@@ -1,6 +1,26 @@
 # 4.3 — The Transformer Block
 
-[Course overview](index.md) · Transformer blocks and training · Lecture 3 of 6
+<p class="study-position" data-course="04-transformers-and-foundation-models" data-lecture="03-the-transformer-block.md">Transformer blocks and training · Lecture 3 of 6</p>
+
+[← Attention](02-attention.md) · [Course outline](index.md#course-outline){ .study-overview } · [Training Foundation Models →](04-training-foundation-models.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Sequence models and attention**
+
+    - [Sequence Models Before Transformers](01-sequence-models-before-transformers.md)
+    - [Attention](02-attention.md)
+
+    **Transformer blocks and training**
+
+    - **The Transformer Block** (current)
+    - [Training Foundation Models](04-training-foundation-models.md)
+
+    **Decoding and model selection**
+
+    - [Inference and Sampling](05-inference-and-sampling.md)
+    - [Model Families and Selection](06-model-families-and-selection.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Matrix multiplication intuition
 - Neural-network basics
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Compose multi-head attention, feed-forward layers, residual paths, normalization, positional information, and masking.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Follow one representation through the block
+
+Asha wants to know why replacing a name also changes the task category. The model passes contextualized representations from attention through other transformations before predicting.
+
+Track tensor shapes and isolate one change in the input. Compare the resulting owner and category outputs. This connects the block-level mechanism to behavioral evidence without assuming any individual head is assigned a stable human-readable role.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Transformer layers"] --> N3["Logits"]
   N3["Logits"] --> N4["Sampled token"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **the transformer block** changes one or more transitions.
 
 ## Core concepts
 
@@ -134,8 +154,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The query-aligned value receives more attention, and lower temperature concentrates the sampling distribution.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **multi-head attention** and **residual connections**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -237,8 +255,7 @@ Compose multi-head attention, feed-forward layers, residual paths, normalization
 - Devlin et al. — BERT
 - Brown et al. — Language Models are Few-Shot Learners
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Attention](02-attention.md) · [Course outline](index.md) · [Training Foundation Models →](04-training-foundation-models.md)
+[← Attention](02-attention.md) · [Course outline](index.md#course-outline){ .study-overview } · [Training Foundation Models →](04-training-foundation-models.md)
+{: .study-directions .study-directions--footer }

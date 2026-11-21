@@ -1,6 +1,26 @@
 # 8.2 — The Agent Loop
 
-[Course overview](index.md) · Workflows and agent loops · Lecture 2 of 6
+<p class="study-position" data-course="08-agent-systems" data-lecture="02-the-agent-loop.md">Workflows and agent loops · Lecture 2 of 6</p>
+
+[← Agent or Workflow?](01-agent-or-workflow.md) · [Course outline](index.md#course-outline){ .study-overview } · [Agent Memory and Recovery →](03-agent-memory-and-recovery.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Workflows and agent loops**
+
+    - [Agent or Workflow?](01-agent-or-workflow.md)
+    - **The Agent Loop** (current)
+
+    **Recovery and patterns**
+
+    - [Agent Memory and Recovery](03-agent-memory-and-recovery.md)
+    - [Agent Patterns](04-agent-patterns.md)
+
+    **Coordination and operations**
+
+    - [Multi-Agent Systems](05-multi-agent-systems.md)
+    - [Operating Long-Running Agents](06-operating-long-running-agents.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - State machines
 - Tools and evaluation
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Connect goal, state, planning, action, observation, reflection, and termination into a bounded state machine.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## A loop that stops early is often the right result
+
+The scheduler has exhausted its candidate slots and considers asking a calendar tool again despite unchanged inputs.
+
+Make progress observable and set a stopping condition tied to budget and evidence. A stop with an explanation and a next action gives Lena something to work with. Repetition without new state gives her a delay.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Act"] --> N3["Checkpoint"]
   N3["Checkpoint"] --> N4["Stop or continue"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **the agent loop** changes one or more transitions.
 
 ## Core concepts
 
@@ -135,8 +155,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The state machine pauses at approval, resumes after approval, and terminates within the attempt budget.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **plan-act-observe** and **state**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -237,8 +255,7 @@ Connect goal, state, planning, action, observation, reflection, and termination 
 - Primary papers for the selected agent pattern
 - Distributed-systems references for durable execution and idempotency
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Agent or Workflow?](01-agent-or-workflow.md) · [Course outline](index.md) · [Agent Memory and Recovery →](03-agent-memory-and-recovery.md)
+[← Agent or Workflow?](01-agent-or-workflow.md) · [Course outline](index.md#course-outline){ .study-overview } · [Agent Memory and Recovery →](03-agent-memory-and-recovery.md)
+{: .study-directions .study-directions--footer }

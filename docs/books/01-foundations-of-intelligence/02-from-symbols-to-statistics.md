@@ -1,6 +1,26 @@
 # 1.2 — From Symbols to Statistics
 
-[Course overview](index.md) · Goals and representations · Lecture 2 of 6
+<p class="study-position" data-course="01-foundations-of-intelligence" data-lecture="02-from-symbols-to-statistics.md">Goals and representations · Lecture 2 of 6</p>
+
+[← What Intelligence Means](01-what-intelligence-means.md) · [Course outline](index.md#course-outline){ .study-overview } · [Search, Planning, and Decisions →](03-search-planning-and-decisions.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Goals and representations**
+
+    - [What Intelligence Means](01-what-intelligence-means.md)
+    - **From Symbols to Statistics** (current)
+
+    **Search and mathematics**
+
+    - [Search, Planning, and Decisions](03-search-planning-and-decisions.md)
+    - [The Mathematics Engineers Need](04-the-mathematics-engineers-need.md)
+
+    **Learning and decisions**
+
+    - [Learning and Generalization](05-learning-and-generalization.md)
+    - [Engineering with Uncertainty](06-engineering-with-uncertainty.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Comfort reading simple Python
 - Basic algebra
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Trace the path from symbolic rules and expert systems to statistical learning, deep learning, foundation models, and agents. Each era solved different problems and retained useful ideas.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Keep the rule the dispatcher can defend
+
+A sensor reports that a passenger is trapped. A second report mentions a lift that has been ‘temperamental’. Priya can explain an immediate dispatch for the first case. The second case has many historical variations.
+
+A hard rule is appropriate for the verified emergency because the consequence is clear. A learned classifier can rank ambiguous language for review. Keeping those decisions in separate layers also makes it possible to tell whether a bad outcome came from the policy or the estimate.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Search or learn"] --> N3["Decision"]
   N3["Decision"] --> N4["Feedback"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **from symbols to statistics** changes one or more transitions.
 
 ## Core concepts
 
@@ -138,8 +158,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     A* should reach the same shortest path as breadth-first search while often expanding fewer states when the heuristic is informative.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **symbolic AI** and **expert systems**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -240,8 +258,7 @@ Trace the path from symbolic rules and expert systems to statistical learning, d
 - Russell & Norvig — Artificial Intelligence: A Modern Approach
 - Sutton & Barto — Reinforcement Learning: An Introduction
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← What Intelligence Means](01-what-intelligence-means.md) · [Course outline](index.md) · [Search, Planning, and Decisions →](03-search-planning-and-decisions.md)
+[← What Intelligence Means](01-what-intelligence-means.md) · [Course outline](index.md#course-outline){ .study-overview } · [Search, Planning, and Decisions →](03-search-planning-and-decisions.md)
+{: .study-directions .study-directions--footer }

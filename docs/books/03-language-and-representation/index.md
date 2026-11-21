@@ -4,8 +4,16 @@ Technical course 03 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Understand how language becomes computable representations and why embeddings enable semantic systems.
 
-[Start the first lecture](01-why-language-is-hard.md){ .md-button .md-button--primary }
+[Start the first lecture](01-why-language-is-hard.md){ .md-button .md-button--primary .study-start data-course="03-language-and-representation" }
 [Download the course notebook](../../assets/notebooks/03-language-and-representation.ipynb){ .md-button download }
+
+## Practice case · The library card that goes by three names
+
+Marisol runs a library’s multilingual help desk. Patrons call the same borrowing card a reader card, a library pass, or the local-language equivalent. A policy search that works for staff using official terms returns an unrelated event pass for visitors. The librarian asks the engineering team to preserve regional variation while giving patrons a source they can verify.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [Who gets left out of a transcript?](../../casebook/speech-recognition.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Understand how language becomes computable representations and why embeddings en
 
 ### Language and corpus preparation
 
-- [01 · Why Language Is Hard](01-why-language-is-hard.md)
-- [02 · Corpora and Text Pipelines](02-corpora-and-text-pipelines.md)
+- [01 · Why Language Is Hard](01-why-language-is-hard.md){ .study-lecture data-lecture="01-why-language-is-hard.md" }
+- [02 · Corpora and Text Pipelines](02-corpora-and-text-pipelines.md){ .study-lecture data-lecture="02-corpora-and-text-pipelines.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Write an ambiguous search query. Normalize two spelling variants without discard
 
 ### Tokens and representations
 
-- [03 · Tokenization](03-tokenization.md)
-- [04 · From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md)
+- [03 · Tokenization](03-tokenization.md){ .study-lecture data-lecture="03-tokenization.md" }
+- [04 · From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md){ .study-lecture data-lecture="04-from-sparse-features-to-embeddings.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Compare the visible tokens for two search queries. Identify a distinct word that
 
 ### Search and indexing
 
-- [05 · Similarity and Vector Search](05-similarity-and-vector-search.md)
-- [06 · Embedding Systems in Production](06-embedding-systems-in-production.md)
+- [05 · Similarity and Vector Search](05-similarity-and-vector-search.md){ .study-lecture data-lecture="05-similarity-and-vector-search.md" }
+- [06 · Embedding Systems in Production](06-embedding-systems-in-production.md){ .study-lecture data-lecture="06-embedding-systems-in-production.md" }
 
 **Checkpoint**
 

@@ -32,3 +32,9 @@ def test_main_prints_release_gate():
 
 def test_release_passes_on_default_cases(capsys):
     assert main() == 0
+
+
+def test_release_requires_a_safety_slice(monkeypatch, capsys):
+    monkeypatch.setattr("main.CASES", [case for case in CASES if case.slice == "general"])
+    assert main() == 1
+    assert "score=100.0% safety_ok=False" in capsys.readouterr().out

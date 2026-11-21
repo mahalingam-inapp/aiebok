@@ -1,6 +1,26 @@
 # 13.3 — Image and Video Generation
 
-[Course overview](index.md) · Generative media and bounded action · Lecture 3 of 6
+<p class="study-position" data-course="13-multimodal-and-frontier-systems" data-lecture="03-image-and-video-generation.md">Generative media and bounded action · Lecture 3 of 6</p>
+
+[← Speech and Audio](02-speech-and-audio.md) · [Course outline](index.md#course-outline){ .study-overview } · [Computer Use and Embodied Action →](04-computer-use-and-embodied-action.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Documents, vision, and audio**
+
+    - [Vision and Document Intelligence](01-vision-and-document-intelligence.md)
+    - [Speech and Audio](02-speech-and-audio.md)
+
+    **Generative media and bounded action**
+
+    - **Image and Video Generation** (current)
+    - [Computer Use and Embodied Action](04-computer-use-and-embodied-action.md)
+
+    **Emerging systems and evidence**
+
+    - [Long Context, World Models, and Continual Learning](05-long-context-world-models-and-continual-learning.md)
+    - [How to Track the Frontier](06-how-to-track-the-frontier.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Evidence-oriented research reading
 - Risk awareness
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Study diffusion, conditioning, latent representations, control, evaluation, provenance, copyright, and content safety.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Generated visuals need provenance and editorial choice
+
+The team creates a period-style reconstruction for a public exhibit. A reader mistakes it for an archival photograph.
+
+Record and disclose provenance at publication. Evaluate whether the reconstruction supports the intended explanation and whether labeling remains visible when the image is shared or cropped.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Fusion or action"] --> N3["Provenance"]
   N3["Provenance"] --> N4["Evaluation"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **image and video generation** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Only evidence above the confidence threshold is emitted, and every output retains source, page, and modality.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **diffusion** and **conditioning**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -234,8 +252,7 @@ Study diffusion, conditioning, latent representations, control, evaluation, prov
 - Primary papers for the selected modality or frontier claim
 - Model and dataset cards for every reproduced system
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Speech and Audio](02-speech-and-audio.md) · [Course outline](index.md) · [Computer Use and Embodied Action →](04-computer-use-and-embodied-action.md)
+[← Speech and Audio](02-speech-and-audio.md) · [Course outline](index.md#course-outline){ .study-overview } · [Computer Use and Embodied Action →](04-computer-use-and-embodied-action.md)
+{: .study-directions .study-directions--footer }

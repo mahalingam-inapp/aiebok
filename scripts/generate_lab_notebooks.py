@@ -5,16 +5,21 @@ import json
 from pathlib import Path
 
 from applied_courses import APPLIED_COURSES
+from chapter_catalog import get_knowledge_check, get_worked_example
 from course_catalog import TECHNICAL_COURSES
-from generate_books import BOOKS, SAMPLE_FILES, course_slug
+from generate_books import BOOKS, SAMPLE_FILES, WORKED_SCENARIOS, course_slug
 from generate_expansion import lab_slug
 from generate_maturity_content import STARTER_LABS
-from lab_notebook_templates import BUILDERS, _code, _md
+from lab_notebook_templates import BUILDERS, _code, _md, cells_for
+from lecture_cases import CASES, lecture_case
+from textbook_readings import READINGS
+from topic_knowledge import get_topic_entry
 
 ROOT = Path(__file__).resolve().parents[1]
 LABS = ROOT / "labs"
 NOTEBOOKS = ROOT / "docs" / "labs" / "notebooks"
 COURSE_NOTEBOOKS = ROOT / "docs" / "assets" / "notebooks"
+CASE_NOTEBOOK = COURSE_NOTEBOOKS / "undercover-harness.ipynb"
 
 REPO_BLOB = "https://github.com/mahalingam-inapp/aiebok/blob/main"
 REPO_ROOT = "https://github.com/mahalingam-inapp/aiebok"
@@ -58,20 +63,36 @@ def write_course_notebooks() -> None:
                 "Run it, compare the result with your prediction, and use the section checkpoint to record what you learned."
             )
         ]
+        case = CASES[number]
+        cells.append(_md(f"## Practice case · {case.title}\n\n{case.opening}\n\nThe workplace scenario is fictional."))
         for section, (title, check) in enumerate(zip(course.sections, course.checks, strict=True)):
             cells.append(_md(f"## {title}"))
             start = section * 2
             for lecture, chapter in enumerate(book["chapters"][start:start + 2], start + 1):
-                title, summary, _, practice, principle = chapter
+                title, summary, topics, practice, principle = chapter
                 lab = LABS / lab_slug(number, lecture, title) / "main.py"
+                concepts = "\n\n".join(
+                    "\n\n".join((f"**{topic}**", *get_topic_entry(topic)[:2]))
+                    for topic in topics
+                )
+                example = get_worked_example(number, lecture, title, summary, topics, WORKED_SCENARIOS[number - 1])
+                question, diagnosis, baseline, answer = get_knowledge_check(number, lecture, topics)
                 cells.extend([
                     _md(
                         f"### Lecture {lecture:02d} · {title}\n\n{summary}\n\n"
-                        f"**Predict before running.** {principle} Identify one input that influences the printed result. "
-                        "Change that input, rerun the cell, and explain the difference.\n\n"
-                        f"**Apply the concept.** {practice}"
+                        f"{lecture_case(number, lecture, level=4)}\n\n"
+                        f"#### Read the mechanism\n\n{concepts}\n\n"
+                        f"#### Worked example\n\n{example}\n\n"
+                        f"**Predict before running.** {principle} Identify the input you would hold fixed and the observation that would change your decision."
                     ),
                     _code(lab.read_text(encoding="utf-8")),
+                    _md(
+                        f"#### Interpret and apply\n\n{practice}\n\n"
+                        "Change one input, record the prediction before running again, and compare with the unchanged output. "
+                        "If a result disappoints, record which intermediate stage first diverged.\n\n"
+                        f"1. {question}\n2. {diagnosis}\n3. {baseline}\n\n"
+                        f"<details><summary>Check your reasoning</summary>\n\n{answer}\n\n</details>"
+                    ),
                 ])
             cells.append(_md(f"**Section checkpoint.** {check}"))
 
@@ -114,6 +135,8 @@ def write_practicum_notebooks() -> None:
                 "Run the lecture cells in sequence with Python 3.10 or later. "
                 "The default exercises use bundled data and require no model account.")
         ]
+        case = CASES[course.slug]
+        cells.append(_md(f"## Practice case · {case.title}\n\n{case.opening}\n\nThe workplace scenario is fictional."))
         number = 0
         for section, lectures in course.sections:
             cells.append(_md(f"## {section}"))
@@ -121,7 +144,10 @@ def write_practicum_notebooks() -> None:
                 number += 1
                 cells.extend([
                     _md(f"### Lecture {number:02d} · {lecture.title}\n\n"
-                        f"{lecture.outcome}\n\n{lecture.practice}"),
+                        f"{lecture.outcome}\n\n{lecture_case(course.slug, number, level=4)}\n\n"
+                        f"#### How it works\n\n{lecture.explanation}\n\n##{READINGS[course.slug][number - 1]}\n\n"
+                        f"#### Worked example\n\n{lecture.example}\n\n"
+                        f"#### Try it\n\n{lecture.practice}"),
                     _code(next(examples).strip()),
                     _md(f"**Compare your result**\n\n{lecture.answer}"),
                 ])
@@ -131,13 +157,64 @@ def write_practicum_notebooks() -> None:
         write_ipynb(COURSE_NOTEBOOKS / f"{course.slug}.ipynb", cells)
 
 
+def write_claims_notebook() -> None:
+    script = (LABS / "undercover-harness" / "main.py").read_text(encoding="utf-8")
+    setup, _, rest = script.partition("\ndef checkpoint(")
+    persistence, _, fixtures = rest.partition("\n# Keep these expectations")
+    evaluation, _, _ = fixtures.partition("\ndef main()")
+    write_ipynb(CASE_NOTEBOOK, [
+        _md("# UnderCover-inspired claims harness\n\n"
+            "A fictional adjuster needs to decide what evidence to ask for after a travel delay. "
+            "The policy in force on the incident date supplies the evidence requirements. "
+            "This local exercise uses Python and SQLite 3.35 or later. All claims and policies are synthetic."),
+        _md("## Propose the next step\n\n"
+            "The agent has one typed policy lookup. The harness chooses the route and evidence. "
+            "Predict what happens when the same carrier notice is used before and after the revision date."),
+        _code(setup.strip()),
+        _code('for date in ("2025-06-01", "2026-06-01"):\n'
+              '    print(propose(Claim("sample", date, "delay", ("carrier_notice",))))'),
+        _md("## Checkpoint, reopen, and approve\n\n"
+            "An approval binds the proposal revision. The database serializes approval with writes and keeps an idempotent note. "
+            "The role value is a fixture. A real service derives the reviewer identity from authentication."),
+        _code("def checkpoint(" + persistence.rstrip()),
+        _code('from pathlib import Path\nfrom tempfile import TemporaryDirectory\n\n'
+              'with TemporaryDirectory() as folder:\n'
+              '    db = str(Path(folder) / "claims.db")\n'
+              '    with closing(open_store(db)) as store:\n'
+              '        revision = checkpoint(store, propose(Claim("sample", "2026-06-01", "delay", ("carrier_notice",))))\n'
+              '    with closing(open_store(db)) as resumed:\n'
+              '        assert approve(resumed, "sample", revision, "agent") == "forbidden"\n'
+              '        assert approve(resumed, "sample", revision, "reviewer") == "recorded"\n'
+              '    with closing(open_store(db)) as resumed:\n'
+              '        assert approve(resumed, "sample", revision, "reviewer") == "replay ignored"\n'
+              '        print(resumed.execute("SELECT count(*) FROM approved_note").fetchone()[0], "note")'),
+        _md("## Compare the harness with a manual baseline\n\n"
+            "Score the proposed route, source, and requested documents separately. Keep the cases fixed for both candidates. "
+            "The manual baseline sometimes gives the right next step. It misses the cases that need a dated evidence decision or an explicit pause."),
+        _code("# Keep these expectations" + evaluation.rstrip()),
+        _code('baseline, candidate = evaluate(manual_baseline), evaluate(propose)\n'
+              'print("Baseline:", baseline["passed"], "/", baseline["total"])\n'
+              'for row in candidate["cases"]:\n'
+              '    print(row["id"], row["observed"], "pass:", row["pass"])\n'
+              'assert candidate["critical_pass"] and candidate["passed"] >= baseline["passed"]'),
+        _md("## Practice\n\n"
+            "Add a case on the new policy’s exact effective date. Then create a second proposal for the same claim, request approval for the old revision, and verify that it adds no note.\n\n"
+            "<details><summary>Compare your result</summary>\n\n"
+            "On 2026-01-01 the source should be `delay-v2`. The old revision should return `stale or unknown`. "
+            "Keep these checks apart from proposals for future model or tool changes. A production trial would require a representative held-out workload and an authenticated reviewer.\n\n</details>"),
+    ])
+
+
 def update_notebooks_index() -> None:
     NOTEBOOKS.mkdir(parents=True, exist_ok=True)
     lines = [
         "# Jupyter Notebooks",
         "",
-        "Each technical course has a downloadable workbook with lecture demonstrations and a checked course workshop. "
-        "The workbooks contain their own sample data and can run outside the repository.",
+        "Technical and applied workbooks pair a practice case with worked explanations, executable demonstrations, and exercises. "
+        "They contain their own sample data and can run outside the repository.",
+        "",
+        "Open the [HarborLink interactive workbook](../interactive-workbook.md) to run a single case across the curriculum in your browser.",
+        "For a second end-to-end case, use the [UnderCover claims harness practicum](../../guides/undercover-harness.md) and its downloadable notebook.",
         "",
         "## Set up Jupyter",
         "",
@@ -188,7 +265,7 @@ def update_labs_index() -> None:
         "",
         "**New?** Start with **[Hands-on start](start-here.md)** — five starter labs in order with book chapters and notebook links.",
         "",
-        "Browse [course workbooks and Jupyter setup](notebooks/index.md), or use the [lab catalog](catalog.md) for individual lecture scripts.",
+        "Browse [course workbooks and Jupyter setup](notebooks/index.md), run the [HarborLink interactive workbook](interactive-workbook.md), or use the [lab catalog](catalog.md) for individual lecture scripts.",
         "",
         "## Starter labs (with notebooks)",
         "",
@@ -219,13 +296,14 @@ def main() -> None:
     for slug, *_ in STARTER_LABS:
         if slug not in BUILDERS or not (LABS / slug / "main.py").is_file():
             raise ValueError(f"Missing starter lab or notebook template: {slug}")
-        write_ipynb(LABS / slug / "lab.ipynb", BUILDERS[slug]())
+        write_ipynb(LABS / slug / "lab.ipynb", cells_for(slug))
         count += 1
     write_course_notebooks()
     write_practicum_notebooks()
+    write_claims_notebook()
     update_notebooks_index()
     update_labs_index()
-    print(f"Generated {len(TECHNICAL_COURSES) + len(APPLIED_COURSES)} course workbooks and {count} starter lab notebooks.")
+    print(f"Generated {len(TECHNICAL_COURSES) + len(APPLIED_COURSES)} course workbooks, {count} starter lab notebooks, and the claims practicum.")
 
 
 if __name__ == "__main__":

@@ -4,8 +4,16 @@ Technical course 04 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Understand the architecture, training, inference, and model families behind modern generative AI.
 
-[Start the first lecture](01-sequence-models-before-transformers.md){ .md-button .md-button--primary }
+[Start the first lecture](01-sequence-models-before-transformers.md){ .md-button .md-button--primary .study-start data-course="04-transformers-and-foundation-models" }
 [Download the course notebook](../../assets/notebooks/04-transformers-and-foundation-models.ipynb){ .md-button download }
+
+## Practice case · The meeting notes with the wrong owner
+
+Asha reviews action items extracted from messy project transcripts. A teammate named twice is incorrectly assigned ownership for a different task. She needs a way to explain the failure to the project lead and compare a small local model with a hosted candidate without asking the team to trust the larger model by default.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [When a better-liked model got harder to trust](../../casebook/model-behavior-rollback.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Understand the architecture, training, inference, and model families behind mode
 
 ### Sequence models and attention
 
-- [01 · Sequence Models Before Transformers](01-sequence-models-before-transformers.md)
-- [02 · Attention](02-attention.md)
+- [01 · Sequence Models Before Transformers](01-sequence-models-before-transformers.md){ .study-lecture data-lecture="01-sequence-models-before-transformers.md" }
+- [02 · Attention](02-attention.md){ .study-lecture data-lecture="02-attention.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Trace one attention query and identify which key contributes most to the weighte
 
 ### Transformer blocks and training
 
-- [03 · The Transformer Block](03-the-transformer-block.md)
-- [04 · Training Foundation Models](04-training-foundation-models.md)
+- [03 · The Transformer Block](03-the-transformer-block.md){ .study-lecture data-lecture="03-the-transformer-block.md" }
+- [04 · Training Foundation Models](04-training-foundation-models.md){ .study-lecture data-lecture="04-training-foundation-models.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Draw the path through attention and the feed-forward block. Mark where training 
 
 ### Decoding and model selection
 
-- [05 · Inference and Sampling](05-inference-and-sampling.md)
-- [06 · Model Families and Selection](06-model-families-and-selection.md)
+- [05 · Inference and Sampling](05-inference-and-sampling.md){ .study-lecture data-lecture="05-inference-and-sampling.md" }
+- [06 · Model Families and Selection](06-model-families-and-selection.md){ .study-lecture data-lecture="06-model-families-and-selection.md" }
 
 **Checkpoint**
 

@@ -10,11 +10,13 @@ Know basic embeddings and Python. Take Language and Representation if you need t
 
 ## Course sequence
 
-1. [Language and Representation](../../books/03-language-and-representation/index.md)
-2. [Knowledge and Retrieval Systems](../../books/06-knowledge-and-retrieval-systems/index.md)
-3. [Evaluation, Safety, and Governance](../../books/10-evaluation-safety-and-governance/index.md)
-4. [Build and Evaluate a Model-Backed Application](../../courses/model-backed-applications/index.md)
-5. [Retrieval System Engineering](../../courses/retrieval-system-engineering/index.md)
+[Start this path](../../books/03-language-and-representation/index.md){ .md-button .md-button--primary .study-path-course }
+
+1. [Language and Representation](../../books/03-language-and-representation/index.md){ .study-path-course }
+2. [Knowledge and Retrieval Systems](../../books/06-knowledge-and-retrieval-systems/index.md){ .study-path-course }
+3. [Evaluation, Safety, and Governance](../../books/10-evaluation-safety-and-governance/index.md){ .study-path-course }
+4. [Build and Evaluate a Model-Backed Application](../../courses/model-backed-applications/index.md){ .study-path-course }
+5. [Retrieval System Engineering](../../courses/retrieval-system-engineering/index.md){ .study-path-course }
 
 ## Study pace
 

@@ -1,6 +1,26 @@
 # 10.5 — Responsible AI and Risk
 
-[Course overview](index.md) · Risk and governance · Lecture 5 of 6
+<p class="study-position" data-course="10-evaluation-safety-and-governance" data-lecture="05-responsible-ai-and-risk.md">Risk and governance · Lecture 5 of 6</p>
+
+[← Security of AI Systems](04-security-of-ai-systems.md) · [Course outline](index.md#course-outline){ .study-overview } · [Governance and Assurance →](06-governance-and-assurance.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Requirements and judgment**
+
+    - [Evaluation as Requirements](01-evaluation-as-requirements.md)
+    - [Metrics and Human Judgment](02-metrics-and-human-judgment.md)
+
+    **Stage evaluation and security**
+
+    - [Evaluation by System Stage](03-evaluation-by-system-stage.md)
+    - [Security of AI Systems](04-security-of-ai-systems.md)
+
+    **Risk and governance**
+
+    - **Responsible AI and Risk** (current)
+    - [Governance and Assurance](06-governance-and-assurance.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Statistics intuition
 - Threat-model basics
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Assess bias, privacy, transparency, human impact, misuse, accessibility, high-impact decisions, and safe failure.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Measure who has to fix the misses
+
+Two customer groups see the same response rate, but one group must contact support more often to resolve wrong answers. The extra work does not appear in the model score.
+
+Track errors and correction burden per slice. Include an escalation route, collect representative cases, and assign ownership for decisions that a person can appeal.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Measures"] --> N3["Risk gate"]
   N3["Risk gate"] --> N4["Assurance record"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **responsible ai and risk** changes one or more transitions.
 
 ## Core concepts
 
@@ -135,8 +155,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The release gate depends on both overall performance and perfect performance in the high-risk slice.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **fairness** and **privacy**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -238,8 +256,7 @@ Assess bias, privacy, transparency, human impact, misuse, accessibility, high-im
 - OWASP guidance for LLM applications
 - Task-specific evaluation research
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Security of AI Systems](04-security-of-ai-systems.md) · [Course outline](index.md) · [Governance and Assurance →](06-governance-and-assurance.md)
+[← Security of AI Systems](04-security-of-ai-systems.md) · [Course outline](index.md#course-outline){ .study-overview } · [Governance and Assurance →](06-governance-and-assurance.md)
+{: .study-directions .study-directions--footer }

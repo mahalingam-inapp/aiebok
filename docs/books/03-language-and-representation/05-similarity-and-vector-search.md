@@ -1,6 +1,26 @@
 # 3.5 — Similarity and Vector Search
 
-[Course overview](index.md) · Search and indexing · Lecture 5 of 6
+<p class="study-position" data-course="03-language-and-representation" data-lecture="05-similarity-and-vector-search.md">Search and indexing · Lecture 5 of 6</p>
+
+[← From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md) · [Course outline](index.md#course-outline){ .study-overview } · [Embedding Systems in Production →](06-embedding-systems-in-production.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Language and corpus preparation**
+
+    - [Why Language Is Hard](01-why-language-is-hard.md)
+    - [Corpora and Text Pipelines](02-corpora-and-text-pipelines.md)
+
+    **Tokens and representations**
+
+    - [Tokenization](03-tokenization.md)
+    - [From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md)
+
+    **Search and indexing**
+
+    - **Similarity and Vector Search** (current)
+    - [Embedding Systems in Production](06-embedding-systems-in-production.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Vectors and dot products
 - Basic text processing
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Connect distance metrics, normalization, nearest neighbors, approximate indexes, clustering, filtering, and ranking.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Neighbors need a relevance test
+
+‘Borrow a tablet’ and ‘borrow a laptop’ are close in an embedding model. The tablet policy has an age restriction the laptop policy does not.
+
+Similarity proposes candidates. It does not establish which record is legally or operationally applicable. Compare nearest neighbors against metadata-filtered results using actual patron tasks.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Representation"] --> N3["Similarity"]
   N3["Similarity"] --> N4["Retrieved meaning"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **similarity and vector search** changes one or more transitions.
 
 ## Core concepts
 
@@ -133,8 +153,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The outage document should rank highest because it shares the query's weighted terms; the example also exposes the limits of lexical features.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **dot product** and **cosine similarity**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Connect distance metrics, normalization, nearest neighbors, approximate indexes,
 - Manning, Raghavan & Schütze — Introduction to Information Retrieval
 - Mikolov et al. — Efficient Estimation of Word Representations in Vector Space
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md) · [Course outline](index.md) · [Embedding Systems in Production →](06-embedding-systems-in-production.md)
+[← From Sparse Features to Embeddings](04-from-sparse-features-to-embeddings.md) · [Course outline](index.md#course-outline){ .study-overview } · [Embedding Systems in Production →](06-embedding-systems-in-production.md)
+{: .study-directions .study-directions--footer }

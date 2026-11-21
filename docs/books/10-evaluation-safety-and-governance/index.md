@@ -4,8 +4,16 @@ Technical course 10 · 3 sections · 6 lectures · 10–12 hours of lecture and 
 
 Build evidence that AI systems meet task, safety, security, compliance, and business requirements.
 
-[Start the first lecture](01-evaluation-as-requirements.md){ .md-button .md-button--primary }
+[Start the first lecture](01-evaluation-as-requirements.md){ .md-button .md-button--primary .study-start data-course="10-evaluation-safety-and-governance" }
 [Download the course notebook](../../assets/notebooks/10-evaluation-safety-and-governance.ipynb){ .md-button download }
+
+## Practice case · The pilot that passed on average
+
+Simone, a support operations lead, is asked to sign off an assistant that scores 96% on a broad test. Its mistakes concentrate on requests that change a customer’s eligibility. The launch sponsor sees a headline number. Simone sees a high-consequence decision being delegated without enough evidence.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [When a better-liked model got harder to trust](../../casebook/model-behavior-rollback.md).
 
 ## Entry prerequisites
 
@@ -17,8 +25,8 @@ Build evidence that AI systems meet task, safety, security, compliance, and busi
 
 ### Requirements and judgment
 
-- [01 · Evaluation as Requirements](01-evaluation-as-requirements.md)
-- [02 · Metrics and Human Judgment](02-metrics-and-human-judgment.md)
+- [01 · Evaluation as Requirements](01-evaluation-as-requirements.md){ .study-lecture data-lecture="01-evaluation-as-requirements.md" }
+- [02 · Metrics and Human Judgment](02-metrics-and-human-judgment.md){ .study-lecture data-lecture="02-metrics-and-human-judgment.md" }
 
 **Checkpoint**
 
@@ -26,8 +34,8 @@ Choose an error whose cost justifies a separate release criterion and define who
 
 ### Stage evaluation and security
 
-- [03 · Evaluation by System Stage](03-evaluation-by-system-stage.md)
-- [04 · Security of AI Systems](04-security-of-ai-systems.md)
+- [03 · Evaluation by System Stage](03-evaluation-by-system-stage.md){ .study-lecture data-lecture="03-evaluation-by-system-stage.md" }
+- [04 · Security of AI Systems](04-security-of-ai-systems.md){ .study-lecture data-lecture="04-security-of-ai-systems.md" }
 
 **Checkpoint**
 
@@ -35,8 +43,8 @@ Write separate checks for retrieving evidence and for using it correctly in the 
 
 ### Risk and governance
 
-- [05 · Responsible AI and Risk](05-responsible-ai-and-risk.md)
-- [06 · Governance and Assurance](06-governance-and-assurance.md)
+- [05 · Responsible AI and Risk](05-responsible-ai-and-risk.md){ .study-lecture data-lecture="05-responsible-ai-and-risk.md" }
+- [06 · Governance and Assurance](06-governance-and-assurance.md){ .study-lecture data-lecture="06-governance-and-assurance.md" }
 
 **Checkpoint**
 

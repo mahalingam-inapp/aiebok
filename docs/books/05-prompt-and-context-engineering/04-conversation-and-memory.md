@@ -1,6 +1,26 @@
 # 5.4 — Conversation and Memory
 
-[Course overview](index.md) · Context and memory · Lecture 4 of 6
+<p class="study-position" data-course="05-prompt-and-context-engineering" data-lecture="04-conversation-and-memory.md">Context and memory · Lecture 4 of 6</p>
+
+[← Context Construction](03-context-construction.md) · [Course outline](index.md#course-outline){ .study-overview } · [Context Failure and Security →](05-context-failure-and-security.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Instructions and output contracts**
+
+    - [Instructions That Work](01-instructions-that-work.md)
+    - [Structured Generation](02-structured-generation.md)
+
+    **Context and memory**
+
+    - [Context Construction](03-context-construction.md)
+    - **Conversation and Memory** (current)
+
+    **Trust and prompt operations**
+
+    - [Context Failure and Security](05-context-failure-and-security.md)
+    - [Prompt and Context Operations](06-prompt-and-context-operations.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Model inference
 - Tokens and context windows
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Separate transcript, session state, summaries, semantic memory, episodic memory, user preferences, and source-of-truth data.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Memory needs a way to forget
+
+A coordinator cancels a closure mentioned in a previous turn. The assistant repeats the old closure the next day as though it were a live decision.
+
+Store confirmed, tentative, and superseded items differently. Retrieve by effective date and preserve who made a change. Provide correction and expiry paths instead of treating every prior statement as persistent truth.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Evidence"] --> N3["Model"]
   N3["Model"] --> N4["Validated output"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **conversation and memory** changes one or more transitions.
 
 ## Core concepts
 
@@ -133,8 +153,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Trusted high-priority sections consume the budget first; untrusted evidence remains explicitly marked as data.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **working memory** and **session memory**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Separate transcript, session state, summaries, semantic memory, episodic memory,
 - Provider documentation for structured output and tool calling
 - Current prompt-injection guidance from authoritative security sources
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Context Construction](03-context-construction.md) · [Course outline](index.md) · [Context Failure and Security →](05-context-failure-and-security.md)
+[← Context Construction](03-context-construction.md) · [Course outline](index.md#course-outline){ .study-overview } · [Context Failure and Security →](05-context-failure-and-security.md)
+{: .study-directions .study-directions--footer }

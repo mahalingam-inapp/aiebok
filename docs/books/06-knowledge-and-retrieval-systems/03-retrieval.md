@@ -1,6 +1,26 @@
 # 6.3 — Retrieval
 
-[Course overview](index.md) · Retrieval and reranking · Lecture 3 of 6
+<p class="study-position" data-course="06-knowledge-and-retrieval-systems" data-lecture="03-retrieval.md">Retrieval and reranking · Lecture 3 of 6</p>
+
+[← Document Ingestion](02-document-ingestion.md) · [Course outline](index.md#course-outline){ .study-overview } · [Ranking and Context Selection →](04-ranking-and-context-selection.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Knowledge strategy and ingestion**
+
+    - [Knowledge Outside the Model](01-knowledge-outside-the-model.md)
+    - [Document Ingestion](02-document-ingestion.md)
+
+    **Retrieval and reranking**
+
+    - **Retrieval** (current)
+    - [Ranking and Context Selection](04-ranking-and-context-selection.md)
+
+    **Grounded answers and enterprise constraints**
+
+    - [RAG Generation and Citations](05-rag-generation-and-citations.md)
+    - [Advanced and Enterprise RAG](06-advanced-and-enterprise-rag.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Embeddings and search
 - Structured model output
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Compare lexical, dense, sparse, hybrid, filtered, multi-query, parent-child, and late-interaction retrieval.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## The right amount for the wrong expense
+
+Searching for ‘field allowance’ returns a travel note because it contains both words. The reimbursement policy uses ‘approved field work’.
+
+Compare lexical, dense, and filtered retrieval for this labeled query. Look at top-K recall before changing generation. If the necessary policy never arrives, a more fluent model can only conceal the upstream failure.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Retrieve and rerank"] --> N3["Generate"]
   N3["Generate"] --> N4["Cite and evaluate"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **retrieval** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Documents appearing high in both rankings receive the strongest reciprocal-rank-fusion scores.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **BM25** and **dense retrieval**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -234,8 +252,7 @@ Compare lexical, dense, sparse, hybrid, filtered, multi-query, parent-child, and
 - Lewis et al. — Retrieval-Augmented Generation
 - Karpukhin et al. — Dense Passage Retrieval
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Document Ingestion](02-document-ingestion.md) · [Course outline](index.md) · [Ranking and Context Selection →](04-ranking-and-context-selection.md)
+[← Document Ingestion](02-document-ingestion.md) · [Course outline](index.md#course-outline){ .study-overview } · [Ranking and Context Selection →](04-ranking-and-context-selection.md)
+{: .study-directions .study-directions--footer }

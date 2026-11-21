@@ -1,6 +1,26 @@
 # 2.1 — Problems, Data, and Baselines
 
-[Course overview](index.md) · Problem framing and supervised models · Lecture 1 of 6
+<p class="study-position" data-course="02-machine-learning-systems" data-lecture="01-problems-data-and-baselines.md">Problem framing and supervised models · Lecture 1 of 6</p>
+
+[Course outline](index.md#course-outline){ .study-overview } · [Supervised Learning →](02-supervised-learning.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Problem framing and supervised models**
+
+    - **Problems, Data, and Baselines** (current)
+    - [Supervised Learning](02-supervised-learning.md)
+
+    **Representations and neural networks**
+
+    - [Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md)
+    - [Neural Networks](04-neural-networks.md)
+
+    **Evidence and lifecycle**
+
+    - [Evaluation and Error Analysis](05-evaluation-and-error-analysis.md)
+    - [The ML Lifecycle](06-the-ml-lifecycle.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Basic Python
 - Graphs and averages
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Frame an ML task before choosing an algorithm. Define the unit of prediction, target, decision, population, time boundary, data availability, and a simple baseline.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Define urgency before opening a notebook
+
+The historical priority field reflects which jobs a supervisor eventually expedited. It also reflects who called repeatedly. Training directly on that field could teach the system to give quieter residents slower service.
+
+Choose an operational label such as whether verified conditions demand a same-day visit. Establish a rules baseline using information available at intake. Inspect a small sample with the maintenance team before deciding whether older labels can be reused.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Train"] --> N3["Evaluate slices"]
   N3["Evaluate slices"] --> N4["Operate"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **problems, data, and baselines** changes one or more transitions.
 
 ## Core concepts
 
@@ -133,8 +153,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Loss should decline while the learned line approaches the data-generating relationship y = 2x + 1.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **problem framing** and **features and labels**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Frame an ML task before choosing an algorithm. When triaging, preserve full inpu
 - Hastie, Tibshirani & Friedman — The Elements of Statistical Learning
 - Mitchell — Machine Learning
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[Course outline](index.md) · [Supervised Learning →](02-supervised-learning.md)
+[Course outline](index.md#course-outline){ .study-overview } · [Supervised Learning →](02-supervised-learning.md)
+{: .study-directions .study-directions--footer }

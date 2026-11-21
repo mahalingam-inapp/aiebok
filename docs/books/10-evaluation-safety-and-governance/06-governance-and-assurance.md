@@ -1,6 +1,26 @@
 # 10.6 — Governance and Assurance
 
-[Course overview](index.md) · Risk and governance · Lecture 6 of 6
+<p class="study-position" data-course="10-evaluation-safety-and-governance" data-lecture="06-governance-and-assurance.md">Risk and governance · Lecture 6 of 6</p>
+
+[← Responsible AI and Risk](05-responsible-ai-and-risk.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Requirements and judgment**
+
+    - [Evaluation as Requirements](01-evaluation-as-requirements.md)
+    - [Metrics and Human Judgment](02-metrics-and-human-judgment.md)
+
+    **Stage evaluation and security**
+
+    - [Evaluation by System Stage](03-evaluation-by-system-stage.md)
+    - [Security of AI Systems](04-security-of-ai-systems.md)
+
+    **Risk and governance**
+
+    - [Responsible AI and Risk](05-responsible-ai-and-risk.md)
+    - **Governance and Assurance** (current)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Statistics intuition
 - Threat-model basics
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Define ownership, inventory, risk tiers, policies, approvals, audit evidence, incidents, exceptions, vendor review, and retirement.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## What would the reviewer need six months later?
+
+The launch meeting authorizes a limited trial. A new manager cannot find which version was approved or which failures would require a pause.
+
+Store the version, evidence, decision owner, allowed scope, and rollback conditions together. This is the record people need to investigate an outcome after the original reviewers have moved on.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Measures"] --> N3["Risk gate"]
   N3["Risk gate"] --> N4["Assurance record"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **governance and assurance** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The release gate depends on both overall performance and perfect performance in the high-risk slice.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **AI inventory** and **risk tiers**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Define ownership, inventory, risk tiers, policies, approvals, audit evidence, in
 - OWASP guidance for LLM applications
 - Task-specific evaluation research
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Responsible AI and Risk](05-responsible-ai-and-risk.md) · [Course outline](index.md) · [Course project →](index.md#course-project)
+[← Responsible AI and Risk](05-responsible-ai-and-risk.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions .study-directions--footer }

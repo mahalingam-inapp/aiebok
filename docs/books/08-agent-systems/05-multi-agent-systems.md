@@ -1,6 +1,26 @@
 # 8.5 — Multi-Agent Systems
 
-[Course overview](index.md) · Coordination and operations · Lecture 5 of 6
+<p class="study-position" data-course="08-agent-systems" data-lecture="05-multi-agent-systems.md">Coordination and operations · Lecture 5 of 6</p>
+
+[← Agent Patterns](04-agent-patterns.md) · [Course outline](index.md#course-outline){ .study-overview } · [Operating Long-Running Agents →](06-operating-long-running-agents.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Workflows and agent loops**
+
+    - [Agent or Workflow?](01-agent-or-workflow.md)
+    - [The Agent Loop](02-the-agent-loop.md)
+
+    **Recovery and patterns**
+
+    - [Agent Memory and Recovery](03-agent-memory-and-recovery.md)
+    - [Agent Patterns](04-agent-patterns.md)
+
+    **Coordination and operations**
+
+    - **Multi-Agent Systems** (current)
+    - [Operating Long-Running Agents](06-operating-long-running-agents.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - State machines
 - Tools and evaluation
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Study delegation, role boundaries, communication, shared state, consensus, conflict, security, and why many tasks do not need multiple agents.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Two specialists disagree
+
+One agent optimizes staffing and another minimizes changes to volunteers’ schedules. Both proposals pass their own tests.
+
+Define a shared outcome and an explicit conflict-resolution rule. Let a reviewer see the trade-off instead of adding more agents. Track who made the final decision and which constraints they accepted.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Act"] --> N3["Checkpoint"]
   N3["Checkpoint"] --> N4["Stop or continue"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **multi-agent systems** changes one or more transitions.
 
 ## Core concepts
 
@@ -134,8 +154,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The state machine pauses at approval, resumes after approval, and terminates within the attempt budget.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **delegation** and **coordination**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -236,8 +254,7 @@ Study delegation, role boundaries, communication, shared state, consensus, confl
 - Primary papers for the selected agent pattern
 - Distributed-systems references for durable execution and idempotency
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Agent Patterns](04-agent-patterns.md) · [Course outline](index.md) · [Operating Long-Running Agents →](06-operating-long-running-agents.md)
+[← Agent Patterns](04-agent-patterns.md) · [Course outline](index.md#course-outline){ .study-overview } · [Operating Long-Running Agents →](06-operating-long-running-agents.md)
+{: .study-directions .study-directions--footer }

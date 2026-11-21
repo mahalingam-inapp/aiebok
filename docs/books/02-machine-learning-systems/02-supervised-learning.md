@@ -1,6 +1,26 @@
 # 2.2 — Supervised Learning
 
-[Course overview](index.md) · Problem framing and supervised models · Lecture 2 of 6
+<p class="study-position" data-course="02-machine-learning-systems" data-lecture="02-supervised-learning.md">Problem framing and supervised models · Lecture 2 of 6</p>
+
+[← Problems, Data, and Baselines](01-problems-data-and-baselines.md) · [Course outline](index.md#course-outline){ .study-overview } · [Unsupervised and Representation Learning →](03-unsupervised-and-representation-learning.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Problem framing and supervised models**
+
+    - [Problems, Data, and Baselines](01-problems-data-and-baselines.md)
+    - **Supervised Learning** (current)
+
+    **Representations and neural networks**
+
+    - [Unsupervised and Representation Learning](03-unsupervised-and-representation-learning.md)
+    - [Neural Networks](04-neural-networks.md)
+
+    **Evidence and lifecycle**
+
+    - [Evaluation and Error Analysis](05-evaluation-and-error-analysis.md)
+    - [The ML Lifecycle](06-the-ml-lifecycle.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Basic Python
 - Graphs and averages
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Understand regression and classification as function approximation under a chosen loss. Connect linear models, trees, and neural networks through their assumptions.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## What gets more expensive when a threshold moves?
+
+The model sees 100 urgent and 900 ordinary requests. Moving the priority threshold catches 8 more urgent cases and adds 35 ordinary cases to the priority queue.
+
+The policy trade-off is measurable. Estimate effects on urgent misses and technician capacity separately, then ask who can absorb the additional reviews. A change that increases recall can still fail if it creates a queue long enough to delay all urgent work.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Train"] --> N3["Evaluate slices"]
   N3["Evaluate slices"] --> N4["Operate"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **supervised learning** changes one or more transitions.
 
 ## Core concepts
 
@@ -135,8 +155,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Loss should decline while the learned line approaches the data-generating relationship y = 2x + 1.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **regression** and **classification**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -237,8 +255,7 @@ Understand regression and classification as function approximation under a chose
 - Hastie, Tibshirani & Friedman — The Elements of Statistical Learning
 - Mitchell — Machine Learning
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Problems, Data, and Baselines](01-problems-data-and-baselines.md) · [Course outline](index.md) · [Unsupervised and Representation Learning →](03-unsupervised-and-representation-learning.md)
+[← Problems, Data, and Baselines](01-problems-data-and-baselines.md) · [Course outline](index.md#course-outline){ .study-overview } · [Unsupervised and Representation Learning →](03-unsupervised-and-representation-learning.md)
+{: .study-directions .study-directions--footer }

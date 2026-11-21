@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HarborLink | AIeBOK interactive workbook</title>
+  <style>$styles</style>
+</head>
+<body>
+  <a class="skip" href="#solution">Skip to the solution</a>
+  <header class="site-header">
+    <div><strong>AIeBOK</strong><span>Interactive workbook</span></div>
+    <nav aria-label="Workbook sections">
+      <a href="#solution">Solution</a>
+      <a href="#notebook">Notebook</a>
+      <a href="#curriculum">Curriculum map</a>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <section class="hero" aria-labelledby="title">
+      <div class="hero-content">
+        <h1 id="title">HarborLink</h1>
+        <p>Run a transit help desk that answers from dated policy evidence, respects audience scope, and hands unresolved work to staff.</p>
+      </div>
+      <div class="hero-counts" id="coverage-counts" aria-label="Workbook coverage"></div>
+    </section>
+    <noscript><p class="notice">Enable JavaScript to run the solution, inspect the code cells, and open the curriculum map.</p></noscript>
+
+    <section id="solution" aria-labelledby="solution-heading">
+      <div class="section-heading"><h2 id="solution-heading">Run the help desk</h2></div>
+      <p class="summary">The workbook runs in this browser using fictional policies for fare refunds, station access, student passes and lost property. It includes example staff policy and simulated approvals. The bundled source data is visible in the workbook.</p>
+      <div class="workbench">
+        <form id="request-form" class="request-form">
+          <label for="scenario">Example request</label>
+          <select id="scenario" name="scenario">
+            <option value="current">Current fare refund</option>
+            <option value="historic">Previous fare policy</option>
+            <option value="lift">Accessibility question</option>
+            <option value="ledger">Restricted staff policy</option>
+            <option value="missing">Unknown request</option>
+            <option value="audio">Question from audio evidence</option>
+            <option value="incident">Service interruption</option>
+          </select>
+          <label for="question">Rider question</label>
+          <textarea id="question" name="question" rows="2" maxlength="240" required>What is the fare refund deadline?</textarea>
+          <div class="form-grid">
+            <div><label for="role">Simulated role</label>
+              <select id="role" name="role"><option value="public">Rider</option><option value="staff">Staff reviewer</option></select>
+            </div>
+            <div><label for="date">As-of date</label>
+              <input id="date" name="date" type="date" value="2026-11-21" required>
+            </div>
+            <div><label for="ranking">Retrieval</label>
+              <select id="ranking" name="ranking">
+                <option value="hybrid">Hybrid</option><option value="lexical">Lexical</option><option value="dense">Concept vectors</option>
+              </select>
+            </div>
+            <div><label for="budget">Context budget in words</label>
+              <input id="budget" name="budget" type="number" value="80" min="10" max="500" step="1" required>
+            </div>
+          </div>
+          <div class="checks">
+            <label><input name="outage" type="checkbox"> Simulate a service outage</label>
+            <label><input name="approved" type="checkbox"> Approve a local review note as staff</label>
+          </div>
+          <div class="toolbar">
+            <button type="submit" class="primary">Run solution</button>
+            <button type="button" id="run-all">Run open cells</button>
+          </div>
+        </form>
+
+        <div class="response" aria-live="polite" aria-atomic="true">
+          <p id="response-status" class="response-status">Ready</p>
+          <p id="response-text">Select a request and run the solution.</p>
+          <dl id="response-facts"></dl>
+          <p id="run-status" class="run-status"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="notebook" aria-labelledby="notebook-heading">
+      <div class="section-heading">
+        <h2 id="notebook-heading">Notebook</h2>
+        <div class="toolbar">
+          <button type="button" id="expand-cells">Expand all</button>
+          <button type="button" id="collapse-cells">Collapse all</button>
+        </div>
+      </div>
+      <p class="summary">Opening a section enables its module. Closing it removes that module from execution. The built-in service still looks up dated policy by topic, checks audience and evidence, and routes unresolved requests to staff. Open ranked retrieval to compare ranking methods, or open the handoff module to simulate an approved review note.</p>
+      <details class="core-contract">
+        <summary>Built-in service code</summary>
+        <div class="cell-body">
+          <p>This service code is always available. Open this reference to inspect the policy checks and replacements that let the help desk run with every module closed.</p>
+          <pre tabindex="0"><code>$core_code</code></pre>
+        </div>
+      </details>
+      <p id="module-status" class="run-status" aria-live="polite"></p>
+      <div id="cells" class="cell-stack"></div>
+    </section>
+
+    <section id="curriculum" aria-labelledby="curriculum-heading">
+      <div class="section-heading"><h2 id="curriculum-heading">Curriculum map</h2></div>
+      <p class="summary">Follow a lecture to a related runnable cell. The map also covers design and governance topics through short notes, plus references for material such as external model training, speech recognition, hosted infrastructure, and mediated computer use.</p>
+      <label for="find-topic">Find a lesson, concept, or resource</label>
+      <input id="find-topic" type="search" placeholder="Try citations, rollback, or attention">
+      <p id="match-status" class="run-status" aria-live="polite"></p>
+      <div id="catalog" class="cell-stack"></div>
+    </section>
+  </main>
+  <script id="curriculum-data" type="application/json">$manifest</script>
+  <script>$runtime</script>
+</body>
+</html>

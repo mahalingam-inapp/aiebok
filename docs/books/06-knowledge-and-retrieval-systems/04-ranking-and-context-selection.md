@@ -1,6 +1,26 @@
 # 6.4 — Ranking and Context Selection
 
-[Course overview](index.md) · Retrieval and reranking · Lecture 4 of 6
+<p class="study-position" data-course="06-knowledge-and-retrieval-systems" data-lecture="04-ranking-and-context-selection.md">Retrieval and reranking · Lecture 4 of 6</p>
+
+[← Retrieval](03-retrieval.md) · [Course outline](index.md#course-outline){ .study-overview } · [RAG Generation and Citations →](05-rag-generation-and-citations.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Knowledge strategy and ingestion**
+
+    - [Knowledge Outside the Model](01-knowledge-outside-the-model.md)
+    - [Document Ingestion](02-document-ingestion.md)
+
+    **Retrieval and reranking**
+
+    - [Retrieval](03-retrieval.md)
+    - **Ranking and Context Selection** (current)
+
+    **Grounded answers and enterprise constraints**
+
+    - [RAG Generation and Citations](05-rag-generation-and-citations.md)
+    - [Advanced and Enterprise RAG](06-advanced-and-enterprise-rag.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Embeddings and search
 - Structured model output
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Use fusion, reranking, diversity, deduplication, compression, and token-aware packing.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Reranking must keep the date attached
+
+The current policy ranks first for relevance, but the employee’s purchase predates it. The reranker rewards text similarity and ignores effective dates.
+
+Enforce eligibility before comparing relevance. Keep temporal and access checks as auditable filters, then compare rank quality only among eligible passages. This makes it easier to distinguish a missing candidate from a scoring error.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Retrieve and rerank"] --> N3["Generate"]
   N3["Generate"] --> N4["Cite and evaluate"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **ranking and context selection** changes one or more transitions.
 
 ## Core concepts
 
@@ -133,8 +153,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Documents appearing high in both rankings receive the strongest reciprocal-rank-fusion scores.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **reciprocal rank fusion** and **rerankers**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Use fusion, reranking, diversity, deduplication, compression, and token-aware pa
 - Lewis et al. — Retrieval-Augmented Generation
 - Karpukhin et al. — Dense Passage Retrieval
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Retrieval](03-retrieval.md) · [Course outline](index.md) · [RAG Generation and Citations →](05-rag-generation-and-citations.md)
+[← Retrieval](03-retrieval.md) · [Course outline](index.md#course-outline){ .study-overview } · [RAG Generation and Citations →](05-rag-generation-and-citations.md)
+{: .study-directions .study-directions--footer }

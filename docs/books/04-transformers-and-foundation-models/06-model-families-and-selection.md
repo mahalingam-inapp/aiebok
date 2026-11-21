@@ -1,6 +1,26 @@
 # 4.6 — Model Families and Selection
 
-[Course overview](index.md) · Decoding and model selection · Lecture 6 of 6
+<p class="study-position" data-course="04-transformers-and-foundation-models" data-lecture="06-model-families-and-selection.md">Decoding and model selection · Lecture 6 of 6</p>
+
+[← Inference and Sampling](05-inference-and-sampling.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Sequence models and attention**
+
+    - [Sequence Models Before Transformers](01-sequence-models-before-transformers.md)
+    - [Attention](02-attention.md)
+
+    **Transformer blocks and training**
+
+    - [The Transformer Block](03-the-transformer-block.md)
+    - [Training Foundation Models](04-training-foundation-models.md)
+
+    **Decoding and model selection**
+
+    - [Inference and Sampling](05-inference-and-sampling.md)
+    - **Model Families and Selection** (current)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Matrix multiplication intuition
 - Neural-network basics
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Compare base, instruction, reasoning, code, embedding, reranking, reward, safety, speech, vision, and diffusion models.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Choose a model with the reviewers
+
+A hosted model wins on long transcripts. The local model matches it on ordinary meetings and can keep sensitive transcripts on the approved machine.
+
+Route by evaluated needs and permission, then include review time and escalation rates in the model decision. A larger model has a defensible role if measured benefit exceeds latency and access costs for the actual workload.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Transformer layers"] --> N3["Logits"]
   N3["Logits"] --> N4["Sampled token"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **model families and selection** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     The query-aligned value receives more attention, and lower temperature concentrates the sampling distribution.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **instruction tuning** and **reasoning models**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Compare base, instruction, reasoning, code, embedding, reranking, reward, safety
 - Devlin et al. — BERT
 - Brown et al. — Language Models are Few-Shot Learners
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Inference and Sampling](05-inference-and-sampling.md) · [Course outline](index.md) · [Course project →](index.md#course-project)
+[← Inference and Sampling](05-inference-and-sampling.md) · [Course outline](index.md#course-outline){ .study-overview } · [Course project →](index.md#course-project)
+{: .study-directions .study-directions--footer }

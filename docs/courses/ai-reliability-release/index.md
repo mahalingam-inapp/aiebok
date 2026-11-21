@@ -4,7 +4,15 @@ Project practicum · 2 sections · 4 lectures · 3–4 hours, plus the project
 
 Operate a staged model release using service objectives, trace diagnosis, and an incident exercise.
 
-[Start the first lecture](01-service-objectives-and-error-budget-burn.md){ .md-button .md-button--primary }
+[Start the first lecture](01-service-objectives-and-error-budget-burn.md){ .md-button .md-button--primary .study-start data-course="ai-reliability-release" }
+
+## Practice case · Four timeouts in a small rollout
+
+Olivia is on call for an assistant that summarizes support tickets. A candidate version is handling a small cohort while the stable version serves everyone else. Several pilot requests are late and some need the manual queue. The rest of the system looks healthy.
+
+This fictional case continues through the lectures.
+
+For a documented comparison, read [A feature file takes down a healthy service](../../casebook/feature-file-outage.md).
 
 ## Entry prerequisites
 
@@ -14,13 +22,13 @@ HTTP, basic event metrics, and Deploy and Operate an AI Service or equivalent.
 
 ### Define and observe reliability
 
-- [01 · Service objectives and error-budget burn](01-service-objectives-and-error-budget-burn.md) — Define a good request and calculate reliability and budget burn over a bounded window.
-- [02 · Stage traces and failure localization](02-stage-traces-and-failure-localization.md) — Use structured events to locate the earliest divergence between candidate and baseline.
+- [01 · Service objectives and error-budget burn](01-service-objectives-and-error-budget-burn.md){ .study-lecture data-lecture="01-service-objectives-and-error-budget-burn.md" } — Define a good request and calculate reliability and budget burn over a bounded window.
+- [02 · Stage traces and failure localization](02-stage-traces-and-failure-localization.md){ .study-lecture data-lecture="02-stage-traces-and-failure-localization.md" } — Use structured events to locate the earliest divergence between candidate and baseline.
 
 ### Release and recover
 
-- [03 · Canary cohorts and staged gates](03-canary-cohorts-and-staged-gates.md) — Use predeclared coverage, burn, latency, and cost thresholds to approve or hold a rollout.
-- [04 · Rollback verification and incident review](04-rollback-verification-and-incident-review.md) — Restore stable routing, run a smoke check, and assemble a factual incident timeline.
+- [03 · Canary cohorts and staged gates](03-canary-cohorts-and-staged-gates.md){ .study-lecture data-lecture="03-canary-cohorts-and-staged-gates.md" } — Use predeclared coverage, burn, latency, and cost thresholds to approve or hold a rollout.
+- [04 · Rollback verification and incident review](04-rollback-verification-and-incident-review.md){ .study-lecture data-lecture="04-rollback-verification-and-incident-review.md" } — Restore stable routing, run a smoke check, and assemble a factual incident timeline.
 
 ## Workbook
 

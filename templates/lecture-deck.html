@@ -9,8 +9,18 @@
 </head>
 <body>
   <header class="deck-header">
-    <span class="brand">AIeBOK</span>
-    <a href="{{ lecture_url }}">↖ Back to lecture</a>
+    <span class="brand">AIeBOK · {{ deck.course }}</span>
+    <div class="deck-header-actions">
+      <a href="{{ lecture_url }}">Back to lecture</a>
+      <details class="slide-index">
+        <summary>Slide index</summary>
+        <ol>
+          {% for slide in deck.slides %}
+          <li><a href="#slide-{{ loop.index }}">{{ slide.title }}</a></li>
+          {% endfor %}
+        </ol>
+      </details>
+    </div>
   </header>
 
   <main id="deck" aria-label="Lecture presentation">
@@ -54,7 +64,10 @@
 
   <nav class="deck-controls" aria-label="Slide navigation" hidden>
     <button type="button" id="previous" aria-label="Previous slide" aria-controls="deck">←</button>
-    <span id="slide-count" aria-hidden="true"></span>
+    <div class="deck-status">
+      <progress id="slide-progress" value="1" max="{{ deck.slides|length }}" aria-label="Current slide"></progress>
+      <span id="slide-count" aria-hidden="true"></span>
+    </div>
     <button type="button" id="next" aria-label="Next slide" aria-controls="deck">→</button>
     <button type="button" id="fullscreen" aria-label="Toggle fullscreen" aria-pressed="false" hidden>⛶</button>
     <p class="sr-only" id="announcement" aria-live="polite" aria-atomic="true"></p>

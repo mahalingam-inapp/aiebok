@@ -1,6 +1,26 @@
 # 1.1 — What Intelligence Means
 
-[Course overview](index.md) · Goals and representations · Lecture 1 of 6
+<p class="study-position" data-course="01-foundations-of-intelligence" data-lecture="01-what-intelligence-means.md">Goals and representations · Lecture 1 of 6</p>
+
+[Course outline](index.md#course-outline){ .study-overview } · [From Symbols to Statistics →](02-from-symbols-to-statistics.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Goals and representations**
+
+    - **What Intelligence Means** (current)
+    - [From Symbols to Statistics](02-from-symbols-to-statistics.md)
+
+    **Search and mathematics**
+
+    - [Search, Planning, and Decisions](03-search-planning-and-decisions.md)
+    - [The Mathematics Engineers Need](04-the-mathematics-engineers-need.md)
+
+    **Learning and decisions**
+
+    - [Learning and Generalization](05-learning-and-generalization.md)
+    - [Engineering with Uncertainty](06-engineering-with-uncertainty.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Comfort reading simple Python
 - Basic algebra
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Treat intelligence as a collection of capabilities rather than a mystical substance. Separate perception, representation, memory, learning, reasoning, planning, action, and adaptation.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Two queues, two kinds of success
+
+Priya receives ‘Lift failed again, at North Gate.’ The same wording can mean a functioning lift has a recurring fault or that a passenger is currently stuck. Which decision is the system supposed to help her make?
+
+Split the task into identifying the asset, estimating the situation, and deciding who owns the response. A summary can be accurate while the dispatch outcome is wrong. Measure time to the right responder and count missed urgent cases before judging the system by how well it writes.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Search or learn"] --> N3["Decision"]
   N3["Decision"] --> N4["Feedback"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **what intelligence means** changes one or more transitions.
 
 ## Core concepts
 
@@ -133,8 +153,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     A* should reach the same shortest path as breadth-first search while often expanding fewer states when the heuristic is informative.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **goal-directed behavior** and **rational agents**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -235,8 +253,7 @@ Treat intelligence as a collection of capabilities rather than a mystical substa
 - Russell & Norvig — Artificial Intelligence: A Modern Approach
 - Sutton & Barto — Reinforcement Learning: An Introduction
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[Course outline](index.md) · [From Symbols to Statistics →](02-from-symbols-to-statistics.md)
+[Course outline](index.md#course-outline){ .study-overview } · [From Symbols to Statistics →](02-from-symbols-to-statistics.md)
+{: .study-directions .study-directions--footer }

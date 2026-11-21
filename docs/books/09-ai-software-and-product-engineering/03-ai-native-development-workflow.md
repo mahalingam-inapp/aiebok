@@ -1,6 +1,26 @@
 # 9.3 — AI-Native Development Workflow
 
-[Course overview](index.md) · Development and testing · Lecture 3 of 6
+<p class="study-position" data-course="09-ai-software-and-product-engineering" data-lecture="03-ai-native-development-workflow.md">Development and testing · Lecture 3 of 6</p>
+
+[← Specification-Driven Development](02-specification-driven-development.md) · [Course outline](index.md#course-outline){ .study-overview } · [Testing AI Systems →](04-testing-ai-systems.md)
+{: .study-directions }
+
+??? note "Jump to a lecture"
+
+    **Discovery and specifications**
+
+    - [Discovering the Right Problem](01-discovering-the-right-problem.md)
+    - [Specification-Driven Development](02-specification-driven-development.md)
+
+    **Development and testing**
+
+    - **AI-Native Development Workflow** (current)
+    - [Testing AI Systems](04-testing-ai-systems.md)
+
+    **Experience and value**
+
+    - [Human-Centered AI UX](05-human-centered-ai-ux.md)
+    - [Experiments, Adoption, and Value](06-experiments-adoption-and-value.md)
 
 *Read 25 min · Worked example 20 min · Code/design practice 45–60 min · Review 10 min*
 
@@ -12,13 +32,15 @@
 - Software testing
 - Product discovery basics
 
-If a prerequisite is unfamiliar, use site search and read only enough to explain it and complete a small example. Do not block progress by mastering every upstream topic first.
-
 ## Why this chapter exists
 
 Organize repositories, instructions, skills, context files, branches, reviews, tests, and coding-agent collaboration.
 
-The engineering objective is not to memorize vocabulary. By the end, you should be able to describe the mechanism, build or inspect a small implementation, recognize its failure modes, and decide where it belongs in a larger system.
+## Make the reviewer’s job concrete
+
+The assistant proposes rewriting a scheduler and several unrelated files. The change is hard to validate, and nobody can tell which edit solved the original issue.
+
+Use small proposals with a scoped diff, tests, and assumptions. Read the diff before expansion and ask for a separate change when behavior outside the agreed task would move.
 
 ## Learning objectives
 
@@ -40,8 +62,6 @@ flowchart LR
   N2["Implementation"] --> N3["Evaluation"]
   N3["Evaluation"] --> N4["Release evidence"]
 ```
-
-Read the visual from left to right, then trace failures from right to left. The diagram is a book-level map; this chapter explains how **ai-native development workflow** changes one or more transitions.
 
 ## Core concepts
 
@@ -132,8 +152,6 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 ??? success "Expected observation"
     Both executable acceptance examples pass; changing the abstention behavior should fail the second case.
-
-This is a **book-level sample**. Its relevance to this chapter is the boundary between **repo instructions** and **skills**. Modify that boundary, not unrelated lines, when completing the chapter exercise.
 
 ## Engineering practice
 
@@ -234,8 +252,7 @@ Organize repositories, instructions, skills, context files, branches, reviews, t
 - Repository contribution and test documentation
 - Architecture Decision Record guidance and product experiment literature
 
-Use primary sources for technical claims and official documentation for current product behavior. Record the version or access date for evolving material.
-
 ## Continue
 
-[← Specification-Driven Development](02-specification-driven-development.md) · [Course outline](index.md) · [Testing AI Systems →](04-testing-ai-systems.md)
+[← Specification-Driven Development](02-specification-driven-development.md) · [Course outline](index.md#course-outline){ .study-overview } · [Testing AI Systems →](04-testing-ai-systems.md)
+{: .study-directions .study-directions--footer }
