@@ -1,0 +1,39 @@
+{% set catalog = learning_layout %}
+<header class="learning-intro learning-catalog-intro">
+  <h1 id="{{ 'courses' if catalog.noun == 'course' else 'learning-paths' }}">{{ catalog.title }}</h1>
+  <p>{{ catalog.description }}</p>
+  <a class="md-button md-button--primary" href="{{ catalog.browse_url }}">{{ catalog.browse[1] }}</a>
+</header>
+
+<div class="learning-catalog" data-catalog data-noun="{{ catalog.noun }}">
+  <div class="learning-filters" hidden>
+    <div>
+      <label for="learning-filter">Find a {{ catalog.noun }}</label>
+      <input type="search" id="learning-filter" autocomplete="off">
+    </div>
+    <div role="group" class="learning-filter-buttons" aria-label="Filter by category">
+      <button type="button" data-category="" aria-pressed="true">All</button>
+      {% for category in catalog.categories %}
+        <button type="button" data-category="{{ category }}" aria-pressed="false">{{ category }}</button>
+      {% endfor %}
+    </div>
+  </div>
+  <p class="learning-count" role="status">{{ catalog.entries | length }} {{ catalog.noun }}s</p>
+  <div class="learning-cards">
+    {% for entry, href in catalog.entries %}
+      <div class="learning-card" data-card="{{ entry.category }}" data-search="{{ (entry.title ~ ' ' ~ entry.description ~ ' ' ~ entry.detail) | e }}">
+        <a href="{{ href }}">
+          <span class="learning-card-category">{{ entry.category }}</span>
+          <h2>{{ entry.title | e }}</h2>
+          <p>{{ entry.description | e }}</p>
+          <span class="learning-card-meta">{{ entry.detail }}</span>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+<nav class="learning-catalog-links" aria-label="More resources">
+  {% for href, label in catalog.resources %}
+    <a href="{{ href }}">{{ label }}</a>
+  {% endfor %}
+</nav>

@@ -1,0 +1,35 @@
+<aside class="learning-outline md-typeset" aria-labelledby="learning-outline-title"
+       data-course-progress="{{ learning_layout.course.uri }}" data-total="{{ learning_layout.total }}">
+  <div class="learning-outline-header">
+    <h2 id="learning-outline-title">Course content</h2>
+    <div class="learning-progress" hidden>
+      <progress max="{{ learning_layout.total }}" value="0" aria-label="Course completion"></progress>
+      <p data-progress-label aria-live="polite"></p>
+    </div>
+  </div>
+  <nav class="learning-outline-sections" aria-label="Course lectures">
+    {% set position = namespace(number=0) %}
+    {% for title, lectures in learning_layout.sections %}
+      {% set current = learning_layout.current in (lectures | map(attribute=1) | list) %}
+      <details{% if current or (learning_layout.kind == "course" and loop.first) %} open{% endif %}>
+        <summary>
+          <span>{{ title | e }}</span>
+          <span class="learning-section-size">{{ lectures | length }} lectures</span>
+        </summary>
+        <ol>
+          {% for label, uri, href in lectures %}
+            {% set position.number = position.number + 1 %}
+            <li>
+              <a href="{{ href }}" data-lecture="{{ uri }}"{% if uri == learning_layout.current %} aria-current="page"{% endif %}>
+                <span class="learning-lecture-index" aria-hidden="true">{{ position.number }}</span>
+                <span>{{ label | e }}</span>
+                <span class="learning-lecture-check" aria-hidden="true">✓</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ol>
+      </details>
+    {% endfor %}
+  </nav>
+  <a class="learning-outline-overview" href="{{ learning_layout.course_url }}#course-project">Course project</a>
+</aside>

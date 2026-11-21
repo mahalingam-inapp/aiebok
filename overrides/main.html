@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block container %}
+  {% if learning_layout %}
+    <div class="md-content learning-view" data-md-component="content">
+      <div class="learning-layout learning--{{ learning_layout.kind }}">
+        <article class="md-content__inner md-typeset learning-reading">
+          {% if learning_layout.course %}
+            <nav class="learning-breadcrumb" aria-label="Course breadcrumb">
+              <a href="{{ learning_layout.courses_url }}">Courses</a>
+              {% if learning_layout.kind == "lesson" %}
+                <span aria-hidden="true">/</span>
+                <a href="{{ learning_layout.course_url }}">{{ learning_layout.course.title | e }}</a>
+              {% endif %}
+            </nav>
+          {% endif %}
+          {% if learning_layout.kind == "catalog" %}
+            {% include "partials/learning-catalog.html" %}
+          {% else %}
+            {% include "partials/content.html" %}
+          {% endif %}
+          {% if learning_layout.kind == "lesson" %}
+            <div class="learning-completion" hidden>
+              <button class="md-button md-button--primary" type="button" data-complete="{{ learning_layout.current }}">
+                Mark lecture complete
+              </button>
+            </div>
+          {% endif %}
+        </article>
+        {% if learning_layout.course %}
+          {% include "partials/learning-outline.html" %}
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
