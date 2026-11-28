@@ -118,6 +118,59 @@ def topic_related_concepts() -> dict[str, list[str]]:
     return {k: sorted(v)[:5] for k, v in cooccur.items() if v}
 
 
+# Practicums give these concepts a concrete comparison and a directly runnable exercise.
+MODEL_POLICY_NOTES = {
+    "mixture-of-experts": ("sparse-model-architectures", "Use when a larger parameter budget is plausible at bounded token compute.",
+                           "Favor a dense baseline for workloads that cannot accommodate resident experts or inter-device traffic.",
+                           "Count active and resident weights, including shared layers.",
+                           "A router concentrates a burst on a few experts."),
+    "expert-parallelism": ("sparse-model-architectures", "Use when a device cannot efficiently host the entire expert bank.",
+                          "Avoid increasing parallelism if small batches cannot amortize synchronization.",
+                          "Measure local and remote assignments and record maximum rank load.",
+                          "A straggler rank dominates latency despite low average utilization."),
+    "expert-load-balancing": ("sparse-model-architectures", "Use when bursts or recurring request shapes concentrate assignments.",
+                              "Equal assignment counts alone do not establish equal quality or execution cost.",
+                              "Record rerouted and overflow assignments alongside the original choices.",
+                              "Rerouting reduces overflow but sends tokens to experts that perform poorly on the task."),
+    "grouped-query-attention": ("sparse-model-architectures", "Use when KV memory or bandwidth constrains decoding.",
+                               "Avoid assuming a checkpoint trained with independent KV heads can be converted without quality evaluation.",
+                               "Count KV heads, not query heads, when estimating cached elements.",
+                               "More contexts fit in memory but long-context quality drops."),
+    "multi-head-latent-attention": ("sparse-model-architectures", "Use when comparing architectures that compress token history for decoding.",
+                                  "A theoretical cache reduction alone cannot predict speed on a runtime lacking suitable kernels.",
+                                  "Include positional cache components and record runtime precision.",
+                                  "The cache is smaller but decompression or projection work increases latency."),
+    "hybrid-attention-backbones": ("sparse-model-architectures", "Use when long contexts make per-layer KV growth expensive.",
+                                   "Require separate evidence for tasks that depend on exact long-range recall.",
+                                   "Account for recurrent state and full-attention KV separately.",
+                                   "Memory estimates overlook state that scales with the number of active sequences."),
+    "speculative-decoding": ("reasoning-efficient-inference", "Use when a cheap draft tends to predict several tokens the target can accept.",
+                             "Skip when low acceptance or saturated target batches erase gains.",
+                             "Compare with target-only decoding on the same prompts and settings.",
+                             "An incorrect sampling correction changes the target distribution."),
+    "continuous-batching": ("reasoning-efficient-inference", "Use when request lengths vary and generation steps leave reusable capacity.",
+                            "Single-request latency benchmarks cannot justify changing a shared scheduler.",
+                            "Benchmark short and long requests at several arrival rates.",
+                            "Higher throughput conceals increased time to first token for cold requests."),
+    "contextual-bandits": ("decision-models-and-policies", "Use for repeated one-step choices with observable feedback.",
+                           "Use a sequential model when choices materially change future states and rewards.",
+                           "Log the eligible actions, selected action, propensity and outcome.",
+                           "Selection probabilities are missing or detached from the policy version."),
+    "off-policy-evaluation": ("decision-models-and-policies", "Use to assess a target decision policy from data collected by another policy.",
+                             "Withhold the estimate when the target selects actions outside the logging policy's support.",
+                             "Inspect overlap and effective sample size before comparing values.",
+                             "A handful of high-weight rows dominate the estimate."),
+    "decision-transformer": ("decision-models-and-policies", "Use to study return-conditioned policies when trajectory data cover relevant states and actions.",
+                             "Avoid relying on unreachable target returns or unsupported actions.",
+                             "Compare with behavior cloning and a simple planner on the same evaluation environments.",
+                             "Target returns outside the training range produce unreliable actions."),
+    "constrained-assignment": ("decision-models-and-policies", "Use when individually promising actions compete for shared capacity or violate combination rules.",
+                               "Use simple ranking when actions are independent and share no relevant constraints.",
+                               "Check feasibility and objective value against a tiny exact reference.",
+                               "A greedy choice consumes capacity needed by a higher-value combination."),
+}
+
+
 def card_enrichment(key: str) -> dict[str, list[str] | str]:
     cat = TOPIC_CATEGORY.get(key, "default")
     defaults = CATEGORY_DEFAULTS[cat]
@@ -134,6 +187,12 @@ def card_enrichment(key: str) -> dict[str, list[str] | str]:
         checklist.append("Bound steps, cost, tools, and human approval for side effects.")
     elif cat == "evaluation":
         checklist.append("Report worst-slice performance, not aggregate alone.")
+    if key in MODEL_POLICY_NOTES:
+        course, use, limit, check, failure = MODEL_POLICY_NOTES[key]
+        return {
+            "when_to_use": use, "when_not": limit, "failure_modes": [failure],
+            "checklist": [check], "chapters": chapters, "related": related, "course": course,
+        }
     return {
         "when_to_use": defaults["when_to_use"],
         "when_not": defaults["when_not"],

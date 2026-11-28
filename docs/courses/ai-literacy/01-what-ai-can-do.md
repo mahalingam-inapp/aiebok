@@ -43,6 +43,12 @@ When a school worker uses a model to simplify a confirmed notice, the original n
 
 A help desk uses a rule to acknowledge every ticket, predicts which team should own it, and drafts a response with a generative model. The support employee still checks that the response answers the right question.
 
+### Follow the example
+
+**Given:** The office receives ‘North Wing closed. No reopening date yet.’
+
+**Walkthrough:** A rule can flag the missing reopening date. A prediction can estimate call volume using past closures. A generator can draft an update from the confirmed note. Only the last step produces text for families, and a person checks it before sending.
+
 ## Try it yourself
 
 Classify three tasks as rules, predictions, or generation. Warn when a field is empty, estimate when a parcel will arrive, and draft an update to the customer.

@@ -123,9 +123,9 @@ Provenance for generated media records model, prompt, timestamp, and user for co
 
 **Design question:** Which metadata field prevents a confidential chunk appearing in general retrieval?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **document ingestion** before the book-level sample:
+Run this short Python demonstration of **document ingestion**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 manifest = {
@@ -141,20 +141,9 @@ user = {"groups": ["ALL-STAFF"]}
 print({"access": allowed(manifest["chunks"][0], user["groups"])})
 ```
 
-Predict the printed values, then change one line tied to **parsing** or **OCR** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/06-hybrid-rag.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/06-hybrid-rag.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    Documents appearing high in both rankings receive the strongest reciprocal-rank-fusion scores.
+For a longer implementation, run the [course code sample](../../code-samples/06-hybrid-rag.py). Documents appearing high in both rankings receive the strongest reciprocal-rank-fusion scores.
 
 ## Engineering practice
 
@@ -172,7 +161,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Sketch source identifiers and chunk lineage for two versions of the same policy.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/06-knowledge-and-retrieval-systems.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/06-knowledge-and-retrieval-systems.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

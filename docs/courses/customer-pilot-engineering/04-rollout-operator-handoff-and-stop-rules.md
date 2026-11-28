@@ -43,6 +43,35 @@ Keep a log of responsibilities and a checkpoint for reassessment. A bounded appr
 
 The pilot meets its median time target, but a restricted case routes automatically. The owner keeps manual triage active and blocks expansion.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+def decide(observed_times, restricted_case_ok, completed_smoke_test):
+    return (
+        len(observed_times) >= len(baseline_minutes)
+        and median(observed_times) <= median_target
+        and restricted_case_ok
+        and completed_smoke_test
+    )
+
+
+pilot_minutes = (6, 7, 8, 9, 11)
+assert decide(pilot_minutes, True, True)
+assert not decide(pilot_minutes, False, True)
+assert not decide(pilot_minutes[:2], True, True)
+print({
+    "pilot_cohort": "simulated facilities intake",
+    "cases": len(pilot_minutes),
+    "median_minutes": median(pilot_minutes),
+    "recommendation": "bounded pilot",
+    "operator_owner": "facilities shift lead",
+    "stop_rule": "route any restricted case manually and pause automation",
+    "smoke_case": {"input_id": "F2", "expected": "review"},
+})
+```
+
 ## Try it yourself
 
 Review both bundled pilot result sets. Write a one-page handoff with the same triggers.

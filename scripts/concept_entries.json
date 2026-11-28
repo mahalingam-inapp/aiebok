@@ -955,9 +955,9 @@
     "Run ten queries with filters and confirm zero results violate authorization metadata."
   ],
   "mixture-of-experts": [
-    "Mixture-of-experts activates subsets of parameters per token, scaling capacity without proportional compute. Routing and load balancing add engineering complexity.",
-    "An MoE layer may route math tokens to specialized experts while sharing common language experts.",
-    "Monitor expert utilization histograms and penalize imbalance if any expert exceeds 40% load."
+    "A sparse mixture-of-experts layer routes each token to a subset of expert feed-forward networks and combines their outputs. Resident weight memory, shared computation, and cross-device communication matter even when few experts are active.",
+    "A layer with eight equally sized routed experts and top-2 routing uses two experts per token. A shared expert, if present, adds work for every token.",
+    "Report active and resident parameters separately. Measure skew, overflow or queueing, and quality on realistic input bursts."
   ],
   "mlp-blocks": [
     "MLP blocks apply position-wise feed-forward networks after attention, adding nonlinear capacity per token. They typically expand dimension 4× then project back.",
@@ -1803,5 +1803,60 @@
     "World models learn predictive representations of environments for planning or simulation—active research area with engineering gaps.",
     "Game agent predicts next frame state to plan moves without full environment queries.",
     "Benchmark predicted versus actual state error on controlled simulation suite."
+  ],
+  "expert-parallelism": [
+    "Expert parallelism places different feed-forward experts on different devices. Routed activations travel to the selected expert and back, so communication and the slowest rank can dominate a step.",
+    "A rank running rare experts has spare capacity while a remote rank serving a popular expert is saturated.",
+    "Compare traffic, per-rank load, queueing and p95 latency at fixed batch and sequence lengths."
+  ],
+  "expert-load-balancing": [
+    "Expert load balancing controls the concentration of assignments in a sparse layer. Training can influence the router through an auxiliary loss or score adjustments, while serving can change expert placement or replication.",
+    "A burst sends six assignments to an expert whose modeled capacity is four, leaving two unserved despite spare capacity elsewhere.",
+    "Measure peak assignments, overflow and fallback quality on both balanced inputs and realistic bursts."
+  ],
+  "grouped-query-attention": [
+    "Grouped-query attention shares one key and value head among multiple query heads. It reduces KV storage relative to multi-head attention at the same sequence length, head dimension and precision.",
+    "A layer with 32 query heads and 8 KV heads stores one quarter of the conventional per-token KV elements, before overhead.",
+    "Measure cache memory and long-context task quality at equal workload and decoding settings."
+  ],
+  "multi-head-latent-attention": [
+    "Multi-head latent attention lowers cache footprint by storing a compressed representation used to reconstruct or compute attention keys and values. Position-dependent cache components and runtime layout also affect actual bytes.",
+    "A serving engineer counts the latent state and any separately stored positional components before comparing against grouped-query attention.",
+    "Measure resident KV memory and latency at fixed model, context, concurrency and runtime precision."
+  ],
+  "hybrid-attention-backbones": [
+    "Hybrid backbones combine full attention with layers that use another mechanism, such as gated linear attention or a state-space model. Full-attention layers still allocate context-dependent KV cache during standard decoding.",
+    "A 32-layer hybrid with eight full-attention layers carries both growing KV state and per-sequence recurrent state.",
+    "Measure state memory by sequence length and include long-context tasks that require exact evidence retrieval."
+  ],
+  "speculative-decoding": [
+    "Speculative decoding proposes continuation tokens and verifies them in a block with a target model. A greedy implementation can commit a matching prefix and correct the first mismatch, while stochastic equivalence requires the appropriate acceptance and correction distributions.",
+    "If the third of four draft tokens differs, a greedy check commits two matching tokens and the target token at the third position.",
+    "Measure accepted tokens per check, end-to-end latency, throughput and target decode equivalence on a fixed workload."
+  ],
+  "continuous-batching": [
+    "Continuous batching schedules active and newly arriving requests together at generation-step boundaries. It changes utilization and queueing, especially when inputs and outputs vary in length.",
+    "When a short request finishes, a new request can occupy its capacity while other requests continue decoding.",
+    "Report time to first token, inter-token latency and throughput by concurrency and prompt-length cohort."
+  ],
+  "contextual-bandits": [
+    "A contextual bandit chooses an action given observed context and receives feedback for the chosen action. The action can affect which outcome is observed, so the same log lacks counterfactual rewards for the other actions.",
+    "A synthetic queue chooses one of two reminder policies per ticket and records the eligible options, action, probability and outcome.",
+    "Check action support, selection probabilities, feedback delay and evaluation uncertainty before comparing policies."
+  ],
+  "off-policy-evaluation": [
+    "Off-policy evaluation estimates the performance of a target policy from data generated by a different policy. Inverse propensity scoring reweights rewards using the ratio of target to logging probabilities. Small logging probabilities can make an estimate unstable.",
+    "A deterministic target selects an action whose logging probability was one quarter, so matching logged rows have weight four.",
+    "Report overlap, effective sample size and sensitivity. Withhold the estimate where the target makes unsupported choices."
+  ],
+  "decision-transformer": [
+    "Decision Transformer formulates offline reinforcement learning as sequence prediction over returns-to-go, states and actions. An action is conditioned on observed history and a desired return, with no guarantee for desired behavior outside the data distribution.",
+    "A trajectory model trained on cautious scheduling data receives a desired return rarely reached in that data.",
+    "Evaluate against simple policies on held-out trajectories or a validated simulator, and measure failures under changes in state and action support."
+  ],
+  "constrained-assignment": [
+    "Constrained assignment optimizes a set of choices together under resource, eligibility or precedence rules. Feasibility and objective value are separate results.",
+    "Two short maintenance jobs can fit together and beat the highest-value single task.",
+    "Compare feasibility, regret against a small exact solver, and solve time. Report infeasibility as its own outcome."
   ]
 }

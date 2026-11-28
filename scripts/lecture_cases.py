@@ -772,3 +772,61 @@ The combined number clears the threshold while the candidate fails it. Hold the 
 
 Now change the pilot to one failure in 20. The observed rate equals the threshold. Would you expand immediately? Check whether the minimum sample addresses the workload you are about to expose, including any consequential slice missing from the pilot.""",
 }
+
+
+CASES.update({
+    "sparse-model-architectures": CourseCase(
+        "A Monday morning at HarborLink",
+        "HarborLink's engineering team wants to process rider questions and long equipment logs on the same fleet. Arun has a dense baseline, a candidate with sparse experts, and a limited device budget. The support desk only cares which choice still works during a noisy Monday queue.",
+        (
+            Moment("Follow one token across the layer",
+                   "A maintenance request goes to the long-document endpoint. A diagram on the team wall labels that endpoint an expert, which makes it hard to discuss what the model actually computes.",
+                   "Draw one box around the endpoint decision and another around the token-level operation. A request can take one endpoint and still use many experts inside it across tokens and layers."),
+            Moment("A burst hits the same expert",
+                   "A station closure causes many near-identical equipment questions to arrive together. Last week's averaged routing histogram looked balanced.",
+                   "Inspect assignments at the batch boundary. Count overflow per expert, then rerun the behavior check when assignments are rerouted. A healthier histogram can still hide changed answers."),
+            Moment("Follow the activation across devices",
+                   "The sparsest candidate reduces expert FLOPs in a spreadsheet. Its busiest expert lives across a slow link from the device handling most inputs.",
+                   "Estimate the outgoing and return payload. Mark the synchronization cost and collective startup as unknown. Watch the busiest rank before attributing a latency miss to the model math."),
+            Moment("The workload has two kinds of long prompt",
+                   "Support wants exact citations in a long policy. Maintenance wants a summary of recurring events across a log. Those requests can have the same number of input tokens.",
+                   "Measure memory against input length and run each task separately. A lower cache estimate can be a useful reason to benchmark and says little about quality on an exact lookup."),
+        ),
+    ),
+    "reasoning-efficient-inference": CourseCase(
+        "Fast answers without a guess",
+        "Meera owns HarborLink's response-time budget. Some requests only need one current policy excerpt. Others require choosing a route across stations with exclusions. She can afford added model time when it changes what the desk can verify.",
+        (
+            Moment("Pick an observable escalation signal",
+                   "A cheap candidate returns a confident answer about a closed station. Its source date is older than the date supplied in the request.",
+                   "Use verifiable source age as an escalation signal. Benchmark the whole escalation path, including both attempts and the capacity needed for a manual handoff."),
+            Moment("Test the answer before reading the explanation",
+                   "Two routes look reasonable in the planner's prose. One uses a closed lift and the other has a bad total.",
+                   "Run an independent feasibility check over the structured routes. Track when a valid route is never proposed separately from when the verifier accepts a bad route."),
+            Moment("Reject the suffix when the prefix changes",
+                   "The draft system expects a policy sentence to end with 'business days'. The target chooses a token that begins a different phrase.",
+                   "Keep the matching prefix and continue from the target's chosen token. Any later draft token was proposed in an obsolete context."),
+            Moment("A warm benchmark misses the expensive cohort",
+                   "A performance report looks good on repeated policy prompts. A contractor batch uses fresh logs, increasing the queue time for first tokens.",
+                   "Fix separate gates for warm and cold cohorts. Record prompt lengths and concurrency so a follow-up can reproduce the failure."),
+        ),
+    ),
+    "decision-models-and-policies": CourseCase(
+        "Who gets the next maintenance slot?",
+        "HarborLink has a queue and a finite number of technician slots. Leena owns the decision policy. She needs to translate delay-risk estimates into a plan and explain why some tickets are deferred for review.",
+        (
+            Moment("Give the uncertainty somewhere to go",
+                   "A maintenance alert is neither clearly routine nor obviously urgent. The model is moderately confident and a short review is available.",
+                   "Write the action and review costs before choosing a threshold. Track how often the policy defers and whether the team can handle that load."),
+            Moment("Several good jobs compete for one crew",
+                   "The highest-value job needs both available time blocks. Two smaller jobs fit together and can be finished today.",
+                   "Solve for the set of jobs rather than the rank of an individual ticket. If a compulsory job cannot fit, escalate the schedule instead of dropping it silently."),
+            Moment("History contains the actions somebody chose",
+                   "The log has thousands of observations, but a rarely selected region has very little evidence for the new policy's proposed action.",
+                   "Record the logging policy's action probabilities and measure overlap. Examine effective sample size and stop the comparison if the target action has no historical support."),
+            Moment("Saving minutes now can cost a visit later",
+                   "A policy defers tricky jobs to improve today's completed jobs per hour. Repeat visits rise over the next reporting period.",
+                   "Include future workload and unresolved work in the objective. Evaluate a candidate with a shadow workload and connect delayed outcomes to the original policy decision."),
+        ),
+    ),
+})

@@ -43,6 +43,35 @@ Log the operation identity, reviewed revision, effect state, and retry dispositi
 
 The worker restarts after saving an approved agenda note and before returning success. The next attempt reports the existing completion.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+def execute(db, identifier):
+    with db:
+        db.execute("BEGIN IMMEDIATE")
+        row = db.execute("SELECT payload, approved FROM proposals WHERE id = ?", (identifier,)).fetchone()
+        if row is None or not row[1]:
+            return "awaiting_approval"
+        effect = db.execute("INSERT OR IGNORE INTO notes VALUES (?, ?)", (identifier, row[0]))
+        return "completed" if effect.rowcount else "replayed"
+
+
+assert execute(db, "proposal-1") == "awaiting_approval"
+assert approve(db, "proposal-1", digest)
+assert execute(db, "proposal-1") == "completed"
+db.close()
+db = open_store(database)
+try:
+    assert execute(db, "proposal-1") == "replayed"
+    assert db.execute("SELECT count(*) FROM notes").fetchone() == (1,)
+    print("Decision trace", events + ["awaiting_approval", "approved", "completed", "replayed"])
+finally:
+    db.close()
+    directory.cleanup()
+```
+
 ## Try it yourself
 
 Reopen the store again and replay the approved action. Check the persistent effect count and trace.

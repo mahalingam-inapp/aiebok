@@ -43,6 +43,34 @@ If the candidate fails, preserve both the decision and evidence. Decide whether 
 
 If the candidate has two failures in ten comparable requests and the maximum is one in ten, pause even when all ten callers received some response.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+def gate(store, version, minimum=4, max_fallback_rate=0.2, p95_limit_ms=1000):
+    rows = store.conn.execute(
+        "SELECT elapsed_ms, fallback FROM traces WHERE requested = ? ORDER BY elapsed_ms", (version,)
+    ).fetchall()
+    if len(rows) < minimum:
+        return False, f"insufficient sample ({len(rows)}/{minimum})"
+    rate = sum(fallback for _, fallback in rows) / len(rows)
+    from math import ceil
+    p95 = rows[ceil(0.95 * len(rows)) - 1][0]
+    return rate <= max_fallback_rate and p95 <= p95_limit_ms, f"fallback rate {rate:.1%}, p95 {p95:.2f} ms"
+
+
+assert gate(store, "v2")[1].startswith("insufficient sample")
+for question in ("special request", "reserve a room", "reserve a room"):
+    request(service, "/predict", {"question": question}, canary=True)
+passed, reason = gate(store, "v2")
+assert not passed and "50.0%" in reason
+for _ in range(3):
+    request(service, "/predict", {"question": "reserve a room"})
+assert gate(store, "v1")[0]
+print("Canary", reason)
+```
+
 ## Try it yourself
 
 Run the gate with a limited candidate cohort and compare its decision with normal traffic. The notebook uses a loopback request header to select the fixture cohort. In a deployed service, assign cohorts in trusted routing infrastructure.

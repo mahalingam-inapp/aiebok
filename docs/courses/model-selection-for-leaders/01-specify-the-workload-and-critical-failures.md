@@ -43,6 +43,12 @@ Give each candidate a fair setup within the same scope. Record different configu
 
 An employee policy assistant can draft answers, abstain on unknown questions, and preserve access boundaries. Restricted-policy behavior is critical.
 
+### Follow the example
+
+**Given:** A vendor demo answers familiar questions quickly. The intended workload includes archived policies and restricted cases.
+
+**Walkthrough:** Refuse to infer coverage from the demo. Write one acceptance case for dated material and another for access. Test both vendors against the same conditions.
+
 ## Try it yourself
 
 Choose two critical cases for a customer support workflow and describe the expected behavior.

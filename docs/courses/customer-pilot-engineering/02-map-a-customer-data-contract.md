@@ -43,6 +43,47 @@ Version the mapping and exercise a boundary case before deploying it. Ask the up
 
 A partner sends a customer ticket ID, topic, and audience flag. Normalize known topics and route any unrecognized topic to review.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Ticket:
+    source_id: str
+    topic: str
+    restricted: bool
+
+
+def normalize(payload):
+    if payload.get("schema") != "facilities-v1":
+        raise ValueError("unsupported schema")
+    source = payload.get("ticket")
+    topic = payload.get("queue")
+    restricted = payload.get("restricted")
+    if not isinstance(source, str) or not source.strip() or not isinstance(topic, str) or type(restricted) is not bool:
+        raise ValueError("invalid ticket fields")
+    return Ticket(source.strip(), topic.strip().lower(), restricted)
+
+
+inputs = [
+    {"schema": "facilities-v1", "ticket": "F1", "queue": " Heating ", "restricted": False},
+    {"schema": "facilities-v1", "ticket": "F2", "queue": "heating", "restricted": True},
+    {"schema": "facilities-v1", "ticket": "F3", "queue": "other", "restricted": False},
+]
+tickets = [normalize(row) for row in inputs]
+assert tickets[0] == Ticket("F1", "heating", False)
+try:
+    normalize(inputs[0] | {"restricted": "false"})
+except ValueError as error:
+    print("Rejected malformed request", error)
+else:
+    raise AssertionError("wrong field type was accepted")
+```
+
 ## Try it yourself
 
 Run the adapter for the bundled records. Add a case for a field with the wrong type.

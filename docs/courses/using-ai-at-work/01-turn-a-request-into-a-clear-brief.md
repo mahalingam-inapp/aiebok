@@ -43,6 +43,12 @@ Include contradictions when you expect them. If an old flyer and a newer update 
 
 Instead of asking for a good office notice, specify its audience, the known closure date, a 100-word limit, and ask for a placeholder if the reopening date is unknown.
 
+### Follow the example
+
+**Given:** Someone writes ‘Tell everyone the workshop changed.’ The destination room is confirmed, the accessible entrance is still being checked.
+
+**Walkthrough:** Brief the tool to write to registered attendees, retain the confirmed location, and identify the entrance as pending. Check those three requirements before judging the tone.
+
 ## Try it yourself
 
 Write a three-sentence brief for an email about a rescheduled training session when the replacement date is unknown.

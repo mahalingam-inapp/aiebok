@@ -43,6 +43,50 @@ Check the cohort denominator and sample size. A small sample can be enough to re
 
 With a 99% objective, a 5% bad rate burns error budget at five times the sustainable rate.
 
+## Follow the code
+
+Run this cell in Python 3.10 or later. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from dataclasses import dataclass
+from statistics import median
+
+
+@dataclass(frozen=True)
+class Trace:
+    cohort: str
+    version: str
+    stages_ms: tuple[tuple[str, int], ...]
+    valid: bool
+    failed_at: str | None = None
+    cost: float = 0.002
+
+    @property
+    def elapsed(self):
+        return sum(value for _, value in self.stages_ms)
+
+
+def trace(cohort, version, bad=False):
+    return Trace(cohort, version, (("retrieval", 20), ("generation", 900 if bad else 180), ("validation", 15)),
+                 not bad, "generation" if bad else None)
+
+
+stable = [trace("control", "v1") for _ in range(20)]
+healthy = [trace("pilot", "v2") for _ in range(20)]
+unhealthy = [trace("pilot", "v2", bad=i < 4) for i in range(20)]
+
+
+def objectives(rows, latency_limit=350, target=0.99):
+    good = sum(row.valid and row.elapsed <= latency_limit for row in rows)
+    bad_fraction = (len(rows) - good) / len(rows)
+    return {"n": len(rows), "good": good, "burn": bad_fraction / (1 - target),
+            "median_ms": median(row.elapsed for row in rows), "mean_cost": sum(row.cost for row in rows) / len(rows)}
+
+
+assert objectives(stable)["burn"] == 0
+assert abs(objectives(unhealthy)["burn"] - 20) < 1e-8
+```
+
 ## Try it yourself
 
 Compute objectives for the fixture cohorts. Change the latency threshold and decide which failures count.

@@ -43,6 +43,12 @@ Keep these cases aside once you start changing the workflow. If you fix the draf
 
 For meeting summaries, a routine agenda, an unresolved decision, and a confidential item exercise three different expectations. Your examples should preserve uncertainty and omit the confidential item from public notes.
 
+### Follow the example
+
+**Given:** Six trials contain five routine reminders and one ambiguous closure notice.
+
+**Walkthrough:** Record the planned workload and include cases with missing or conflicting instructions. Keep the difficult cases visible in a separate row so success on reminders cannot hide failures.
+
 ## Try it yourself
 
 Create three cases for an assistant that drafts facilities notices. Give each case an expected result.

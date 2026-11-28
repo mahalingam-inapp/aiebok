@@ -43,6 +43,51 @@ Use a bounded sandbox or simulated effect for student exercises. Preserve the cu
 
 A known but incorrect formatter lowercases text while preserving doubled spaces. It passes some existing behaviors and still fails the added requirement.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from dataclasses import dataclass
+
+
+def proposed_title(value):
+    return " ".join(value.lower().split()) or "untitled"
+
+
+CANDIDATES = {"current": current_title, "collapse-spaces": proposed_title}
+
+
+@dataclass(frozen=True)
+class Review:
+    candidate: str
+    revision: int
+    failures: tuple
+    approved: bool = False
+
+
+def evaluate(proposal, revision):
+    if (
+        not isinstance(proposal, dict) or set(proposal) != {"action", "candidate"}
+        or proposal["action"] != "update-formatter" or not isinstance(proposal["candidate"], str)
+        or proposal["candidate"] not in CANDIDATES
+    ):
+        raise ValueError("proposal outside the allowed contract")
+    candidate = proposal["candidate"]
+    return Review(candidate, revision, tuple(regressions(CANDIDATES[candidate])))
+
+
+proposal = {"action": "update-formatter", "candidate": "collapse-spaces"}
+assert evaluate(proposal, 1).failures == ()
+assert evaluate(proposal | {"candidate": "current"}, 1).failures
+try:
+    evaluate(proposal | {"action": "unregistered-action"}, 1)
+except ValueError:
+    pass
+else:
+    raise AssertionError("unknown action accepted")
+```
+
 ## Try it yourself
 
 Evaluate an unknown proposal and a known incorrect candidate. Compare the failure categories.

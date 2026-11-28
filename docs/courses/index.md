@@ -23,6 +23,9 @@ Each course groups self-contained lectures into sections and ends with a project
 - [Durable Agent Runtime and MCP](durable-agent-tool-runtime/index.md) — Build a local review workflow with typed tool access, approvals, durable state, and replay-safe execution.
 - [LLM Adaptation and Inference Lab](llm-adaptation-inference/index.md) — Adapt an autoregressive model, compare retrieval and tuning, and quantify serving trade-offs.
 - [AI Reliability and Release Engineering](ai-reliability-release/index.md) — Operate a staged model release using service objectives, trace diagnosis, and an incident exercise.
+- [Sparse Models and Mixture of Experts](sparse-model-architectures/index.md) — Build a token router, measure imbalance and communication, and compare sparse and hybrid architectures for a target workload.
+- [Reasoning and Efficient Model Inference](reasoning-efficient-inference/index.md) — Compare reasoning budgets, verifier-backed search, and speculative decoding under explicit quality and latency constraints.
+- [Decision Models, Optimization, and Feedback](decision-models-and-policies/index.md) — Turn predictions into constrained decisions, evaluate a contextual policy offline, and measure consequences before rollout.
 
 ## Technical courses
 

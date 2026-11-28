@@ -43,6 +43,12 @@ During a rollout, distinguish a correct result from one that was rescued by a hu
 
 A pilot covers one department. If a restricted document is shown to an unauthorized person, the operator immediately turns off the feature and returns users to the approved document portal.
 
+### Follow the example
+
+**Given:** Most routine requests succeed, but a sample uncovers a single missing critical escalation.
+
+**Walkthrough:** Pause the affected cohort, retain the record, and verify manual intake. Ask the named owner to approve reopening against the critical cases.
+
 ## Try it yourself
 
 Draft a launch scope and stop rule for the first week of a meeting-summary assistant.

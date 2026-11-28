@@ -43,6 +43,12 @@ When the draft says “plenty of parking,” ask which source confirms it. You c
 
 The source says office access resumes Monday at 10 a.m. A draft says Monday morning. The missing time matters to early arrivals, so restore it.
 
+### Follow the example
+
+**Given:** Source notes say ‘Room 204, Friday at noon, seats assigned by a lottery.’ The draft promises a seat to anyone registering Friday.
+
+**Walkthrough:** Restore noon and the allocation rule. Have the event owner check the room separately. These are distinct factual and audience checks.
+
 ## Try it yourself
 
 The source says registration closes Friday at noon and places are limited. A draft says to sign up by Friday and guarantees a seat. List both corrections.

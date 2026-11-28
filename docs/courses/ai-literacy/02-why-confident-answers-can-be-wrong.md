@@ -54,6 +54,12 @@ When a source is incomplete, keep that gap visible. “We will share another upd
 
 A tool says expenses must be filed within 45 days. The current dated policy says 30 days. Reading the policy resolves the discrepancy.
 
+### Follow the example
+
+**Given:** A draft reads ‘The district voted unanimously to reopen.’ The minutes contain a reopening motion but no vote tally.
+
+**Walkthrough:** Retain only what the minutes support. Mark the tally unknown and check the recording or the clerk's report before describing the vote.
+
 ## Try it yourself
 
 A generated meeting summary says a decision was unanimous. What would you check before reporting that detail?

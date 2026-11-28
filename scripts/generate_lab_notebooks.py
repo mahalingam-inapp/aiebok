@@ -12,6 +12,7 @@ from generate_expansion import lab_slug
 from generate_maturity_content import STARTER_LABS
 from lab_notebook_templates import BUILDERS, _code, _md, cells_for
 from lecture_cases import CASES, lecture_case
+from practicum_code import lecture_cells
 from textbook_readings import READINGS
 from topic_knowledge import get_topic_entry
 
@@ -128,8 +129,7 @@ def notebook_href(slug: str) -> str:
 
 def write_practicum_notebooks() -> None:
     for course in APPLIED_COURSES:
-        source = ROOT / "scripts" / "practicum_examples" / f"{course.slug}.py"
-        examples = iter(source.read_text(encoding="utf-8").split("\n# %%\n"))
+        examples = lecture_cells(course)
         cells = [
             _md(f"# {course.title}\n\n{course.goal}\n\n"
                 "Run the lecture cells in sequence with Python 3.10 or later. "
@@ -148,11 +148,9 @@ def write_practicum_notebooks() -> None:
                         f"#### How it works\n\n{lecture.explanation}\n\n##{READINGS[course.slug][number - 1]}\n\n"
                         f"#### Worked example\n\n{lecture.example}\n\n"
                         f"#### Try it\n\n{lecture.practice}"),
-                    _code(next(examples).strip()),
+                    _code(examples[number - 1]),
                     _md(f"**Compare your result**\n\n{lecture.answer}"),
                 ])
-        if next(examples, None) is not None:
-            raise ValueError(f"{course.slug} has more code blocks than lectures.")
         cells.append(_md(f"## Course project\n\n{course.project}\n\n{course.standard}"))
         write_ipynb(COURSE_NOTEBOOKS / f"{course.slug}.ipynb", cells)
 

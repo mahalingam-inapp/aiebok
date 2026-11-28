@@ -56,6 +56,12 @@ A pilot should also identify who does the work. A writer may save time while a s
 
 If the old workflow takes 15 minutes and the new one takes 5 minutes to draft plus 12 to check, the new process takes 17 minutes for that example.
 
+### Follow the example
+
+**Given:** An assisted draft takes 5 minutes to create, 8 to review, and 4 to fix. The previous verified draft took 15 minutes.
+
+**Walkthrough:** Compare 17 minutes with 15. Record corrections separately. Prefer the method that meets the deadline and quality requirement on comparable cases.
+
 ## Try it yourself
 
 Plan a comparison for drafting five routine notices. What will you record for each method?

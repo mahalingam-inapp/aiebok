@@ -28,13 +28,14 @@
     previous.setAttribute("aria-disabled", String(current === 0));
     next.setAttribute("aria-disabled", String(current === slides.length - 1));
 
-    if (updateUrl) history.replaceState(null, "", `#${slide.id}`);
+    if (updateUrl) history.replaceState(null, "", `#${slide.dataset.concept || slide.id}`);
     if (focus) heading.focus({ preventScroll: true });
     window.scrollTo(0, 0);
   }
 
   function readHash() {
-    const index = slides.findIndex((slide) => location.hash === `#${slide.id}`);
+    const id = location.hash.slice(1);
+    const index = slides.findIndex((slide) => slide.id === id || slide.dataset.concept === id);
     return index < 0 ? 0 : index;
   }
 

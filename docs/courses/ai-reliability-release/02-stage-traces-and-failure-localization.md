@@ -43,6 +43,23 @@ Exercise the distinction in the lab by injecting a delay at a known stage. A rep
 
 Candidate users receive several timeouts during generation. Retrieval is fast for both cohorts, so the trace points investigation to the candidate dependency.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from collections import Counter
+
+
+def failure_stages(rows):
+    return Counter(row.failed_at for row in rows if row.failed_at)
+
+
+assert failure_stages(stable) == {}
+assert failure_stages(unhealthy) == {"generation": 4}
+print("First failing stage", failure_stages(unhealthy).most_common(1))
+```
+
 ## Try it yourself
 
 Run the failure aggregation and examine how the diagnosis changes if you move the injected failure to retrieval.

@@ -43,6 +43,12 @@ A useful test is to pretend the tool is wrong once. Describe how the person affe
 
 Rewriting an internal agenda is easy to review and reverse. Automatically approving an employee reimbursement affects money and calls for authoritative rules and accountable review.
 
+### Follow the example
+
+**Given:** The FAQ draft and a reimbursement approval each take five minutes to review.
+
+**Walkthrough:** Publishing a reversible, checked FAQ is a smaller pilot. Approval affects a real payment, so preserve the existing reviewer and authorized rules.
+
 ## Try it yourself
 
 Choose a first pilot among drafting a public FAQ, approving a refund, and deciding who qualifies for benefits. Describe what review is still needed.

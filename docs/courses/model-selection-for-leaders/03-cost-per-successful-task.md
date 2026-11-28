@@ -43,6 +43,12 @@ Use a consistent workload and report the limits of the comparison. Price estimat
 
 Balanced costs 0.026 units for nine correct cases. Careful costs 0.051 units for ten correct cases.
 
+### Follow the example
+
+**Given:** A low-cost endpoint needs twice as many manual checks as its competitor.
+
+**Walkthrough:** Combine price, verified successes, and reviewer minutes. Include escalation staffing and the cost of retreating to the current process.
+
 ## Try it yourself
 
 Compare cost per correct result for both candidates, then identify one expense the benchmark omits.

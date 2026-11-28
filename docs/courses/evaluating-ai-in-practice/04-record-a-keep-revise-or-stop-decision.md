@@ -43,6 +43,12 @@ Give a person ownership of the next run and keep the old workflow available. Goo
 
 An assistant saves time on routine notices and gives a misleading answer on an emergency closure. Keep emergency notices on the manual workflow and test routine notices with an assigned reviewer before any expansion.
 
+### Follow the example
+
+**Given:** Both workflows handle routine reminders. The assisted one turns an unconfirmed location into a published fact.
+
+**Walkthrough:** Keep assisted drafting for confirmed reminders. Route unconfirmed locations to the organizer and specify a repeat test before revising the decision.
+
 ## Try it yourself
 
 Write a decision for a workflow that saves time but has one sensitive-data failure. State what could make it safe to retry.

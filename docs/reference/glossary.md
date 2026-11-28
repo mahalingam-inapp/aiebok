@@ -1,6 +1,6 @@
 # Glossary
 
-Alphabetical definitions for **361** AIEBOK catalog terms. See [concept cards](../concepts/cards/index.md) for expanded entries.
+Alphabetical definitions for **372** AIEBOK catalog terms. See [concept cards](../concepts/cards/index.md) for expanded entries.
 
 Expand a letter group or use search (`/`).
 
@@ -57,7 +57,7 @@ Expand a letter group or use search (`/`).
     - **Budgets:** Budgets cap tokens, tool calls, wall time, or dollars per task or session.
     - **Build Versus Buy:** Build versus buy weighs custom AI development against vendor APIs and platforms on control, cost, and time-to-value.
 
-??? abstract "C (43)"
+??? abstract "C (46)"
     - **Caching:** Caching stores prompt prefixes, embeddings, or completions to cut latency and cost.
     - **Calibration:** Calibration means predicted probabilities align with observed frequencies—70% confidence should be right about 70% of the time.
     - **Canaries:** Canaries route small traffic percentage to new versions before full rollout.
@@ -81,6 +81,7 @@ Expand a letter group or use search (`/`).
     - **Confidence Intervals:** Confidence intervals quantify uncertainty in metric estimates from finite eval sets.
     - **Confusion Matrix:** A confusion matrix counts predicted versus actual classes, exposing which errors dominate.
     - **Consensus:** Consensus protocols align multiple agents on a decision before action—voting, debate, or judge model.
+    - **Constrained Assignment:** Constrained assignment optimizes a set of choices together under resource, eligibility or precedence rules.
     - **Constraints:** Constraints specify forbidden actions, length limits, formats, and scope boundaries in prompts.
     - **Containers:** Containers package model servers with dependencies for reproducible deployment across environments.
     - **Contamination:** Contamination occurs when eval examples leak into training data, inflating benchmark scores.
@@ -90,7 +91,9 @@ Expand a letter group or use search (`/`).
     - **Context Poisoning:** Context poisoning inserts false or misleading evidence into retrieval or memory stores to manipulate outputs.
     - **Context Traces:** Context traces log the assembled prompt sections, token counts, and sources for debugging and compliance.
     - **Context Windows:** Context windows cap tokens the model attends to in one forward pass—prompt, evidence, tools, and output compete for this budget.
+    - **Contextual Bandits:** A contextual bandit chooses an action given observed context and receives feedback for the chosen action.
     - **Continual Learning:** Continual learning updates models on new data without catastrophic forgetting of prior tasks.
+    - **Continuous Batching:** Continuous batching schedules active and newly arriving requests together at generation-step boundaries.
     - **Continuous Evaluation:** Continuous evaluation runs production or shadow traffic against eval suites to detect drift post-release.
     - **Contract Tests:** Contract tests verify integrations between services—API schemas, tool responses—without full end-to-end runs.
     - **Control:** Control mechanisms—approvals, rate limits, tool allowlists— constrain agent behavior within safe envelopes.
@@ -102,7 +105,7 @@ Expand a letter group or use search (`/`).
     - **Critique:** Critique models or rubrics evaluate drafts and suggest fixes before finalization.
     - **Cross Validation:** Cross-validation rotates train and validation folds to estimate performance variance with limited data.
 
-??? abstract "D (29)"
+??? abstract "D (30)"
     - **Data Cards:** Data cards document dataset sources, collection, demographics, limitations, and recommended uses—parallel to model cards.
     - **Data Curation:** Data curation selects, cleans, and balances training examples for quality over quantity.
     - **Data Exfiltration:** Data exfiltration via AI occurs when prompts or tools leak secrets, PII, or restricted docs to unauthorized parties.
@@ -112,6 +115,7 @@ Expand a letter group or use search (`/`).
     - **Data Residency:** Data residency restricts processing and storage to approved geographic regions for legal compliance.
     - **Data Validation:** Data validation checks schema, ranges, distributions, and freshness of incoming data before training or inference.
     - **Decision Thresholds:** Decision thresholds turn continuous scores into actions—approve, escalate, or abstain.
+    - **Decision Transformer:** Decision Transformer formulates offline reinforcement learning as sequence prediction over returns-to-go, states and actions.
     - **Decomposition:** Decomposition breaks complex tasks into subtasks with clearer stopping criteria and verifiable intermediate results.
     - **Deduplication:** Deduplication removes near-duplicate training examples that inflate metrics and memorization.
     - **Deep Learning:** Deep learning stacks differentiable layers that learn hierarchical features from raw inputs.
@@ -133,7 +137,7 @@ Expand a letter group or use search (`/`).
     - **Drift:** Drift is change in input or label distributions over time—covariate, prior, or concept drift.
     - **Durable Execution:** Durable execution persists workflow state across process restarts and deploys—Temporal, Step Functions patterns.
 
-??? abstract "E (10)"
+??? abstract "E (12)"
     - **Embedding Evaluation:** Embedding evaluation measures retrieval quality—recall, MRR, nDCG—on realistic queries with hard negatives.
     - **End To End Evals:** End-to-end evals measure full pipeline outcomes on realistic inputs including latency and cost.
     - **Entra Id And Monitor:** Microsoft Entra ID and Azure Monitor provide identity, RBAC, and observability for Azure AI workloads.
@@ -143,6 +147,8 @@ Expand a letter group or use search (`/`).
     - **Evaluation Specs:** Evaluation specs define datasets, metrics, slices, and release thresholds before shipping.
     - **Expected Cost:** Expected cost combines probabilities of outcomes with their business costs to rank decisions.
     - **Experiment Tracking:** Experiment tracking logs hyperparameters, data versions, metrics, and artifacts for every training run.
+    - **Expert Load Balancing:** Expert load balancing controls the concentration of assignments in a sparse layer.
+    - **Expert Parallelism:** Expert parallelism places different feed-forward experts on different devices.
     - **Expert Systems:** Expert systems capture domain heuristics in if-then rules curated by specialists, often with explanation traces.
 
 ??? abstract "F (12)"
@@ -159,7 +165,7 @@ Expand a letter group or use search (`/`).
     - **Function Calling:** Function calling lets models emit structured invocations with typed arguments that runtime code validates and executes.
     - **Functional Specifications:** Functional specifications describe observable system behavior—inputs, outputs, errors—for builders and testers.
 
-??? abstract "G (9)"
+??? abstract "G (10)"
     - **Generalization:** Generalization is performance on unseen data drawn from the deployment distribution, not memorization of training examples.
     - **Goal Decomposition:** Goal decomposition maps a top-level objective into subgoals with success conditions and dependencies.
     - **Goal Directed Behavior:** Goal-directed behavior means selecting actions to reduce distance to an explicit objective rather than producing unconstrained text.
@@ -169,13 +175,15 @@ Expand a letter group or use search (`/`).
     - **Graph Rag:** Graph RAG combines knowledge graphs with retrieval so multi-hop relations traverse explicit edges.
     - **Grounded Generation:** Grounded generation conditions answers strictly on provided evidence, refusing when support is insufficient.
     - **Grounding:** Grounding ties model statements to verifiable evidence—retrieved passages, database rows, tool outputs.
+    - **Grouped Query Attention:** Grouped-query attention shares one key and value head among multiple query heads.
 
-??? abstract "H (6)"
+??? abstract "H (7)"
     - **Hard Negatives:** Hard negatives are plausible but incorrect passages that confuse retrievers—essential for training and evaluation realism.
     - **Heuristics:** Heuristics estimate remaining cost or promise of partial solutions to guide search toward promising branches.
     - **Human Evaluation:** Human evaluation labels outputs quality when automation cannot capture nuance or safety.
     - **Human Oversight:** Human oversight defines when and how people supervise agents—monitoring dashboards, escalation queues, kill switches.
     - **Human Review:** Human review inserts expert judgment for high-impact or low-confidence decisions.
+    - **Hybrid Attention Backbones:** Hybrid backbones combine full attention with layers that use another mechanism, such as gated linear attention or a state-space model.
     - **Hybrid Search:** Hybrid search combines lexical and dense signals—often via reciprocal rank fusion—when neither alone covers identifiers and paraphrases.
 
 ??? abstract "I (9)"
@@ -213,14 +221,14 @@ Expand a letter group or use search (`/`).
     - **Loss Functions:** Loss functions score how wrong predictions are and drive optimization—cross-entropy for classes, MSE for regression, custom losses for ranking.
     - **Lstms:** LSTMs add gating to RNNs to mitigate vanishing gradients and capture longer dependencies than plain RNNs.
 
-??? abstract "M (19)"
+??? abstract "M (20)"
     - **Matrix Transformations:** Matrix transformations apply linear maps that rotate, scale, or project vector spaces—core to neural layers and attention projections.
     - **Mcp:** Model Context Protocol standardizes how clients discover tools, resources, and prompts from servers.
     - **Memory:** Memory in frontier systems spans working, episodic, and semantic stores beyond context windows—implementation varies widely.
     - **Memory Retrieval:** Memory retrieval selects relevant past facts given the current query—vector search, keyword, or structured lookup.
     - **Metadata:** Metadata tags documents with tenant, date, author, permissions, and type for filtering and ranking.
     - **Metadata Filtering:** Metadata filtering restricts vector or lexical search by tenant, date, permission, or document type before or after similarity scoring.
-    - **Mixture Of Experts:** Mixture-of-experts activates subsets of parameters per token, scaling capacity without proportional compute.
+    - **Mixture Of Experts:** A sparse mixture-of-experts layer routes each token to a subset of expert feed-forward networks and combines their outputs.
     - **Mlp Blocks:** MLP blocks apply position-wise feed-forward networks after attention, adding nonlinear capacity per token.
     - **Model Cards:** Model cards document intended use, training data, limitations, metrics, and ethical considerations for a model version.
     - **Model Catalog:** Model catalog lists approved models with risk tier, eval status, and allowed use cases for developers.
@@ -229,6 +237,7 @@ Expand a letter group or use search (`/`).
     - **Model Selection:** Model selection matches capabilities, cost, latency, license, and risk to task requirements—not brand prestige.
     - **Monitoring:** Monitoring observes live inputs, outputs, latency, errors, and business metrics continuously.
     - **Multi Head Attention:** Multi-head attention runs several attention operations in parallel with separate projections, letting different heads capture diverse relations.
+    - **Multi Head Latent Attention:** Multi-head latent attention lowers cache footprint by storing a compressed representation used to reconstruct or compute attention keys and values.
     - **Multi Hop Retrieval:** Multi-hop retrieval gathers evidence across sequential lookups when no single passage contains the answer.
     - **Multi Tenancy:** Multi-tenancy isolates customer data, indexes, quotas, and configs in shared AI platforms.
     - **Multilingual Models:** Multilingual models share parameters across languages, enabling cross-lingual retrieval and generation.
@@ -240,8 +249,9 @@ Expand a letter group or use search (`/`).
     - **Neurons And Layers:** Neurons apply activations to weighted sums; layers stack these transforms into composable functions.
     - **Normalization:** Text normalization lowercases, strips diacritics, standardizes whitespace, and canonicalizes equivalents before indexing or tokenization.
 
-??? abstract "O (6)"
+??? abstract "O (7)"
     - **Ocr:** OCR extracts text from scanned images and photos, introducing recognition errors that propagate to chunks and answers.
+    - **Off Policy Evaluation:** Off-policy evaluation estimates the performance of a target policy from data generated by a different policy.
     - **One Hot Vectors:** One-hot vectors encode categorical items as sparse binary indicators—simple but high-dimensional and semantically blind.
     - **Open Weights:** Open-weights models publish parameters for local deployment, fine-tuning, and inspection—versus API-only access.
     - **Opensearch:** Amazon OpenSearch supports lexical, vector, and hybrid search with k-NN indexes for RAG on AWS.
@@ -314,7 +324,7 @@ Expand a letter group or use search (`/`).
     - **Routing:** Routing directs requests to models, tools, or strategies by task type, risk, or budget.
     - **Rubrics:** Rubrics score qualitative outputs against anchored criteria with examples at each level.
 
-??? abstract "S (37)"
+??? abstract "S (38)"
     - **Sagemaker:** Amazon SageMaker covers ML training, tuning, hosting, and monitoring for custom and foundation models on AWS.
     - **Sampling:** Sampling draws next tokens from the predicted distribution rather than always taking the argmax.
     - **Sandboxing:** Sandboxing isolates code execution, browsing, or file access in restricted environments with network and filesystem limits.
@@ -337,6 +347,7 @@ Expand a letter group or use search (`/`).
     - **Slice Analysis:** Slice analysis evaluates metrics on subpopulations—language, product, tenant—to catch aggregate illusions.
     - **Slices:** Slices are subpopulations—language, tenant, risk tier—where aggregate metrics may hide failure.
     - **Slos:** SLOs define target reliability and latency—availability, p95 latency, eval faithfulness—for AI platform services.
+    - **Speculative Decoding:** Speculative decoding proposes continuation tokens and verifies them in a block with a target model.
     - **Speech Recognition:** Speech recognition (ASR) transcribes audio to text with word error rate varying by accent, noise, and domain.
     - **State:** State captures variables the system believes true at a point in execution—inventory, user intent, pending approvals.
     - **State Machines:** State machines model allowed statuses and transitions explicitly, making illegal steps unrepresentable.

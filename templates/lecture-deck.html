@@ -11,7 +11,12 @@
   <header class="deck-header">
     <span class="brand">AIeBOK · {{ deck.course }}</span>
     <div class="deck-header-actions">
+      {% if not deck.is_reference %}
       <a href="{{ lecture_url }}">Back to lecture</a>
+      {% elif lecture_url != concept_url %}
+      <a href="{{ lecture_url }}">Course practicum</a>
+      {% endif %}
+      <a href="{{ concept_url }}">Concept decks</a>
       <details class="slide-index">
         <summary>Slide index</summary>
         <ol>
@@ -23,10 +28,11 @@
     </div>
   </header>
 
-  <main id="deck" aria-label="Lecture presentation">
+  <main id="deck" aria-label="{{ 'Concept reference' if deck.is_reference else 'Lecture presentation' }}">
     {% for slide in deck.slides %}
     <section class="slide{% if loop.first %} slide--title{% endif %}" id="slide-{{ loop.index }}"
-             aria-labelledby="title-{{ loop.index }}">
+             aria-labelledby="title-{{ loop.index }}"{% if slide.topic %} data-concept="concept-{{ slide.topic }}"{% endif %}>
+      {% if slide.topic %}<span id="concept-{{ slide.topic }}"></span>{% endif %}
       {% if loop.first %}
       <p class="course">{{ deck.course }}</p>
       <h1 id="title-{{ loop.index }}" tabindex="-1">{{ slide.title }}</h1>

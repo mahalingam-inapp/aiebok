@@ -17,7 +17,7 @@ def main() -> None:
 - {s.workbooks} downloadable course workbooks · {s.starter_labs} starter notebooks
 - {s.knowledge_areas} knowledge-area maps
 - {s.total_lessons} topic guides ({s.ka_lessons} knowledge-area + {s.supplemental_lessons} supplemental)
-- {s.concept_cards} concept cards ({s.featured_concepts} featured deep-dives)
+- {s.concept_cards} concepts in slide decks ({s.featured_concepts} featured deep-dives)
 - {s.patterns_total} patterns ({s.patterns_generated} catalog + {s.patterns_manual} starter deep-dives)
 - {s.architectures} architecture studios
 - {s.build_guides} build guides · {s.cloud_capabilities} cloud capability guides
@@ -28,7 +28,7 @@ def main() -> None:
 - {s.learning_paths} role-based learning paths, {s.courses} courses, and {s.lectures} lectures
 - {s.workbooks} downloadable course workbooks and {s.starter_labs} starter notebooks
 - {s.knowledge_areas} knowledge-area maps
-- {s.concept_cards} concept cards, {s.patterns_total} patterns, {s.architectures} architecture studios
+- {s.concept_cards} concepts in slide decks, {s.patterns_total} patterns, {s.architectures} architecture studios
 - {s.build_guides} build guides · {s.cloud_capabilities} cloud capability guides
 - {s.starter_labs} runnable starter labs (+ {s.chapter_labs} chapter labs in the repo)
 - Content templates and editorial quality system
@@ -36,7 +36,7 @@ def main() -> None:
 - A roadmap for growing the body of knowledge without turning it into an LMS"""
 
     concepts_intro = f"""\
-Curated deep-dive pages plus **{s.concept_cards} reference cards** in [All Cards](cards/index.md) (collapsed A–Z groups). **{s.featured_concepts} featured** deep-dives are listed below."""
+Use [Concept decks](../concept-decks/index.md) to look up any of **{s.concept_cards} concepts**. The **{s.featured_concepts} featured** long-form readings below give more context."""
 
     labs_intro = f"""\
 **New?** Start with **[Hands-on start](start-here.md)** — {s.starter_labs} starter labs in order with book chapters and notebook links.

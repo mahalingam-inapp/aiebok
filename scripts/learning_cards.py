@@ -102,9 +102,9 @@ def home_cards(stats) -> str:
 
 -   :material-card-search:{{ .lg .middle }} __Look up fast__
 
-    {stats.concept_cards} concept cards, {stats.patterns_total} patterns, {stats.architectures} architecture studios.
+    {stats.concept_cards} concepts in slide decks, {stats.patterns_total} patterns, {stats.architectures} architecture studios.
 
-    [Concept index →](concepts/index.md)
+    [Concept decks →](concept-decks/index.md)
 
 -   :material-school:{{ .lg .middle }} __Explore by topic__
 
@@ -133,9 +133,9 @@ def start_here_cards(_stats) -> str:
 
 -   :material-magnify:{{ .lg .middle }} __Look up a concept__
 
-    Search the site or browse featured and A–Z concept cards.
+    Find a definition, a worked example, or a check in the concept decks.
 
-    [Concept index →](../concepts/index.md)
+    [Concept decks →](../concept-decks/index.md)
 
 -   :material-hammer-wrench:{{ .lg .middle }} __Build something__
 

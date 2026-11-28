@@ -43,6 +43,41 @@ Record adapter shape, base revision, data split, and optimizer settings. If the 
 
 A repeated output convention can be learned from examples. A recently changed phone number is better supplied by current evidence.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+# Rank one correction: A maps two input features to one number; B maps that to three logits.
+a = [0.15, -0.15]
+b = [0.0, 0.0, 0.0]
+
+
+def forward(text, left, right):
+    hidden = sum(weight * feature for weight, feature in zip(left, features(text)))
+    return [value + hidden * weight for value, weight in zip(frozen(text), right)]
+
+
+def adapted(text):
+    return forward(text, a, b)
+
+
+base_before = [frozen(row.text) for row in test]
+for _ in range(100):
+    for row in train:
+        x = features(row.text)
+        hidden = sum(weight * feature for weight, feature in zip(a, x))
+        residual = [p - int(i == row.label) for i, p in enumerate(probabilities(adapted(row.text)))]
+        grad_hidden = sum(error * weight for error, weight in zip(residual, b))
+        a = [weight - 0.08 * grad_hidden * feature for weight, feature in zip(a, x)]
+        b = [weight - 0.08 * error * hidden for weight, error in zip(b, residual)]
+
+assert [frozen(row.text) for row in test] == base_before
+assert metrics(adapted, test)["log_loss"] < metrics(frozen, test)["log_loss"]
+assert metrics(adapted, test)["accuracy"] == 1
+print("Adapted", metrics(adapted, test))
+```
+
 ## Try it yourself
 
 Train the bundled adapter and compare held-out results. Change the rank or training budget and record the quality change.

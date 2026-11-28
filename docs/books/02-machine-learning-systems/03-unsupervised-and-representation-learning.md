@@ -123,9 +123,9 @@ Representation learning discovers features automatically instead of hand-enginee
 
 **Design question:** What evidence would convince you a cluster is a fraud hypothesis rather than a preprocessing artifact?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **unsupervised and representation learning** before the book-level sample:
+Run this short Python demonstration of **unsupervised and representation learning**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 import math
@@ -141,20 +141,9 @@ dot = sum(va[w]*vb[w] for w in words)
 print("payroll vs retail dot:", round(dot, 3))
 ```
 
-Predict the printed values, then change one line tied to **clustering** or **dimensionality reduction** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/02-gradient-descent.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/02-gradient-descent.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    Loss should decline while the learned line approaches the data-generating relationship y = 2x + 1.
+For a longer implementation, run the [course code sample](../../code-samples/02-gradient-descent.py). Loss should decline while the learned line approaches the data-generating relationship y = 2x + 1.
 
 ## Engineering practice
 
@@ -172,7 +161,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Compare fitting a line with learning an intermediate representation. Name an input for which a line would be inadequate.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/02-machine-learning-systems.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/02-machine-learning-systems.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

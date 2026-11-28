@@ -43,6 +43,12 @@ Compare similar requests and keep task types visible. Separate routine reminders
 
 Manual work takes 18 minutes. An assisted version takes 5 minutes to draft, 7 to verify, and 8 to correct. The assisted workflow takes 20 minutes and adds review work.
 
+### Follow the example
+
+**Given:** A candidate saves 20 minutes of drafting and adds 16 minutes of review over five notices.
+
+**Walkthrough:** Report four minutes of total savings and the count of material corrections. Check who absorbs the review time and whether it moves past a deadline.
+
 ## Try it yourself
 
 Manual drafting takes 22 minutes. Assisted drafting takes 6 minutes, verification takes 8, and corrections take 3. Compare the time and write one remaining quality check.

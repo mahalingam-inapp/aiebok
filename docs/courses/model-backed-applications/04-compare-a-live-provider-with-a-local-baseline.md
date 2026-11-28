@@ -43,6 +43,53 @@ If you change an exact-match validator to allow a paraphrase, treat it as anothe
 
 A fast local baseline can quote retrieved evidence verbatim. A live model might respond naturally, yet a stricter validator might reject its phrasing. That difference belongs in the decision memo before selecting a backend.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+import os
+from collections import Counter
+from urllib.request import ProxyHandler, Request, build_opener
+
+
+def ollama_provider(model, usage):
+    def generate(question, evidence):
+        context = [{"id": p.id, "text": p.text} for p in evidence]
+        prompt = (
+            "Choose an exact quote that answers the question. "
+            "Return a JSON object with status, answer, and sources. "
+            "Use status answer, the full quote, and its one source ID. "
+            "If insufficient, use status abstain, an empty answer, and an empty sources list. "
+            + json.dumps({"question": question, "passages": context})
+        )
+        body = json.dumps({"model": model, "prompt": prompt, "format": "json", "stream": False})
+        request = Request(
+            "http://127.0.0.1:11434/api/generate", data=body.encode(),
+            headers={"Content-Type": "application/json"},
+        )
+        with build_opener(ProxyHandler({})).open(request, timeout=15) as response:
+            result = json.load(response)
+        raw = result.get("response") if isinstance(result, dict) else None
+        if not isinstance(raw, str):
+            raise ValueError("missing provider response")
+        for field in ("prompt_eval_count", "eval_count"):
+            count = result.get(field)
+            if type(count) is int and count >= 0:
+                usage[field] += count
+        return raw
+
+    return generate
+
+
+model = os.getenv("AIEBOK_OLLAMA_MODEL")
+if model:
+    usage = Counter()
+    print(model, score(ollama_provider(model, usage)), "reported token counts", dict(usage))
+else:
+    print("Local baseline and fixture candidate verified. Set AIEBOK_OLLAMA_MODEL to include a running local Ollama model.")
+```
+
 ## Try it yourself
 
 Run the standard-library baseline. For the optional live run, start Ollama with an installed model and set AIEBOK_OLLAMA_MODEL to its local model name before launching Jupyter. The adapter calls the loopback generate endpoint and records any token counts returned.

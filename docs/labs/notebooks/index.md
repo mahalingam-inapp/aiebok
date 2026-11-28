@@ -25,6 +25,9 @@ For a second end-to-end case, use the [UnderCover claims harness practicum](../.
 | [Durable Agent Runtime and MCP](../../courses/durable-agent-tool-runtime/index.md) | [Download](../../assets/notebooks/durable-agent-tool-runtime.ipynb){ download } |
 | [LLM Adaptation and Inference Lab](../../courses/llm-adaptation-inference/index.md) | [Download](../../assets/notebooks/llm-adaptation-inference.ipynb){ download } |
 | [AI Reliability and Release Engineering](../../courses/ai-reliability-release/index.md) | [Download](../../assets/notebooks/ai-reliability-release.ipynb){ download } |
+| [Sparse Models and Mixture of Experts](../../courses/sparse-model-architectures/index.md) | [Download](../../assets/notebooks/sparse-model-architectures.ipynb){ download } |
+| [Reasoning and Efficient Model Inference](../../courses/reasoning-efficient-inference/index.md) | [Download](../../assets/notebooks/reasoning-efficient-inference.ipynb){ download } |
+| [Decision Models, Optimization, and Feedback](../../courses/decision-models-and-policies/index.md) | [Download](../../assets/notebooks/decision-models-and-policies.ipynb){ download } |
 
 ## Technical core workbooks
 

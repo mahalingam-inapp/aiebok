@@ -1,5 +1,6 @@
 """Original project courses and their lecture material."""
 from course_types import Course, Lecture
+from model_decision_courses import MODEL_DECISION_COURSES
 from specialist_courses import SPECIALIST_COURSES
 
 
@@ -211,4 +212,4 @@ APPLIED_COURSES = (
 )
 
 
-APPLIED_COURSES += SPECIALIST_COURSES
+APPLIED_COURSES += SPECIALIST_COURSES + MODEL_DECISION_COURSES

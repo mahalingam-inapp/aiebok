@@ -314,3 +314,52 @@ register("frontier", "20 · Test a frontier claim", "Ablate the semantic ranking
     modalities: dependencies.modalities.observations.map(({ kind, extractedBy }) => ({ kind, extractedBy })),
     followUp: "Measure on unseen, representative station and language slices. Image generation, audio recognition and computer-use require separately supplied adapters and validation." };
 });
+
+register("experts", "21 · Route work inside a sparse layer", "Compare active and resident parameters, then check how a skewed batch loads the experts.", [], () => {
+  const experts = [2, 6, 11, 15];
+  const scores = [Math.log(3), 0, -1, -2];
+  const chosen = scores.map((score, expert) => ({ score, expert })).sort((a, b) => b.score - a.score).slice(0, 2);
+  const weighted = chosen.map(({ score, expert }) => ({ value: experts[expert], weight: Math.exp(score) }));
+  const total = weighted.reduce((sum, item) => sum + item.weight, 0);
+  const mixed = weighted.reduce((sum, { value, weight }) => sum + value * weight / total, 0);
+
+  // This top-1 load fixture is separate from the single-token top-2 calculation.
+  const arrivals = [0, 0, 0, 0, 0, 0, 1, 1];
+  const counts = experts.map((_, expert) => arrivals.filter((chosenExpert) => chosenExpert === expert).length);
+  const capacity = 4;
+  return { mixed, routedExperts: chosen.map(({ expert }) => expert), activeParameters: 100 + chosen.length * 400,
+    residentParameters: 100 + experts.length * 400, topOneBatch: { counts, capacity,
+      overflow: counts.reduce((sum, count) => sum + Math.max(0, count - capacity), 0) } };
+});
+
+register("budgets", "22 · Spend inference compute selectively", "Compare an evidence-checked cascade with fixed budgets, then inspect one greedy draft verification.", [], () => {
+  const fixtures = [{ cheap: true, expensive: true }, { cheap: true, expensive: true },
+    { cheap: false, expensive: true }, { cheap: false, expensive: false }];
+  function evaluateBudget(mode) {
+    const verified = fixtures.filter(({ cheap, expensive }) => mode === "cheap" ? cheap :
+      mode === "expensive" ? expensive : cheap || expensive).length;
+    const escalations = mode === "cascade" ? fixtures.filter(({ cheap }) => !cheap).length : 0;
+    const spend = mode === "expensive" ? fixtures.length * 4 : fixtures.length + 4 * escalations;
+    return { verified, spend, escalations, spendPerVerified: spend / verified };
+  }
+  const draft = ["within", "14", "business", "days"];
+  const target = ["within", "14", "calendar", "days"];
+  const mismatch = draft.findIndex((token, index) => token !== target[index]);
+  const committed = mismatch < 0 ? draft : [...draft.slice(0, mismatch), target[mismatch]];
+  return { budgets: Object.fromEntries(["cheap", "expensive", "cascade"].map((mode) => [mode, evaluateBudget(mode)])),
+    greedyCheck: { draft, target, committed }, unit: "Synthetic compute units" };
+});
+
+register("decisions", "23 · Turn scores into constrained decisions", "Compare action and review costs, then choose a feasible plan under a two-slot maintenance budget.", [], () => {
+  const probability = 0.19;
+  const options = [["act", (1 - probability) * 2], ["wait", probability * 8], ["review", 0.5]];
+  const preferred = [...options].sort((a, b) => a[1] - b[1])[0][0];
+  const jobs = [{ id: "large", slots: 2, benefit: 9 }, { id: "small-a", slots: 1, benefit: 6 },
+    { id: "small-b", slots: 1, benefit: 6 }];
+  const plans = jobs.reduce((all, job) => [...all, ...all.map((plan) => [...plan, job])], [[]]);
+  const ranked = plans.filter((plan) => plan.reduce((sum, job) => sum + job.slots, 0) <= 2)
+    .map((plan) => ({ jobs: plan.map(({ id }) => id), value: plan.reduce((sum, job) => sum + job.benefit, 0) }))
+    .sort((a, b) => b.value - a.value);
+  return { probability, expectedCosts: Object.fromEntries(options), preferred, optimalPlan: ranked[0],
+    greedyPlan: { jobs: ["large"], value: 9 } };
+});

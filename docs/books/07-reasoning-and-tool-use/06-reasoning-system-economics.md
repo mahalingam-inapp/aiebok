@@ -123,9 +123,9 @@ Budgets cap tokens, tool calls, wall time, or dollars per task or session. Hard 
 
 **Design question:** What signal routes a query to expensive reasoning without sending everything there?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **reasoning-system economics** before the book-level sample:
+Run this short Python demonstration of **reasoning-system economics**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 routes = [
@@ -142,20 +142,9 @@ print(pick(0.25, 4))
 print(pick(0.8, 4))
 ```
 
-Predict the printed values, then change one line tied to **test-time compute** or **latency** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/07-planner-verifier.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/07-planner-verifier.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    Only the plan containing every required step in dependency order should pass verification.
+For a longer implementation, run the [course code sample](../../code-samples/07-planner-verifier.py). Only the plan containing every required step in dependency order should pass verification.
 
 ## Engineering practice
 
@@ -173,7 +162,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 List the minimum tool fields and estimate the budget for one verification retry.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/07-reasoning-and-tool-use.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/07-reasoning-and-tool-use.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

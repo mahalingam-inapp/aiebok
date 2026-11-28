@@ -43,6 +43,12 @@ Choose a useful fallback before a deadline creates pressure. If no reviewer is a
 
 When two handbooks give different leave rules, the assistant can flag the discrepancy and send both dated references to HR. Publication pauses until HR confirms the applicable rule.
 
+### Follow the example
+
+**Given:** A shared calendar says Friday. The owner’s signed update, dated later, says the event has been postponed without a new date.
+
+**Walkthrough:** Send the owner both records and the paused draft. Ask for the decision needed to publish. Log who owns the next update.
+
 ## Try it yourself
 
 Design a handoff for a customer notice when two internal documents disagree on the launch date.

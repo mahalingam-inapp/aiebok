@@ -43,6 +43,36 @@ A useful follow-up has an owner and a verification condition. â€œAdd monitoringâ
 
 The on-call engineer pauses the candidate, confirms stable responses from the affected cohort, and records a follow-up to test dependency failure before the next release.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+class Rollout:
+    def __init__(self, baseline, candidate):
+        self.baseline = baseline
+        self.candidate = candidate
+
+    def route(self, cohort):
+        return self.candidate if cohort == "pilot" and self.candidate else self.baseline
+
+    def rollback(self):
+        self.candidate = None
+
+
+rollout = Rollout("v1", "v2")
+assert rollout.route("pilot") == "v2"
+timeline = [(0, "canary started", "v2"), (5, "error-budget gate blocked", gate(unhealthy))]
+rollout.rollback()
+timeline.append((6, "candidate disabled", rollout.route("pilot")))
+smoke = trace("pilot", rollout.route("pilot"))
+assert smoke.version == "v1" and smoke.valid and smoke.elapsed <= 350
+timeline.append((7, "smoke checked", {"version": smoke.version, "elapsed_ms": smoke.elapsed}))
+assert [minute for minute, _, _ in timeline] == sorted(minute for minute, _, _ in timeline)
+print("Incident timeline", timeline)
+print("Follow-up: service owner reproduces the dependency timeout in pre-release checks.")
+```
+
 ## Try it yourself
 
 Run the scripted incident. Extend the report with one owner, one preventable failure, and a due condition.

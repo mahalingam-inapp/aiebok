@@ -43,6 +43,34 @@ Tie each release to a replayable evaluation record. Declare which failing slice 
 
 A new model achieves better accepted accuracy by deferring half the traffic. A minimum coverage requirement surfaces the extra operational burden.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+artifact = {"dataset": dataset_version, "model_version": "nb-v1", "threshold": threshold, "parameters": model}
+with TemporaryDirectory() as directory:
+    artifact_path = Path(directory) / "classifier.json"
+    artifact_path.write_text(json.dumps(artifact), encoding="utf-8")
+    restored = json.loads(artifact_path.read_text(encoding="utf-8"))
+
+for row in splits["test"]:
+    assert predict(restored["parameters"], row.text) == trained(row.text)
+
+overall = report["all"]
+release = (
+    overall["coverage"] >= 0.5
+    and overall["accepted_accuracy"] is not None
+    and overall["accepted_accuracy"] >= 0.8
+    and overall["cost"] < baseline["all"]["cost"]
+)
+print("Release decision for this fixture", "pass" if release else "hold", restored["model_version"])
+```
+
 ## Try it yourself
 
 Round-trip the model. Tighten the coverage requirement and observe when the gate changes.

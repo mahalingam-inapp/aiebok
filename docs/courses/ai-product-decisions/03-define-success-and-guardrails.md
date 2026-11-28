@@ -43,6 +43,12 @@ Before release, name the denominator, acceptable limit, and person who reviews a
 
 A routing pilot aims to cut median routing time by 20% while keeping the wrong-team rate at or below the current 5%. Measure on the same ticket categories under both methods.
 
+### Follow the example
+
+**Given:** The candidate routes 18 of 20 requests correctly. Its two failures are both urgent access requests.
+
+**Walkthrough:** Keep urgent access requests on manual intake. Publish the urgent-case denominator alongside overall performance and set a separate gate for that group.
+
 ## Try it yourself
 
 A draft assistant is supposed to save review time. Write one success criterion and one guardrail for customer notices.

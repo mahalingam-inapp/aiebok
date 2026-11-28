@@ -8,6 +8,8 @@ from course_catalog import PATHS, SPECIALIST_PATHS, TECHNICAL_COURSES
 from generate_books import BOOKS, chapter_filename, course_slug, slug
 from lecture_cases import CASES, course_case_intro, lecture_case
 from no_code_courses import NO_CODE_COURSES
+from practicum_code import lecture_cells
+from worked_lecture_traces import WORKED_TRACES
 from study_navigation import directions, lecture_outline, lecture_progress, outline_link, start_course
 from textbook_readings import READINGS
 
@@ -42,6 +44,7 @@ def write_course(course: Course) -> None:
     duration = "3–4 hours" if course.workbook else "About 2 hours"
     workbook = f"[Download the workbook](../../assets/notebooks/{course.slug}.ipynb){{ download }}"
     outline = []
+    examples = lecture_cells(course)
     number = 0
     for section, group in course.sections:
         outline.append(f"### {section}\n")
@@ -57,6 +60,19 @@ def write_course(course: Course) -> None:
                 "See [Jupyter setup](../../labs/notebooks/index.md#set-up-jupyter) if needed."
                 if course.workbook else ""
             )
+            trace = WORKED_TRACES.get(course.slug)
+            walkthrough = f"\n\n{trace[number - 1]}" if trace else ""
+            demonstration = ""
+            if examples:
+                setup = (
+                    "Run this cell after the preceding cells in the course workbook."
+                    if number > 1 else "Run this cell in Python 3.10 or later."
+                )
+                demonstration = (
+                    f"## Follow the code\n\n{setup} "
+                    "Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result."
+                    f"\n\n```python\n{examples[number - 1]}\n```\n\n"
+                )
             lesson_link = outline_link(f"{number:02d} · {lecture.title}", filename)
             outline.append(f"- {lesson_link} — {lecture.outcome}")
             write(directory / filename, f"""
@@ -82,9 +98,9 @@ def write_course(course: Course) -> None:
 
 ## Worked example
 
-{lecture.example}
+{lecture.example}{walkthrough}
 
-## Try it yourself
+{demonstration}## Try it yourself
 
 {lecture.practice}{practice}
 
@@ -183,6 +199,10 @@ def write_paths() -> None:
             "Allow about two hours per course for the lectures and exercises, plus project work. "
             "Use the answer examples to review your work before progressing."
         )
+        if not technical and any(course.slug in path.courses for course in APPLIED_COURSES):
+            study = "Allow 3–4 hours per practicum for lectures and notebook exercises, plus project work."
+            if any(course.slug in path.courses for course in NO_CODE_COURSES):
+                study += " Allow about two hours for each no-code course."
         completion = path.outcome
         capstone = path.capstone
         if path.slug == "05-ai-engineer":

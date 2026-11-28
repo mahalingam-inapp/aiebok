@@ -43,6 +43,88 @@ Use a known request in the workbook to verify both the route and its answer or h
 
 A policy helper returns an answer or handoff plus the requested and served versions. A separate health endpoint lets routing detect an unavailable process.
 
+## Follow the code
+
+Run this cell in Python 3.10 or later. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+import json
+from time import perf_counter
+from uuid import uuid4
+from wsgiref.util import setup_testing_defaults
+
+
+def answer(version, question):
+    if version == "v2" and question == "special request":
+        raise TimeoutError("candidate timed out")
+    return "Use the reservation form." if question == "reserve a room" else "Send to the service desk."
+
+
+class Service:
+    def __init__(self, store=None):
+        self.store = store
+
+    def __call__(self, environ, start_response):
+        path = environ["PATH_INFO"]
+        if path == "/health":
+            status, result = "200 OK", {"ready": True}
+        elif path == "/predict" and environ["REQUEST_METHOD"] == "POST":
+            status, result = self.predict(environ)
+        else:
+            status, result = "404 Not Found", {"error": "unknown endpoint"}
+        body = json.dumps(result).encode()
+        start_response(status, [("Content-Type", "application/json"), ("Content-Length", str(len(body)))])
+        return [body]
+
+    def predict(self, environ):
+        try:
+            size = int(environ.get("CONTENT_LENGTH") or "0")
+            if not 0 < size <= 4096:
+                raise ValueError("invalid length")
+            payload = json.loads(environ["wsgi.input"].read(size))
+            question = payload.get("question") if isinstance(payload, dict) else None
+            if not isinstance(question, str) or not question.strip():
+                raise ValueError("missing question")
+        except (ValueError, UnicodeError):
+            return "400 Bad Request", {"error": "invalid question"}
+
+        canary = environ.get("HTTP_X_AIEBOK_CANARY") == "1"
+        requested = self.store.active_version(canary=canary) if self.store else "v1"
+        served = requested
+        start = perf_counter()
+        try:
+            result = answer(served, question)
+        except TimeoutError:
+            served = "v1"
+            result = answer(served, question)
+        request_id = uuid4().hex
+        if self.store:
+            self.store.record(request_id, requested, served, (perf_counter() - start) * 1000)
+        return "200 OK", {"id": request_id, "requested_version": requested, "served_version": served, "answer": result}
+
+
+def request(app, path, data=None, *, canary=False):
+    from io import BytesIO
+
+    environ = {}
+    setup_testing_defaults(environ)
+    environ["PATH_INFO"] = path
+    if canary:
+        environ["HTTP_X_AIEBOK_CANARY"] = "1"
+    if data is not None:
+        body = json.dumps(data).encode()
+        environ.update({"REQUEST_METHOD": "POST", "CONTENT_LENGTH": str(len(body)), "wsgi.input": BytesIO(body)})
+    status = []
+    payload = b"".join(app(environ, lambda value, headers: status.append(value)))
+    return status[0], json.loads(payload)
+
+
+assert request(Service(), "/health") == ("200 OK", {"ready": True})
+status, result = request(Service(), "/predict", {"question": "reserve a room"})
+assert status == "200 OK" and result["served_version"] == "v1"
+assert request(Service(), "/predict", {"question": ""})[0] == "400 Bad Request"
+```
+
 ## Try it yourself
 
 Run the in-process application smoke check. Use the loopback HTTP smoke client in the final lecture to test the same contract through the network stack.

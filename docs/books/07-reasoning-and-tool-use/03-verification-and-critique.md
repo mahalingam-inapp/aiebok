@@ -123,9 +123,9 @@ Tests provide executable specifications for tools, plans, and outputs in reasoni
 
 **Design question:** Why must verification use signals different from generation?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **verification and critique** before the book-level sample:
+Run this short Python demonstration of **verification and critique**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 candidates = [
@@ -138,20 +138,9 @@ def select(cands):
 print("selected:", select(candidates))
 ```
 
-Predict the printed values, then change one line tied to **verifiers** or **critique** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/07-planner-verifier.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/07-planner-verifier.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    Only the plan containing every required step in dependency order should pass verification.
+For a longer implementation, run the [course code sample](../../code-samples/07-planner-verifier.py). Only the plan containing every required step in dependency order should pass verification.
 
 ## Engineering practice
 
@@ -169,7 +158,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Pass a complete plan and then swap two dependent steps. Compare the verifier's decisions.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/07-reasoning-and-tool-use.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/07-reasoning-and-tool-use.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

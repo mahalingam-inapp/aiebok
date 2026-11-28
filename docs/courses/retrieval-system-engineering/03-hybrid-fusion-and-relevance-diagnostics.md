@@ -43,6 +43,59 @@ A practical evaluation includes exact codes, synonyms, restricted sources, and q
 
 An exact term match for ‘board’ can favor an equipment policy over a travel policy. An additional concept match can reorder the fused candidates.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from collections import defaultdict
+
+
+def fused_scores(query, rows, k):
+    scores = defaultdict(float)
+    for ranking in (lexical(query, rows), dense(query, rows)):
+        for position, source in enumerate(ranking, 1):
+            scores[source] += 1 / (k + position)
+    return scores
+
+
+def fusion(query, rows):
+    scores = fused_scores(query, rows, k=20)
+    return sorted(scores, key=lambda source: (-scores[source], source))
+
+
+def hybrid(query, rows, k=20, rerank_weight=0.30):
+    scores = fused_scores(query, rows, k)
+    by_source = {row.source: row for row in rows}
+    return sorted(scores, key=lambda source: (
+        -(scores[source] + rerank_weight * similarity(vector(query), vector(by_source[source].text))), source
+    ))
+
+
+cases = (("holidays", "employee", "leave@2"), ("board journey", "employee", "travel@1"),
+         ("circuit", "employee", "equipment@1"), ("payroll", "finance", "payroll@1"),
+         ("payroll", "employee", None), ("astronomy", "employee", None))
+
+
+def evaluate(method):
+    positions, clean = [], 0
+    for query, role, wanted in cases:
+        ranking = method(query, visible(corpus, role, 6))
+        if wanted is None:
+            clean += not ranking
+        else:
+            positions.append(ranking.index(wanted) + 1 if wanted in ranking else None)
+    return {"recall@2": sum(pos is not None and pos <= 2 for pos in positions) / len(positions),
+            "MRR": sum(1 / pos for pos in positions if pos) / len(positions), "no_evidence": clean}
+
+
+for method in (lexical, dense, fusion, hybrid):
+    print(method.__name__, evaluate(method))
+assert evaluate(hybrid)["recall@2"] > evaluate(lexical)["recall@2"]
+assert evaluate(hybrid)["MRR"] > evaluate(fusion)["MRR"]
+assert evaluate(hybrid)["no_evidence"] == 2
+```
+
 ## Try it yourself
 
 Run the retrieval report. Change the fusion parameters and compare results for the synonym and exact-term cases.

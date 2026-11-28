@@ -123,9 +123,9 @@ Data cards document dataset sources, collection, demographics, limitations, and 
 
 **Design question:** Which check catches eval leakage that random splitting misses?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **dataset engineering** before the book-level sample:
+Run this short Python demonstration of **dataset engineering**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 CHAPTER = "11.3"
@@ -138,20 +138,9 @@ print("---")
 print("change one input above, predict output, re-run")
 ```
 
-Predict the printed values, then change one line tied to **data curation** or **synthetic data** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/11-model-router.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/11-model-router.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    Low-risk simple work routes to the cheaper model; high-risk work routes to the higher-quality model.
+For a longer implementation, run the [course code sample](../../code-samples/11-model-router.py). Low-risk simple work routes to the cheaper model; high-risk work routes to the higher-quality model.
 
 ## Engineering practice
 
@@ -169,7 +158,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Describe a held-out slice and a serving constraint. Explain which one affects training versus deployment.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/11-training-serving-and-ai-operations.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/11-training-serving-and-ai-operations.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

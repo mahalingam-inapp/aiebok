@@ -123,9 +123,9 @@ Idempotent tools produce the same effect when called repeatedly with the same id
 
 **Design question:** Which steps require idempotency keys before they can be checkpointed safely?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **agent memory and recovery** before the book-level sample:
+Run this short Python demonstration of **agent memory and recovery**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 checkpoints = []
@@ -139,20 +139,9 @@ state = resume()
 print("resume_at:", state)
 ```
 
-Predict the printed values, then change one line tied to **checkpoints** or **episodic memory** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/08-agent-state-machine.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/08-agent-state-machine.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    The state machine pauses at approval, resumes after approval, and terminates within the attempt budget.
+For a longer implementation, run the [course code sample](../../code-samples/08-agent-state-machine.py). The state machine pauses at approval, resumes after approval, and terminates within the attempt budget.
 
 ## Engineering practice
 
@@ -170,7 +159,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Record what must survive a restart so an approved action is handled once.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/08-agent-systems.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/08-agent-systems.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

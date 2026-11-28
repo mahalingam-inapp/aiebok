@@ -43,6 +43,12 @@ Check that authority matches access. A named rollback owner with no ability to c
 
 For a staff assistant, HR can own policy data, a product manager can own pilot scope, and support operations can own monitoring and rollback.
 
+### Follow the example
+
+**Given:** A supplier renews a model endpoint and the application changes its review behavior on the same day.
+
+**Walkthrough:** Assign separate owners to endpoint verification and the release gate. Replay the frozen checks and restore the stable route if the gate fails.
+
 ## Try it yourself
 
 An employee reports that a document appeared outside its intended audience. Name two roles that should act immediately and what each decides.

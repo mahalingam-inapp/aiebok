@@ -43,6 +43,12 @@ Avoid slicing only after noticing a surprising number. Predeclare the groups you
 
 A tool is correct on 95 of 100 tickets. If all five mistakes are urgent tickets, the overall score obscures the urgent-case failure.
 
+### Follow the example
+
+**Given:** A team reports ‘pilot complete’ and shares an encouraging screenshot without the case set.
+
+**Walkthrough:** Request the versioned inputs, current workflow, comparison results, and approval record. Tie the milestone to evidence the next reviewer can reproduce.
+
 ## Try it yourself
 
 A feature is correct on 99 of 100 outputs. The one wrong answer gives an incorrect emergency contact. What evidence would you ask for before expansion?

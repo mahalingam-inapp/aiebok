@@ -123,9 +123,9 @@ Retries re-invoke models or tools after transient failures or validation misses,
 
 **Design question:** Where should validation live—inside the model prompt or in application code after generation?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **structured generation** before the book-level sample:
+Run this short Python demonstration of **structured generation**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 schema = {"type": "object", "required": ["total"], "properties": {"total": {"type": "number"}}}
@@ -139,20 +139,9 @@ for p in payloads:
     print({"payload": p, "valid": ok, "msg": msg})
 ```
 
-Predict the printed values, then change one line tied to **JSON Schema** or **structured output** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/05-context-builder.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/05-context-builder.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    Trusted high-priority sections consume the budget first; untrusted evidence remains explicitly marked as data.
+For a longer implementation, run the [course code sample](../../code-samples/05-context-builder.py). Trusted high-priority sections consume the budget first; untrusted evidence remains explicitly marked as data.
 
 ## Engineering practice
 
@@ -170,7 +159,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Write a prompt requirement and one schema check that can be evaluated independently of the model.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/05-prompt-and-context-engineering.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/05-prompt-and-context-engineering.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

@@ -12,17 +12,17 @@ Start with **AI for Everyone** or **AI for Managers and Product Leaders** if you
 ## Publication at a glance
 
 <!-- site-stats:publication:start -->
-- 14 role-based learning paths
-- 29 courses · 142 lectures
-- 23 downloadable course workbooks · 5 starter notebooks
+- 15 role-based learning paths
+- 32 courses · 154 lectures
+- 26 downloadable course workbooks · 5 starter notebooks
 - 20 knowledge-area maps
 - 163 topic guides (120 knowledge-area + 43 supplemental)
-- 361 concept cards (43 featured deep-dives)
+- 372 concepts in slide decks (43 featured deep-dives)
 - 100 patterns (98 catalog + 2 starter deep-dives)
 - 25 architecture studios
 - 13 build guides · 26 cloud capability guides
 - 83 labs (78 chapter + 5 starter) · 13 code samples
-- approximately 436,000 words of deployable learning content in `docs/`
+- approximately 457,000 words of deployable learning content in `docs/`
 <!-- site-stats:publication:end -->
 
 ## Explore the curriculum
@@ -38,21 +38,21 @@ Start with **AI for Everyone** or **AI for Managers and Product Leaders** if you
 
 -   :material-book-open-variant:{ .lg .middle } __Read sequentially__
 
-    29 courses with sectioned lectures, practice, and projects.
+    32 courses with sectioned lectures, practice, and projects.
 
     [Course catalog →](courses/index.md)
 
 -   :material-flask:{ .lg .middle } __Build hands-on__
 
-    23 course workbooks and 5 starter notebooks.
+    26 course workbooks and 5 starter notebooks.
 
     [Jupyter notebooks →](labs/notebooks/index.md)
 
 -   :material-card-search:{ .lg .middle } __Look up fast__
 
-    361 concept cards, 100 patterns, 25 architecture studios.
+    372 concepts in slide decks, 100 patterns, 25 architecture studios.
 
-    [Concept index →](concepts/index.md)
+    [Concept decks →](concept-decks/index.md)
 
 -   :material-school:{ .lg .middle } __Explore by topic__
 
@@ -98,7 +98,7 @@ flowchart LR
 | Learning paths | Ordered courses for a role and experience level |
 | Courses | Sectioned lectures, practice, and a project |
 | Knowledge areas | Topic maps for reference |
-| Concept cards | Fast explanations and prerequisite links |
+| Concept decks | Quick definitions, worked examples, and checks |
 | Patterns | Reusable engineering solutions |
 | Architectures | End-to-end system designs and trade-offs |
 | Cloud maps | AWS, Azure, and Google Cloud implementations |

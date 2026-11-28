@@ -123,9 +123,9 @@ End-to-end evals measure full pipeline outcomes on realistic inputs including la
 
 **Design question:** Which component eval would you run first given wrong citations but right topic?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **evaluation by system stage** before the book-level sample:
+Run this short Python demonstration of **evaluation by system stage**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 CHAPTER = "10.3"
@@ -139,20 +139,9 @@ print("---")
 print("change one input above, predict output, re-run")
 ```
 
-Predict the printed values, then change one line tied to **component evals** or **retrieval metrics** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/10-evaluation-slices.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/10-evaluation-slices.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    The release gate depends on both overall performance and perfect performance in the high-risk slice.
+For a longer implementation, run the [course code sample](../../code-samples/10-evaluation-slices.py). The release gate depends on both overall performance and perfect performance in the high-risk slice.
 
 ## Engineering practice
 
@@ -170,7 +159,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Write separate checks for retrieving evidence and for using it correctly in the final response.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/10-evaluation-safety-and-governance.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/10-evaluation-safety-and-governance.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

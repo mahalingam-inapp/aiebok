@@ -271,6 +271,8 @@ def render_concept_card(topic: str) -> str:
     explanation, example, evidence = get_topic_entry(topic)
     title = title_from_slug(key)
     extra = card_enrichment(key)
+    course = extra.get("course")
+    study = (f"- [Run the course practicum](../../courses/{course}/index.md)\n" if course else "")
     when_use = extra["when_to_use"]
     when_not = extra["when_not"]
     failures = "\n".join(f"- {f}" for f in extra["failure_modes"])
@@ -326,7 +328,7 @@ No mechanism is universal. Compare {title.lower()} against a simpler baseline on
 {related_block}{chapter_block}
 ## Related study
 
-- [Question index](../../reference/question-index.md)
+{study}- [Question index](../../reference/question-index.md)
 - [Guided lessons](../../lessons/index.md)
 - Run the matching chapter lab under `labs/` when available
 """
@@ -429,7 +431,7 @@ def ka_template(ka_id: str, title: str, purpose: str, book_link: str, topics: li
 ## Guided path
 
 - Primary book: [{book_link}](../books/{book_link}/index.md)
-- Concept cards: [cards index](../concepts/cards/index.md)
+- Quick reference: [Concept decks](../concept-decks/index.md)
 - Matching labs: search `labs/` for this knowledge area number
 
 ## Architecture studio
@@ -771,7 +773,7 @@ def update_index_pages(cards: int, labs: int, patterns: int, arch: int) -> None:
     (DOCS / "concepts" / "index.md").write_text(
         f"""# Concept Cards
 
-Curated deep-dive pages plus **{cards} reference cards** in [All Cards](cards/index.md) (collapsed A–Z groups).
+Use [Concept decks](../concept-decks/index.md) to look up any of **{cards} concepts**. The featured readings below give more context.
 
 ## Featured cards
 
@@ -781,7 +783,7 @@ Curated deep-dive pages plus **{cards} reference cards** in [All Cards](cards/in
 - [Tool Calling](tool-calling.md), [Fine-Tuning](fine-tuning.md), [Chunking](chunking.md), [Reranking](reranking.md)
 - [Skills & Harnesses](skills-harnesses.md)
 
-Use **search** (`/`) for a specific term, or browse [All Cards](cards/index.md).
+Use [Concept decks](../concept-decks/index.md) for a quick lookup.
 """,
         encoding="utf-8",
     )

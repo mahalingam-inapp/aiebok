@@ -106,6 +106,7 @@ nav:
           - "Agent Runtime & MCP Engineer": getting-started/learning-paths/agent-runtime-mcp-engineer.md
           - "LLM Adaptation & Inference Engineer": getting-started/learning-paths/llm-adaptation-inference-engineer.md
           - "AI Reliability & Release Engineer": getting-started/learning-paths/ai-reliability-release-engineer.md
+          - "Model Architecture & Decision Systems Engineer": getting-started/learning-paths/model-architecture-decision-engineer.md
   - Courses:
       - Course Catalog: courses/index.md
       - Casebook: casebook/index.md
@@ -239,6 +240,30 @@ nav:
               - "Release and recover":
                   - "Canary cohorts and staged gates": courses/ai-reliability-release/03-canary-cohorts-and-staged-gates.md
                   - "Rollback verification and incident review": courses/ai-reliability-release/04-rollback-verification-and-incident-review.md
+          - "Sparse Models and Mixture of Experts":
+              - Overview: courses/sparse-model-architectures/index.md
+              - "Route tokens through experts":
+                  - "Token routing and top-k experts": courses/sparse-model-architectures/01-token-routing-and-top-k-experts.md
+                  - "Expert capacity and load balancing": courses/sparse-model-architectures/02-expert-capacity-and-load-balancing.md
+              - "Size the system and workload":
+                  - "Expert parallelism and communication": courses/sparse-model-architectures/03-expert-parallelism-and-communication.md
+                  - "Hybrid backbones and architecture selection": courses/sparse-model-architectures/04-hybrid-backbones-and-architecture-selection.md
+          - "Reasoning and Efficient Model Inference":
+              - Overview: courses/reasoning-efficient-inference/index.md
+              - "Allocate compute at inference time":
+                  - "Reasoning budgets and model cascades": courses/reasoning-efficient-inference/01-reasoning-budgets-and-model-cascades.md
+                  - "Bounded search and independent verification": courses/reasoning-efficient-inference/02-bounded-search-and-independent-verification.md
+              - "Improve throughput and measure honestly":
+                  - "Prefill, decode and speculative decoding": courses/reasoning-efficient-inference/03-prefill-decode-and-speculative-decoding.md
+                  - "Serving workload and release gates": courses/reasoning-efficient-inference/04-serving-workload-and-release-gates.md
+          - "Decision Models, Optimization, and Feedback":
+              - Overview: courses/decision-models-and-policies/index.md
+              - "Design the decision layer":
+                  - "Calibrated predictions and decisions under cost": courses/decision-models-and-policies/01-calibrated-predictions-and-decisions-under-cost.md
+                  - "Constrained optimization and planning": courses/decision-models-and-policies/02-constrained-optimization-and-planning.md
+              - "Learn and evaluate from feedback":
+                  - "Contextual bandits and off-policy evaluation": courses/decision-models-and-policies/03-contextual-bandits-and-off-policy-evaluation.md
+                  - "Sequential decisions and safe policy rollout": courses/decision-models-and-policies/04-sequential-decisions-and-safe-policy-rollout.md
       - Technical Courses:
           - "Foundations of Intelligence":
               - Overview: books/01-foundations-of-intelligence/index.md
@@ -405,9 +430,7 @@ nav:
           - Map: knowledge-areas/index.md
       - Topic Index:
           - Lesson Catalog: lessons/index.md
-      - Concepts:
-          - Index: concepts/index.md
-          - All Cards: concepts/cards/index.md
+      - Concept Decks: concept-decks/index.md
       - Patterns:
           - Pattern Library: patterns/index.md
       - Architectures:

@@ -43,6 +43,78 @@ Treat external tool descriptions as data from another boundary. A readable descr
 
 Initialize the session, discover lookup_agenda, and invoke it for a known meeting ID. Inspect the declared fields before sending arguments.
 
+## Follow the code
+
+Run this cell in Python 3.10 or later. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+import json
+import subprocess
+import sys
+
+# Minimal local MCP server fixture. Each line of stdout is a protocol message.
+server = """
+import json
+import sys
+
+for line in sys.stdin:
+    message = json.loads(line)
+    method = message["method"]
+    if method == "notifications/initialized":
+        continue
+    reply = {"jsonrpc": "2.0", "id": message["id"]}
+    if method == "initialize":
+        reply["result"] = {
+            "protocolVersion": "2025-06-18",
+            "capabilities": {"tools": {}},
+            "serverInfo": {"name": "agenda-fixture", "version": "1.0"},
+        }
+    elif method == "tools/list":
+        reply["result"] = {"tools": [{
+            "name": "lookup_agenda",
+            "description": "Read the local synthetic review agenda.",
+            "inputSchema": {
+                "type": "object", "properties": {"meeting": {"type": "string", "enum": ["M1"]}},
+                "required": ["meeting"], "additionalProperties": False,
+            },
+        }]}
+    elif method == "tools/call":
+        params = message["params"]
+        if params.get("name") == "lookup_agenda" and params.get("arguments") == {"meeting": "M1"}:
+            reply["result"] = {"content": [{"type": "text", "text": "Review the accessibility checklist."}]}
+        else:
+            reply["error"] = {"code": -32602, "message": "Invalid tool or arguments"}
+    else:
+        reply["error"] = {"code": -32601, "message": "Method not found"}
+    print(json.dumps(reply), flush=True)
+"""
+
+
+def exchange(method, params=None):
+    messages = [
+        {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {
+            "protocolVersion": "2025-06-18", "capabilities": {},
+            "clientInfo": {"name": "aiebok-workbook", "version": "1.0"},
+        }},
+        {"jsonrpc": "2.0", "method": "notifications/initialized"},
+        {"jsonrpc": "2.0", "id": 2, "method": method, "params": params or {}},
+    ]
+    run = subprocess.run(
+        [sys.executable, "-c", server], input="".join(json.dumps(msg) + "\n" for msg in messages),
+        text=True, capture_output=True, timeout=5, check=True,
+    )
+    init, reply = [json.loads(line) for line in run.stdout.splitlines()]
+    assert init["id"] == 1 and init["result"]["protocolVersion"] == "2025-06-18"
+    assert reply["id"] == 2 and reply["jsonrpc"] == "2.0"
+    return reply["result"]
+
+
+tools = exchange("tools/list")["tools"]
+assert [tool["name"] for tool in tools] == ["lookup_agenda"]
+assert tools[0]["inputSchema"]["required"] == ["meeting"]
+print("Discovered", tools)
+```
+
 ## Try it yourself
 
 Run the discovery cell. Call lookup_agenda for the sample meeting and inspect the JSON-RPC result.

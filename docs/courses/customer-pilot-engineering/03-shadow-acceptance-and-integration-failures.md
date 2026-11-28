@@ -55,6 +55,46 @@ Ask the shift lead to walk through the evidence in order. Can they see who owns 
 
 When the routing dependency is unavailable, leave the ticket in manual triage. If an accepted request is delivered twice, return the existing route.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+class Intake:
+    def __init__(self):
+        self.records = {}
+
+    def shadow(self, ticket, lookup):
+        saved = self.records.get(ticket.source_id)
+        if saved:
+            if saved[0] != ticket:
+                raise ValueError("source ID reused with different inputs")
+            return saved[1]
+        try:
+            route = lookup(ticket.topic) if not ticket.restricted else None
+        except TimeoutError:
+            return "retry_manual"
+        result = route or "review"
+        self.records[ticket.source_id] = (ticket, result)
+        return result
+
+
+def lookup(topic):
+    return {"heating": "building-services"}.get(topic)
+
+
+def unavailable(topic):
+    raise TimeoutError("directory did not respond")
+
+
+intake = Intake()
+assert intake.shadow(tickets[0], unavailable) == "retry_manual"
+assert "F1" not in intake.records
+assert [intake.shadow(ticket, lookup) for ticket in tickets] == ["building-services", "review", "review"]
+assert intake.shadow(tickets[0], unavailable) == "building-services"
+assert len(intake.records) == 3
+```
+
 ## Try it yourself
 
 Compare the deterministic acceptance results. Add a replay for a successful request and a retry after dependency recovery.

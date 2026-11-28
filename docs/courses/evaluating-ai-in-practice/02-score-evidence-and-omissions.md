@@ -57,6 +57,12 @@ Preserve the denominator and which requirements were applicable. A draft cannot 
 
 A draft preserves the event date and claims a replacement venue without a source. Record a pass on the date and a fail on the unsupported venue.
 
+### Follow the example
+
+**Given:** A notice gives the right room but omits that the accessible entrance has moved.
+
+**Walkthrough:** Score the room and the entrance separately. Record the omitted access instruction as material because it changes whether an attendee can use the notice.
+
 ## Try it yourself
 
 A summary correctly reports the deadline and leaves out a required approval. Score the two details separately and decide whether to send it.

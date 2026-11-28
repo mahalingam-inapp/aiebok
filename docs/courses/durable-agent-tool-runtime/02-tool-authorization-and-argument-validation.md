@@ -43,6 +43,32 @@ Write paired tests for the same resource and different roles, plus a malformed r
 
 A reviewer may look up a team agenda. A guest with the same input shape has no permission, even when the tool is listed.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+events = []
+
+
+def lookup(role, meeting):
+    if role != "reviewer":
+        events.append("denied")
+        return None
+    if meeting != "M1":
+        events.append("invalid_arguments")
+        return None
+    result = exchange("tools/call", {"name": "lookup_agenda", "arguments": {"meeting": meeting}})
+    events.append("read")
+    return result["content"][0]["text"]
+
+
+assert lookup("guest", "M1") is None
+assert lookup("reviewer", "M9") is None
+assert lookup("reviewer", "M1") == "Review the accessibility checklist."
+assert events == ["denied", "invalid_arguments", "read"]
+```
+
 ## Try it yourself
 
 Run the allowed, denied, and invalid argument cases. Inspect where each decision is recorded.

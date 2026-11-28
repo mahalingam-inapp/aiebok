@@ -56,6 +56,12 @@ When you choose to pause, preserve the benefit evidence as well as the failure. 
 
 A pilot meets its time target and misses its accuracy guardrail. Hold rollout, inspect which cases failed, and rerun a targeted pilot after correcting those failures.
 
+### Follow the example
+
+**Given:** The pilot saves six minutes per routine call. The owner of the manual fallback will be on leave during rollout.
+
+**Walkthrough:** Keep the pilot bounded until the fallback has an owner and a verified response time. Write the pause rule into the release decision.
+
 ## Try it yourself
 
 Your pilot meets both thresholds on 20 routine cases. It includes no urgent cases. What is the next decision?

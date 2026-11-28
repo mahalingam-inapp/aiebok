@@ -36,6 +36,13 @@ assert.equal(createRun({ ...approved, outage: true }).run("workflow").effects.le
 const run = createRun(request);
 for (const id of [...cells.keys()].reverse()) assert.notEqual(run.run(id), undefined, id);
 assert.equal(run.run("serve").text, result.text);
+const experts = run.run("experts");
+assert.ok(Math.abs(experts.mixed - 3) < 1e-12);
+assert.equal(experts.topOneBatch.overflow, 2);
+assert.equal(run.run("budgets").budgets.cascade.spend, 12);
+assert.equal(run.run("budgets").greedyCheck.committed.join(" "), "within 14 calendar");
+assert.equal(run.run("decisions").preferred, "review");
+assert.equal(run.run("decisions").optimalPlan.value, 12);
 const evaluation = run.run("evaluate");
 assert.equal(evaluation.hybrid.passRate, 1);
 assert.equal(evaluation.hybrid.criticalPass, true);

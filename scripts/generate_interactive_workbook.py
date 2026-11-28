@@ -36,6 +36,9 @@ BOOK_CELLS = (
     ("modalities", "modalities", "modalities", "workflow", "frontier", "frontier"),
 )
 PRACTICE_CELLS = {
+    "sparse-model-architectures": ("experts", "experts", "enterprise", "adapt"),
+    "reasoning-efficient-inference": ("budgets", "reason", "budgets", "operations"),
+    "decision-models-and-policies": ("decisions", "decisions", "evaluate", "governance"),
     "ai-literacy": ("brief", "answer", "serve", "governance"),
     "using-ai-at-work": ("brief", "answer", "workflow", "delivery"),
     "ai-product-decisions": ("brief", "reason", "evaluate", "delivery"),

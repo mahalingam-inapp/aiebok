@@ -4,35 +4,31 @@
 
 ## Core explanation
 
-Mixture-of-experts activates subsets of parameters per token, scaling capacity without proportional compute. Routing and load balancing add engineering complexity.
+A sparse mixture-of-experts layer routes each token to a subset of expert feed-forward networks and combines their outputs. Resident weight memory, shared computation, and cross-device communication matter even when few experts are active.
 
 ## Example
 
-An MoE layer may route math tokens to specialized experts while sharing common language experts.
+A layer with eight equally sized routed experts and top-2 routing uses two experts per token. A shared expert, if present, adds work for every token.
 
 ## When to use
 
-Use when the mechanism directly addresses a measured gap versus simpler baselines on your workload.
+Use when a larger parameter budget is plausible at bounded token compute.
 
 ## When not to use
 
-Skip when complexity, latency, or ops burden exceeds demonstrated benefit.
+Favor a dense baseline for workloads that cannot accommodate resident experts or inter-device traffic.
 
 ## Engineering checklist
 
-- State the decision this mechanism supports before implementation.
-- Compare against a simpler baseline on normal, boundary, and adversarial cases.
-- Define metrics, slices, and rollback before production rollout.
+- Count active and resident weights, including shared layers.
 
 ## Evidence of understanding
 
-Monitor expert utilization histograms and penalize imbalance if any expert exceeds 40% load.
+Report active and resident parameters separately. Measure skew, overflow or queueing, and quality on realistic input bursts.
 
 ## Common failure modes
 
-- Applying the technique without a baseline comparison
-- Ignoring boundary and adversarial inputs
-- Optimizing demo cases instead of production slices
+- A router concentrates a burst on a few experts.
 
 ## Trade-offs
 
@@ -51,6 +47,7 @@ No mechanism is universal. Compare mixture of experts against a simpler baseline
 
 ## Related study
 
+- [Run the course practicum](../../courses/sparse-model-architectures/index.md)
 - [Question index](../../reference/question-index.md)
 - [Guided lessons](../../lessons/index.md)
 - Run the matching chapter lab under `labs/` when available

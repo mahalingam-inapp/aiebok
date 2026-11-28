@@ -123,9 +123,9 @@ Deep learning stacks differentiable layers that learn hierarchical features from
 
 **Design question:** For which incident classes should you keep symbolic rules in production even after adding statistical models?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **from symbols to statistics** before the book-level sample:
+Run this short Python demonstration of **from symbols to statistics**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 RULES = [("urgent", "P1"), ("question", "P3")]
@@ -144,20 +144,9 @@ for t in tickets:
     print({"ticket": t[:40], "route": rule_route(t)})
 ```
 
-Predict the printed values, then change one line tied to **symbolic AI** or **expert systems** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/01-search-planning.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/01-search-planning.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    A* should reach the same shortest path as breadth-first search while often expanding fewer states when the heuristic is informative.
+For a longer implementation, run the [course code sample](../../code-samples/01-search-planning.py). A* should reach the same shortest path as breadth-first search while often expanding fewer states when the heuristic is informative.
 
 ## Engineering practice
 
@@ -175,7 +164,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Write a support-routing goal and identify an example where a fixed keyword rule misroutes a request.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/01-foundations-of-intelligence.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/01-foundations-of-intelligence.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

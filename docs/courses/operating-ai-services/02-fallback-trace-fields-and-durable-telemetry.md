@@ -43,6 +43,67 @@ Persist the events needed for release evaluation. A worker restart should not er
 
 A candidate fails to answer during a dry run. The baseline serves it and the trace preserves the fact that a fallback occurred.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+import sqlite3
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+
+class Store:
+    def __init__(self, filename):
+        self.conn = sqlite3.connect(filename)
+        with self.conn:
+            self.conn.executescript("""
+                CREATE TABLE IF NOT EXISTS config (id INTEGER PRIMARY KEY, version TEXT NOT NULL, canary TEXT);
+                INSERT OR IGNORE INTO config VALUES (1, 'v1', NULL);
+                CREATE TABLE IF NOT EXISTS traces (
+                    id TEXT PRIMARY KEY, requested TEXT, served TEXT, elapsed_ms REAL, fallback INTEGER
+                );
+                CREATE TABLE IF NOT EXISTS decisions (version TEXT, reason TEXT);
+            """)
+
+    def active_version(self, *, canary=False):
+        version, candidate = self.conn.execute("SELECT version, canary FROM config WHERE id = 1").fetchone()
+        return candidate if canary and candidate else version
+
+    def record(self, request_id, requested, served, elapsed_ms):
+        with self.conn:
+            self.conn.execute("INSERT INTO traces VALUES (?, ?, ?, ?, ?)",
+                              (request_id, requested, served, elapsed_ms, int(served != requested)))
+
+    def activate(self, version, reason):
+        if version not in {"v1", "v2"}:
+            raise ValueError("unknown version")
+        with self.conn:
+            self.conn.execute("UPDATE config SET version = ?, canary = NULL WHERE id = 1", (version,))
+            self.conn.execute("INSERT INTO decisions VALUES (?, ?)", (version, reason))
+
+    def stage(self, version, reason):
+        if version not in {"v1", "v2"}:
+            raise ValueError("unknown version")
+        with self.conn:
+            self.conn.execute("UPDATE config SET canary = ? WHERE id = 1", (version,))
+            self.conn.execute("INSERT INTO decisions VALUES (?, ?)", (version, reason))
+
+
+directory = TemporaryDirectory(prefix="aiebok-service-")
+database = Path(directory.name) / "release.sqlite"
+store = Store(database)
+store.stage("v2", "start synthetic canary")
+service = Service(store)
+status, stable = request(service, "/predict", {"question": "special request"})
+assert status == "200 OK" and stable["requested_version"] == "v1"
+status, response = request(service, "/predict", {"question": "special request"}, canary=True)
+assert status == "200 OK" and response["served_version"] == "v1"
+trace = store.conn.execute("SELECT requested, served, fallback FROM traces WHERE id = ?", (response["id"],)).fetchone()
+assert trace == ("v2", "v1", 1)
+assert "question" not in {column[1] for column in store.conn.execute("PRAGMA table_info(traces)")}
+```
+
 ## Try it yourself
 
 Trigger the bundled provider failure. Query the telemetry and check that sensitive request text is absent.

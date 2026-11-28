@@ -123,9 +123,9 @@ Token budgets cap how many tokens each prompt sectionâ€”system, evidence, userâ€
 
 **Design question:** When does subword tokenization help product codes but hurt exact identifier search?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **tokenization** before the book-level sample:
+Run this short Python demonstration of **tokenization**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 corpus = "PTO PTO accrual XR-9000 XR-9000 policy"
@@ -140,20 +140,9 @@ print("most frequent pair:", merge, "count:", pairs[merge])
 print("word token count:", len(words))
 ```
 
-Predict the printed values, then change one line tied to **vocabulary** or **subwords** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/03-tokenization-vectors.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/03-tokenization-vectors.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    The outage document should rank highest because it shares the query's weighted terms; the example also exposes the limits of lexical features.
+For a longer implementation, run the [course code sample](../../code-samples/03-tokenization-vectors.py). The outage document should rank highest because it shares the query's weighted terms; the example also exposes the limits of lexical features.
 
 ## Engineering practice
 
@@ -171,7 +160,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Compare the visible tokens for two search queries. Identify a distinct word that should retrieve the same policy.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/03-language-and-representation.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/03-language-and-representation.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

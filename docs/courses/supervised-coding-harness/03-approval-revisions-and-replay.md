@@ -43,6 +43,48 @@ Exercise two cases independently. Submitting a changed proposal after approval s
 
 A reviewer approves the whitespace change at revision 1. Another edit lands before approval is applied. The old approval now needs a fresh review.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from dataclasses import replace
+
+
+class FormatterStore:
+    def __init__(self):
+        self.revision = 1
+        self.candidate = "current"
+        self.records = {}
+
+    def apply(self, request_id, review):
+        if request_id in self.records:
+            recorded, revision = self.records[request_id]
+            if recorded != review:
+                raise ValueError("request ID reused with a different review")
+            return "replayed", revision
+        if review.revision != self.revision:
+            return "stale", self.revision
+        if review.failures:
+            return "failed_checks", self.revision
+        if not review.approved:
+            return "awaiting_review", self.revision
+        self.candidate = review.candidate
+        self.revision += 1
+        self.records[request_id] = review, self.revision
+        return "applied", self.revision
+
+
+store = FormatterStore()
+review = evaluate(proposal, store.revision)
+assert store.apply("change-1", review) == ("awaiting_review", 1)
+approved = replace(review, approved=True)
+assert store.apply("change-1", approved) == ("applied", 2)
+assert store.apply("change-1", approved) == ("replayed", 2)
+assert store.apply("change-2", approved) == ("stale", 2)
+assert store.candidate == "collapse-spaces"
+```
+
 ## Try it yourself
 
 Try applying a good proposal before approval. Replay after applying it and then try the old review against a newer revision.

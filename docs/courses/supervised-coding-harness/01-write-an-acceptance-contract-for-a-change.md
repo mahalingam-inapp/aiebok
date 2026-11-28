@@ -43,6 +43,34 @@ First run the tests against the current implementation. You expect the new case 
 
 A task-title formatter should now remove redundant spaces. Existing lowercasing and empty-title behavior still matter. Add a fixture for tabs and a case that captures the default title.
 
+## Follow the code
+
+Run this cell in Python 3.10 or later. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+def current_title(value):
+    return value.strip().lower() or "untitled"
+
+
+CASES = (
+    (" Study PLAN ", "study plan"),
+    ("", "untitled"),
+    ("draft\t  release   plan", "draft release plan"),
+)
+
+
+def regressions(formatter):
+    failures = []
+    for value, expected in CASES:
+        actual = formatter(value)
+        if actual != expected:
+            failures.append({"input": value, "expected": expected, "actual": actual})
+    return failures
+
+
+assert len(regressions(current_title)) == 1
+```
+
 ## Try it yourself
 
 Write one legacy case and one case that fails with the baseline.

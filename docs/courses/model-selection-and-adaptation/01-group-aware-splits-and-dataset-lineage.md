@@ -43,6 +43,58 @@ Use training data to fit, validation data to choose settings, and a held-out tes
 
 Two requests copied from one campus support template share a group. Putting one copy in validation would make scores artificially optimistic.
 
+## Follow the code
+
+Run this cell in Python 3.10 or later. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from collections import Counter
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Record:
+    group: str
+    slice: str
+    text: str
+    label: str
+
+
+splits = {
+    "train": (
+        Record("a", "short", "wifi network disconnect", "network"),
+        Record("a", "long", "wifi access point network slow", "network"),
+        Record("b", "short", "router internet wifi", "network"),
+        Record("c", "short", "projector screen dark", "display"),
+        Record("d", "long", "screen projector flickers with cable", "display"),
+    ),
+    "validation": (
+        Record("e", "short", "network wifi slow", "network"),
+        Record("f", "short", "projector cable screen", "display"),
+        Record("g", "long", "wifi classroom screen setup check", "display"),
+    ),
+    "test": (
+        Record("h", "short", "router wifi down", "network"),
+        Record("i", "long", "classroom projector screen dark today", "display"),
+        Record("j", "short", "cable issue", "display"),
+        Record("k", "long", "classroom needs attention before class", "network"),
+    ),
+}
+dataset_version = "classroom-support-fixtures-v1"
+
+
+def check_splits(partitions):
+    owners = {}
+    for name, records in partitions.items():
+        for row in records:
+            previous = owners.setdefault(row.group, name)
+            assert previous == name, f"group {row.group} crosses {previous} and {name}"
+
+
+check_splits(splits)
+print({name: dict(Counter(row.slice for row in records)) for name, records in splits.items()})
+```
+
 ## Try it yourself
 
 Compute the group intersections across train, validation and test. Change one fixture so a group leaks across the split.

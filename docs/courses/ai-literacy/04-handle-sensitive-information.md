@@ -43,6 +43,12 @@ Checking the input and checking the output are separate jobs. An approved input 
 
 To improve the tone of a customer email, you can use a synthetic example that preserves the writing problem while removing the real account, contact, and order details.
 
+### Follow the example
+
+**Given:** A draft request includes a student roster, parent phone numbers, and a confirmed event time.
+
+**Walkthrough:** Extract the time, place, and audience category into a new brief. Keep the roster with the school. Verify the resulting notice against the confirmed event information.
+
 ## Try it yourself
 
 A teammate wants to paste a spreadsheet containing real customer complaints into a public assistant for rewriting. Propose a safer way to practice.

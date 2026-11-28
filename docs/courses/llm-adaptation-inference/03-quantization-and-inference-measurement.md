@@ -43,6 +43,47 @@ Check both task behavior and numerical drift. Small changes in scores can flip a
 
 An int8 correction uses fewer payload bytes. In a small Python implementation, unpacking can offset any latency benefit.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from array import array
+from statistics import median
+from time import perf_counter
+
+
+def quantize(values):
+    scale = max(abs(value) for value in values) / 127 or 1
+    return array("b", (round(value / scale) for value in values)), array("f", [scale])
+
+
+# Pack the whole correction with one scale. The scale is included in the byte count.
+float_payload = array("f", a + b)
+int_payload, scale = quantize(float_payload)
+
+
+def compressed(text):
+    unpacked = [item * scale[0] for item in int_payload]
+    return forward(text, unpacked[:len(a)], unpacked[len(a):])
+
+
+def timed(model, count=300):
+    values = []
+    for _ in range(count):
+        start = perf_counter()
+        model(test[0].text)
+        values.append((perf_counter() - start) * 1e6)
+    return median(values)
+
+
+compressed_bytes = len(int_payload.tobytes()) + len(scale.tobytes())
+assert compressed_bytes < len(float_payload.tobytes())
+assert abs(metrics(adapted, test)["log_loss"] - metrics(compressed, test)["log_loss"]) < 0.05
+print("float bytes", len(float_payload.tobytes()), "compressed bytes", compressed_bytes,
+      "median µs float/int8", timed(adapted), timed(compressed))
+```
+
 ## Try it yourself
 
 Run repeated measurements before and after quantizing. Record scale overhead and name the hardware.

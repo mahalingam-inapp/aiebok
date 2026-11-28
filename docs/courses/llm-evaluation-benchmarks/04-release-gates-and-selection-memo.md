@@ -43,6 +43,26 @@ A decision memo should explain why a rejected option was held and what would cha
 
 The lowest-cost candidate misses one access-boundary case. It is ineligible even if it wins aggregate cost.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+def select(reports, latency_limit=800):
+    eligible = [
+        name for name, row in reports.items()
+        if row["slices"]["critical"] == (2, 2)
+        and row["latency"] <= latency_limit
+        and row["cost_per_correct"] is not None
+    ]
+    return min(eligible, key=lambda name: reports[name]["cost_per_correct"], default=None)
+
+
+assert select(reports) == "Balanced"
+assert select(reports, latency_limit=650) is None
+print("Selection for this fixture:", select(reports))
+```
+
 ## Try it yourself
 
 Run the gated selection. Tighten the latency budget and see whether any candidate still qualifies.

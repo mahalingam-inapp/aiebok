@@ -383,6 +383,15 @@ SPECIALIST_PATHS = (
         "Diagnose a staged release failure, restore the baseline, and produce an evidence-based incident review.",
         "ai-reliability-capstone.md",
     ),
+    LearningPath(
+        "model-architecture-decision-engineer", "Model Architecture & Decision Systems Engineer",
+        "Advanced specialist · models and policies",
+        "ML, inference, and decision systems engineers working on model internals, serving choices, or decisions driven by predictions.",
+        "Python, probability, and transformer fundamentals. Review [Machine Learning Systems](../../books/02-machine-learning-systems/index.md) and [Transformers and Foundation Models](../../books/04-transformers-and-foundation-models/index.md) if needed.",
+        ("sparse-model-architectures", "reasoning-efficient-inference", "decision-models-and-policies"),
+        "Compare expert capacity and inference budgets, then ship a reproducible synthetic policy evaluation with a human handoff and release gate.",
+        "model-architecture-decision-capstone.md",
+    ),
 )
 
 PATHS += SPECIALIST_PATHS

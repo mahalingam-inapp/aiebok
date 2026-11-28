@@ -43,6 +43,54 @@ Persist the pointer and event history if service continuity depends on surviving
 
 A blocked canary reassigns the production pointer to v1. After reopening its state store, the next request reports v1 and the decision log still contains the rollback.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from urllib.request import Request, ProxyHandler, build_opener
+from wsgiref.simple_server import make_server, WSGIRequestHandler
+
+
+class QuietHandler(WSGIRequestHandler):
+    def log_message(self, format, *args):
+        pass
+
+
+store.activate("v1", "rollback after blocked canary")
+store.conn.close()
+reopened = Store(database)
+try:
+    assert reopened.active_version() == "v1"
+    assert reopened.active_version(canary=True) == "v1"
+    assert ("v1", "rollback after blocked canary") in reopened.conn.execute("SELECT version, reason FROM decisions").fetchall()
+    # The server runs in this thread because the SQLite connection belongs to it.
+    from concurrent.futures import ThreadPoolExecutor
+
+    with make_server("127.0.0.1", 0, Service(reopened), handler_class=QuietHandler) as server:
+        server.timeout = 5
+        address = f"http://127.0.0.1:{server.server_port}"
+
+        def fetch():
+            client = build_opener(ProxyHandler({}))
+            with client.open(address + "/health", timeout=5) as response:
+                assert json.load(response)["ready"]
+            call = Request(address + "/predict", data=b'{"question":"reserve a room"}',
+                           headers={"Content-Type": "application/json", "X-AIEBOK-CANARY": "1"})
+            with client.open(call, timeout=5) as response:
+                return json.load(response)
+
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            result = pool.submit(fetch)
+            server.handle_request()
+            server.handle_request()
+            assert result.result()["served_version"] == "v1"
+finally:
+    reopened.conn.close()
+    directory.cleanup()
+print("Rollback persisted and HTTP smoke passed")
+```
+
 ## Try it yourself
 
 Run rollback, reopen the store, and make a loopback HTTP health and prediction request. Write your runbook with the measurable trigger and post-rollback check.

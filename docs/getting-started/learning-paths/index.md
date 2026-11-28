@@ -25,5 +25,6 @@ Choose a core path for your role or a specialist path for a specific project. Ea
 | [Agent Runtime & MCP Engineer](agent-runtime-mcp-engineer.md) | Advanced specialist · runtime | Engineers building supervised, resumable workflows with tool interfaces. |
 | [LLM Adaptation & Inference Engineer](llm-adaptation-inference-engineer.md) | Advanced specialist · models | ML engineers selecting and adapting models and measuring serving trade-offs. |
 | [AI Reliability & Release Engineer](ai-reliability-release-engineer.md) | Advanced specialist · operations | Platform, ML operations, and reliability engineers operating model-backed features. |
+| [Model Architecture & Decision Systems Engineer](model-architecture-decision-engineer.md) | Advanced specialist · models and policies | ML, inference, and decision systems engineers working on model internals, serving choices, or decisions driven by predictions. |
 
 [Learning path coverage](../../editorial/learning-path-coverage.md) · [Textbook content audit](../../editorial/textbook-audit.md)

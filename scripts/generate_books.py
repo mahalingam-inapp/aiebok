@@ -321,9 +321,9 @@ def render_chapter(book_no: int, chapter_no: int, book: dict, chapter: tuple) ->
         for i, stage in enumerate(stages[:-1])
     )
     sample_file = SAMPLE_FILES[book_no - 1]
+    expected = EXPECTED_OBSERVATIONS[book_no - 1]
     prerequisite_lines = "\n".join(f"- {item}" for item in PREREQUISITES[book_no - 1])
     reading_lines = "\n".join(f"- {item}" for item in READINGS[book_no - 1])
-    expected = EXPECTED_OBSERVATIONS[book_no - 1]
     spec_section = render_chapter_spec_section(book_no, chapter_no, title)
     course = TECHNICAL_COURSES[book_no - 1]
     section = (chapter_no - 1) // 2
@@ -388,18 +388,7 @@ flowchart LR
 
 {hook}
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/{sample_file}) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/{sample_file}"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    {expected}
+For a longer implementation, run the [course code sample](../../code-samples/{sample_file}). {expected}
 
 ## Engineering practice
 
@@ -409,7 +398,7 @@ Expected output is printed to the terminal. Before running it, predict which val
 
 {course.checks[section]}
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook]({notebook}){{ download }} contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.{applied}
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook]({notebook}){{ download }} contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.{applied}
 
 {spec_section}
 

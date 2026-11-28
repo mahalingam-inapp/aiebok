@@ -43,6 +43,12 @@ Keep the option to defer a choice. A scorecard can show that a simpler method al
 
 Balanced passes both critical checks and serves under 800 ms. A new regional language cohort could change the choice.
 
+### Follow the example
+
+**Given:** A candidate passes the bounded pilot, but performance after a version change is unknown.
+
+**Walkthrough:** Approve only the tested scope and version. Name the supervisor who can stop rollout and specify which evidence is required to approve a replacement.
+
 ## Try it yourself
 
 Use the scorecard to recommend one candidate and a follow-up trial. Name who can pause the pilot.

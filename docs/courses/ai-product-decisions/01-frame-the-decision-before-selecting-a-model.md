@@ -43,6 +43,12 @@ Turn an observation into a narrow decision. State the audience, workflow step, m
 
 Instead of proposing an AI help desk, target the time to route incoming requests to the correct team. Measure routing time and how often requests are reassigned.
 
+### Follow the example
+
+**Given:** A support lead wants a chatbot. A sample of 40 incoming requests contains 12 that bounced between teams.
+
+**Walkthrough:** Start with a routing pilot. Measure first-team accuracy and time to a responsible owner on the same 40-case design before proposing a broader customer assistant.
+
 ## Try it yourself
 
 Reframe ‘We need a chatbot for onboarding’ into a user, a repeated problem, and a measurable outcome.

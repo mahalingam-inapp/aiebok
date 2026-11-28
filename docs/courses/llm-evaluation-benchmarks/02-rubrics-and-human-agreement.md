@@ -43,6 +43,28 @@ Use the workbook to compare the measures, then read the underlying examples. If 
 
 Two reviewers agree on five of six assistant answers. The one disagreement involves a valid citation supporting only part of the claim.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+def agreement(left, right):
+    pairs = list(zip(left, right, strict=True))
+    observed = sum(a == b for a, b in pairs) / len(pairs)
+    yes_left, yes_right = sum(left) / len(left), sum(right) / len(right)
+    chance = yes_left * yes_right + (1 - yes_left) * (1 - yes_right)
+    return observed, (observed - chance) / (1 - chance) if chance != 1 else None
+
+
+reviewer_1 = [1, 1, 0, 0, 0, 1]
+reviewer_2 = [1, 1, 0, 0, 1, 1]
+observed, kappa = agreement(reviewer_1, reviewer_2)
+print("Disagreement indices", [i for i, pair in enumerate(zip(reviewer_1, reviewer_2)) if pair[0] != pair[1]])
+print("Agreement", observed, "Cohen kappa", kappa)
+assert abs(kappa - 2 / 3) < 1e-9
+assert agreement([1, 1], [1, 1]) == (1, None)
+```
+
 ## Try it yourself
 
 Run the agreement calculation and inspect the disagreement. Rewrite one rubric criterion to resolve it.

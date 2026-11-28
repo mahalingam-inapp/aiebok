@@ -431,3 +431,22 @@ body:has(.learning-view) .md-sidebar--secondary,
     display: none;
   }
 }
+
+.md-typeset .concept-deck-list {
+  list-style: none;
+  margin-inline: 0;
+  padding: 0;
+}
+
+.concept-deck-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .35rem 1rem;
+  flex-wrap: wrap;
+  padding-block: .35rem;
+  border-bottom: 1px solid var(--learning-line);
+}
+
+.concept-deck-list li[hidden] { display: none; }
+.concept-deck-list small { color: var(--learning-muted); }

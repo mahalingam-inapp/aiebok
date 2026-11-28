@@ -43,6 +43,91 @@ Keep the same fixtures when comparing configuration changes. Report the counts f
 
 A candidate may retrieve the right policy yet cite an unavailable ID. That case passes retrieval but fails answer validation. A fallback preserves safety while still costing task completion.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from collections import defaultdict
+from statistics import median
+from time import perf_counter
+
+
+def baseline(question, evidence):
+    if not evidence:
+        return json.dumps({"status": "abstain", "answer": "", "sources": []})
+    return json.dumps({"status": "answer", "answer": evidence[0].text, "sources": [evidence[0].id]})
+
+
+def candidate(question, evidence):
+    if question == "How do I reserve a meeting room?":
+        return json.dumps({"status": "answer", "answer": "Use the calendar.", "sources": ["unknown"]})
+    return baseline(question, evidence)
+
+
+def call(provider, question, evidence):
+    if not evidence:
+        return ABSTAIN, "no_evidence"
+    try:
+        reply = parse_reply(provider(question, evidence))
+    except OSError:
+        return ABSTAIN, "provider_failure"
+    except ValueError:
+        return ABSTAIN, "invalid_response"
+    if reply.status == "answer":
+        supplied = {p.id: p.text for p in evidence}
+        if len(reply.sources) != 1 or supplied.get(reply.sources[0]) != reply.answer:
+            return ABSTAIN, "unsupported"
+    return reply, reply.status
+
+
+CASES = (
+    ("When should I file a travel receipt?", "employee", "answerable", "travel"),
+    ("How do I reserve a meeting room?", "employee", "answerable", "room"),
+    ("When are payroll adjustments reviewed?", "reviewer", "answerable", "payroll"),
+    ("When are payroll adjustments reviewed?", "employee", "restricted", None),
+    ("Is snow forecast?", "employee", "out_of_scope", None),
+)
+
+
+def score(provider):
+    counts = defaultdict(lambda: {"cases": 0, "correct": 0})
+    hits = answerable = fallback = 0
+    durations = []
+    for question, role, slice_name, expected in CASES:
+        start = perf_counter()
+        evidence = retrieve(question, role)
+        reply, reason = call(provider, question, evidence)
+        durations.append(1000 * (perf_counter() - start))
+        answerable += expected is not None
+        hits += expected is not None and any(p.id == expected for p in evidence)
+        fallback += reason in {"unsupported", "invalid_response", "provider_failure"}
+        counts[slice_name]["cases"] += 1
+        counts[slice_name]["correct"] += reply.sources == ((expected,) if expected else ())
+    return {
+        "retrieval_recall_at_2": hits / answerable, "slices": dict(counts),
+        "fallbacks": fallback, "median_ms": round(median(durations), 3),
+    }
+
+
+baseline_report = score(baseline)
+candidate_report = score(candidate)
+print(baseline_report, candidate_report)
+assert baseline_report["retrieval_recall_at_2"] == candidate_report["retrieval_recall_at_2"] == 1
+assert baseline_report["fallbacks"] == 0 and candidate_report["fallbacks"] == 1
+assert candidate_report["slices"]["restricted"]["correct"] == 1
+
+
+def busy_provider(question, evidence):
+    raise TimeoutError("fixture timeout")
+
+
+question, role, _, _ = CASES[0]
+evidence = retrieve(question, role)
+assert call(busy_provider, question, evidence) == (ABSTAIN, "provider_failure")
+assert call(lambda question, evidence: "not JSON", question, evidence) == (ABSTAIN, "invalid_response")
+```
+
 ## Try it yourself
 
 Run both providers on the same cases and identify one case where retrieval succeeds but the provider reply fails its contract.

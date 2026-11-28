@@ -43,6 +43,12 @@ For a purchase, ask for the workload that the trial did not cover. A model may h
 
 Fast and Balanced each pass 9 of 10 fixture cases. Fast misses one of two important cases, so the same overall score conceals a different risk.
 
+### Follow the example
+
+**Given:** Two vendors both score 90%. Their errors occur on different requests.
+
+**Walkthrough:** Put outcomes side by side for each request ID. Let reviewers resolve disagreements and state which failure would reverse the choice.
+
 ## Try it yourself
 
 Identify which score prevents Fast from being eligible and why the test is still limited.

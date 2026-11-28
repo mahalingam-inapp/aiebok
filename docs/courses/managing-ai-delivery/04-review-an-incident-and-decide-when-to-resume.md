@@ -43,6 +43,12 @@ Write down what would cause the incident team to halt again. Assign one person t
 
 An assistant sent an outdated notice. The team stopped the output, corrected the source selection, verified a case with conflicting versions, and asked the content owner to approve resumption.
 
+### Follow the example
+
+**Given:** Operations receives an issue report but cannot tell which deployment version produced it.
+
+**Walkthrough:** Attach the versions, reproduction case, workaround, and owner. Verify the fallback with the person who will use it before transferring responsibility.
+
 ## Try it yourself
 
 A pilot generated summaries using superseded procedure documents. Give one containment action, one corrective test, and one condition for resuming.

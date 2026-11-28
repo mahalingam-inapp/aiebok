@@ -43,6 +43,55 @@ Test revision changes and permissions together. Demonstrate that a new version t
 
 Policy owners publish a new return window. A search result from the old revision is a freshness failure even if its wording matches the query exactly.
 
+## Follow the code
+
+Run this cell in Python 3.10 or later. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from dataclasses import dataclass, replace
+
+
+@dataclass(frozen=True)
+class Passage:
+    document: str
+    revision: int
+    effective: int
+    audience: str
+    text: str
+    chunk: int = 1
+
+    @property
+    def source(self):
+        prefix = f"{self.document}@{self.revision}"
+        return prefix if self.chunk == 1 else f"{prefix}#{self.chunk}"
+
+
+corpus = (
+    Passage("leave", 1, 1, "public", "vacation leave limit 10 days"),
+    Passage("leave", 2, 3, "public", "vacation leave limit 15 days"),
+    Passage("leave", 3, 8, "public", "vacation leave limit 18 days"),
+    Passage("travel", 1, 1, "public", "travel policy for boarding and rail. keep the receipt"),
+    Passage("equipment", 1, 1, "public", "board replacement and circuit equipment"),
+    Passage("payroll", 1, 1, "finance", "payroll adjustments and tax forms"),
+)
+
+
+def visible(records, role, as_of):
+    latest = {}
+    for row in records:
+        if row.effective <= as_of and (row.document not in latest or row.revision > latest[row.document].revision):
+            latest[row.document] = row
+    return [
+        replace(row, text=sentence.strip(), chunk=chunk)
+        for row in latest.values() if row.audience in {"public", role}
+        for chunk, sentence in enumerate(row.text.split("."), 1) if sentence.strip()
+    ]
+
+
+eligible = visible(corpus, "employee", 6)
+assert {row.source for row in eligible} == {"leave@2", "travel@1", "travel@1#2", "equipment@1"}
+```
+
 ## Try it yourself
 
 Inspect the bundled versioned policy records. Add a new revision and verify which one is visible to each role.

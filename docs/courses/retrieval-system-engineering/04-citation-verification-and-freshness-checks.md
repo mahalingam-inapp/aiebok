@@ -43,6 +43,26 @@ Try one answer with a correct amount and an incorrect source. Try another with a
 
 A candidate quotes an old leave policy accurately. The citation is still invalid when that revision is no longer eligible.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+def verify_quote(source, quote, retrieved_sources, eligible_rows):
+    evidence = {row.source: row.text for row in eligible_rows if row.source in retrieved_sources}
+    if source in evidence and quote.strip() and quote in evidence[source]:
+        return quote, source
+    return None
+
+
+hits = hybrid("holidays", eligible)
+assert verify_quote("leave@2", "15 days", hits, eligible) == ("15 days", "leave@2")
+assert verify_quote("leave@1", "10 days", hits, eligible) is None
+assert verify_quote("leave@2", "20 days", hits, eligible) is None
+assert verify_quote("payroll@1", "tax forms", hits + ["payroll@1"], eligible) is None
+assert verify_quote("leave@2", "15 days", hits, visible(corpus, "employee", 8)) is None
+```
+
 ## Try it yourself
 
 Run the freshness and citation fixtures. Add a case where a restricted source has the best lexical match.

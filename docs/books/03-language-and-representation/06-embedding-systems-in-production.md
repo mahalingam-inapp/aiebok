@@ -123,9 +123,9 @@ Vector governance covers access control, versioning, retention, and audit for em
 
 **Design question:** What contract must the embedding service expose so product teams treat upgrades as data migrations?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **embedding systems in production** before the book-level sample:
+Run this short Python demonstration of **embedding systems in production**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 eval_set = [
@@ -138,20 +138,9 @@ for row in eval_set:
     print({"query": row["q"], "ndcg_proxy": score, "pass": score >= 0.75})
 ```
 
-Predict the printed values, then change one line tied to **embedding evaluation** or **multilingual models** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/03-tokenization-vectors.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/03-tokenization-vectors.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    The outage document should rank highest because it shares the query's weighted terms; the example also exposes the limits of lexical features.
+For a longer implementation, run the [course code sample](../../code-samples/03-tokenization-vectors.py). The outage document should rank highest because it shares the query's weighted terms; the example also exposes the limits of lexical features.
 
 ## Engineering practice
 
@@ -169,7 +158,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Record the top document for a token-overlap query and a synonym-only query. Explain the difference.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/03-language-and-representation.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/03-language-and-representation.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

@@ -43,6 +43,19 @@ Ask the customer to verify what an accepted result looks like using the evidence
 
 A facilities manager asks for faster intake. Observe manual triage and target lower median time while preserving all restricted routing decisions.
 
+## Follow the code
+
+Run this cell in Python 3.10 or later. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from statistics import median
+
+baseline_minutes = (10, 11, 12, 13, 15)
+median_target = median(baseline_minutes) * 0.75
+assert median_target == 9
+print("Median baseline and acceptance target", median(baseline_minutes), median_target)
+```
+
 ## Try it yourself
 
 Use the baseline time measurements in the workbook. Write a target and a guardrail that would both be observable during a pilot.

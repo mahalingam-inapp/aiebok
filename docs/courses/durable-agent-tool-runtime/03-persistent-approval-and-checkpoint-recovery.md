@@ -43,6 +43,52 @@ Approval and completion are distinct facts. An approval authorizes an effect und
 
 A reviewer approves a note for meeting M1. Editing the text after review changes its fingerprint, so the previous approval no longer applies.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from hashlib import sha256
+from pathlib import Path
+import sqlite3
+from tempfile import TemporaryDirectory
+
+
+def open_store(path):
+    db = sqlite3.connect(path)
+    db.executescript("""
+        CREATE TABLE IF NOT EXISTS proposals (
+          id TEXT PRIMARY KEY, payload TEXT NOT NULL, digest TEXT NOT NULL, approved INTEGER NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS notes (id TEXT PRIMARY KEY, payload TEXT NOT NULL);
+    """)
+    return db
+
+
+def propose(db, identifier, payload):
+    digest = sha256(payload.encode()).hexdigest()
+    with db:
+        db.execute("INSERT INTO proposals VALUES (?, ?, ?, 0)", (identifier, payload, digest))
+    return digest
+
+
+def approve(db, identifier, digest):
+    with db:
+        return db.execute("UPDATE proposals SET approved = 1 WHERE id = ? AND digest = ?",
+                          (identifier, digest)).rowcount == 1
+
+
+directory = TemporaryDirectory(prefix="aiebok-review-")
+database = Path(directory.name) / "review.sqlite"
+db = open_store(database)
+digest = propose(db, "proposal-1", "M1 has completed accessibility review")
+db.close()
+db = open_store(database)
+assert db.execute("SELECT approved FROM proposals").fetchone() == (0,)
+assert not approve(db, "proposal-1", "different-payload")
+assert db.execute("SELECT approved FROM proposals").fetchone() == (0,)
+```
+
 ## Try it yourself
 
 Reopen the SQLite store after creating a proposal. Verify that pending work stays pending and compare a mismatched approval.

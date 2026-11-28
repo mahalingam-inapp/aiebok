@@ -43,6 +43,50 @@ Compare errors on short and long requests. If the learned model improves only on
 
 A model trained on Wi-Fi and image-projector reports may learn the word projector. Spelling changes and overlapping words can still move its estimate unexpectedly.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+import math
+import re
+
+
+def words(text):
+    return re.findall(r"[a-z]+", text.lower())
+
+
+def fit(records):
+    labels = Counter(row.label for row in records)
+    counts = {label: Counter() for label in labels}
+    for row in records:
+        counts[row.label].update(words(row.text))
+    return {"labels": dict(labels), "counts": {label: dict(c) for label, c in counts.items()}}
+
+
+def predict(model, text):
+    labels, counts = model["labels"], model["counts"]
+    vocabulary = {term for tokens in counts.values() for term in tokens}
+    scores = {}
+    for label, count in labels.items():
+        likelihood_denominator = sum(counts[label].values()) + len(vocabulary)
+        scores[label] = math.log(count / sum(labels.values())) + sum(
+            math.log((counts[label].get(term, 0) + 1) / likelihood_denominator)
+            for term in words(text) if term in vocabulary
+        )
+    best = max(sorted(scores), key=scores.get)
+    confidence = 1 / sum(math.exp(score - scores[best]) for score in scores.values())
+    return best, confidence
+
+
+model = fit(splits["train"])
+majority = max(sorted(model["labels"]), key=model["labels"].get)
+for row in splits["validation"]:
+    print(row.label, majority, predict(model, row.text))
+assert sum(model["labels"].values()) == len(splits["train"])
+assert predict(model, "projector screen")[0] == "display"
+```
+
 ## Try it yourself
 
 Fit the two approaches on train. Print out predictions for validation and explain which words contribute to one mistake.

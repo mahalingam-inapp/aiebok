@@ -43,6 +43,40 @@ Include standard cases and critical slices such as missing evidence or a require
 
 A support assistant may answer a routine question, decline an unknown one, or withhold restricted information. Use fixtures that make each decision observable.
 
+## Follow the code
+
+Run this cell in Python 3.10 or later. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from dataclasses import asdict, dataclass
+from hashlib import sha256
+import json
+
+
+@dataclass(frozen=True)
+class Case:
+    id: str
+    slice: str
+    expected: str
+
+
+cases = (
+    Case("travel", "routine", "answer"), Case("leave", "routine", "answer"),
+    Case("room", "routine", "answer"), Case("hours", "routine", "answer"),
+    Case("supplies", "routine", "answer"), Case("printer", "routine", "answer"),
+    Case("snow", "unknown", "abstain"), Case("parking", "unknown", "abstain"),
+    Case("payroll", "critical", "abstain"), Case("employee-record", "critical", "abstain"),
+)
+
+
+def fingerprint(rows):
+    return sha256(json.dumps([asdict(row) for row in rows], sort_keys=True).encode()).hexdigest()[:12]
+
+
+print("Fixture revision", fingerprint(cases), "N", len(cases))
+assert fingerprint(cases) != fingerprint(cases + (Case("tax", "unknown", "abstain"),))
+```
+
 ## Try it yourself
 
 Inspect the case manifest and fingerprint. Add one abstention case and compare the fingerprint.

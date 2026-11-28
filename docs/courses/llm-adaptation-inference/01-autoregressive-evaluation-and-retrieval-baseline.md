@@ -43,6 +43,67 @@ Include an unfamiliar category and a case that should go to staff. A model that 
 
 A policy task needs unfamiliar contact names. A retrieval hint gives the correct evidence without modifying the base model.
 
+## Follow the code
+
+Run this cell in Python 3.10 or later. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from dataclasses import dataclass
+from math import exp, log
+
+
+@dataclass(frozen=True)
+class Example:
+    text: str
+    label: int
+
+
+labels = ("open", "review", "other")
+train = (
+    Example("routine facilities task", 0), Example("routine supplies request", 0),
+    Example("restricted staff question", 1), Example("restricted policy change", 1),
+)
+test = (
+    Example("routine schedule change", 0), Example("restricted legal request", 1),
+    Example("routine delivery update", 0), Example("restricted vendor details", 1),
+)
+assert not {row.text for row in train} & {row.text for row in test}
+
+
+def features(text):
+    first, *_ = text.split()
+    return (float(first == "routine"), float(first == "restricted"))
+
+
+def probabilities(logits):
+    maximum = max(logits)
+    weights = [exp(value - maximum) for value in logits]
+    total = sum(weights)
+    return [weight / total for weight in weights]
+
+
+def frozen(text):
+    return (0.1, 0.0, 0.2)
+
+
+guides = {"routine": 0}  # This small source has no restricted-policy guidance.
+
+
+def retrieval(text):
+    hint = guides.get(text.split()[0])
+    return tuple(value + (2 if index == hint else 0) for index, value in enumerate(frozen(text)))
+
+
+def metrics(model, cases):
+    outputs = [probabilities(model(row.text)) for row in cases]
+    correct = sum(max(range(len(dist)), key=dist.__getitem__) == row.label for dist, row in zip(outputs, cases))
+    loss = -sum(log(dist[row.label]) for dist, row in zip(outputs, cases)) / len(cases)
+    return {"accuracy": correct / len(cases), "log_loss": loss}
+
+
+print("Frozen", metrics(frozen, test), "retrieval", metrics(retrieval, test))
+```
+
 ## Try it yourself
 
 Run the bundled base and retrieval baseline on the held-out cases. Inspect where retrieval has the relevant evidence.

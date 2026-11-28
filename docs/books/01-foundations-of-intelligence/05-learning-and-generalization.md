@@ -123,9 +123,9 @@ Distribution shift occurs when deployment data differs from training data in lan
 
 **Design question:** What evidence distinguishes overfitting from distribution shift on the rename slice?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **learning and generalization** before the book-level sample:
+Run this short Python demonstration of **learning and generalization**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 data = [(1, 0), (2, 0), (3, 1), (4, 1), (5, 2)]
@@ -138,20 +138,9 @@ test_err = mse_line(best[0], best[1], holdout)
 print({"fit": best[:2], "train_mse": round(best[2], 3), "holdout_mse": round(test_err, 3)})
 ```
 
-Predict the printed values, then change one line tied to **training** or **inference** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/01-search-planning.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/01-search-planning.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    A* should reach the same shortest path as breadth-first search while often expanding fewer states when the heuristic is informative.
+For a longer implementation, run the [course code sample](../../code-samples/01-search-planning.py). A* should reach the same shortest path as breadth-first search while often expanding fewer states when the heuristic is informative.
 
 ## Engineering practice
 
@@ -169,7 +158,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Assign separate costs to a wrong route and a human review. Specify when review becomes cheaper.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/01-foundations-of-intelligence.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/01-foundations-of-intelligence.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

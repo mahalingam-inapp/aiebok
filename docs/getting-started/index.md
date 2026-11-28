@@ -13,9 +13,9 @@ Use the [newcomer guide](newcomer-guide.md) to choose a starting point. If you k
 
 -   :material-magnify:{{ .lg .middle }} __Look up a concept__
 
-    Search the site or browse featured and A–Z concept cards.
+    Find a definition, a worked example, or a check in the concept decks.
 
-    [Concept index →](../concepts/index.md)
+    [Concept decks →](../concept-decks/index.md)
 
 -   :material-hammer-wrench:{{ .lg .middle }} __Build something__
 

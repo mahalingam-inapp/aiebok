@@ -101,11 +101,11 @@ Checkpoints persist durable agent state so interrupted runs resume without repea
 
 ### Mixture Of Experts
 
-Mixture-of-experts activates subsets of parameters per token, scaling capacity without proportional compute. Routing and load balancing add engineering complexity. See the [Mixture Of Experts concept card](../../concepts/cards/mixture-of-experts.md).
+A sparse mixture-of-experts layer routes each token to a subset of expert feed-forward networks and combines their outputs. Resident weight memory, shared computation, and cross-device communication matter even when few experts are active. See the [Mixture Of Experts concept card](../../concepts/cards/mixture-of-experts.md).
 
-**Example:** An MoE layer may route math tokens to specialized experts while sharing common language experts.
+**Example:** A layer with eight equally sized routed experts and top-2 routing uses two experts per token. A shared expert, if present, adds work for every token.
 
-**Evidence of understanding:** Monitor expert utilization histograms and penalize imbalance if any expert exceeds 40% load.
+**Evidence of understanding:** Report active and resident parameters separately. Measure skew, overflow or queueing, and quality on realistic input bursts.
 
 ## Worked example
 
@@ -123,9 +123,9 @@ Mixture-of-experts activates subsets of parameters per token, scaling capacity w
 
 **Design question:** What evidence would show the model compressed statistical patterns rather than storing retrievable policy text verbatim?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **training foundation models** before the book-level sample:
+Run this short Python demonstration of **training foundation models**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 CHAPTER = "4.4"
@@ -139,20 +139,9 @@ print("---")
 print("change one input above, predict output, re-run")
 ```
 
-Predict the printed values, then change one line tied to **pretraining objectives** or **data mixtures** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/04-attention-sampling.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/04-attention-sampling.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    The query-aligned value receives more attention, and lower temperature concentrates the sampling distribution.
+For a longer implementation, run the [course code sample](../../code-samples/04-attention-sampling.py). The query-aligned value receives more attention, and lower temperature concentrates the sampling distribution.
 
 ## Engineering practice
 
@@ -170,7 +159,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Draw the path through attention and the feed-forward block. Mark where training computes a loss.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/04-transformers-and-foundation-models.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/04-transformers-and-foundation-models.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 
@@ -231,7 +220,7 @@ Study autoregressive, masked, and sequence-to-sequence objectives; data mixtures
         1. **Explain pretraining objectives without jargon and give a counterexample.**
        *Proficient answer:* pretraining objectives define self-supervised targets—causal lm, masked lm, denoising—that shape what models learn from raw text. Counterexample: applying it when the task is fully deterministic and cheaper to hard-code.
     2. **Compare data mixtures with mixture of experts using quality, cost, latency, and risk.**
-       *Proficient answer:* data mixtures blend corpora—web, code, books, dialog—at tuned ratios during pretraining; mixture-of-experts activates subsets of parameters per token, scaling capacity without proportional compute. Trade quality gains against operational and security cost on the chapter scenario.
+       *Proficient answer:* data mixtures blend corpora—web, code, books, dialog—at tuned ratios during pretraining; a sparse mixture-of-experts layer routes each token to a subset of expert feed-forward networks and combines their outputs. Trade quality gains against operational and security cost on the chapter scenario.
     3. **Design a minimal experiment that tests the chapter's central claim.**
        *Proficient answer:* Fix a baseline and three cases (normal, boundary, adversarial). Add only the chapter mechanism, measure one task metric plus cost/latency, and pre-register what result would falsify the claim.
     4. **Identify which component should own validation, authorization, and observability.**

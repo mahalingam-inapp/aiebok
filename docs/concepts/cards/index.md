@@ -1,6 +1,6 @@
 # Concept Card Index
 
-**361 cards** — expand a letter group or use search. Featured topics live on the [concept index](../index.md).
+**372 cards** — expand a letter group or use search. Featured topics live on the [concept index](../index.md).
 
 Each row includes a one-line definition; open the card for examples, checklists, and links.
 
@@ -61,7 +61,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Budgets](budgets.md) | Budgets cap tokens, tool calls, wall time, or dollars per task or session |
     | [Build Versus Buy](build-versus-buy.md) | Build versus buy weighs custom AI development against vendor APIs and platforms on control, cost, and time-to-value |
 
-??? abstract "C (43)"
+??? abstract "C (46)"
     | Topic | Definition |
     | --- | --- |
     | [Caching](caching.md) | Caching stores prompt prefixes, embeddings, or completions to cut latency and cost |
@@ -87,6 +87,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Confidence Intervals](confidence-intervals.md) | Confidence intervals quantify uncertainty in metric estimates from finite eval sets |
     | [Confusion Matrix](confusion-matrix.md) | A confusion matrix counts predicted versus actual classes, exposing which errors dominate |
     | [Consensus](consensus.md) | Consensus protocols align multiple agents on a decision before action—voting, debate, or judge model |
+    | [Constrained Assignment](constrained-assignment.md) | Constrained assignment optimizes a set of choices together under resource, eligibility or precedence rules |
     | [Constraints](constraints.md) | Constraints specify forbidden actions, length limits, formats, and scope boundaries in prompts |
     | [Containers](containers.md) | Containers package model servers with dependencies for reproducible deployment across environments |
     | [Contamination](contamination.md) | Contamination occurs when eval examples leak into training data, inflating benchmark scores |
@@ -96,7 +97,9 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Context Poisoning](context-poisoning.md) | Context poisoning inserts false or misleading evidence into retrieval or memory stores to manipulate outputs |
     | [Context Traces](context-traces.md) | Context traces log the assembled prompt sections, token counts, and sources for debugging and compliance |
     | [Context Windows](context-windows.md) | Context windows cap tokens the model attends to in one forward pass—prompt, evidence, tools, and output compete for this budget |
+    | [Contextual Bandits](contextual-bandits.md) | A contextual bandit chooses an action given observed context and receives feedback for the chosen action |
     | [Continual Learning](continual-learning.md) | Continual learning updates models on new data without catastrophic forgetting of prior tasks |
+    | [Continuous Batching](continuous-batching.md) | Continuous batching schedules active and newly arriving requests together at generation-step boundaries |
     | [Continuous Evaluation](continuous-evaluation.md) | Continuous evaluation runs production or shadow traffic against eval suites to detect drift post-release |
     | [Contract Tests](contract-tests.md) | Contract tests verify integrations between services—API schemas, tool responses—without full end-to-end runs |
     | [Control](control.md) | Control mechanisms—approvals, rate limits, tool allowlists— constrain agent behavior within safe envelopes |
@@ -108,7 +111,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Critique](critique.md) | Critique models or rubrics evaluate drafts and suggest fixes before finalization |
     | [Cross Validation](cross-validation.md) | Cross-validation rotates train and validation folds to estimate performance variance with limited data |
 
-??? abstract "D (29)"
+??? abstract "D (30)"
     | Topic | Definition |
     | --- | --- |
     | [Data Cards](data-cards.md) | Data cards document dataset sources, collection, demographics, limitations, and recommended uses—parallel to model cards |
@@ -120,6 +123,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Data Residency](data-residency.md) | Data residency restricts processing and storage to approved geographic regions for legal compliance |
     | [Data Validation](data-validation.md) | Data validation checks schema, ranges, distributions, and freshness of incoming data before training or inference |
     | [Decision Thresholds](decision-thresholds.md) | Decision thresholds turn continuous scores into actions—approve, escalate, or abstain |
+    | [Decision Transformer](decision-transformer.md) | Decision Transformer formulates offline reinforcement learning as sequence prediction over returns-to-go, states and actions |
     | [Decomposition](decomposition.md) | Decomposition breaks complex tasks into subtasks with clearer stopping criteria and verifiable intermediate results |
     | [Deduplication](deduplication.md) | Deduplication removes near-duplicate training examples that inflate metrics and memorization |
     | [Deep Learning](deep-learning.md) | Deep learning stacks differentiable layers that learn hierarchical features from raw inputs |
@@ -141,7 +145,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Drift](drift.md) | Drift is change in input or label distributions over time—covariate, prior, or concept drift |
     | [Durable Execution](durable-execution.md) | Durable execution persists workflow state across process restarts and deploys—Temporal, Step Functions patterns |
 
-??? abstract "E (10)"
+??? abstract "E (12)"
     | Topic | Definition |
     | --- | --- |
     | [Embedding Evaluation](embedding-evaluation.md) | Embedding evaluation measures retrieval quality—recall, MRR, nDCG—on realistic queries with hard negatives |
@@ -153,6 +157,8 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Evaluation Specs](evaluation-specs.md) | Evaluation specs define datasets, metrics, slices, and release thresholds before shipping |
     | [Expected Cost](expected-cost.md) | Expected cost combines probabilities of outcomes with their business costs to rank decisions |
     | [Experiment Tracking](experiment-tracking.md) | Experiment tracking logs hyperparameters, data versions, metrics, and artifacts for every training run |
+    | [Expert Load Balancing](expert-load-balancing.md) | Expert load balancing controls the concentration of assignments in a sparse layer |
+    | [Expert Parallelism](expert-parallelism.md) | Expert parallelism places different feed-forward experts on different devices |
     | [Expert Systems](expert-systems.md) | Expert systems capture domain heuristics in if-then rules curated by specialists, often with explanation traces |
 
 ??? abstract "F (12)"
@@ -171,7 +177,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Function Calling](function-calling.md) | Function calling lets models emit structured invocations with typed arguments that runtime code validates and executes |
     | [Functional Specifications](functional-specifications.md) | Functional specifications describe observable system behavior—inputs, outputs, errors—for builders and testers |
 
-??? abstract "G (9)"
+??? abstract "G (10)"
     | Topic | Definition |
     | --- | --- |
     | [Generalization](generalization.md) | Generalization is performance on unseen data drawn from the deployment distribution, not memorization of training examples |
@@ -183,8 +189,9 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Graph Rag](graph-rag.md) | Graph RAG combines knowledge graphs with retrieval so multi-hop relations traverse explicit edges |
     | [Grounded Generation](grounded-generation.md) | Grounded generation conditions answers strictly on provided evidence, refusing when support is insufficient |
     | [Grounding](grounding.md) | Grounding ties model statements to verifiable evidence—retrieved passages, database rows, tool outputs |
+    | [Grouped Query Attention](grouped-query-attention.md) | Grouped-query attention shares one key and value head among multiple query heads |
 
-??? abstract "H (6)"
+??? abstract "H (7)"
     | Topic | Definition |
     | --- | --- |
     | [Hard Negatives](hard-negatives.md) | Hard negatives are plausible but incorrect passages that confuse retrievers—essential for training and evaluation realism |
@@ -192,6 +199,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Human Evaluation](human-evaluation.md) | Human evaluation labels outputs quality when automation cannot capture nuance or safety |
     | [Human Oversight](human-oversight.md) | Human oversight defines when and how people supervise agents—monitoring dashboards, escalation queues, kill switches |
     | [Human Review](human-review.md) | Human review inserts expert judgment for high-impact or low-confidence decisions |
+    | [Hybrid Attention Backbones](hybrid-attention-backbones.md) | Hybrid backbones combine full attention with layers that use another mechanism, such as gated linear attention or a state-space model |
     | [Hybrid Search](hybrid-search.md) | Hybrid search combines lexical and dense signals—often via reciprocal rank fusion—when neither alone covers identifiers and paraphrases |
 
 ??? abstract "I (9)"
@@ -237,7 +245,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Loss Functions](loss-functions.md) | Loss functions score how wrong predictions are and drive optimization—cross-entropy for classes, MSE for regression, custom losses for ranking |
     | [Lstms](lstms.md) | LSTMs add gating to RNNs to mitigate vanishing gradients and capture longer dependencies than plain RNNs |
 
-??? abstract "M (19)"
+??? abstract "M (20)"
     | Topic | Definition |
     | --- | --- |
     | [Matrix Transformations](matrix-transformations.md) | Matrix transformations apply linear maps that rotate, scale, or project vector spaces—core to neural layers and attention projections |
@@ -246,7 +254,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Memory Retrieval](memory-retrieval.md) | Memory retrieval selects relevant past facts given the current query—vector search, keyword, or structured lookup |
     | [Metadata](metadata.md) | Metadata tags documents with tenant, date, author, permissions, and type for filtering and ranking |
     | [Metadata Filtering](metadata-filtering.md) | Metadata filtering restricts vector or lexical search by tenant, date, permission, or document type before or after similarity scoring |
-    | [Mixture Of Experts](mixture-of-experts.md) | Mixture-of-experts activates subsets of parameters per token, scaling capacity without proportional compute |
+    | [Mixture Of Experts](mixture-of-experts.md) | A sparse mixture-of-experts layer routes each token to a subset of expert feed-forward networks and combines their outputs |
     | [Mlp Blocks](mlp-blocks.md) | MLP blocks apply position-wise feed-forward networks after attention, adding nonlinear capacity per token |
     | [Model Cards](model-cards.md) | Model cards document intended use, training data, limitations, metrics, and ethical considerations for a model version |
     | [Model Catalog](model-catalog.md) | Model catalog lists approved models with risk tier, eval status, and allowed use cases for developers |
@@ -255,6 +263,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Model Selection](model-selection.md) | Model selection matches capabilities, cost, latency, license, and risk to task requirements—not brand prestige |
     | [Monitoring](monitoring.md) | Monitoring observes live inputs, outputs, latency, errors, and business metrics continuously |
     | [Multi Head Attention](multi-head-attention.md) | Multi-head attention runs several attention operations in parallel with separate projections, letting different heads capture diverse relations |
+    | [Multi Head Latent Attention](multi-head-latent-attention.md) | Multi-head latent attention lowers cache footprint by storing a compressed representation used to reconstruct or compute attention keys and values |
     | [Multi Hop Retrieval](multi-hop-retrieval.md) | Multi-hop retrieval gathers evidence across sequential lookups when no single passage contains the answer |
     | [Multi Tenancy](multi-tenancy.md) | Multi-tenancy isolates customer data, indexes, quotas, and configs in shared AI platforms |
     | [Multilingual Models](multilingual-models.md) | Multilingual models share parameters across languages, enabling cross-lingual retrieval and generation |
@@ -268,10 +277,11 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Neurons And Layers](neurons-and-layers.md) | Neurons apply activations to weighted sums; layers stack these transforms into composable functions |
     | [Normalization](normalization.md) | Text normalization lowercases, strips diacritics, standardizes whitespace, and canonicalizes equivalents before indexing or tokenization |
 
-??? abstract "O (6)"
+??? abstract "O (7)"
     | Topic | Definition |
     | --- | --- |
     | [Ocr](ocr.md) | OCR extracts text from scanned images and photos, introducing recognition errors that propagate to chunks and answers |
+    | [Off Policy Evaluation](off-policy-evaluation.md) | Off-policy evaluation estimates the performance of a target policy from data generated by a different policy |
     | [One Hot Vectors](one-hot-vectors.md) | One-hot vectors encode categorical items as sparse binary indicators—simple but high-dimensional and semantically blind |
     | [Open Weights](open-weights.md) | Open-weights models publish parameters for local deployment, fine-tuning, and inspection—versus API-only access |
     | [Opensearch](opensearch.md) | Amazon OpenSearch supports lexical, vector, and hybrid search with k-NN indexes for RAG on AWS |
@@ -350,7 +360,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Routing](routing.md) | Routing directs requests to models, tools, or strategies by task type, risk, or budget |
     | [Rubrics](rubrics.md) | Rubrics score qualitative outputs against anchored criteria with examples at each level |
 
-??? abstract "S (37)"
+??? abstract "S (38)"
     | Topic | Definition |
     | --- | --- |
     | [Sagemaker](sagemaker.md) | Amazon SageMaker covers ML training, tuning, hosting, and monitoring for custom and foundation models on AWS |
@@ -375,6 +385,7 @@ Each row includes a one-line definition; open the card for examples, checklists,
     | [Slice Analysis](slice-analysis.md) | Slice analysis evaluates metrics on subpopulations—language, product, tenant—to catch aggregate illusions |
     | [Slices](slices.md) | Slices are subpopulations—language, tenant, risk tier—where aggregate metrics may hide failure |
     | [Slos](slos.md) | SLOs define target reliability and latency—availability, p95 latency, eval faithfulness—for AI platform services |
+    | [Speculative Decoding](speculative-decoding.md) | Speculative decoding proposes continuation tokens and verifies them in a block with a target model |
     | [Speech Recognition](speech-recognition.md) | Speech recognition (ASR) transcribes audio to text with word error rate varying by accent, noise, and domain |
     | [State](state.md) | State captures variables the system believes true at a point in execution—inventory, user intent, pending approvals |
     | [State Machines](state-machines.md) | State machines model allowed statuses and transitions explicitly, making illegal steps unrepresentable |

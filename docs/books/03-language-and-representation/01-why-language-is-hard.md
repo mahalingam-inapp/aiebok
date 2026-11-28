@@ -123,9 +123,9 @@ Discourse connects sentences across turns and documents—coreference, topic con
 
 **Design question:** Which ambiguous query would cause the most harm if answered from literal semantics alone without pragmatics?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **why language is hard** before the book-level sample:
+Run this short Python demonstration of **why language is hard**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 CHAPTER = "3.1"
@@ -140,20 +140,9 @@ print("---")
 print("change one input above, predict output, re-run")
 ```
 
-Predict the printed values, then change one line tied to **syntax** or **semantics** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/03-tokenization-vectors.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/03-tokenization-vectors.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    The outage document should rank highest because it shares the query's weighted terms; the example also exposes the limits of lexical features.
+For a longer implementation, run the [course code sample](../../code-samples/03-tokenization-vectors.py). The outage document should rank highest because it shares the query's weighted terms; the example also exposes the limits of lexical features.
 
 ## Engineering practice
 
@@ -171,7 +160,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Write an ambiguous search query. Normalize two spelling variants without discarding their original source text.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/03-language-and-representation.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/03-language-and-representation.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

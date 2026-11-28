@@ -1,0 +1,14 @@
+<div data-catalog data-noun="concept">
+  <div class="learning-filters" hidden>
+    <div>
+      <label for="concept-filter">Find a concept</label>
+      <input type="search" id="concept-filter" autocomplete="off">
+    </div>
+  </div>
+  <p class="learning-count" role="status">{{ entries | length }} concepts</p>
+  <ul class="concept-deck-list">
+    {% for title, source, href in entries %}
+    <li data-card="" data-search="{{ title }} {{ source }}"><a href="{{ href }}">{{ title }}</a> <small>{{ source }}</small></li>
+    {% endfor %}
+  </ul>
+</div>

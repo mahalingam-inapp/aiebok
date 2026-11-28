@@ -43,6 +43,49 @@ All three failures can give the user a safe fallback while retaining distinct op
 
 A service desk assistant returns a status, a short answer, and source IDs. A reply with source_ids set to a string cannot satisfy the contract. A valid abstention has an empty answer and no sources.
 
+## Follow the code
+
+Run this cell in Python 3.10 or later. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+import json
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Reply:
+    status: str
+    answer: str
+    sources: tuple[str, ...]
+
+
+ABSTAIN = Reply("abstain", "", ())
+
+
+def parse_reply(raw):
+    value = json.loads(raw)
+    if not isinstance(value, dict) or set(value) != {"status", "answer", "sources"}:
+        raise ValueError("unexpected fields")
+    status, answer, sources = value["status"], value["answer"], value["sources"]
+    if not isinstance(answer, str) or not isinstance(sources, list):
+        raise ValueError("invalid field types")
+    if any(not isinstance(source, str) or not source for source in sources):
+        raise ValueError("invalid source ID")
+    reply = Reply(status, answer, tuple(sources))
+    if reply != ABSTAIN and not (status == "answer" and answer.strip() and sources):
+        raise ValueError("inconsistent response")
+    return reply
+
+
+assert parse_reply('{"status":"abstain","answer":"","sources":[]}') == ABSTAIN
+for invalid in ('{"status":"answer","answer":"x","sources":"p1"}', '[]', 'not JSON'):
+    try:
+        parse_reply(invalid)
+    except ValueError:
+        continue
+    raise AssertionError(f"Accepted invalid reply {invalid}")
+```
+
 ## Try it yourself
 
 Run the contract cases. Add a syntactically valid response with an unknown status and explain why JSON parsing alone accepts it.

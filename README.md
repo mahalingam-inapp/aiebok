@@ -20,10 +20,10 @@ To publish, push to a GitHub repository, open **Settings → Pages**, and choose
 ## What is included
 
 <!-- site-stats:readme:start -->
-- 14 role-based learning paths, 29 courses, and 142 lectures
-- 23 downloadable course workbooks and 5 starter notebooks
+- 15 role-based learning paths, 32 courses, and 154 lectures
+- 26 downloadable course workbooks and 5 starter notebooks
 - 20 knowledge-area maps
-- 361 concept cards, 100 patterns, 25 architecture studios
+- 372 concepts in slide decks, 100 patterns, 25 architecture studios
 - 13 build guides · 26 cloud capability guides
 - 5 runnable starter labs (+ 78 chapter labs in the repo)
 - Content templates and editorial quality system
@@ -62,7 +62,7 @@ The published site is **static HTML only** (MkDocs → GitHub Actions → Pages)
 
 | Need | Where |
 |---|---|
-| Read docs, search, concept cards | Hosted site |
+| Read lectures, search, and browse [concept decks](docs/concept-decks/index.md) | Hosted site |
 | Lecture slide decks | **Open slide deck** on each lecture page |
 | Course workbooks | [Jupyter Notebooks](docs/labs/notebooks/index.md) in the site |
 | Offline interactive workbook | [HarborLink](docs/labs/interactive-workbook.md) under Labs |

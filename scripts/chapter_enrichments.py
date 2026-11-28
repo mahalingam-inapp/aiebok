@@ -119,12 +119,12 @@ def render_knowledge_check(book_no: int, chapter_no: int, topics: list[str]) -> 
 
 def render_chapter_hook(title: str, topics: list[str], book_no: int, chapter_no: int) -> str:
     code = get_chapter_hook(book_no, chapter_no, title, topics)
-    return f"""## Chapter hook
+    return f"""## Follow the code
 
-Run this short snippet first to anchor **{title.lower()}** before the book-level sample:
+Run this short Python demonstration of **{title.lower()}**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 {code}
 ```
 
-Predict the printed values, then change one line tied to **{topics[0]}** or **{topics[1]}** and observe how the chapter mechanism moves."""
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example."""

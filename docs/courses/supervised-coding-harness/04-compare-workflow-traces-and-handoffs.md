@@ -43,6 +43,29 @@ A handoff should distinguish “check failed and needs a revised proposal,” �
 
 Two candidates may look identical in a summary. A trace showing a failed whitespace case and a review approval against a specific revision distinguishes them.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+trace = []
+scenario = FormatterStore()
+for request_id, candidate_id, approve in (
+    ("invalid-regression", "current", True),
+    ("valid-change", "collapse-spaces", False),
+    ("valid-change", "collapse-spaces", True),
+):
+    reviewed = replace(evaluate(proposal | {"candidate": candidate_id}, scenario.revision), approved=approve)
+    outcome, revision = scenario.apply(request_id, reviewed)
+    trace.append({
+        "request": request_id, "candidate": candidate_id, "reviewed_revision": reviewed.revision,
+        "test_failures": reviewed.failures, "decision": outcome, "resulting_revision": revision,
+    })
+assert [entry["decision"] for entry in trace] == ["failed_checks", "awaiting_review", "applied"]
+for decision in trace:
+    print(decision)
+```
+
 ## Try it yourself
 
 Create a small report from the trace. Identify what the reviewer sees at each blocked stage.

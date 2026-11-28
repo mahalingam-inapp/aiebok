@@ -490,3 +490,41 @@ Build a timeline while evidence is available. Separate detection, decision, miti
 A useful follow-up has an owner and a verification condition. “Add monitoring” is vague. “Alert when generation wait breaches the candidate gate on the replayed fixture” tells reviewers how to know the change works. Verify that people can still resolve delayed requests, not only that the graph returned to normal.""",
     ),
 })
+
+
+READINGS.update({
+    "sparse-model-architectures": (
+        """### What crosses the boundary
+Apply the router to a token's hidden state and inspect the scores before interpreting the chosen experts. The scores determine expert identity and can also influence the mixture weights. The residual stream and attention use separate computation. In a model with one shared expert, add that expert's compute for every token before comparing with a dense feed-forward block. Always state which parameters your active-count comparison includes.
+
+A request-level cascade may choose a sparse model as an endpoint. That service decision happens at a different layer from the token router, and you can change it without altering the checkpoint.""",
+        """### Count assignments per batch
+Top-2 over 100 tokens produces 200 assignments if every token reaches two experts. Divide assignment counts by the available capacity and inspect the highest-loaded expert. Weighting the result by the total number of original tokens answers a different question. A capacity limit may be a training design choice, and some serving implementations use dropless kernels. A simulator with overflow demonstrates the consequence of a fixed-capacity policy. It does not imply every implementation drops tokens.""",
+        """### Placement belongs in the latency budget
+Split weight memory from communication. Replicating a popular expert may reduce load on one rank at the cost of memory elsewhere. Measure collective time, maximum rank load, per-device memory, and throughput with fixed sequence lengths and concurrency. A low average rank load can coexist with a straggler because the step must wait for the slowest participants. Compare a placement change with the same routed workload to isolate its effect.""",
+        """### Match architecture to a real request shape
+Use one formula per attention or recurrent layer. Grouped-query attention reduces KV heads relative to multi-head attention, while some recurrent layers keep a fixed-size state for each active sequence. Compressed latent KV is a third approach and cache layout varies by runtime. Report actual device memory separately from arithmetic estimates. Measure long-context evidence use as well as memory, and fix the model and tokenizer when isolating a serving-engine change.""",
+    ),
+    "reasoning-efficient-inference": (
+        """### Spend the budget where you can measure it
+Choose a quality gate that can be checked against the request and its authoritative evidence. Pin the prompt, endpoint version, and settings for the first and second attempts. Report verified successes divided by eligible requests and spend divided by verified successes. A cheaper average request can still produce a more expensive usable result. Use a fallback path when the remaining latency budget cannot fit another attempt.
+
+An inference budget chooses how much compute to use for a deployed checkpoint. Post-training methods change the checkpoint itself. For example, reinforcement learning from verifiable rewards can use an outcome checker to score training responses. If you compare checkpoints as well as budgets, change one axis at a time. Include checks for whether the outputs satisfy the intended task beyond the reward signal.""",
+        """### A verifier can fail too
+With a deterministic verifier, make the acceptance predicate part of the test suite. Use deliberately flawed candidates, including one whose stated answer is right while its action is infeasible. If a judge must read free text, calibrate it against human judgments and test whether irrelevant formatting or wording affects its labels. Track generator coverage, false acceptances, and out-of-budget cases separately.""",
+        """### Keep comparison conditions fixed
+Draft and target can have different compute costs and batching behavior. Log how many proposed tokens are accepted per check and compare against a non-speculative baseline on the same output lengths. Greedy verification is a useful teaching limit. For sampling, equality to one sampled target continuation is not the acceptance rule, and dropping the correction step can change the output distribution.""",
+        """### Report tails with their workloads
+Keep warm cache, cold cache, short prompt, long prompt, low concurrency, and saturation visible in the benchmark. Time to first token covers queueing and prefill. Inter-token timing captures cadence during decode. Record total end-to-end latency as its own measure. The output from the faster route must still pass the same frozen functional checks. Bottlenecks can move when a batching or caching change makes another stage busier.""",
+    ),
+    "decision-models-and-policies": (
+        """### Put utility above the score
+Write a table of actions and their costs conditional on each outcome. Take expectations using the estimated probability, then compare these expected costs with a review option. On historical cases, measure realized outcomes and costs separately. Compare calibration by slice because a score can be calibrated overall and biased in a smaller group. If the options consume shared reviewer time, defer thresholds alone cannot enforce that budget.""",
+        """### Separate feasibility from performance
+Start with a tiny instance where you can enumerate every plan and verify the optimum. Then use variables for task inclusion, precedence, and assignment as you extend the model. Evaluate a greedy baseline against the same rules. For a bigger solver, record objective value, bounds, elapsed time, and status. Defining who handles an infeasible instance matters when the plan determines real work.""",
+        """### Check overlap before reporting value
+A log provides a reward only for the action it took. A deterministic target puts weight only on matching logged actions, but it requires support for its chosen action in every context being evaluated. Compute effective sample size as the squared sum of weights divided by their sum of squares. A confidence interval or sensitivity analysis is more informative than extra decimal places. If the logger's probabilities were never recorded, an assumed replay estimator may tell you more about the assumptions than the policy.""",
+        """### Account for actions that change what happens next
+A one-step bandit ignores subsequent state. Planning with a transition model allows a choice now to change later workload and rewards. Offline trajectory methods need coverage for the sequences a policy might produce, and observational logs can omit important influences. For a pilot, freeze a baseline, decide which decisions stay with staff, and set clear guardrails on repeat visits or unresolved requests.""",
+    ),
+})

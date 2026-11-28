@@ -43,6 +43,12 @@ Use the current workflow as the comparison. Ask whether a person can resolve the
 
 An eligibility checker can use approved rules. A policy library can use search. Drafting a personalized summary from verified policy may justify generation with review.
 
+### Follow the example
+
+**Given:** One caller wants a policy link. Another needs to compare conditions for two different routes.
+
+**Walkthrough:** Return the current source directly for the first task. For the second, test whether a source-grounded explanation preserves both sets of conditions. Keep the simpler approach as the baseline.
+
 ## Try it yourself
 
 For finding the current travel policy, compare keyword search and a generated answer. What would justify adding generation?

@@ -43,6 +43,54 @@ The demo uses a small corpus so you can inspect what each representation include
 
 The query “holidays” should retrieve a policy titled “vacation leave” even though it shares no exact terms.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+from math import sqrt
+import re
+
+
+def tokens(text):
+    return set(re.findall(r"[a-z]+", text.lower()))
+
+
+concepts = (
+    {"vacation", "leave", "holidays"},
+    {"travel", "boarding", "rail", "journey", "board"},
+    {"board", "equipment", "circuit"},
+    {"payroll", "tax", "adjustments"},
+)
+
+
+def vector(text):
+    terms = tokens(text)
+    return tuple(len(terms & concept) for concept in concepts)
+
+
+def similarity(left, right):
+    norm = sqrt(sum(v * v for v in left) * sum(v * v for v in right))
+    return sum(a * b for a, b in zip(left, right)) / norm if norm else 0
+
+
+def ranked(query, rows, score):
+    scores = [(score(query, row.text), row.source) for row in rows]
+    return [source for value, source in sorted(scores, key=lambda pair: (-pair[0], pair[1])) if value > 0]
+
+
+def lexical(query, rows):
+    return ranked(query, rows, lambda a, b: len(tokens(a) & tokens(b)))
+
+
+def dense(query, rows):
+    return ranked(query, rows, lambda a, b: similarity(vector(a), vector(b)))
+
+
+assert lexical("holidays", eligible) == []
+assert dense("holidays", eligible)[0] == "leave@2"
+```
+
 ## Try it yourself
 
 Score the same labeled cases with both ranking methods and inspect the first result.

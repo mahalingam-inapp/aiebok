@@ -123,9 +123,9 @@ Release gates block deployment until eval, security, and performance criteria pa
 
 **Design question:** Which layer catches abstention regression fastest and cheapest?
 
-## Chapter hook
+## Follow the code
 
-Run this short snippet first to anchor **testing ai systems** before the book-level sample:
+Run this short Python demonstration of **testing ai systems**. Identify the input, the decision or calculation, and the printed result.
 
 ```python
 CHAPTER = "9.4"
@@ -138,20 +138,9 @@ print("---")
 print("change one input above, predict output, re-run")
 ```
 
-Predict the printed values, then change one line tied to **unit tests** or **contract tests** and observe how the chapter mechanism moves.
+Predict the result before you run it. Change one input, then explain the resulting difference using the mechanism from the worked example.
 
-## Runnable code sample
-
-The following dependency-free sample supports this book. Download it from the [code-sample library](../../code-samples/09-spec-driven-development.py) or run the matching file under `examples/`.
-
-```python
---8<-- "docs/code-samples/09-spec-driven-development.py"
-```
-
-Expected output is printed to the terminal. Before running it, predict which values or decisions should change. Then introduce one failure and convert the observation into a test.
-
-??? success "Expected observation"
-    Both executable acceptance examples pass; changing the abstention behavior should fail the second case.
+For a longer implementation, run the [course code sample](../../code-samples/09-spec-driven-development.py). Both executable acceptance examples pass; changing the abstention behavior should fail the second case.
 
 ## Engineering practice
 
@@ -169,7 +158,7 @@ Capture assumptions, test cases, results, and one architecture decision record. 
 
 Turn a rejection behavior into a test that fails for a plausible but incorrect answer.
 
-Use the example above to make a prediction and compare it with the expected observation. The [course notebook](../../assets/notebooks/09-ai-software-and-product-engineering.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
+Compare your prediction with the chapter demonstration and explain which input changed the result. The [course notebook](../../assets/notebooks/09-ai-software-and-product-engineering.ipynb){ download } contains the runnable examples and a checked experiment. See [notebook setup](../../labs/notebooks/index.md) if you are new to Jupyter.
 
 ## Spec-driven habit
 

@@ -43,6 +43,48 @@ Test the same input for two roles. Remove any restricted passages before ranking
 
 A travel-policy question may retrieve a correct current article and an unrelated reimbursement rule. Source IDs let you compare rankings against labeled expectations and inspect why the current article was missed.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+import re
+
+
+@dataclass(frozen=True)
+class Passage:
+    id: str
+    text: str
+    roles: frozenset[str]
+
+
+CORPUS = (
+    Passage("travel", "File a travel receipt within 15 days.", frozenset({"employee", "reviewer"})),
+    Passage("payroll", "Review payroll adjustments on Tuesday.", frozenset({"reviewer"})),
+    Passage("room", "Reserve a meeting room through the calendar.", frozenset({"employee", "reviewer"})),
+)
+STOP = {"a", "an", "do", "i", "how", "the", "should", "when", "where", "what", "on", "for", "through"}
+
+
+def tokens(text):
+    return set(re.findall(r"[a-z]+", text.lower())) - STOP
+
+
+def retrieve(question, role, limit=2):
+    query = tokens(question)
+    eligible = (passage for passage in CORPUS if role in passage.roles)
+    ranked = sorted(
+        ((len(query & tokens(p.text)), p.id, p) for p in eligible),
+        key=lambda row: (-row[0], row[1]),
+    )
+    return [passage for score, _, passage in ranked[:limit] if score > 0]
+
+
+assert [p.id for p in retrieve("When should I file a travel receipt?", "employee")] == ["travel"]
+assert [p.id for p in retrieve("When are payroll adjustments reviewed?", "reviewer")] == ["payroll"]
+assert retrieve("When are payroll adjustments reviewed?", "employee") == []
+```
+
 ## Try it yourself
 
 Compare the results for an employee and a policy reviewer. Add a query with no answer in the allowed documents.

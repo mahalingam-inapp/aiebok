@@ -51,6 +51,28 @@ Keep the rollback route live and define who can invoke it. In the workbook, comp
 
 A cheaper candidate misses the quality and latency gates during a 10% cohort. Pause that version and continue serving stable traffic.
 
+## Follow the code
+
+Run this cell after the preceding cells in the course workbook. Read the inputs and checks before running it. Use the practice below to change one assumption and compare the result.
+
+```python
+def gate(rows, sample=20, burn_limit=2, latency_limit=350, cost_limit=0.003):
+    if len(rows) < sample:
+        return ["coverage"]
+    info = objectives(rows)
+    limits = (
+        ("error_budget", info["burn"], burn_limit), ("latency", info["median_ms"], latency_limit),
+        ("cost", info["mean_cost"], cost_limit),
+    )
+    return [name for name, observed, limit in limits if observed > limit]
+
+
+assert gate(healthy) == []
+assert gate(healthy[:1]) == ["coverage"]
+assert gate(unhealthy) == ["error_budget"]
+assert gate(unhealthy, burn_limit=21, cost_limit=0.001) == ["cost"]
+```
+
 ## Try it yourself
 
 Run a healthy and an unhealthy canary. Relax one gate and inspect which other condition still blocks promotion.
